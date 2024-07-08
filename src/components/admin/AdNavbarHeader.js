@@ -79,7 +79,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="assets/img/jm_denis.jpg"
+                                                        src="/assets/img/jm_denis.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -92,7 +92,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="assets/img/chadengle.jpg"
+                                                        src="/assets/img/chadengle.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -105,7 +105,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="assets/img/mlane.jpg"
+                                                        src="/assets/img/mlane.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -120,7 +120,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="assets/img/talha.jpg"
+                                                        src="/assets/img/talha.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -188,7 +188,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="assets/img/profile2.jpg"
+                                                        src="/assets/img/profile2.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -306,7 +306,7 @@ const AdNavbarHeader = (props) => {
                             >
                                 <div className="avatar-sm">
                                     <img
-                                        src="assets/img/profile.jpg"
+                                        src="/assets/img/profile.jpg"
                                         alt="..."
                                         className="avatar-img rounded-circle"
                                     />
@@ -322,7 +322,7 @@ const AdNavbarHeader = (props) => {
                                         <div className="user-box">
                                             <div className="avatar-lg">
                                                 <img
-                                                    src="assets/img/profile.jpg"
+                                                    src="/assets/img/profile.jpg"
                                                     alt="image profile"
                                                     className="avatar-img rounded"
                                                 />

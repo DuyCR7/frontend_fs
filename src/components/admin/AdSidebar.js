@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const AdSidebar = (props) => {
     return (
         <>
@@ -6,14 +8,15 @@ const AdSidebar = (props) => {
                 <div className="sidebar-logo">
                     {/*Logo Header*/}
                     <div className="logo-header" data-background-color="dark">
-                        <a href="index.html" className="logo">
+                        <Link to={"/admin"} className="logo">
                             <img
-                                src="assets/img/kaiadmin/logo_light.svg"
+                                src="/assets/img/kaiadmin/logo.png"
                                 alt="navbar brand"
                                 className="navbar-brand"
-                                height="20"
+                                height={60}
+                                width={73}
                             />
-                        </a>
+                        </Link>
                         <div className="nav-toggle">
                             <button className="btn btn-toggle toggle-sidebar">
                                 <i className="gg-menu-right"></i>
@@ -53,66 +56,10 @@ const AdSidebar = (props) => {
                                 </div>
                             </li>
                             <li className="nav-section">
-                <span className="sidebar-mini-icon">
-                  <i className="fa fa-ellipsis-h"></i>
-                </span>
+                                <span className="sidebar-mini-icon">
+                                  <i className="fa fa-ellipsis-h"></i>
+                                </span>
                                 <h4 className="text-section">Components</h4>
-                            </li>
-                            <li className="nav-item">
-                                <a data-bs-toggle="collapse" href="#base">
-                                    <i className="fas fa-layer-group"></i>
-                                    <p>Base</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className="collapse" id="base">
-                                    <ul className="nav nav-collapse">
-                                        <li>
-                                            <a href="components/avatars.html">
-                                                <span className="sub-item">Avatars</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/buttons.html">
-                                                <span className="sub-item">Buttons</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/gridsystem.html">
-                                                <span className="sub-item">Grid System</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/panels.html">
-                                                <span className="sub-item">Panels</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/notifications.html">
-                                                <span className="sub-item">Notifications</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/sweetalert.html">
-                                                <span className="sub-item">Sweet Alert</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/font-awesome-icons.html">
-                                                <span className="sub-item">Font Awesome Icons</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/simple-line-icons.html">
-                                                <span className="sub-item">Simple Line Icons</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="components/typography.html">
-                                                <span className="sub-item">Typography</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
                             <li className="nav-item">
                                 <a data-bs-toggle="collapse" href="#sidebarLayouts">
@@ -134,99 +81,6 @@ const AdSidebar = (props) => {
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
-                            <li className="nav-item">
-                                <a data-bs-toggle="collapse" href="#forms">
-                                    <i className="fas fa-pen-square"></i>
-                                    <p>Forms</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className="collapse" id="forms">
-                                    <ul className="nav nav-collapse">
-                                        <li>
-                                            <a href="forms/forms.html">
-                                                <span className="sub-item">Basic Form</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <a data-bs-toggle="collapse" href="#tables">
-                                    <i className="fas fa-table"></i>
-                                    <p>Tables</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className="collapse" id="tables">
-                                    <ul className="nav nav-collapse">
-                                        <li>
-                                            <a href="tables/tables.html">
-                                                <span className="sub-item">Basic Table</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="tables/datatables.html">
-                                                <span className="sub-item">Datatables</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <a data-bs-toggle="collapse" href="#maps">
-                                    <i className="fas fa-map-marker-alt"></i>
-                                    <p>Maps</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className="collapse" id="maps">
-                                    <ul className="nav nav-collapse">
-                                        <li>
-                                            <a href="maps/googlemaps.html">
-                                                <span className="sub-item">Google Maps</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="maps/jsvectormap.html">
-                                                <span className="sub-item">Jsvectormap</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <a data-bs-toggle="collapse" href="#charts">
-                                    <i className="far fa-chart-bar"></i>
-                                    <p>Charts</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className="collapse" id="charts">
-                                    <ul className="nav nav-collapse">
-                                        <li>
-                                            <a href="charts/charts.html">
-                                                <span className="sub-item">Chart Js</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="charts/sparkline.html">
-                                                <span className="sub-item">Sparkline</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <a href="widgets.html">
-                                    <i className="fas fa-desktop"></i>
-                                    <p>Widgets</p>
-                                    <span className="badge badge-success">4</span>
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="../../documentation/index.html">
-                                    <i className="fas fa-file"></i>
-                                    <p>Documentation</p>
-                                    <span className="badge badge-secondary">1</span>
-                                </a>
                             </li>
                             <li className="nav-item">
                                 <a data-bs-toggle="collapse" href="#submenu">
