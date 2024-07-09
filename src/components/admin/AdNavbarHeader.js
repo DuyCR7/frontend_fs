@@ -1,4 +1,33 @@
+import {useDispatch, useSelector} from "react-redux";
+import {logoutUser} from "../../services/admin/authService";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
+import {resetUser} from "../../redux/admin/slices/userSlice";
+
 const AdNavbarHeader = (props) => {
+
+    const user = useSelector((state) => state.user);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleLogout = async () => {
+        try {
+            let data = await logoutUser(); // clear cookie
+            // logoutContext(); // clear user in context
+            if (data && data.EC === 0) {
+                localStorage.removeItem("jwt"); // clear local storage
+                dispatch(resetUser());
+
+                toast.success(data.EM);
+                navigate('/admin/sign-in');
+            } else {
+                toast.error(data.EM);
+            }
+        } catch (error) {
+            console.log("Error: ", error);
+        }
+    }
+
     return (
         <>
             {/*Navbar Header*/}
@@ -296,8 +325,8 @@ const AdNavbarHeader = (props) => {
                                 </div>
                             </div>
                         </li>
-
                         <li className="nav-item topbar-user dropdown hidden-caret">
+
                             <a
                                 className="dropdown-toggle profile-pic"
                                 data-bs-toggle="dropdown"
@@ -306,15 +335,15 @@ const AdNavbarHeader = (props) => {
                             >
                                 <div className="avatar-sm">
                                     <img
-                                        src="/assets/img/profile.jpg"
-                                        alt="..."
+                                        src={user?.image ? user?.image : ""}
+                                        alt="avatar"
                                         className="avatar-img rounded-circle"
                                     />
                                 </div>
                                 <span className="profile-username">
-                      <span className="op-7">Hi,</span>
-                      <span className="fw-bold">Hizrian</span>
-                    </span>
+                                  <span className="op-7">Hi, </span>
+                                  <span className="fw-bold">{user?.username ? user?.username : "User"}</span>
+                                </span>
                             </a>
                             <ul className="dropdown-menu dropdown-user animated fadeIn">
                                 <div className="dropdown-user-scroll scrollbar-outer">
@@ -322,14 +351,14 @@ const AdNavbarHeader = (props) => {
                                         <div className="user-box">
                                             <div className="avatar-lg">
                                                 <img
-                                                    src="/assets/img/profile.jpg"
+                                                    src={user?.image ? user?.image : ""}
                                                     alt="image profile"
                                                     className="avatar-img rounded"
                                                 />
                                             </div>
                                             <div className="u-text">
-                                                <h4>Hizrian</h4>
-                                                <p className="text-muted">hello@example.com</p>
+                                                <h4>{user?.username ? user?.username : "User"}</h4>
+                                                <p className="text-muted">{user?.email ? user?.email : "Email"}</p>
                                                 <a
                                                     href="profile.html"
                                                     className="btn btn-xs btn-secondary btn-sm"
@@ -346,7 +375,7 @@ const AdNavbarHeader = (props) => {
                                         <div className="dropdown-divider"></div>
                                         <a className="dropdown-item" href="#">Account Setting</a>
                                         <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Logout</a>
+                                        <button type="button" className="dropdown-item" onClick={() => handleLogout()}>Logout</button>
                                     </li>
                                 </div>
                             </ul>
