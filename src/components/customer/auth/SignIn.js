@@ -70,11 +70,11 @@ const SignIn = () => {
             try {
                 let res = await signInCustomer(email, password);
                 if (res && res.EC === 0) {
-                    // let groupWithRoles = res.DT.groupWithRoles;
                     let email = res.DT.email;
                     // let username = res.DT.username;
                     let access_token = res.DT.access_token;
                     let image = `data:image/jpeg;base64,${res.DT.image}`;
+                    let typeLogin = res.DT.typeLogin;
 
                     let data = {
                         isAuthenticated: true,
@@ -82,7 +82,8 @@ const SignIn = () => {
                         // groupWithRoles,
                         email,
                         // username,
-                        image
+                        image,
+                        typeLogin
                     }
 
                     dispatch(loginCustomer(data));
@@ -112,6 +113,10 @@ const SignIn = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    const handleSignInGoogle = () => {
+        window.open(`http://localhost:8080/api/v1/auth/google`, '_self');
+    }
 
     useEffect(() => {
         if (customer && customer.isAuthenticated) {
@@ -165,7 +170,7 @@ const SignIn = () => {
                         </div>
 
                         <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
-                            <button className="custom-button" type="button">
+                            <button className="custom-button" type="button" onClick={() => handleSignInGoogle()}>
                                 <img src="/assets/img/kaiadmin/icons8-google.svg" className="social-icon"/>
                                 <span style={{color: "#007bff"}}>Đăng nhập với Google</span>
                             </button>

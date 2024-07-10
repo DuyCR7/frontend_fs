@@ -5,6 +5,7 @@ const initialState = {
     email: '',
     image: '',
     access_token: '',
+    typeLogin: '',
 }
 
 export const customerSlice = createSlice({
@@ -12,18 +13,20 @@ export const customerSlice = createSlice({
     initialState,
     reducers: {
         loginCustomer: (state, action) => {
-            const { isAuthenticated, email, image, access_token } = action.payload;
+            const { isAuthenticated, email, image, access_token, typeLogin } = action.payload;
 
             state.isAuthenticated = isAuthenticated;
             state.email = email;
             state.image = image;
             state.access_token = access_token;
+            state.typeLogin = typeLogin;
         },
         resetCustomer: (state) => {
             state.isAuthenticated = false;
             state.email = "";
             state.image = "";
             state.access_token = "";
+            state.typeLogin = "";
         }
     },
 })

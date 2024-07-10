@@ -44,6 +44,7 @@ const HomePage = (props) => {
                 <>
                 <h1>Welcome to the {customer.email}</h1>
                 <p>This is the default page for the website.</p>
+                    <img src={customer.image} alt={"image"} width={"100px"} height={"100px"}/>
                 <button type="button" onClick={() => handleLogout()}>Logout</button>
                     <button type="button" onClick={() => handleTest()}>Test</button>
                 </>

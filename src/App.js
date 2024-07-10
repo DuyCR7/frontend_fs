@@ -6,6 +6,7 @@ import AdSignIn from "./components/admin/auth/AdSignIn";
 import SignIn from "./components/customer/auth/SignIn";
 import SignUp from "./components/customer/auth/SignUp";
 import { ToastContainer } from 'react-toastify';
+import LoginSuccess from "./components/customer/auth/LoginSuccess";
 
 const App = () => {
     return (
@@ -20,6 +21,7 @@ const App = () => {
                 <Route path="/" element={<HomePage />}/>
                 <Route path="/sign-in" element={<SignIn />}/>
                 <Route path="/sign-up" element={<SignUp />}/>
+                <Route path="/sign-in-success/:userId/:tokenLoginGoogle" element={<LoginSuccess />}/>
 
                 {/*Not found*/}
                 <Route path="*" element={<h1 className="container mt-3 text-center">404 Not Found</h1>}/>

@@ -23,9 +23,17 @@ const testApi = () => {
     return axios.get('/api/v1/test');
 }
 
+const signInGoogleSuccess = (id, tokenLoginGoogle) => {
+    return axios.post("/api/v1/sign-in-success", {
+        id: id,
+        tokenLoginGoogle: tokenLoginGoogle
+    });
+}
+
 export {
     signUpCustomer,
     signInCustomer,
     logoutCustomer,
     testApi,
+    signInGoogleSuccess
 }
