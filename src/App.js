@@ -6,9 +6,10 @@ import AdSignIn from "./components/admin/auth/AdSignIn";
 import SignIn from "./components/customer/auth/SignIn";
 import SignUp from "./components/customer/auth/SignUp";
 import { ToastContainer } from 'react-toastify';
-import LoginSuccess from "./components/customer/auth/LoginSuccess";
+import GoogleLoginSuccess from "./components/customer/auth/GoogleLoginSuccess";
 import ForgotPassword from "./components/customer/auth/ForgotPassword";
 import EmailVerify from "./components/customer/auth/EmailVerify";
+import PasswordReset from "./components/customer/auth/PasswordReset";
 
 const App = () => {
     return (
@@ -24,8 +25,9 @@ const App = () => {
                 <Route path="/sign-in" element={<SignIn />}/>
                 <Route path="/sign-up" element={<SignUp />}/>
                 <Route path="/cus/:id/verify/:token" element={<EmailVerify />}/>
-                <Route path="/sign-in-success/:userId/:tokenLoginGoogle" element={<LoginSuccess />}/>
+                <Route path="/sign-in-success/:userId/:tokenLoginGoogle" element={<GoogleLoginSuccess />}/>
                 <Route path="/forgot-password" element={<ForgotPassword />}/>
+                <Route path="/password-reset/:id/:token" element={<PasswordReset />}/>
 
                 {/*Not found*/}
                 <Route path="*" element={<h1 className="container mt-3 text-center">404 Not Found</h1>}/>

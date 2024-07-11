@@ -152,12 +152,12 @@ const AdSignIn = () => {
                                     </div>
                                 </Form.Group>
 
-                                <div className="text-end mt-3">
-                                    <a href="#" style={{color: "#007bff"}}>Quên mật khẩu?</a>
-                                </div>
+                                {/*<div className="text-end mt-3">*/}
+                                {/*    <a href="#" style={{color: "#007bff"}}>Quên mật khẩu?</a>*/}
+                                {/*</div>*/}
 
                                 <Spin spinning={loading}>
-                                    <Button type="button" variant="primary" className="w-100 mt-3"
+                                    <Button type="button" variant="primary" className="w-100 mt-4"
                                             onClick={() => handelSignIn()}
                                             disabled={loading}>
                                         Đăng nhập

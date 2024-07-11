@@ -97,11 +97,10 @@ const SignUp = () => {
                 // console.log("Check res: ", res);
 
                 if(res.EC === 0){
-                    toast.success(res.EM);
                     setMsg(res.EM);
                     // navigate('/sign-in');
                 } else {
-                    toast.error(res.EM);
+                    setMsg(res.EM);
                 }
             } catch (error) {
                 console.log("Error: ", error);

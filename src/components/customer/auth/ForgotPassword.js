@@ -5,29 +5,29 @@ import {Spin} from "antd";
 import {useState} from "react";
 import {toast} from "react-toastify";
 import {validateEmail} from "../../../utils/validateEmail";
+import {resetPasswordSendLink} from "../../../services/customer/authService";
+import Alert from "react-bootstrap/Alert";
 
 const ForgotPassword = (props) => {
 
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
-    const defaultValidInput = {
-        isEmail: true,
-        isPassword: true,
-        isCfPassword: true
-    }
+    const [error, setError] = useState("");
+    const [msg, setMsg] = useState("");
 
-    const [objValidInput, setObjValidInput] = useState(defaultValidInput);
+
+    const [isEmail, setIsEmail] = useState(true);
 
     const isValidInputs = () => {
-        setObjValidInput(defaultValidInput);
+        setIsEmail(true);
         if(!email){
-            setObjValidInput({...defaultValidInput, isEmail: false});
+            setIsEmail(false);
             toast.error("Vui lòng nhập email!")
             return false;
         }
 
         if (!validateEmail(email)){
-            setObjValidInput({...defaultValidInput, isEmail: false});
+            setIsEmail(false);
             toast.error("Vui lòng nhập đúng định dạng email!");
             return false;
         }
@@ -37,19 +37,40 @@ const ForgotPassword = (props) => {
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
-        if (!objValidInput.isEmail) {
-            setObjValidInput({ ...objValidInput, isEmail: true });
+        if (!isEmail) {
+            setIsEmail(true);
         }
     };
 
     const handlePressEnter = (e) => {
         if (e.key === "Enter") {
-            handleResetPassword();
+            e.preventDefault();
+            handleResetPasswordSendLink();
         }
     }
 
-    const handleResetPassword = async () => {
-
+    const handleResetPasswordSendLink = async () => {
+        let check = isValidInputs();
+        if(check) {
+            setLoading(true);
+            try {
+                let res = await resetPasswordSendLink(email);
+                if (res && res.EC === 0) {
+                    setMsg(res.EM);
+                    setError("");
+                }
+                if (res && res.EC !== 0) {
+                    setError(res.EM);
+                    setMsg("");
+                }
+            } catch (error) {
+                setError("");
+                setMsg("");
+                toast.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
     }
 
     return (
@@ -68,13 +89,15 @@ const ForgotPassword = (props) => {
                                     <Form.Control type="email" placeholder="Email"
                                                   value={email}
                                                   onChange={(e) => handleEmailChange(e)}
-                                                  className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
+                                                  className={isEmail ? "form-control" : "form-control is-invalid"}
                                                   onKeyPress={(e) => handlePressEnter(e)}/>
                                 </Form.Group>
 
+                                {error && <Alert variant="danger" className="mt-3" style={{color: "red"}}>{error}</Alert>}
+                                {msg && <Alert variant="success" className="mt-3" style={{color: "green"}}>{msg}</Alert>}
                                 <Spin spinning={loading}>
                                     <Button variant="primary" className="w-100 mt-3 mb-3" type="button"
-                                            onClick={() => handleResetPassword()}
+                                            onClick={() => handleResetPasswordSendLink()}
                                             disabled={loading}>
                                         Gửi link đặt lại mật khẩu
                                     </Button>
@@ -87,7 +110,7 @@ const ForgotPassword = (props) => {
                                 </div>
 
                                 <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
-                                    <button className="custom-button" type="button">
+                                    <button className="custom-button">
                                         <Link to="/sign-in">Quay lại đăng nhập</Link>
                                     </button>
                                 </div>

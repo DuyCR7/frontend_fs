@@ -34,11 +34,26 @@ const verifyEmail = (cusId, token) => {
     return axios.get(`/api/v1/cus/${cusId}/verify/${token}`);
 }
 
+const resetPasswordSendLink = (email) => {
+    return axios.post("/api/v1/password-reset-link", {email: email});
+}
+
+const resetPasswordVerifyLink = (id, token) => {
+    return axios.get(`/api/v1/password-reset/${id}/${token}`);
+}
+
+const resetPassword = (password, id, token) => {
+    return axios.post(`/api/v1/password-reset/${id}/${token}`, {password: password});
+}
+
 export {
     signUpCustomer,
     signInCustomer,
     logoutCustomer,
     testApi,
     signInGoogleSuccess,
-    verifyEmail
+    verifyEmail,
+    resetPasswordSendLink,
+    resetPasswordVerifyLink,
+    resetPassword
 }

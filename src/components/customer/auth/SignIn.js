@@ -95,15 +95,16 @@ const SignIn = () => {
                     localStorage.setItem("cus_jwt", access_token);
                     // loginContext(data);
                     toast.success(res.EM);
+                    setMsg("");
                     navigate('/');
 
                 }
                 if (res && res.EC === 2) {
-                    toast.success(res.EM)
                     setMsg(res.EM)
                 }
                 if (res && res.EC !== 0 && res.EC !== 2) {
                     toast.error(res.EM);
+                    setMsg("");
                 }
             } catch (error) {
                 console.log("Error: ", error);

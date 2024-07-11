@@ -5,7 +5,7 @@ import {loginCustomer} from "../../../redux/customer/slices/customerSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 
-const LoginSuccess = (props) => {
+const GoogleLoginSuccess = (props) => {
 
     const navigate = useNavigate();
     const customer = useSelector((state) => state.customer);
@@ -46,6 +46,7 @@ const LoginSuccess = (props) => {
             toast.success(res.EM);
             navigate('/');
         } else {
+            toast.error(res.EM);
             navigate('/sign-in')
         }
     }
@@ -56,4 +57,4 @@ const LoginSuccess = (props) => {
     )
 }
 
-export default LoginSuccess;
+export default GoogleLoginSuccess;
