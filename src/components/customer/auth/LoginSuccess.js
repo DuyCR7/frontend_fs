@@ -3,6 +3,7 @@ import {signInGoogleSuccess} from "../../../services/customer/authService";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import {loginCustomer} from "../../../redux/customer/slices/customerSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {toast} from "react-toastify";
 
 const LoginSuccess = (props) => {
 
@@ -21,8 +22,13 @@ const LoginSuccess = (props) => {
             let email = res.DT.email;
             // let username = res.DT.username;
             let access_token = res.DT.access_token;
-            let image = res.DT.image;
             let typeLogin = res.DT.typeLogin;
+            let image = "";
+            if (res.DT.image.includes("https")) {
+                image = res.DT.image;
+            } else {
+                image = `data:image/jpeg;base64,${res.DT.image}`;
+            }
 
             let data = {
                 isAuthenticated: true,
@@ -37,6 +43,7 @@ const LoginSuccess = (props) => {
             dispatch(loginCustomer(data));
 
             localStorage.setItem("cus_jwt", access_token);
+            toast.success(res.EM);
             navigate('/');
         } else {
             navigate('/sign-in')

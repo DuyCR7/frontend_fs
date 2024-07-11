@@ -112,7 +112,8 @@ instance.interceptors.response.use(function (response) {
         // authentication (token related issues)
         case 401: {
             if(window.location.pathname !== '/'
-                && window.location.pathname !== '/sign-in') {
+                && window.location.pathname !== '/sign-in'
+            && window.location.pathname!== '/sign-up') {
                 window.location.href = "/sign-in";
             }
             nProgress.done();

@@ -1,7 +1,8 @@
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaEye, FaEyeSlash} from 'react-icons/fa';
 import {useEffect, useState} from 'react';
 import "./AdSignIn.scss";
+import { Spin } from 'antd';
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {signInUser} from "../../../services/admin/authService";
@@ -14,6 +15,7 @@ const AdSignIn = () => {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -66,7 +68,7 @@ const AdSignIn = () => {
     const handelSignIn = async () => {
         let check = isValidInputs();
         if(check) {
-            // setLoading(true);
+            setLoading(true);
             try {
                 let res = await signInUser(email, password);
                 if (res && res.EC === 0) {
@@ -88,6 +90,7 @@ const AdSignIn = () => {
                     dispatch(loginUser(data));
 
                     localStorage.setItem("jwt", access_token);
+                    toast.success(res.EM);
                     // loginContext(data);
                     navigate('/admin');
 
@@ -98,7 +101,7 @@ const AdSignIn = () => {
             } catch (error) {
                 console.log("Error: ", error);
             } finally {
-
+                setLoading(false);
             }
         }
     }
@@ -123,40 +126,47 @@ const AdSignIn = () => {
         <Container fluid className="my-5">
             <Row className="justify-content-center">
                 <Col xs={12} sm={8} md={6} lg={4}>
-                    <h2 className="text-center mb-4">Đăng nhập</h2>
+                    <Card className="p-4">
+                        <Card.Body>
+                            <h2 className="text-center mb-3">Đăng nhập</h2>
 
-                    <Form className="mt-3">
-                        <Form.Group>
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" placeholder="Email"
-                                          value={email}
-                                          onChange={(e) => handleEmailChange(e)}
-                                          className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
-                                          onKeyPress={(e) => handlePressEnter(e)}/>
-                        </Form.Group>
+                            <Form className="mt-3">
+                                <Form.Group>
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control type="email" placeholder="Email"
+                                                  value={email}
+                                                  onChange={(e) => handleEmailChange(e)}
+                                                  className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
+                                                  onKeyPress={(e) => handlePressEnter(e)}/>
+                                </Form.Group>
 
-                        <Form.Group className="password-input mt-3">
-                            <Form.Label>Mật khẩu</Form.Label>
-                            <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Mật khẩu"
-                                          value={password}
-                                          onChange={(e) => handlePasswordChange(e)}
-                                          className={objValidInput.isPassword ? "form-control" : "form-control is-invalid"}
-                                          onKeyPress={(e) => handlePressEnter(e)}/>
-                            <div className="password-toggle" onClick={togglePasswordVisibility}>
-                                {objValidInput.isPassword && (showPassword ? <FaEyeSlash/> : <FaEye/>)}
-                            </div>
-                        </Form.Group>
+                                <Form.Group className="password-input mt-3">
+                                    <Form.Label>Mật khẩu</Form.Label>
+                                    <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Mật khẩu"
+                                                  value={password}
+                                                  onChange={(e) => handlePasswordChange(e)}
+                                                  className={objValidInput.isPassword ? "form-control" : "form-control is-invalid"}
+                                                  onKeyPress={(e) => handlePressEnter(e)}/>
+                                    <div className="password-toggle" onClick={togglePasswordVisibility}>
+                                        {objValidInput.isPassword && (showPassword ? <FaEyeSlash/> : <FaEye/>)}
+                                    </div>
+                                </Form.Group>
 
-                        <div className="text-end mt-3">
-                            <a href="#" style={{color: "#007bff"}}>Quên mật khẩu?</a>
-                        </div>
+                                <div className="text-end mt-3">
+                                    <a href="#" style={{color: "#007bff"}}>Quên mật khẩu?</a>
+                                </div>
 
-                        <Button type="button" variant="primary" className="w-100 mt-3"
-                        onClick={() => handelSignIn()}>
-                            Đăng nhập
-                        </Button>
+                                <Spin spinning={loading}>
+                                    <Button type="button" variant="primary" className="w-100 mt-3"
+                                            onClick={() => handelSignIn()}
+                                            disabled={loading}>
+                                        Đăng nhập
+                                    </Button>
+                                </Spin>
 
-                    </Form>
+                            </Form>
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
         </Container>

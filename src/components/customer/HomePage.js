@@ -29,9 +29,9 @@ const HomePage = (props) => {
         }
     }
 
-    // useEffect(() => {
-    //     handleTest();
-    // }, []);
+    useEffect(() => {
+        handleTest();
+    }, []);
 
     const handleTest = async () => {
         let res = await testApi();

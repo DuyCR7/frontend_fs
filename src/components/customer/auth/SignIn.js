@@ -1,19 +1,23 @@
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaEye, FaEyeSlash} from 'react-icons/fa';
 import {useEffect, useState} from 'react';
 import "./SignIn.scss";
 import {Link, useNavigate} from "react-router-dom";
+import { Spin } from 'antd';
 import {toast} from "react-toastify";
 import {validateEmail} from "../../../utils/validateEmail";
 import {signInCustomer} from "../../../services/customer/authService";
 import {useDispatch, useSelector} from "react-redux";
 import {loginCustomer} from "../../../redux/customer/slices/customerSlice";
+import Alert from "react-bootstrap/Alert";
 
 const SignIn = () => {
 
     const customer = useSelector((state) => state.customer);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [msg, setMsg] = useState("");
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -66,7 +70,7 @@ const SignIn = () => {
     const handelSignIn = async () => {
         let check = isValidInputs();
         if(check) {
-            // setLoading(true);
+            setLoading(true);
             try {
                 let res = await signInCustomer(email, password);
                 if (res && res.EC === 0) {
@@ -90,16 +94,21 @@ const SignIn = () => {
 
                     localStorage.setItem("cus_jwt", access_token);
                     // loginContext(data);
+                    toast.success(res.EM);
                     navigate('/');
 
                 }
-                if (res && res.EC !== 0) {
-                    toast.error(res.EM)
+                if (res && res.EC === 2) {
+                    toast.success(res.EM)
+                    setMsg(res.EM)
+                }
+                if (res && res.EC !== 0 && res.EC !== 2) {
+                    toast.error(res.EM);
                 }
             } catch (error) {
                 console.log("Error: ", error);
             } finally {
-
+                setLoading(false);
             }
         }
     }
@@ -128,58 +137,68 @@ const SignIn = () => {
         <Container fluid className="my-5">
             <Row className="justify-content-center">
                 <Col xs={12} sm={8} md={6} lg={4}>
-                    <h2 className="text-center mb-4">Đăng nhập</h2>
-                    <div className="text-center mt-3">
-                        <span>Bạn chưa có tài khoản?</span><Link to="/sign-up" style={{color: "#007bff"}}> Tạo tài khoản</Link>
-                    </div>
-                    <Form className="mt-3">
-                        <Form.Group>
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" placeholder="Email"
-                                          value={email}
-                                          onChange={(e) => handleEmailChange(e)}
-                                          className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
-                                          onKeyPress={(e) => handlePressEnter(e)}/>
-                        </Form.Group>
-
-                        <Form.Group className="password-input mt-3">
-                            <Form.Label>Mật khẩu</Form.Label>
-                            <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Mật khẩu"
-                                          value={password}
-                                          onChange={(e) => handlePasswordChange(e)}
-                                          className={objValidInput.isPassword ? "form-control" : "form-control is-invalid"}
-                                          onKeyPress={(e) => handlePressEnter(e)}/>
-                            <div className="password-toggle" onClick={togglePasswordVisibility}>
-                                {objValidInput.isPassword && (showPassword ? <FaEyeSlash/> : <FaEye/>)}
+                    <Card className="p-4">
+                        <Card.Body>
+                            <h2 className="text-center mb-3">Đăng nhập</h2>
+                            <div className="text-center mt-3">
+                                <span>Bạn chưa có tài khoản?</span><Link to="/sign-up" style={{color: "#007bff"}}> Tạo
+                                tài khoản</Link>
                             </div>
-                        </Form.Group>
+                            <Form className="mt-3">
+                                <Form.Group>
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control type="email" placeholder="Email"
+                                                  value={email}
+                                                  onChange={(e) => handleEmailChange(e)}
+                                                  className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
+                                                  onKeyPress={(e) => handlePressEnter(e)}/>
+                                </Form.Group>
 
-                        <Button variant="primary" className="w-100 mt-3"
-                        onClick={() => handelSignIn()}>
-                            Đăng nhập
-                        </Button>
+                                <Form.Group className="password-input mt-3">
+                                    <Form.Label>Mật khẩu</Form.Label>
+                                    <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Mật khẩu"
+                                                  value={password}
+                                                  onChange={(e) => handlePasswordChange(e)}
+                                                  className={objValidInput.isPassword ? "form-control" : "form-control is-invalid"}
+                                                  onKeyPress={(e) => handlePressEnter(e)}/>
+                                    <div className="password-toggle" onClick={togglePasswordVisibility}>
+                                        {objValidInput.isPassword && (showPassword ? <FaEyeSlash/> : <FaEye/>)}
+                                    </div>
+                                </Form.Group>
 
-                        <div className="text-center mt-3">
-                            <a href="#" style={{color: "#007bff"}}>Quên mật khẩu?</a>
-                        </div>
+                                {msg && <Alert variant="success" className="mt-3" style={{color: "green"}}>{msg}</Alert>}
+                                <Spin spinning={loading}>
+                                    <Button type="button" variant="primary" className="w-100 mt-3"
+                                            onClick={() => handelSignIn()}
+                                            disabled={loading}>
+                                        Đăng nhập
+                                    </Button>
+                                </Spin>
 
-                        <hr />
+                                <div className="text-center mt-3">
+                                    <Link to="/forgot-password" style={{color: "#007bff"}}>Quên mật khẩu?</Link>
+                                </div>
 
-                        <div className="text-center mt-3">
-                            Hoặc đăng nhập bằng:
-                        </div>
+                                <hr/>
 
-                        <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
-                            <button className="custom-button" type="button" onClick={() => handleSignInGoogle()}>
-                                <img src="/assets/img/kaiadmin/icons8-google.svg" className="social-icon"/>
-                                <span style={{color: "#007bff"}}>Đăng nhập với Google</span>
-                            </button>
-                            <button className="custom-button" type="button">
-                                <img src="/assets/img/kaiadmin/icons8-facebook.svg" className="social-icon"/>
-                                <span style={{color: "#007bff"}}>Đăng nhập với Facebook</span>
-                            </button>
-                        </div>
-                    </Form>
+                                <div className="text-center mt-3">
+                                    Hoặc đăng nhập bằng:
+                                </div>
+
+                                <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
+                                    <button className="custom-button" type="button"
+                                            onClick={() => handleSignInGoogle()}>
+                                        <img src="/assets/img/kaiadmin/icons8-google.svg" className="social-icon"/>
+                                        <span style={{color: "#007bff"}}>Đăng nhập với Google</span>
+                                    </button>
+                                    {/*<button className="custom-button" type="button">*/}
+                                    {/*    <img src="/assets/img/kaiadmin/icons8-facebook.svg" className="social-icon"/>*/}
+                                    {/*    <span style={{color: "#007bff"}}>Đăng nhập với Facebook</span>*/}
+                                    {/*</button>*/}
+                                </div>
+                            </Form>
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
         </Container>

@@ -2,15 +2,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {logoutUser} from "../../services/admin/authService";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import { Spin } from 'antd';
 import {resetUser} from "../../redux/admin/slices/userSlice";
+import {useState} from "react";
 
 const AdNavbarHeader = (props) => {
 
+    const [loading, setLoading] = useState(false);
     const user = useSelector((state) => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
+        setLoading(true);
         try {
             let data = await logoutUser(); // clear cookie
             // logoutContext(); // clear user in context
@@ -25,6 +29,8 @@ const AdNavbarHeader = (props) => {
             }
         } catch (error) {
             console.log("Error: ", error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -375,7 +381,15 @@ const AdNavbarHeader = (props) => {
                                         <div className="dropdown-divider"></div>
                                         <a className="dropdown-item" href="#">Account Setting</a>
                                         <div className="dropdown-divider"></div>
-                                        <button type="button" className="dropdown-item" onClick={() => handleLogout()}>Logout</button>
+                                        <Spin spinning={loading}>
+                                            <button
+                                                type="button"
+                                                className="dropdown-item"
+                                                onClick={() => handleLogout()}
+                                                disabled={loading}
+                                            >Logout
+                                            </button>
+                                        </Spin>
                                     </li>
                                 </div>
                             </ul>

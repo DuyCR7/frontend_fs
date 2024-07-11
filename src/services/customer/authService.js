@@ -30,10 +30,15 @@ const signInGoogleSuccess = (id, tokenLoginGoogle) => {
     });
 }
 
+const verifyEmail = (cusId, token) => {
+    return axios.get(`/api/v1/cus/${cusId}/verify/${token}`);
+}
+
 export {
     signUpCustomer,
     signInCustomer,
     logoutCustomer,
     testApi,
-    signInGoogleSuccess
+    signInGoogleSuccess,
+    verifyEmail
 }
