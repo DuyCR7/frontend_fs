@@ -45,7 +45,9 @@ const ForgotPassword = (props) => {
     const handlePressEnter = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            handleResetPasswordSendLink();
+            if (!loading){
+                handleResetPasswordSendLink();
+            }
         }
     }
 

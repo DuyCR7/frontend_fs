@@ -108,7 +108,9 @@ const AdSignIn = () => {
 
     const handlePressEnter = (e) => {
         if (e.key === "Enter") {
-            handelSignIn();
+            if (!loading){
+                handelSignIn();
+            }
         }
     }
 

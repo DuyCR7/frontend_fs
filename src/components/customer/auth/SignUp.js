@@ -18,6 +18,7 @@ const SignUp = () => {
     const [cfPassword, setCfPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
+    const [error, setError] = useState("");
 
     const [showPassword, setShowPassword] = useState(false);
     const [showCfPassword, setShowCfPassword] = useState(false);
@@ -98,9 +99,11 @@ const SignUp = () => {
 
                 if(res.EC === 0){
                     setMsg(res.EM);
+                    setError("");
                     // navigate('/sign-in');
                 } else {
-                    setMsg(res.EM);
+                    setMsg("");
+                    setError(res.EM);
                 }
             } catch (error) {
                 console.log("Error: ", error);
@@ -112,7 +115,9 @@ const SignUp = () => {
 
     const handlePressEnter = (e) => {
         if (e.key === "Enter") {
-            handelSignUp();
+            if (!loading) {
+                handelSignUp();
+            }
         }
     }
 
@@ -169,6 +174,7 @@ const SignUp = () => {
                                 </div>
 
                                 {msg && <Alert variant="success" className="mt-3" style={{color: "green"}}>{msg}</Alert>}
+                                {error && <Alert variant="danger" className="mt-3" style={{color: "red"}}>{error}</Alert>}
                                 <Spin spinning={loading}>
                                     <Button variant="primary" className="w-100 mt-3" type="button"
                                             onClick={() => handelSignUp()}

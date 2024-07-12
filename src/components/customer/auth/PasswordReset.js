@@ -19,7 +19,7 @@ const PasswordReset = (props) => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [loadingPage, setLoadingPage] = useState(false);
+    const [loadingPage, setLoadingPage] = useState(true);
     const [error, setError] = useState("");
     const [msg, setMsg] = useState("");
     const defaultValidInput = {
@@ -49,7 +49,9 @@ const PasswordReset = (props) => {
     const handlePressEnter = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            handleResetPassword();
+            if (!loading) {
+                handleResetPassword();
+            }
         }
     }
 
@@ -62,7 +64,6 @@ const PasswordReset = (props) => {
     }, [params]);
 
     const handleResetPasswordVerify = async () => {
-        setLoadingPage(true);
         try {
             let res = await resetPasswordVerifyLink(params.id, params.token);
             if (res && res.EC === 0){
