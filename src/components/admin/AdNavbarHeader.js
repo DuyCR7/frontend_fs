@@ -114,7 +114,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="/assets/img/jm_denis.jpg"
+                                                        src="/admin/assets/img/jm_denis.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -127,7 +127,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="/assets/img/chadengle.jpg"
+                                                        src="/admin/assets/img/chadengle.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -140,7 +140,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="/assets/img/mlane.jpg"
+                                                        src="/admin/assets/img/mlane.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -155,7 +155,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="/assets/img/talha.jpg"
+                                                        src="/admin/assets/img/talha.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>
@@ -223,7 +223,7 @@ const AdNavbarHeader = (props) => {
                                             <a href="#">
                                                 <div className="notif-img">
                                                     <img
-                                                        src="/assets/img/profile2.jpg"
+                                                        src="/admin/assets/img/profile2.jpg"
                                                         alt="Img Profile"
                                                     />
                                                 </div>

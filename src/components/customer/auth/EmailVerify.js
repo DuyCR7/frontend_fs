@@ -45,7 +45,7 @@ const EmailVerify = (props) => {
                 validUrl ?
                     <div className="container">
                     <div className="d-flex flex-column justify-content-center align-items-center vh-100">
-                            <img src="/assets/img/kaiadmin/icons8-success.svg" alt="success" className="mb-3"/>
+                            <img src="/admin/assets/img/kaiadmin/icons8-success.svg" alt="success" className="mb-3"/>
                             <h1 className="text-center mb-3">Email đã được xác nhận thành công!</h1>
                             <Link to="/sign-in">
                                 <button className="btn btn-primary">Đăng nhập</button>

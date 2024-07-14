@@ -6,7 +6,7 @@ const AdLogoHeader = (props) => {
                 <div className="logo-header" data-background-color="dark">
                     <a href="index.html" className="logo">
                         <img
-                            src="/assets/img/kaiadmin/logo.png"
+                            src="/admin/assets/img/kaiadmin/logo.png"
                             alt="navbar brand"
                             className="navbar-brand"
                             height="20"

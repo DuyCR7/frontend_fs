@@ -10,7 +10,7 @@ const AdSidebar = (props) => {
                     <div className="logo-header" data-background-color="dark">
                         <Link to={"/admin"} className="logo">
                             <img
-                                src="/assets/img/kaiadmin/logo.png"
+                                src="/admin/assets/img/kaiadmin/logo.png"
                                 alt="navbar brand"
                                 className="navbar-brand"
                                 height={60}

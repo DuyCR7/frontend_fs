@@ -191,7 +191,7 @@ const SignIn = () => {
                                 <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
                                     <button className="custom-button" type="button"
                                             onClick={() => handleSignInGoogle()}>
-                                        <img src="/assets/img/kaiadmin/icons8-google.svg" className="social-icon"/>
+                                        <img src="/admin/assets/img/kaiadmin/icons8-google.svg" className="social-icon"/>
                                         <span style={{color: "#007bff"}}>Đăng nhập với Google</span>
                                     </button>
                                     {/*<button className="custom-button" type="button">*/}
