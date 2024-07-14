@@ -1,5 +1,5 @@
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import {Spin} from "antd";
 import {useState} from "react";
@@ -10,6 +10,7 @@ import Alert from "react-bootstrap/Alert";
 
 const ForgotPassword = (props) => {
 
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -112,8 +113,8 @@ const ForgotPassword = (props) => {
                                 </div>
 
                                 <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
-                                    <button className="custom-button">
-                                        <Link to="/sign-in">Quay lại đăng nhập</Link>
+                                    <button className="custom-button" type="button" onClick={() => navigate('/sign-in') }>
+                                        <span style={{color: "#007bff"}}>Quay lại đăng nhập</span>
                                     </button>
                                 </div>
 
