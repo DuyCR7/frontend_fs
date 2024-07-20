@@ -1,27 +1,52 @@
 // import './App.scss';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdHomePage from "./components/admin/AdHomePage";
-import HomePage from "./components/customer/HomePage";
-import AdSignIn from "./components/admin/auth/AdSignIn";
-import SignIn from "./components/customer/auth/SignIn";
-import SignUp from "./components/customer/auth/SignUp";
+import AdApp from "./pages/admin/app/AdApp";
+import AdSignIn from "./pages/admin/auth/AdSignIn";
+import SignIn from "./pages/customer/auth/SignIn";
+import SignUp from "./pages/customer/auth/SignUp";
 import { ToastContainer } from 'react-toastify';
-import GoogleLoginSuccess from "./components/customer/auth/GoogleLoginSuccess";
-import ForgotPassword from "./components/customer/auth/ForgotPassword";
-import EmailVerify from "./components/customer/auth/EmailVerify";
-import PasswordReset from "./components/customer/auth/PasswordReset";
+import GoogleLoginSuccess from "./pages/customer/auth/GoogleLoginSuccess";
+import ForgotPassword from "./pages/customer/auth/ForgotPassword";
+import EmailVerify from "./pages/customer/auth/EmailVerify";
+import PasswordReset from "./pages/customer/auth/PasswordReset";
+import CusApp from "./pages/customer/app/CusApp";
+import Home from "./pages/customer/home/Home";
+import Blog from "./pages/customer/blog/Blog";
+import SingleBlog from "./pages/customer/blog/SingleBlog";
+import Shop from "./pages/customer/shop/Shop";
+import SingleProduct from "./pages/customer/shop/SingleProduct";
+import CartPage from "./pages/customer/shop/CartPage";
+import About from "./pages/customer/about/About";
+import Contact from "./pages/customer/contact/Contact";
+import AdDashboard from "./pages/admin/dashboard/AdDashboard";
+import AdProduct from "./pages/admin/product/AdProduct";
+import ScrollToTop from "./ScrollToTop";
 
 const App = () => {
     return (
       <>
           <Router>
+            <ScrollToTop />
             <Routes>
                 {/* Admin routes */}
-                <Route path="/admin" element={<AdHomePage />} />
+                <Route path="/admin" element={<AdApp />}>
+                    <Route index element={<AdDashboard />}/>
+                    <Route path="products/list" element={<AdProduct />}/>
+                </Route>
                 <Route path="/admin/sign-in" element={<AdSignIn />}/>
 
                 {/*Customer routes*/}
-                <Route path="/" element={<HomePage />}/>
+                <Route path="/" element={<CusApp />}>
+                    <Route index element={<Home />}/>
+                    <Route path="blog" element={<Blog />} />
+                    <Route path="blog/:id" element={<SingleBlog />} />
+                    <Route path="shop" element={<Shop />} />
+                    <Route path="shop/:id" element={<SingleProduct />} />
+                    <Route path="cart-page" element={<CartPage />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="contact" element={<Contact />} />
+                </Route>
+
                 <Route path="/sign-in" element={<SignIn />}/>
                 <Route path="/sign-up" element={<SignUp />}/>
                 <Route path="/cus/:id/verify/:token" element={<EmailVerify />}/>
