@@ -93,15 +93,15 @@ const NavItems = () => {
                                             </a>
                                             <ul className="dropdown-menu dropdown-menu-end"
                                                 aria-labelledby="dropdownMenuLink">
-                                                <li><Link className="dropdown-item" to="/">Đơn Mua</Link></li>
+                                                <li><Link className="dropdown-item" to="/">Đơn mua</Link></li>
                                                 <li>
                                                     <div className="dropdown-divider"></div>
                                                 </li>
-                                                <li><Link className="dropdown-item" to="/">Profile</Link></li>
+                                                <li><Link className="dropdown-item" to="/">Thông tin</Link></li>
                                                 <li>
                                                     <div className="dropdown-divider"></div>
                                                 </li>
-                                                <li><button className="dropdown-item" onClick={() => handleLogout()}>Log out</button></li>
+                                                <li><button className="dropdown-item" style={{fontSize: "13px", fontWeight: "400", fontFamily: "Public San, sans-serif"}} onClick={() => handleLogout()}>Đăng xuất</button></li>
                                             </ul>
                                         </div>
                                     </>

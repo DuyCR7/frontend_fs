@@ -7,6 +7,8 @@ import Search from "./Search.js";
 import ShopCategory from "./ShopCategory.js";
 import PopularPost from "./PopularPost.js";
 import Tags from "./Tags.js";
+import ShopCollection from "./ShopCollection";
+import ShopSize from "./ShopSize";
 
 const showResults = "Showing 01 - 12 of 139 Results";
 
@@ -14,6 +16,7 @@ const Shop = () => {
 
     const [GridList, setGridList] = useState(true);
     const [products, setProducts] = useState(Data);
+    const [sortOption, setSortOption] = useState('default');
 
     // pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -33,19 +36,31 @@ const Shop = () => {
     const menuItems = [...new Set(Data.map((Val) => Val.category))];
 
     const filterItem = (curCategory) => {
+        let filteredProducts;
         if (curCategory === "All") {
-            setProducts(Data);
-            setSelectedCategory("All");
-            setCurrentPage(1);
-            return;
+            filteredProducts = Data;
+        } else {
+            filteredProducts = Data.filter((newVal) => newVal.category === curCategory);
         }
-        const newItem = Data.filter((newVal) => {
-            return newVal.category === curCategory;
-        })
 
         setCurrentPage(1);
         setSelectedCategory(curCategory);
-        setProducts(newItem);
+        handleSort(sortOption, filteredProducts);
+    }
+
+    const handleSort = (option, items = products) => {
+        setSortOption(option);
+        let sortedProducts = [...items];
+        if (option === 'price-asc') {
+            sortedProducts.sort((a, b) => a.price - b.price);
+        } else if (option === 'price-desc') {
+            sortedProducts.sort((a, b) => b.price - a.price);
+        } else if (option === 'name-asc') {
+            sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (option === 'name-desc') {
+            sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+        }
+        setProducts(sortedProducts);
     }
 
     return (
@@ -61,13 +76,26 @@ const Shop = () => {
                                 {/*layout and title here*/}
                                 <div className="shop-title d-flex flex-wrap justify-content-between">
                                     <p>{showResults}</p>
-                                    <div className={`product-view-mode ${GridList ? "gridActive" : "listActive"}`}>
-                                        <a className="grid" onClick={() => setGridList(!GridList)}>
-                                            <i className="icofont-ghost"></i>
-                                        </a>
-                                        <a className="list" onClick={() => setGridList(!GridList)}>
-                                            <i className="icofont-listine-dots"></i>
-                                        </a>
+                                    <div className="d-flex align-items-center">
+                                        <select
+                                            className="form-select me-5"
+                                            value={sortOption}
+                                            onChange={(e) => handleSort(e.target.value)}
+                                        >
+                                            <option value="default">Sort by</option>
+                                            <option value="price-asc">Price: Low to High</option>
+                                            <option value="price-desc">Price: High to Low</option>
+                                            <option value="name-asc">Name: A to Z</option>
+                                            <option value="name-desc">Name: Z to A</option>
+                                        </select>
+                                        <div className={`d-flex product-view-mode ${GridList ? "gridActive" : "listActive"}`}>
+                                            <a className="grid" onClick={() => setGridList(!GridList)}>
+                                                <i className="icofont-ghost"></i>
+                                            </a>
+                                            <a className="list" onClick={() => setGridList(!GridList)}>
+                                                <i className="icofont-listine-dots"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -85,10 +113,24 @@ const Shop = () => {
                             </article>
                         </div>
                         <div className="col-lg-4 col-12">
-                        {/*right side*/}
+                            {/*right side*/}
                             <aside>
                                 <Search products={products} GridList={GridList}/>
                                 <ShopCategory
+                                    filterItem={filterItem}
+                                    setItem={setProducts}
+                                    menuItems={menuItems}
+                                    selectedCategory={selectedCategory}
+                                    setProducts={setProducts}
+                                />
+                                <ShopCollection
+                                    filterItem={filterItem}
+                                    setItem={setProducts}
+                                    menuItems={menuItems}
+                                    selectedCategory={selectedCategory}
+                                    setProducts={setProducts}
+                                />
+                                <ShopSize
                                     filterItem={filterItem}
                                     setItem={setProducts}
                                     menuItems={menuItems}

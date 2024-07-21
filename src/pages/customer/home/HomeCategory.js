@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-const subTitle = "Choose Any Products";
-const title = "Buy Everything with Us";
-const btnText = "Get Started Now";
+const subTitle = "ĐẶC SẮC";
+const title = "BỘ SƯU TẬP";
+const btnText = "Mua ngay";
 
 const categoryList = [
     {
@@ -84,7 +84,7 @@ const HomeCategory = () => {
                     </div>
 
                     <div className="text-center mt-5">
-                        <Link to="/shop" className="lab-btn"><span>{btnText}</span></Link>
+                        <Link to="/shop" className="lab-btn">{btnText}</Link>
                     </div>
                 </div>
             </div>

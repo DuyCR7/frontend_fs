@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Rating from "../components/Rating.js";
 import {Link} from "react-router-dom";
 
-const title = "Our Products";
+const title = "Sản phẩm";
 
 const ProductData = [
     {
@@ -79,7 +79,7 @@ const ProductData = [
     },
 ];
 
-const CategoryShowCate = () => {
+const AllProducts = () => {
 
     const [items, setItems] = useState(ProductData);
 
@@ -118,40 +118,38 @@ const CategoryShowCate = () => {
                     </div>
                 </div>
 
-                {/*section body*/}
-                <div className="section-wrapper">
-                    <div className="row g-4 justify-content-center row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-1
-                    course-filter-group">
+                <div className={`shop-page`}>
+                    <div className={`shop-product-wrap row justify-content-center grid`}>
                         {
                             items.map((item, index) => {
                                 return (
-                                    <div key={item.id} className="col">
-                                        <div className="course-item style-4">
-                                            <div className="course-inner">
-                                                <div className="course-thumb">
-                                                    <img src={item.imgUrl} alt="" />
-                                                    <div className="course-category">
-                                                        <div className="course-cate">
-                                                            <a href="#">{item.cate}</a>
-                                                        </div>
-                                                        <div className="course-reiew">
-                                                            <Rating/>
-                                                        </div>
-                                                    </div>
+                                    <div key={index} className="col-lg-3 col-md-4 col-sm-6 col-12">
+                                        <div className="product-item">
+                                            {/*product images*/}
+                                            <div className="product-thumb">
+                                                <div className="pro-thumb">
+                                                    <img src={item.imgUrl} alt={item.imgUrl}/>
                                                 </div>
 
-                                                {/*content*/}
-                                                <div className="course-content">
-                                                    <Link to={`/shop/${item.id}`}><h6>{item.title}</h6></Link>
-                                                    <div className="course-footer">
-                                                        <div className="course-author">
-                                                            <Link to="/" className="ca-name">{item.brand}</Link>
-                                                        </div>
-                                                        <div className="course-price" style={{color: "#000000"}}>
-                                                            {item.price}
-                                                        </div>
-                                                    </div>
+                                                {/*product action links*/}
+                                                <div className="product-action-link">
+                                                    <Link to={`/shop/${item.id}`}><i className="icofont-eye"></i></Link>
+                                                    <a href="#">
+                                                        <i className="icofont-heart"></i>
+                                                    </a>
+                                                    <Link to="/cart-page"><i className="icofont-cart-alt"></i></Link>
                                                 </div>
+                                            </div>
+
+                                            {/*product content*/}
+                                            <div className="product-content">
+                                                <h5>
+                                                    <Link to={`/shop/${item.id}`}>{item.title}</Link>
+                                                </h5>
+                                                <p className="productRating">
+                                                    <Rating/>
+                                                </p>
+                                                <h6>{item.price}</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -165,4 +163,4 @@ const CategoryShowCate = () => {
     );
 };
 
-export default CategoryShowCate;
+export default AllProducts;
