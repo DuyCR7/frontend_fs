@@ -6,6 +6,7 @@ const Countdown = () => {
 
     const [backgroundImage, setBackgroundImage] = useState('/admin/assets/img/Countdown.png');
     const [backgroundHeight, setBackgroundHeight] = useState('300px');
+    const [isCountdownFinished, setIsCountdownFinished] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -29,7 +30,7 @@ const Countdown = () => {
     }, []);
 
     const calculateTimeLeft = () => {
-        const difference = +new Date('2024-07-30') - +new Date();
+        const difference = +new Date('2024-07-30 09:37:10') - +new Date();
         let timeLeft = {};
 
         if (difference > 0) {
@@ -49,6 +50,10 @@ const Countdown = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setTimeLeft(calculateTimeLeft());
+
+            if (Object.keys(timeLeft).length === 0) {
+                setIsCountdownFinished(true);
+            }
         }, 1000);
 
         return () => clearTimeout(timer);
@@ -60,16 +65,6 @@ const Countdown = () => {
         { label: 'MINUTES', value: timeLeft.minutes },
         { label: 'SECONDS', value: timeLeft.seconds }
     ]
-    //     .map((item, index) => (
-    //     <Col key={index} className="text-center d-flex flex-column align-items-center">
-    //         <div>
-    //             {item.value !== undefined ? item.value : '00'}
-    //         </div>
-    //         <div>
-    //             {item.label}
-    //         </div>
-    //     </Col>
-    // ));
 
     return (
         <Container
@@ -84,30 +79,42 @@ const Countdown = () => {
         >
             <div className="overlay"></div>
             <Row className="position-absolute w-100 text-light d-flex justify-content-center align-items-center">
-                <Col xs={12} lg={6} className="text-center">
-                    <div className="d-flex justify-content-center align-items-center">
-                        {timerComponents.map((item, index) => (
-                            <React.Fragment key={index}>
-                                <div className="text-center d-flex flex-column align-items-center mx-2">
-                                    <div style={{ fontSize: '3rem' }}>
-                                        {item.value !== undefined ? item.value : '00'}
-                                    </div>
-                                    <div style={{ fontSize: '2rem' }}>
-                                        {item.label}
-                                    </div>
-                                </div>
-                                {index < timerComponents.length - 1 && <span className="mx-2" style={{ fontSize: '2rem' }}>:</span>}
-                            </React.Fragment>
-                        ))}
+                {isCountdownFinished ? (
+                        <Col xs={12} className="text-center">
+                            <h2 style={{color: "white", fontSize: "3rem"}}>SHOP NOW</h2>
+                        </Col>
+                    ) : (
+                        <Col xs={12} lg={6} className="text-center order-lg-1 order-2">
+                            <div className="d-flex justify-content-center align-items-center flex-wrap">
+                                {timerComponents.map((item, index) => (
+                                    <React.Fragment key={index}>
+                                        <div className="text-center d-flex flex-column align-items-center mx-2">
+                                            <div style={{ fontSize: '2rem' }}>
+                                                {item.value !== undefined ? item.value : '00'}
+                                            </div>
+                                            <div style={{ fontSize: '1.5rem' }}>
+                                                {item.label}
+                                            </div>
+                                        </div>
+                                        {index < timerComponents.length - 1 && <span className="mx-2" style={{ fontSize: '1.5rem' }}>:</span>}
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </Col>
+                    )
+                }
+                <Col xs={12} lg={6} className="p-4 text-center order-lg-1 order-1">
+                    <div className="d-flex flex-column justify-content-center align-items-center flex-wrap">
+                        <h2 style={{color: "white", fontSize: "2.5rem"}}>Event Information</h2>
+                        <span style={{
+                            color: "white",
+                            fontSize: "2rem"
+                        }}>This is some information about the event.</span>
                     </div>
-                </Col>
-                <Col xs={12} lg={6} className="p-4 text-center order-md-2 order-1">
-                    <h2 style={{color: "white",  fontSize: "3rem"}}>Event Information</h2>
-                    <span style={{color: "white", fontSize: "2rem"}}>This is some information about the event.</span>
                 </Col>
             </Row>
         </Container>
-    );
+);
 };
 
 export default Countdown;

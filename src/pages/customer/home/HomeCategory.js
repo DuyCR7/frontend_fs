@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const subTitle = "ĐẶC SẮC";
 const title = "BỘ SƯU TẬP";
@@ -45,6 +45,9 @@ const categoryList = [
 ];
 
 const HomeCategory = () => {
+
+    const navigate = useNavigate();
+
     return (
         <div className="category-section style-4 padding-tb">
             <div className="container-fluid ps-5 pe-5">
@@ -84,7 +87,9 @@ const HomeCategory = () => {
                     </div>
 
                     <div className="text-center mt-5">
-                        <Link to="/shop" className="lab-btn">{btnText}</Link>
+                        <button onClick={() => navigate('/shop')} className="btn btn-outline-primary">
+                            {btnText}
+                        </button>
                     </div>
                 </div>
             </div>

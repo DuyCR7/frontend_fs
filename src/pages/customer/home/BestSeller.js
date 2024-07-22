@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import {Navigation} from "swiper/modules";
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 import Rating from "../components/Rating.js";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "./bestSeller.scss";
 
 const title = "Bán chạy nhất";
@@ -87,6 +87,7 @@ const ProductData = [
 
 const BestSeller = () => {
 
+    const navigate = useNavigate();
     const swiperRef = useRef(null);
 
     useEffect(() => {
@@ -123,11 +124,6 @@ const BestSeller = () => {
                 {/*section header*/}
                 <div className="section-header">
                     <h2 className="title">{title}</h2>
-                    <div className="course-filter-group">
-                        <button className={'btn btn-primary'}>
-                            <Link to={"/shop/seller"} style={{color: "white"}}>Xem toàn bộ sản phẩm bán chạy</Link>
-                        </button>
-                    </div>
                 </div>
 
                 <div className={`shop-page`}>
@@ -198,6 +194,12 @@ const BestSeller = () => {
                         <div className="swiper-button-prev">
                             <FaArrowLeft style={{color: 'rgb(24, 119, 242)'}}/>
                         </div>
+                    </div>
+
+                    <div className="text-center">
+                        <button onClick={() => navigate('/shop/seller')} className="btn btn-outline-primary">
+                            Xem toàn bộ sản phẩm bán chạy
+                        </button>
                     </div>
 
                 </div>

@@ -12,3 +12,33 @@
 .position-absolute {
   z-index: 2; /* Đảm bảo phần nội dung ở trên lớp phủ */
 }
+
+@media (max-width: 768px) {
+  .text-center h2 {
+    font-size: 3rem !important;
+  }
+  .text-center span {
+    font-size: 1.5rem !important;
+  }
+  .text-center div {
+    font-size: 3rem !important;
+  }
+  .text-center div:nth-child(2) {
+    font-size: 1.5rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .text-center h2 {
+    font-size: 2rem !important;
+  }
+  .text-center span {
+    font-size: 1rem !important;
+  }
+  .text-center div {
+    font-size: 2rem !important;
+  }
+  .text-center div:nth-child(2) {
+    font-size: 1rem !important;
+  }
+}

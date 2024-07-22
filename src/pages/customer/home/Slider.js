@@ -7,29 +7,35 @@ const divStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
     width: '100%',
     height: '100%',
-    aspectRatio: '16 / 9'
-}
+};
+
+const imageStyle = {
+    width: 'auto',
+    height: 'auto',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain'
+};
+
+
 const slideImages = [
     {
-        url: 'https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
+        url: '/admin/assets/img/banner1.png',
     },
     {
-        url: 'https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80',
+        url: '/admin/assets/img/banner2.png',
     },
     {
-        url: 'https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
+        url: '/admin/assets/img/banner3.png',
     },
 ];
 
 const buttonStyle = {
     width: "40px",
     height: "40px",
-    background: 'none',
-    border: 'none',
+    background: 'rgba(255, 255, 255, 0.7)',
     cursor: 'pointer',
     position: 'absolute',
     top: '50%',
@@ -39,20 +45,20 @@ const buttonStyle = {
 
 const properties = {
     prevArrow: (
-        <button style={{ ...buttonStyle, left: '10px' }}>
-            <FaArrowLeft color="#fff" size={24} />
+        <button style={{ ...buttonStyle, borderRadius: "50%", left: '10px' }}>
+            <FaArrowLeft color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}} />
         </button>
     ),
     nextArrow: (
-        <button style={{ ...buttonStyle, right: '0px' }}>
-            <FaArrowRight color="#fff" size={24} />
+        <button style={{ ...buttonStyle, borderRadius: "50%", right: '10px' }}>
+            <FaArrowRight color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}}/>
         </button>
     ),
 };
 
 const Slider = () => {
     return (
-        <div className="slide-container">
+        <div className="slide-container" style={{paddingTop: "100px"}}>
             <Slide duration={2000}
                    transitionDuration={700}
                    pauseOnHover={true}
@@ -62,8 +68,8 @@ const Slider = () => {
                    {...properties}
             >
                 {slideImages.map((slideImage, index)=> (
-                    <div key={index}>
-                        <div style={{ ...divStyle, 'backgroundImage': `url(${slideImage.url})` }}></div>
+                    <div key={index} style={divStyle}>
+                        <img src={slideImage.url} alt={`Slide ${index}`} style={imageStyle}/>
                     </div>
                 ))}
             </Slide>

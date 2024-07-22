@@ -108,7 +108,7 @@ const AllProducts = () => {
                 <div className="section-header">
                     <h2 className="title">{title}</h2>
                     <div className="course-filter-group">
-                        <ul className="lab-ul">
+                        <ul className="lab-ul" style={{fontSize: "20px"}}>
                             <li onClick={() => setItems(ProductData)}>All</li>
                             <li onClick={() => filterItem("Shoes")}>Shoes</li>
                             <li onClick={() => filterItem("Bags")}>Bags</li>
