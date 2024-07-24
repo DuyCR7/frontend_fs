@@ -150,7 +150,7 @@ const BestSellerClothing = () => {
             <div className="container-fluid ps-5 pe-5">
                 {/*section header*/}
                 <div className="section-header">
-                    <h2 className="title" style={{ color: "rgb(236, 179, 65)" }}>{title}</h2>
+                    <h2 className="title" style={{ color: "red" }}>{title}</h2>
                 </div>
 
                 <div className={`shop-page`}>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Rating from "../components/Rating.js";
 import {Link} from "react-router-dom";
 
-const title = "Sản phẩm";
+const title = "Xu hướng";
 
 const ProductData = [
     {
@@ -82,6 +82,7 @@ const ProductData = [
 const AllProducts = () => {
 
     const [items, setItems] = useState(ProductData);
+    const [activeCategory, setActiveCategory] = useState('All');
 
     // category based filtering
     const filterItem = (cateItem) => {
@@ -90,6 +91,7 @@ const AllProducts = () => {
         })
 
         setItems(updateItems);
+        setActiveCategory(cateItem);
     }
 
     return (
@@ -106,14 +108,47 @@ const AllProducts = () => {
             <div className="container-fluid ps-5 pe-5">
                 {/*section header*/}
                 <div className="section-header">
-                    <h2 className="title" style={{ color: "rgb(236, 179, 65)" }}>{title}</h2>
+                    <h2 className="title" style={{ color: "red" }}>{title}</h2>
                     <div className="course-filter-group">
                         <ul className="lab-ul" style={{fontSize: "20px"}}>
-                            <li onClick={() => setItems(ProductData)}>All</li>
+                            {/* <li onClick={() => setItems(ProductData)}>All</li>
                             <li onClick={() => filterItem("Shoes")}>Shoes</li>
                             <li onClick={() => filterItem("Bags")}>Bags</li>
                             <li onClick={() => filterItem("Phones")}>Phones</li>
-                            <li onClick={() => filterItem("Beauty")}>Beauty</li>
+                            <li onClick={() => filterItem("Beauty")}>Beauty</li> */}
+                            <li
+                                className={activeCategory === 'All' ? 'active' : ''}
+                                onClick={() => {
+                                    setItems(ProductData);
+                                    setActiveCategory('All');
+                                }}
+                            >
+                                All
+                            </li>
+                            <li
+                                className={activeCategory === 'Shoes' ? 'active' : ''}
+                                onClick={() => filterItem("Shoes")}
+                            >
+                                Shoes
+                            </li>
+                            <li
+                                className={activeCategory === 'Bags' ? 'active' : ''}
+                                onClick={() => filterItem("Bags")}
+                            >
+                                Bags
+                            </li>
+                            <li
+                                className={activeCategory === 'Phones' ? 'active' : ''}
+                                onClick={() => filterItem("Phones")}
+                            >
+                                Phones
+                            </li>
+                            <li
+                                className={activeCategory === 'Beauty' ? 'active' : ''}
+                                onClick={() => filterItem("Beauty")}
+                            >
+                                Beauty
+                            </li>
                         </ul>
                     </div>
                 </div>
