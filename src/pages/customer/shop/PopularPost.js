@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-const title = "Most Popular Post";
+const title = "Bài viết phổ biến";
 
 const postList = [{
     id: 1,

@@ -5,7 +5,7 @@ const blogList = [
         title: 'Business Ueporting Rouncil Them Could Plan.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -24,7 +24,7 @@ const blogList = [
         title: 'Financial Reporting Qouncil What Could More.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -43,7 +43,7 @@ const blogList = [
         title: 'Consulting Reporting Qounc Arei Could More.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -62,7 +62,7 @@ const blogList = [
         title: 'Strategic Social Media and of visual design.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -81,7 +81,7 @@ const blogList = [
         title: 'Find the Right Path for your Group Course online.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -100,7 +100,7 @@ const blogList = [
         title: 'Learn by doing with Real World Projects other countries.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -119,7 +119,7 @@ const blogList = [
         title: 'The Importance Of Intrinsic for Students.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -138,7 +138,7 @@ const blogList = [
         title: 'A Better Alternative To Grading Student Writing.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',
@@ -157,7 +157,7 @@ const blogList = [
         title: 'The Challenge Global Learning In Public Education.',
         desc: 'Pluoresnts customize prancing apcentered customer service anding ands asing straelg Interacvely cordinate performe',
         commentCount: '3',
-        btnText: 'Read More',
+        btnText: 'Đọc thêm',
         metaList: [
             {
                 iconName: 'icofont-ui-user',

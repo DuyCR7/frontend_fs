@@ -40,7 +40,7 @@ const CheckOutPage = () => {
                     onClick={handleShow}
 
             >
-                Proceed to Checkout
+                Đặt hàng
             </Button>
 
             <Modal show={show} onHide={handleClose} animation={false}

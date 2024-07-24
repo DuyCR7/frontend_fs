@@ -5,7 +5,7 @@ const ShopCategory = ({filterItem, setItem, menuItems, setProducts, selectedCate
     return (
         <>
             <div className="widget-header mt-4">
-                <h5 className="ms-2">COLLECTION</h5>
+                <h5 className="ms-2">BỘ SƯU TẬP</h5>
             </div>
             <div>
                 <button onClick={() => filterItem("All")} className={`m-2 ${selectedCategory === "All" ? "bg-warning" : ""}`}>All</button>

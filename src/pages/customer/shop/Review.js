@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Rating from "../components/Rating.js";
 
-const reviewtitle = "Add a Review";
+const reviewtitle = "Thêm đánh giá";
 
 let ReviewList = [{
     imgUrl: "/admin/assets/img/examples/01.jpg",
@@ -36,8 +36,8 @@ const Review = () => {
     return (
         <>
             <ul className={`review-nav lab-ul ${reviewShow ? "RevActive" : "DescActive"}`}>
-                <li className="desc" onClick={() => setReviewShow(!reviewShow)}>Description</li>
-                <li className="rev" onClick={() => setReviewShow(!reviewShow)}>Reviews 4</li>
+                <li className="desc" onClick={() => setReviewShow(!reviewShow)}>Mô tả</li>
+                <li className="rev" onClick={() => setReviewShow(!reviewShow)}>Đánh giá 4</li>
             </ul>
 
             {/*desc & review content*/}
@@ -77,24 +77,24 @@ const Review = () => {
 
                             <form action="action" className="row">
                                 <div className="col-md-4 col-12">
-                                    <input type="text" name="name" id="name" placeholder="Full Name *"/>
+                                    <input type="text" name="name" id="name" placeholder="Họ và tên *"/>
                                 </div>
                                 <div className="col-md-4 col-12">
-                                    <input type="email" name="email" id="email" placeholder="Your Email *"/>
+                                    <input type="email" name="email" id="email" placeholder="Email *"/>
                                 </div>
                                 <div className="col-md-4 col-12">
                                     <div className="rating">
-                                        <span className="me-2">Your Rating</span>
+                                        <span className="me-2">Đánh giá</span>
                                         <Rating />
                                     </div>
                                 </div>
                                 <div className="col-md-12 col-12">
-                                    <textarea name="message" id="message" rows="8" placeholder="Type Here Message"></textarea>
+                                    <textarea name="message" id="message" rows="8" placeholder="Nội dung"></textarea>
                                 </div>
 
                                 <div className="col-12">
                                     <button type="submit" className="default-button">
-                                        <span>Submit Review</span>
+                                        <span>Đánh giá</span>
                                     </button>
                                 </div>
                             </form>

@@ -19,11 +19,11 @@ const ProductCards = ({GridList, products}) => {
 
                                     {/*product action links*/}
                                     <div className="product-action-link">
-                                        <Link to={`/shop/${item.id}`}><i className="icofont-eye"></i></Link>
-                                        <a href="#">
+                                        <Link to={`/shop/${item.id}`} title='Xem nhanh'><i className="icofont-eye"></i></Link>
+                                        <a href="#" title='Yêu thích'>
                                             <i className="icofont-heart"></i>
                                         </a>
-                                        <Link to="/cart-page"><i className="icofont-cart-alt"></i></Link>
+                                        <Link to="/cart-page" title='Giỏ hàng'><i className="icofont-cart-alt"></i></Link>
                                     </div>
                                 </div>
 

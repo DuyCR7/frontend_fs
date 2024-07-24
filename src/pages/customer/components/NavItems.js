@@ -50,7 +50,7 @@ const NavItems = () => {
                     <div className="header-wrapper">
                         {/* logo */}
                         <div className="logo-search-acte">
-                            <div className="logo">
+                            <div className="logo" title='Trang chủ'>
                                 <Link to={"/"}>
                                     <img src="/admin/assets/img/kaiadmin/cus_logo_dark.png" alt="" width={70}/>
                                 </Link>
@@ -61,11 +61,11 @@ const NavItems = () => {
                         <div className="menu-area">
                             <div className="menu">
                                 <ul className={`lab-ul ${menuToggle ? "active" : ""}`}>
-                                    <li><Link to="/" onClick={() => setMenuToggle(false)}>Home</Link></li>
-                                    <li><Link to="/shop" onClick={() => setMenuToggle(false)}>Shop</Link></li>
-                                    <li><Link to="/blog" onClick={() => setMenuToggle(false)}>Blog</Link></li>
-                                    <li><Link to="/about" onClick={() => setMenuToggle(false)}>About</Link></li>
-                                    <li><Link to="/contact" onClick={() => setMenuToggle(false)}>Contact</Link></li>
+                                    <li><Link to="/" onClick={() => setMenuToggle(false)}>Trang chủ</Link></li>
+                                    <li><Link to="/shop" onClick={() => setMenuToggle(false)}>Cửa hàng</Link></li>
+                                    <li><Link to="/blog" onClick={() => setMenuToggle(false)}>Bài viết</Link></li>
+                                    <li><Link to="/about" onClick={() => setMenuToggle(false)}>Về chúng tôi</Link></li>
+                                    <li><Link to="/contact" onClick={() => setMenuToggle(false)}>Liên hệ</Link></li>
                                     <li className="d-flex flex-wrap ms-3">
                                         <Link title="Yêu thích" to="/wish-list" className={'count-icon'}
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>

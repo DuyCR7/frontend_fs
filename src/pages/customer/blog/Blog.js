@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 const Blog = () => {
     return (
         <div>
-            <PageHeader title="Blog Page" curPage="Blogs" />
+            <PageHeader title="Bài viết" curPage="Bài viết" />
             <div className="blog-section padding-tb section-bg">
                 <div className="container-fluid ps-5 pe-5">
                     <div className="section-wrapper">

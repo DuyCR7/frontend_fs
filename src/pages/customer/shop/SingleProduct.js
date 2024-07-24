@@ -29,7 +29,7 @@ const SingleProduct = () => {
 
     return (
         <div>
-            <PageHeader title={"OUR SHOP SINGLE"} curPage={"Shop / AdSingle Product"}/>
+            <PageHeader title={"CHI TIẾT SẢN PHẨM"} curPage={"Của hàng / Chi tiết"}/>
 
             <div className="shop-single padding-tb aside-bg">
                 <div className="container-fluid ps-5 pe-5">

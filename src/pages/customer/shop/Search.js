@@ -9,7 +9,7 @@ const Search = ({products, GridList}) => {
     return (
         <div className="widget widget-search">
             <form className="search-wrapper mb-3">
-                <input type="text" name="search" id="search" placeholder="Search..." defaultValue={searchTerm}
+                <input type="text" name="search" id="search" placeholder="Tìm kiếm..." defaultValue={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}/>
                 <button type="submit">
                     <i className="icofont-search-2"></i>

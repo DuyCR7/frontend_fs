@@ -44,7 +44,7 @@ const categoryList = [
     },
 ];
 
-const HomeCategory = () => {
+const TeamCategory = () => {
 
     const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ const HomeCategory = () => {
 
                 {/*section card*/}
                 <div className="section-wrapper">
-                    <div className="row g-4 justify-content-center row-cols-md-3 row-cols-sm-2 row-cols-1">
+                    <div className="row g-4 justify-content-center row-cols-md-5 row-cols-sm-3 row-cols-1">
                         {
                             categoryList.map((item, index) => {
                                 return (
@@ -97,4 +97,4 @@ const HomeCategory = () => {
     );
 };
 
-export default HomeCategory;
+export default TeamCategory;

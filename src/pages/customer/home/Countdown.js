@@ -81,7 +81,7 @@ const Countdown = () => {
             <Row className="position-absolute w-100 text-light d-flex justify-content-center align-items-center">
                 {isCountdownFinished ? (
                         <Col xs={12} className="text-center">
-                            <h2 style={{color: "white", fontSize: "3rem"}}>SHOP NOW</h2>
+                            <h2 style={{color: "white", fontSize: "3rem"}}>BẮT ĐẦU NÀO!</h2>
                         </Col>
                     ) : (
                         <Col xs={12} lg={6} className="text-center order-lg-1 order-2">
@@ -105,11 +105,12 @@ const Countdown = () => {
                 }
                 <Col xs={12} lg={6} className="p-4 text-center order-lg-1 order-1">
                     <div className="d-flex flex-column justify-content-center align-items-center flex-wrap">
-                        <h2 style={{color: "white", fontSize: "2.5rem"}}>Event Information</h2>
+                        <h2 style={{color: "white", fontSize: "2.5rem"}}>THE 2024 FA COMMUNITY SHIELD</h2>
                         <span style={{
                             color: "white",
                             fontSize: "2rem"
-                        }}>This is some information about the event.</span>
+                        }}>Việc đếm ngược đang diễn ra! Hãy mua bộ sưu tập Community Shield của chúng tôi và chuẩn bị sẵn sàng cho mùa giải Premier League mới.</span>
+                        <button type='button' className='btn btn-outline-primary mt-3'>Mua ngay</button>
                     </div>
                 </Col>
             </Row>

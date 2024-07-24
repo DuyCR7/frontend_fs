@@ -1,12 +1,12 @@
 import React from 'react';
 import PageHeader from "../components/PageHeader.js";
 
-const subTitle = "About Our Brand";
+const subTitle = "Về Chúng Tôi";
 const title = "Good Qualification Services And Better Expriences";
 const desc = "Distinctively provide acces mutfuncto users whereas transparent proceses somes ncentivize eficient functionalities rather than extensible archtectur communicate leveraged services and cross-platform.";
 
 const year = "30+";
-const expareance = "Years Of Experiences";
+const expareance = "Năm Kinh Nghiệm";
 
 const aboutList = [{
     imgUrl: '/admin/assets/img/examples/example1.jpeg',
@@ -28,7 +28,7 @@ const aboutList = [{
 const About = () => {
     return (
         <div>
-            <PageHeader title={"About Our Brand"} curPage={"About"}/>
+            <PageHeader title={"Về chúng tôi"} curPage={"Về chúng tôi"}/>
             <div className="about-section style-3 padding-tb section-bg">
                 <div className="container-fluid ps-5 pe-5">
                     <div className="row justify-content-center row-cols-xl-2 row-cols-1 align-items-center">

@@ -2,38 +2,34 @@ import React from 'react';
 import PageHeader from "../components/PageHeader.js";
 import GoogleMap from "../components/GoogleMap.js";
 
-const subTitle = "Get in touch with us";
-const title = "We're Always Eager To Hear From You!";
-const conSubTitle = "Get in touch with Contact us";
-const conTitle = "Fill The Form Below So We Can Get To Know You And Your Needs Better.";
-const btnText = "Send our Message";
+const subTitle = "Hãy liên lạc với chúng tôi";
+const title = "Chúng tôi luôn mong muốn được lắng nghe từ bạn!";
+const conSubTitle = "Hãy liên lạc với chúng tôi";
+const conTitle = "Điền vào biểu mẫu bên dưới để chúng tôi có thể hiểu rõ hơn về bạn và nhu cầu của bạn.";
+const btnText = "Gửi";
 
 const contactList = [{
-    imgUrl: "/admin/assets/img/examples/example1.jpeg",
-    imgAlt: "contact icon",
-    title: "Office Address",
-    desc: "1201 park street, Fifth Avenue",
+    icon: "address-book",
+    title: "Địa chỉ",
+    desc: "Ngõ 389 phố Vọng, Hai Bà Trưng, Hà Nội",
 }, {
-    imgUrl: "/admin/assets/img/examples/example1.jpeg",
-    imgAlt: "contact icon",
-    title: "Phone number",
-    desc: "+22698 745 632,02 982 745",
+    icon: "phone",
+    title: "Điện thoại",
+    desc: "+84 868 839 613",
 }, {
-    imgUrl: "/admin/assets/img/examples/example1.jpeg",
-    imgAlt: "contact icon",
-    title: "Send email",
-    desc: "admin@shopcart.com",
+    icon: "email",
+    title: "Email",
+    desc: "anhduy0317@gmail.com",
 }, {
-    imgUrl: "/admin/assets/img/examples/example1.jpeg",
-    imgAlt: "contact icon",
-    title: "Our website",
-    desc: "www.shopcart.com",
+    icon: "web",
+    title: "Website",
+    desc: "www.cr7shop.com",
 },];
 
 const Contact = () => {
     return (
         <div>
-            <PageHeader title={"Get In Touch With US"} curPage={"Contact Us"}/>
+            <PageHeader title={"Liên hệ"} curPage={"Liên hệ"}/>
             <div className="map-address-section padding-tb section-bg">
                 <div className="container-fluid ps-5 pe-5">
                     <div className="section-header text-center">
@@ -50,7 +46,7 @@ const Contact = () => {
                                             return (
                                                 <div key={index} className="contact-item">
                                                     <div className="contact-thumb">
-                                                        <img src={item.imgUrl} alt=""/>
+                                                        <i className={`icofont-${item.icon}`} style={{ fontSize: "28px" }}></i>
                                                     </div>
                                                     <div className="contact-content">
                                                         <h6 className="title">{item.title}</h6>
@@ -82,19 +78,19 @@ const Contact = () => {
                     <div className="section-wrapper">
                         <form className="contact-form">
                             <div className="form-group">
-                                <input type="text" name="name" id="name" placeholder="Your Name *"/>
+                                <input type="text" name="name" id="name" placeholder="Họ và tên *"/>
                             </div>
                             <div className="form-group">
-                                <input type="email" name="email" id="email" placeholder="Your Email *"/>
+                                <input type="email" name="email" id="email" placeholder="Email *"/>
                             </div>
                             <div className="form-group">
-                                <input type="text" name="phone" id="phone" placeholder="Phone Number *"/>
+                                <input type="text" name="phone" id="phone" placeholder="Điện thoại *"/>
                             </div>
                             <div className="form-group">
-                                <input type="email" name="subject" id="subject" placeholder="Subject *"/>
+                                <input type="email" name="subject" id="subject" placeholder="Chủ đề *"/>
                             </div>
                             <div className="form-group w-100">
-                                <textarea name="message" id="message" rows="8" placeholder="Your Message"></textarea>
+                                <textarea name="message" id="message" rows="8" placeholder="Nội dung"></textarea>
                             </div>
                             <div className="form-group w-100 text-center">
                                 <button className="lab-btn">

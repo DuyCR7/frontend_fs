@@ -1,6 +1,6 @@
 import React from 'react';
 
-const title = "Most Popular Tags"
+const title = "Thẻ Phổ Biến"
 
 const tagsList = [{link: "#", text: "envato",}, {link: "#", text: "themeforest",}, {
     link: "#",

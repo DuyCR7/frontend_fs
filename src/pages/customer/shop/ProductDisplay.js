@@ -9,8 +9,8 @@ const ProductDisplay = ({item}) => {
 
     const [preQuantity, setQuantity] = useState(quantity + 1);
     const [coupon, setCoupon] = useState("");
-    const [size, setSize] = useState("Select Size");
-    const [color, setColor] = useState("Select Color");
+    const [size, setSize] = useState("Chọn Size");
+    const [color, setColor] = useState("Chọn Màu");
 
     const handleSizeChange = (e) => {
         setSize(e.target.value);
@@ -59,9 +59,9 @@ const ProductDisplay = ({item}) => {
 
         // reset form page
         setQuantity(1);
-        setSize("Select Size");
+        setSize("Chọn Size");
         setCoupon("");
-        setColor("Select Color")
+        setColor("Chọn Màu")
     }
 
     return (
@@ -74,7 +74,7 @@ const ProductDisplay = ({item}) => {
                     <i className="icofont-star"></i>
                     <i className="icofont-star"></i>
                     <i className="icofont-star"></i>
-                    <span> {ratingsCount} reviews</span>
+                    <span> {ratingsCount} đánh giá</span>
                 </p>
                 <h4>${price}</h4>
                 <h6>{seller}</h6>
@@ -87,7 +87,7 @@ const ProductDisplay = ({item}) => {
                     {/*size*/}
                     <div className="select-product size">
                         <select value={size} onChange={handleSizeChange}>
-                            <option>Select Size</option>
+                            <option>Chọn Size</option>
                             <option value="S">S</option>
                             <option value="M">M</option>
                             <option value="L">L</option>
@@ -100,7 +100,7 @@ const ProductDisplay = ({item}) => {
                     {/*color*/}
                     <div className="select-product color">
                         <select value={color} onChange={handleColorChange}>
-                            <option>Select Color</option>
+                            <option>Chọn Màu</option>
                             <option value="Red">Red</option>
                             <option value="Blue">Blue</option>
                             <option value="Green">Green</option>
@@ -121,16 +121,16 @@ const ProductDisplay = ({item}) => {
 
                     {/*coupon field*/}
                     <div className="discount-code mb-2">
-                        <input type="text" value={coupon} placeholder="Enter Discount Code"
+                        <input type="text" value={coupon} placeholder="Nhập mã giảm giá"
                                onChange={(e) => setCoupon(e.target.value)}/>
                     </div>
 
                     {/*button section*/}
                     <button type="submit" className="lab-btn">
-                        <span>Add to Cart</span>
+                        <span>Thêm vào giỏ</span>
                     </button>
                     <Link to="/cart-page" className="lab-btn bg-primary">
-                        <span>Check Out</span>
+                        <span>Thanh toán</span>
                     </Link>
                 </form>
             </div>

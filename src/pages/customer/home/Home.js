@@ -1,27 +1,29 @@
 import React from 'react';
 import Banner from "./Banner.js";
-import HomeCategory from "./HomeCategory.js";
+import TeamCategory from "./TeamCategory.js";
 import AllProducts from "./AllProducts.js";
-import LocationSprade from "./LocationSprade.js";
-import AboutUs from "./AboutUs.js";
-import AppSection from "./AppSection.js";
-import Sponsor from "./Sponsor.js";
 import Slider from "./Slider";
-import BestSeller from "./BestSeller";
+import BestSellerClothing from "./BestSellerClothing";
 import Countdown from "./Countdown";
+import Category from "./Category";
+import BestSellerGifts from "./BestSellerGifts";
+import NationAndHat from "./NationAndHat";
+import AboutUs from "./AboutUs";
+import Sponsor from "./Sponsor";
 
 const Home = () => {
     return (
         <div>
             <Slider />
             <Banner />
-            <HomeCategory />
+            <TeamCategory />
             <Countdown />
             <AllProducts />
-            <BestSeller />
-            <LocationSprade />
+            <Category />
+            <BestSellerClothing />
+            <NationAndHat />
+            <BestSellerGifts />
             <AboutUs />
-            <AppSection />
             <Sponsor />
         </div>
     );

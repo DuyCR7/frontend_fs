@@ -4,9 +4,9 @@ import {Link} from "react-router-dom";
 import SelectedCategory from "../components/SelectedCategory.js";
 
 const title = (
-    <h2>Search Your One From <span>Thousand</span> of Products</h2>
+    <h2>Tìm kiếm sản phẩm</h2>
 )
-const desc = "We have the largest collection of products";
+const desc = "Chúng tôi có bộ sưu tập sản phẩm lớn nhất";
 
 const Banner = () => {
 
@@ -31,7 +31,7 @@ const Banner = () => {
                     {title}
                     <form>
                         <SelectedCategory select={"all"}/>
-                        <input type="text" name="search" value={searchInput} id="search" placeholder="Search your product"
+                        <input type="text" name="search" value={searchInput} id="search" placeholder="Tìm kiếm..."
                         onChange={handleSearch}/>
                         <button type="submit">
                             <i className="icofont-search"></i>

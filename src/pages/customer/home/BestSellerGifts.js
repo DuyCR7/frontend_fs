@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
+import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 import Rating from "../components/Rating.js";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-const title = "Sản phẩm";
+const title = "Quà tặng bán chạy nhất";
 
 const ProductData = [
     {
@@ -79,52 +82,93 @@ const ProductData = [
     },
 ];
 
-const AllProducts = () => {
+const divStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+};
 
-    const [items, setItems] = useState(ProductData);
+const buttonStyle = {
+    width: "40px",
+    height: "40px",
+    background: 'rgba(255, 255, 255, 0.7)',
+    cursor: 'pointer',
+    position: 'absolute',
+    top: '40%',
+    transform: 'translateY(-50%)',
+    zIndex: 2,
+};
 
-    // category based filtering
-    const filterItem = (cateItem) => {
-        const updateItems = ProductData.filter((curElem) => {
-            return curElem.cate === cateItem;
-        })
+const properties = {
+    prevArrow: (
+        <button style={{ ...buttonStyle, borderRadius: "50%", left: '20px' }}>
+            <FaArrowLeft color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}} />
+        </button>
+    ),
+    nextArrow: (
+        <button style={{ ...buttonStyle, borderRadius: "50%", right: '20px' }}>
+            <FaArrowRight color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}}/>
+        </button>
+    ),
+};
 
-        setItems(updateItems);
-    }
+const BestSellerClothing = () => {
+
+    const navigate = useNavigate();
+
+    const [slidesToShow, setSlidesToShow] = useState(3);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 576) {
+                setSlidesToShow(1);
+            } else if (window.innerWidth <= 768) {
+                setSlidesToShow(2);
+            } else if (window.innerWidth <= 1024) {
+                setSlidesToShow(3);
+            }
+            else {
+                setSlidesToShow(4);
+            }
+        };
+
+        // Initial check
+        handleResize();
+
+        // Add resize event listener
+        window.addEventListener('resize', handleResize);
+
+        // Clean up event listener
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <div className="course-section style-3 padding-tb">
-            {/*shape*/}
-            <div className="course-shape one">
-                <img src="/admin/assets/img/examples/example1.jpeg" alt="" style={{width: "169px", height: "161px"}}/>
-            </div>
-            <div className="course-shape two">
-                <img src="/admin/assets/img/examples/example1.jpeg" alt="" style={{width: "169px", height: "161px"}}/>
-            </div>
-
             {/*main section*/}
             <div className="container-fluid ps-5 pe-5">
                 {/*section header*/}
                 <div className="section-header">
                     <h2 className="title" style={{ color: "rgb(236, 179, 65)" }}>{title}</h2>
-                    <div className="course-filter-group">
-                        <ul className="lab-ul" style={{fontSize: "20px"}}>
-                            <li onClick={() => setItems(ProductData)}>All</li>
-                            <li onClick={() => filterItem("Shoes")}>Shoes</li>
-                            <li onClick={() => filterItem("Bags")}>Bags</li>
-                            <li onClick={() => filterItem("Phones")}>Phones</li>
-                            <li onClick={() => filterItem("Beauty")}>Beauty</li>
-                        </ul>
-                    </div>
                 </div>
 
                 <div className={`shop-page`}>
-                    <div className={`shop-product-wrap row justify-content-center grid`}>
-                        {
-                            items.map((item, index) => {
-                                return (
-                                    <div key={index} className="col-lg-3 col-md-4 col-sm-6 col-12">
-                                        <div className="product-item">
+                    <div className={`shop-product-wrap row justify-content-center grid ps-3 pe-3`}>
+                        <Slide duration={5000}
+                               transitionDuration={700}
+                               pauseOnHover={true}
+                               autoplay={true}
+                               infinite={true}
+                               defaultIndex={0}
+                               slidesToShow={slidesToShow}
+                               slidesToScroll={slidesToShow}
+                               {...properties}
+                        >
+                            {
+                                ProductData.map((item, index) => (
+                                    // <SwiperSlide key={index}>
+                                        <div className="product-item mx-2" key={index}>
                                             {/*product images*/}
                                             <div className="product-thumb">
                                                 <div className="pro-thumb">
@@ -152,15 +196,22 @@ const AllProducts = () => {
                                                 <h6>{item.price}</h6>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })
-                        }
+                                    // </SwiperSlide>
+                                ))
+                            }
+                        </Slide>
                     </div>
+
+                    <div className="text-center">
+                        <button onClick={() => navigate('/shop/seller')} className="btn btn-outline-primary">
+                            Xem toàn bộ quà tặng bán chạy
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
     );
 };
 
-export default AllProducts;
+export default BestSellerClothing;

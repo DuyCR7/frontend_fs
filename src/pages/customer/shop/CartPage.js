@@ -57,7 +57,7 @@ const CartPage = () => {
 
     return (
         <div>
-            <PageHeader title={"Shop Cart"} curPage={"Cart Page"}/>
+            <PageHeader title={"Giỏ Hàng"} curPage={"Giỏ hàng"}/>
 
             <div className="shop-cart padding-tb">
                 <div className="container-fluid ps-5 pe-5">
@@ -67,11 +67,11 @@ const CartPage = () => {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th className="cat-product">Product</th>
-                                        <th className="cat-price">Price</th>
-                                        <th className="cat-quantity">Quantity</th>
-                                        <th className="cat-toprice">Total</th>
-                                        <th className="cat-edit">Edit</th>
+                                        <th className="cat-product">Sản phẩm</th>
+                                        <th className="cat-price">Giá</th>
+                                        <th className="cat-quantity">Số lượng</th>
+                                        <th className="cat-toprice">Tổng</th>
+                                        <th className="cat-edit">Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -120,14 +120,13 @@ const CartPage = () => {
                             {/*checkout box*/}
                             <div className="cart-checkout-box">
                                 <form className="coupon">
-                                    <input type="text" name="coupon" id="coupon" placeholder="Coupon code..."
+                                    <input type="text" name="coupon" id="coupon" placeholder="Mã giảm giá..."
                                     className="cart-page-input-text"/>
-                                    <input type="submit" value={"Apply Coupon"}/>
+                                    <input type="submit" value={"Áp dụng"}/>
                                 </form>
 
-                                <form className="cart-checkout">
-                                    <input type="submit" value="Update Cart"/>
-                                    <div>
+                                <form className="cart-checkout d-flex">
+                                    <div className="ms-auto">
                                         <CheckOutPage />
                                     </div>
                                 </form>
@@ -139,7 +138,7 @@ const CartPage = () => {
                                     <div className="col-md-6 col-12">
                                         {/*left sight*/}
                                         <div className="calculate-shiping">
-                                            <h3>Calculate Shipping</h3>
+                                            <h3>Thông tin vận chuyển</h3>
                                             <div className="outline-select">
                                                 <select>
                                                     <option value="UK">United Kingdom (UK)</option>
@@ -152,7 +151,7 @@ const CartPage = () => {
                                                 </span>
                                             </div>
 
-                                            <div className="outline-select shipping-select">
+                                            <div className="outline-select shipping-select w-100">
                                                 <select>
                                                     <option value="NY">New York</option>
                                                     <option value="LD">London</option>
@@ -164,27 +163,24 @@ const CartPage = () => {
                                                 </span>
                                             </div>
 
-                                            <input type="text" name="postalCode" id="postalCode" placeholder="PostalCode/ZIP *"
-                                            className="cart-page-input-text"/>
-
-                                            <button type="submit">Update Address</button>
+                                            <button type="submit">Cập nhật</button>
                                         </div>
                                     </div>
                                     <div className="col-md-6 col-12">
                                         {/*right sight*/}
                                         <div className="cart-overview">
-                                            <h3>Cart Totals</h3>
+                                            <h3>Tổng tiền</h3>
                                             <ul className="lab-ul">
                                                 <li>
-                                                    <span className="pull-left">Cart Subtotal</span>
+                                                    <span className="pull-left">Tổng phụ</span>
                                                     <p className="pull-right">$ {carSubtotal}</p>
                                                 </li>
                                                 <li>
-                                                    <span className="pull-left">Shipping and Handling</span>
-                                                    <p className="pull-right">Free Shipping</p>
+                                                    <span className="pull-left">Vận chuyển và Xử lý</span>
+                                                    <p className="pull-right">Miễn phí vận chuyển</p>
                                                 </li>
                                                 <li>
-                                                    <span className="pull-left">Order Total</span>
+                                                    <span className="pull-left">Tổng tiền</span>
                                                     <p className="pull-right">$ {orderTotal.toFixed(2)}</p>
                                                 </li>
                                             </ul>

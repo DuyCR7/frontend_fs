@@ -10,7 +10,7 @@ import Tags from "./Tags.js";
 import ShopCollection from "./ShopCollection";
 import ShopSize from "./ShopSize";
 
-const showResults = "Showing 01 - 12 of 139 Results";
+const showResults = "Hiển thị 01 - 12 trong 139 kết quả";
 
 const Shop = () => {
 
@@ -65,7 +65,7 @@ const Shop = () => {
 
     return (
         <div>
-            <PageHeader title="Our Shop Page" curPage="Shop"/>
+            <PageHeader title="Cửa hàng" curPage="Cửa hàng"/>
             {/*shop page*/}
             <div className="shop-page padding-tb">
                 <div className="container-fluid ps-5 pe-5">
@@ -82,11 +82,11 @@ const Shop = () => {
                                             value={sortOption}
                                             onChange={(e) => handleSort(e.target.value)}
                                         >
-                                            <option value="default">Sort by</option>
-                                            <option value="price-asc">Price: Low to High</option>
-                                            <option value="price-desc">Price: High to Low</option>
-                                            <option value="name-asc">Name: A to Z</option>
-                                            <option value="name-desc">Name: Z to A</option>
+                                            <option value="default">Sắp xếp</option>
+                                            <option value="price-asc">Giá: Thấp đến Cao</option>
+                                            <option value="price-desc">Giá: Cao đến Thấp</option>
+                                            <option value="name-asc">Tên: A đến Z</option>
+                                            <option value="name-desc">Têb: Z đến A</option>
                                         </select>
                                         <div className={`d-flex product-view-mode ${GridList ? "gridActive" : "listActive"}`}>
                                             <a className="grid" onClick={() => setGridList(!GridList)}>

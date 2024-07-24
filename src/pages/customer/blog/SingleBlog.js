@@ -7,13 +7,9 @@ import PopularPost from "../shop/PopularPost.js";
 
 const socialList = [{link: "#", iconName: "icofont-facebook", className: "facebook",}, {
     link: "#",
-    iconName: "icofont-twitter",
-    className: "twitter",
-}, {link: "#", iconName: "icofont-linkedin", className: "linkedin",}, {
-    link: "#",
     iconName: "icofont-instagram",
     className: "instagram",
-}, {link: "#", iconName: "icofont-pinterest", className: "pinterest",},];
+}];
 
 const SingleBlog = () => {
 
@@ -24,7 +20,7 @@ const SingleBlog = () => {
 
     return (
         <div>
-            <PageHeader title={"Single Blog Pages"} curPage={"Blog / Blog Details"}/>
+            <PageHeader title={"Chi tiết bài viết"} curPage={"Bài viết / Chi tiết"}/>
 
             <div className="blog-section blog-single padding-tb section-bg">
                 <div className="container-fluid ps-5 pe-5">
@@ -90,17 +86,6 @@ const SingleBlog = () => {
                                                                         <p>{item.desc}</p>
 
                                                                         <div className="tags-section">
-                                                                            <ul className="tags lab-ul">
-                                                                                <li>
-                                                                                    <a href="#">Agency</a>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <a href="#">Business</a>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <a href="#">Personal</a>
-                                                                                </li>
-                                                                            </ul>
                                                                             <ul className="lab-ul social-icons">
                                                                                 {
                                                                                     socialList.map((item, index) => {
@@ -127,7 +112,7 @@ const SingleBlog = () => {
                                             <div className="navigations-part">
                                                 <div className="left">
                                                     <a href="#" className="prev">
-                                                        <i className="icofont-double-left"></i> Previous Blog
+                                                        <i className="icofont-double-left"></i> Bài viết trước
                                                     </a>
                                                     <a href="#" className="title">
                                                         Evisculate Parallel Processes vis Technica Sound Models
@@ -136,7 +121,7 @@ const SingleBlog = () => {
                                                 </div>
                                                 <div className="right">
                                                     <a href="#" className="next">
-                                                        <i className="icofont-double-right"></i> Next Blog
+                                                        <i className="icofont-double-right"></i> Bài viết sau
                                                     </a>
                                                     <a href="#" className="title">
                                                         Evisculate Parallel Processes vis Technica Sound Models
