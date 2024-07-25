@@ -2,16 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import PageHeader from "../components/PageHeader.js";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-import {Autoplay} from "swiper/modules"
 import ProductDisplay from "./ProductDisplay.js";
 import Review from "./Review.js";
 import PopularPost from "./PopularPost.js";
 import Tags from "./Tags.js";
 import Data from "../../../products.json";
+import "./singleProduct.scss";
 
 const SingleProduct = () => {
 
@@ -19,13 +15,22 @@ const SingleProduct = () => {
     const {id} = useParams();
 
     useEffect(() => {
-        // fetch("/products.json").then(res => res.json())
-        //     .then(data => setProduct(data));
         setProduct(Data);
     }, []);
 
-    console.log(product);
+    // console.log(product);
     const result = product.filter((p) => p.id === id);
+
+    const [images, setImages] = useState([
+        "https://fastly.picsum.photos/id/7/4728/3168.jpg?hmac=c5B5tfYFM9blHHMhuu4UKmhnbZoJqrzNOP9xjkV4w3o",
+        "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU",
+        "https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4",
+        "https://fastly.picsum.photos/id/4/5000/3333.jpg?hmac=ghf06FdmgiD0-G4c9DdNM8RnBIN7BO0-ZGEw47khHP4",
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
+        "https://picsum.photos/200/300?grayscale",
+    ])
+
+    const [activeImage, setActiveImage] = useState(images[0]);
 
     return (
         <div>
@@ -41,40 +46,18 @@ const SingleProduct = () => {
                                     <div className="row align-items-center">
                                         <div className="col-md-6 col-12">
                                             <div className="product-thumb">
-                                                <div className="swiper-container pro-single-top">
-                                                    <Swiper className="mySwiper"
-                                                            spaceBetween={30}
-                                                            slidesPerView={1}
-                                                            loop={"true"}
-                                                            autoplay={{
-                                                                delay: 2000,
-                                                                disableOnInteraction: false
-                                                            }}
-                                                            modules={[Autoplay]}
-                                                            navigation={
-                                                                {
-                                                                    prevEl: ".pro-single-prev",
-                                                                    nextEl: ".pro-single-next",
-                                                                }
-                                                            }>
-                                                        {
-                                                            result.map((item, index) => {
-                                                                return (
-                                                                    <SwiperSlide key={index}>
-                                                                        <div className="single-thumb">
-                                                                            <img src={item.img} alt=""/>
-                                                                        </div>
-                                                                    </SwiperSlide>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Swiper>
-                                                    <div className="pro-single-next">
-                                                        <i className="icofont-rounded-left"></i>
-                                                    </div>
-                                                    <div className="pro-single-prev">
-                                                        <i className="icofont-rounded-right"></i>
-                                                    </div>
+                                                <img src={activeImage} alt="" className="mb-3 main-image"/>
+
+                                                <div className="scroll-container">
+                                                    {images.map((image, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className={`scroll-item ${activeImage === image ? 'active' : ''}`}
+                                                            onClick={() => setActiveImage(image)}
+                                                        >
+                                                            <img src={image} alt=""/>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
@@ -83,7 +66,9 @@ const SingleProduct = () => {
                                             <div className="post-content">
                                                 <div>
                                                     {
-                                                        result.map((item) => <ProductDisplay key={item.id} item={item} />)
+                                                        result.map((item) => <ProductDisplay key={item.id}
+                                                                                             item={item}
+                                                                                              setActiveImage={setActiveImage}/>)
                                                     }
                                                 </div>
                                             </div>
