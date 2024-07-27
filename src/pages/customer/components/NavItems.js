@@ -83,7 +83,7 @@ const NavItems = () => {
                             {
                                 customer && customer.isAuthenticated ?
                                     <>
-                                        <div className="dropdown ms-1 mb-2">
+                                        <div className="cus-dropdown dropdown ms-1 mb-2">
                                             <a className="btn dropdown-toggle" href="#" role="button"
                                                id="dropdownMenuLink"
                                                data-bs-toggle="dropdown" aria-expanded="false">

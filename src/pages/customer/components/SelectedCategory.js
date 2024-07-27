@@ -2,7 +2,7 @@ import React from 'react';
 
 const SelectedCategory = (select) => {
     return (
-        <select>
+        <select className="form-select">
             <option value="all">All Categories</option>
             <option value="electronics">Electronics</option>
             <option value="computer">Computer</option>

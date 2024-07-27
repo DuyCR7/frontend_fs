@@ -1,11 +1,11 @@
 import React from 'react';
 import Data from "../../../products.json";
 
-const ShopCollection = ({filterItem, setItem, menuItems, setProducts, selectedCategory}) => {
+const ShopColor = ({filterItem, setItem, menuItems, setProducts, selectedCategory}) => {
     return (
         <>
             <div className="widget-header mt-4">
-                <h5 className="ms-2">BỘ SƯU TẬP</h5>
+                <h5 className="ms-2">COLOR</h5>
             </div>
             <div>
                 <button onClick={() => filterItem("All")} className={`m-2 ${selectedCategory === "All" ? "bg-warning" : ""}`}>All</button>
@@ -25,4 +25,4 @@ const ShopCollection = ({filterItem, setItem, menuItems, setProducts, selectedCa
     );
 };
 
-export default ShopCollection;
+export default ShopColor;

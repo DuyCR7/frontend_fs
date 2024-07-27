@@ -144,7 +144,7 @@ const SignIn = () => {
                         <Card.Body>
                             <h2 className="text-center mb-3">Đăng nhập</h2>
                             <div className="text-center mt-3">
-                                <span>Bạn chưa có tài khoản?</span><Link to="/sign-up" style={{color: "#007bff"}}> Tạo
+                                <span>Bạn chưa có tài khoản? </span><Link to="/sign-up" style={{color: "#007bff"}}>Tạo
                                 tài khoản</Link>
                             </div>
                             <Form className="mt-3">

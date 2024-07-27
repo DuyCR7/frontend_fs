@@ -77,8 +77,8 @@ const Countdown = () => {
                 backgroundPosition: 'center'
             }}
         >
-            <div className="overlay"></div>
-            <Row className="position-absolute w-100 text-light d-flex justify-content-center align-items-center">
+            <div className="countdown-overlay"></div>
+            <Row className="countdown-content countdown-position-absolute w-100 text-light d-flex justify-content-center align-items-center">
                 {isCountdownFinished ? (
                         <Col xs={12} className="text-center">
                             <h2 style={{color: "white", fontSize: "3rem"}}>BẮT ĐẦU NÀO!</h2>

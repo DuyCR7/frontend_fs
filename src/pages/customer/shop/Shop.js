@@ -9,6 +9,7 @@ import PopularPost from "./PopularPost.js";
 import Tags from "./Tags.js";
 import ShopCollection from "./ShopCollection";
 import ShopSize from "./ShopSize";
+import ShopColor from "./ShopColor";
 
 const showResults = "Hiển thị 01 - 12 trong 139 kết quả";
 
@@ -75,7 +76,7 @@ const Shop = () => {
                             <article>
                                 {/*layout and title here*/}
                                 <div className="shop-title d-flex flex-wrap justify-content-between">
-                                    <p>{showResults}</p>
+                                    <p className="mb-3 mb-md-0">{showResults}</p>
                                     <div className="d-flex align-items-center">
                                         <select
                                             className="form-select me-5"
@@ -131,6 +132,13 @@ const Shop = () => {
                                     setProducts={setProducts}
                                 />
                                 <ShopSize
+                                    filterItem={filterItem}
+                                    setItem={setProducts}
+                                    menuItems={menuItems}
+                                    selectedCategory={selectedCategory}
+                                    setProducts={setProducts}
+                                />
+                                <ShopColor
                                     filterItem={filterItem}
                                     setItem={setProducts}
                                     menuItems={menuItems}

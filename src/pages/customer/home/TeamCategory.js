@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, useNavigate} from "react-router-dom";
 
 const subTitle = "ĐẶC SẮC";
-const title = "BỘ SƯU TẬP";
+const title = "ĐỘI BÓNG";
 const btnText = "Mua ngay";
 
 const categoryList = [

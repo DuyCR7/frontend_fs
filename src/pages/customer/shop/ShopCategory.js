@@ -1,7 +1,7 @@
 import React from 'react';
 import Data from "../../../products.json";
 
-const ShopCategory = ({filterItem, setItem, menuItems, setProducts, selectedCategory}) => {
+const ShopTeam = ({filterItem, setItem, menuItems, setProducts, selectedCategory}) => {
     return (
         <>
             <div className="widget-header">
@@ -25,4 +25,4 @@ const ShopCategory = ({filterItem, setItem, menuItems, setProducts, selectedCate
     );
 };
 
-export default ShopCategory;
+export default ShopTeam;

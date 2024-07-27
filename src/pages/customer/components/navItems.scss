@@ -18,22 +18,25 @@
       align-items: center;
     }
   }
-  .dropdown-toggle {
-    border: none;
-    background: none;
-    padding: 0;
 
-    img {
-      border: 1px solid #fff; // Viền trắng quanh avatar
+  .cus-dropdown {
+    .dropdown-toggle {
+      border: none;
+      background: none;
+      padding: 0;
+
+      img {
+        border: 1px solid #fff; // Viền trắng quanh avatar
+      }
     }
-  }
 
-  .dropdown-menu {
-    min-width: auto;
+    .dropdown-menu {
+      min-width: auto;
 
-    a.dropdown-item {
-      &:hover {
-        background-color: #f8f9fa;
+      a.dropdown-item {
+        &:hover {
+          background-color: #f8f9fa;
+        }
       }
     }
   }

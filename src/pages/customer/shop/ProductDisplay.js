@@ -25,7 +25,7 @@ const ProductDisplay = ({item, setActiveImage}) => {
         },
         {
             name: "Cam",
-            image: "https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4"
+            image: "https://fastly.picsum.photos/id/16/2500/1667.jpg?hmac=uAkZwYc5phCRNFTrV_prJ_0rP0EdwJaZ4ctje2bY7aE"
         },
     ];
 
@@ -122,7 +122,7 @@ const ProductDisplay = ({item, setActiveImage}) => {
                             {
                                 colors.map((colorOption) => (
                                     <div key={colorOption.name}
-                                            className={`color-option d-flex align-items-center ${color === colorOption.name? "active" : ""}`}
+                                            className={`color-option ${color === colorOption.name? "active" : ""}`}
                                             onClick={() => {
                                                 handleColorChange(colorOption.name);
                                                 setActiveImage(colorOption.image);
