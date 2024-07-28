@@ -21,6 +21,7 @@ import Contact from "./pages/customer/contact/Contact";
 import AdDashboard from "./pages/admin/dashboard/AdDashboard";
 import AdProduct from "./pages/admin/product/AdProduct";
 import ScrollToTop from "./ScrollToTop";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
     return (
@@ -29,7 +30,11 @@ const App = () => {
             <ScrollToTop />
             <Routes>
                 {/* Admin routes */}
-                <Route path="/admin" element={<AdApp />}>
+                <Route path="/admin" element={
+                    <PrivateRoute>
+                        <AdApp />
+                    </PrivateRoute>
+                }>
                     <Route index element={<AdDashboard />}/>
                     <Route path="products" element={<AdProduct />}/>
                 </Route>
