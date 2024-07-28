@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import NavItems from "../components/NavItems";
+import NavItems from "../components/navItems/NavItems";
 import {Outlet} from "react-router-dom";
-import Footer from "../components/Footer";
+import Footer from "../components/footer/Footer";
 
 import "../../../assets/css/icofont.min.css";
 import "../../../assets/css/animate.css";

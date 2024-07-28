@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-import PageHeader from "../components/PageHeader.js";
+import PageHeader from "../components/pageHeader/PageHeader.js";
 import Data from "../../../products.json";
-import ProductCards from "./ProductCards.js";
-import Pagination from "./Pagination.js";
-import Search from "./Search.js";
-import ShopCategory from "./ShopCategory.js";
-import PopularPost from "./PopularPost.js";
-import Tags from "./Tags.js";
-import ShopCollection from "./ShopCollection";
-import ShopSize from "./ShopSize";
-import ShopColor from "./ShopColor";
+import ProductCards from "./productCards/ProductCards.js";
+import Pagination from "./pagination/Pagination.js";
+import Search from "./search/Search.js";
+import ShopCategory from "./shopCategory/ShopCategory.js";
+import PopularPost from "./popularPost/PopularPost.js";
+import Tags from "./tags/Tags.js";
+import ShopCollection from "./shopCollection/ShopCollection";
+import ShopSize from "./shopSize/ShopSize";
+import ShopColor from "./shopColor/ShopColor";
 
 const showResults = "Hiển thị 01 - 12 trong 139 kết quả";
 

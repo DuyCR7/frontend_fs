@@ -1,15 +1,15 @@
 import React from 'react';
-import Banner from "./Banner.js";
-import TeamCategory from "./TeamCategory.js";
-import AllProducts from "./AllProducts.js";
-import Slider from "./Slider";
-import BestSellerClothing from "./BestSellerClothing";
-import Countdown from "./Countdown";
-import Category from "./Category";
-import BestSellerGifts from "./BestSellerGifts";
-import NationAndHat from "./NationAndHat";
-import AboutUs from "./AboutUs";
-import Sponsor from "./Sponsor";
+import Banner from "./banner/Banner.js";
+import TeamCategory from "./teamCategory/TeamCategory.js";
+import AllProducts from "./allProducts/AllProducts.js";
+import Slider from "./slider/Slider";
+import BestSellerClothing from "./bestSellerClothing/BestSellerClothing";
+import Countdown from "./countdown/Countdown";
+import Category from "./category/Category";
+import BestSellerGifts from "./bestSellerGifts/BestSellerGifts";
+import NationAndHat from "./nationAndHat/NationAndHat";
+import AboutUs from "./aboutUs/AboutUs";
+import Sponsor from "./sponsor/Sponsor";
 
 const Home = () => {
     return (

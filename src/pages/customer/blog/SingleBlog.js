@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import blogList from "../../../utils/blogdata";
 import {useParams} from "react-router-dom";
-import PageHeader from "../components/PageHeader.js";
-import Tags from "../shop/Tags.js";
-import PopularPost from "../shop/PopularPost.js";
+import PageHeader from "../components/pageHeader/PageHeader.js";
+import Tags from "../shop/tags/Tags.js";
+import PopularPost from "../shop/popularPost/PopularPost.js";
 
 const socialList = [{link: "#", iconName: "icofont-facebook", className: "facebook",}, {
     link: "#",
