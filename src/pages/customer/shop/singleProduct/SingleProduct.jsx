@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import PageHeader from "../../components/pageHeader/PageHeader.js";
+import PageHeader from "../../components/pageHeader/PageHeader.jsx";
 
-import ProductDisplay from "../productDisplay/ProductDisplay.js";
-import Review from "../review/Review.js";
-import PopularPost from "../popularPost/PopularPost.js";
-import Tags from "../tags/Tags.js";
+import ProductDisplay from "../productDisplay/ProductDisplay.jsx";
+import Review from "../review/Review.jsx";
+import PopularPost from "../popularPost/PopularPost.jsx";
+import Tags from "../tags/Tags.jsx";
 import Data from "../../../../products.json";
 import "./singleProduct.scss";
 

@@ -70,14 +70,14 @@ const AdSidebar = (props) => {
                                 <div className="collapse" id="sidebarLayouts">
                                     <ul className="nav nav-collapse">
                                         <li>
-                                            <Link to="/admin/products/list">
-                                                <span className="sub-item">Products List</span>
+                                            <Link to="/admin/products">
+                                                <span className="sub-item">Products</span>
                                             </Link>
                                         </li>
                                         <li>
-                                            <a href="icon-menu.html">
-                                                <span className="sub-item">Icon Menu</span>
-                                            </a>
+                                            <Link to="/admin/teams">
+                                                <span className="sub-item">Teams</span>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>

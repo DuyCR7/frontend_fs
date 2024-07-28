@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import productData from "../../../../products.json";
 import {Link} from "react-router-dom";
-import SelectedCategory from "../../components/selectedCategory/SelectedCategory.js";
+import SelectedCategory from "../../components/selectedCategory/SelectedCategory.jsx";
 
 const title = (
     <h2>Tìm kiếm sản phẩm</h2>

@@ -1,5 +1,5 @@
 import React from 'react';
-import PageHeader from "../components/pageHeader/PageHeader.js";
+import PageHeader from "../components/pageHeader/PageHeader.jsx";
 
 const subTitle = "Về Chúng Tôi";
 const title = "Good Qualification Services And Better Expriences";

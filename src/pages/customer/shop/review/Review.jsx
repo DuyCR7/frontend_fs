@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Rating from "../../components/rating/Rating.js";
+import Rating from "../../components/rating/Rating.jsx";
 
 const reviewtitle = "Thêm đánh giá";
 

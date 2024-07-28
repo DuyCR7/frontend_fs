@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import PageHeader from "../../components/pageHeader/PageHeader.js";
+import PageHeader from "../../components/pageHeader/PageHeader.jsx";
 import {Link} from "react-router-dom";
-import CheckOutPage from "../checkOutPage/CheckOutPage.js";
+import CheckOutPage from "../checkOutPage/CheckOutPage.jsx";
 
 const CartPage = () => {
 

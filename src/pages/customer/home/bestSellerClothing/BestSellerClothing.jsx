@@ -2,10 +2,10 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
-import Rating from "../../components/rating/Rating.js";
+import Rating from "../../components/rating/Rating.jsx";
 import {Link, useNavigate} from "react-router-dom";
 
-const title = "Quà tặng bán chạy nhất";
+const title = "Quần áo bán chạy nhất";
 
 const ProductData = [
     {
@@ -204,7 +204,7 @@ const BestSellerClothing = () => {
 
                     <div className="text-center">
                         <button onClick={() => navigate('/shop/seller')} className="btn btn-outline-primary">
-                            Xem toàn bộ quà tặng bán chạy
+                            Xem toàn bộ quần áo bán chạy
                         </button>
                     </div>
 

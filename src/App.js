@@ -31,7 +31,7 @@ const App = () => {
                 {/* Admin routes */}
                 <Route path="/admin" element={<AdApp />}>
                     <Route index element={<AdDashboard />}/>
-                    <Route path="products/list" element={<AdProduct />}/>
+                    <Route path="products" element={<AdProduct />}/>
                 </Route>
                 <Route path="/admin/sign-in" element={<AdSignIn />}/>
 

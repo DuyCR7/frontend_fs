@@ -1,6 +1,6 @@
 import React from 'react';
-import PageHeader from "../components/pageHeader/PageHeader.js";
-import GoogleMap from "../components/googleMap/GoogleMap.js";
+import PageHeader from "../components/pageHeader/PageHeader.jsx";
+import GoogleMap from "../components/googleMap/GoogleMap.jsx";
 
 const subTitle = "Hãy liên lạc với chúng tôi";
 const title = "Chúng tôi luôn mong muốn được lắng nghe từ bạn!";

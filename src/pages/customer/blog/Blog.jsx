@@ -1,5 +1,5 @@
 import React from 'react';
-import PageHeader from "../components/pageHeader/PageHeader.js";
+import PageHeader from "../components/pageHeader/PageHeader.jsx";
 import blogList from "../../../utils/blogdata"
 import {Link} from "react-router-dom";
 

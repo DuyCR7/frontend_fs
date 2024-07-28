@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import Rating from "../../components/rating/Rating.js";
+import Rating from "../../components/rating/Rating.jsx";
 
 const ProductCards = ({GridList, products}) => {
 
