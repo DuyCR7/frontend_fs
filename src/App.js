@@ -22,6 +22,7 @@ import AdDashboard from "./pages/admin/dashboard/AdDashboard";
 import AdProduct from "./pages/admin/product/AdProduct";
 import ScrollToTop from "./ScrollToTop";
 import PrivateRoute from "./routes/PrivateRoute";
+import AdTeam from "./pages/admin/team/AdTeam";
 
 const App = () => {
     return (
@@ -37,6 +38,7 @@ const App = () => {
                 }>
                     <Route index element={<AdDashboard />}/>
                     <Route path="products" element={<AdProduct />}/>
+                    <Route path="teams" element={<AdTeam />}/>
                 </Route>
                 <Route path="/admin/sign-in" element={<AdSignIn />}/>
 

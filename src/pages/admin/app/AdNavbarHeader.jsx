@@ -341,7 +341,7 @@ const AdNavbarHeader = (props) => {
                             >
                                 <div className="avatar-sm">
                                     <img
-                                        src={user?.image ? user?.image : ""}
+                                        src={user?.image ? `${process.env.REACT_APP_URL_BACKEND}/${user?.image}` : ""}
                                         alt="avatar"
                                         className="avatar-img rounded-circle"
                                     />

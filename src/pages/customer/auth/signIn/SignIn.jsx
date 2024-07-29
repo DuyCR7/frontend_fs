@@ -77,7 +77,7 @@ const SignIn = () => {
                     let email = res.DT.email;
                     // let username = res.DT.username;
                     let access_token = res.DT.access_token;
-                    let image = `data:image/jpeg;base64,${res.DT.image}`;
+                    let image = `${process.env.REACT_APP_URL_BACKEND}/${res.DT.image}`;
                     let typeLogin = res.DT.typeLogin;
 
                     let data = {

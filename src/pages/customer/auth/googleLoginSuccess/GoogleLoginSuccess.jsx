@@ -27,7 +27,7 @@ const GoogleLoginSuccess = (props) => {
             if (res.DT.image.includes("https")) {
                 image = res.DT.image;
             } else {
-                image = `data:image/jpeg;base64,${res.DT.image}`;
+                image = `${process.env.REACT_APP_URL_BACKEND}/${res.DT.image}`;
             }
 
             let data = {
