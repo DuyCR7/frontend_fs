@@ -1,6 +1,33 @@
-import { Link } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 const AdSidebar = (props) => {
+
+    const location = useLocation();
+    const [activeItem, setActiveItem] = useState(null);
+    const [activeGroup, setActiveGroup] = useState(null);
+
+    useEffect(() => {
+        console.log(location.pathname);
+        const path = location.pathname;
+        if (path.includes("/admin/categories")) {
+            setActiveItem("categories");
+            setActiveGroup("manageProducts");
+        } else if (path.includes("/admin/products")) {
+            setActiveItem("products");
+            setActiveGroup("manageProducts");
+        } else if (path.includes("/admin/teams")) {
+            setActiveItem("teams");
+            setActiveGroup("manageProducts");
+        } else if (path.includes("/admin")) {
+            setActiveItem("dashboard");
+            setActiveGroup(null);
+        } else {
+            setActiveItem(null);
+            setActiveGroup(null);
+        }
+    }, [location]);
+
     return (
         <>
             {/*AdSidebar*/}
@@ -34,26 +61,13 @@ const AdSidebar = (props) => {
                 <div className="sidebar-wrapper scrollbar scrollbar-inner">
                     <div className="sidebar-content">
                         <ul className="nav nav-secondary">
-                            <li className="nav-item active">
-                                <a
-                                    data-bs-toggle="collapse"
-                                    href="#dashboard"
-                                    className="collapsed"
-                                    aria-expanded="false"
+                            <li className={`nav-item ${activeItem === "dashboard" ? "active" : ""}`}>
+                                <Link
+                                    to="/admin"
                                 >
                                     <i className="fas fa-home"></i>
-                                    <p>Dashboard</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className="collapse" id="dashboard">
-                                    <ul className="nav nav-collapse">
-                                        <li>
-                                            <a href="../demo1/index.html">
-                                                <span className="sub-item">Dashboard 1</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <p>Trang chủ</p>
+                                </Link>
                             </li>
                             <li className="nav-section">
                                 <span className="sidebar-mini-icon">
@@ -61,22 +75,27 @@ const AdSidebar = (props) => {
                                 </span>
                                 <h4 className="text-section">Components</h4>
                             </li>
-                            <li className="nav-item">
-                                <a data-bs-toggle="collapse" href="#sidebarLayouts">
+                            <li className={`nav-item ${activeGroup === "manageProducts" ? "active" : ""}`}>
+                                <a data-bs-toggle="collapse" href="#manageProducts">
                                     <i className="fas fa-th-list"></i>
-                                    <p>Sidebar Layouts</p>
+                                    <p>Quản lý sản phẩm</p>
                                     <span className="caret"></span>
                                 </a>
-                                <div className="collapse" id="sidebarLayouts">
+                                <div className={`collapse ${activeGroup === "manageProducts" ? "show" : ""}`} id="manageProducts">
                                     <ul className="nav nav-collapse">
-                                        <li>
-                                            <Link to="/admin/products">
-                                                <span className="sub-item">Products</span>
+                                        <li className={`${activeItem === "categories" ? "active" : ""}`}>
+                                            <Link to="/admin/categories">
+                                                <span className="sub-item">Danh mục</span>
                                             </Link>
                                         </li>
-                                        <li>
+                                        <li className={`${activeItem === "products" ? "active" : ""}`}>
+                                            <Link to="/admin/products">
+                                                <span className="sub-item">Sản phẩm</span>
+                                            </Link>
+                                        </li>
+                                        <li className={`${activeItem === "teams" ? "active" : ""}`}>
                                             <Link to="/admin/teams">
-                                                <span className="sub-item">Teams</span>
+                                                <span className="sub-item">Đội bóng</span>
                                             </Link>
                                         </li>
                                     </ul>

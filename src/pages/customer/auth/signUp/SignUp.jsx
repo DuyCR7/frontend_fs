@@ -107,6 +107,7 @@ const SignUp = () => {
                 }
             } catch (error) {
                 console.log("Error: ", error);
+                toast.error(error);
             } finally {
                 setLoading(false);
             }

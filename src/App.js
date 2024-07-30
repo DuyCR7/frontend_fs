@@ -23,6 +23,7 @@ import AdProduct from "./pages/admin/product/AdProduct";
 import ScrollToTop from "./ScrollToTop";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdTeam from "./pages/admin/team/AdTeam";
+import AdCategory from "./pages/admin/category/AdCategory";
 
 const App = () => {
     return (
@@ -37,6 +38,7 @@ const App = () => {
                     </PrivateRoute>
                 }>
                     <Route index element={<AdDashboard />}/>
+                    <Route path="categories" element={<AdCategory />}/>
                     <Route path="products" element={<AdProduct />}/>
                     <Route path="teams" element={<AdTeam />}/>
                 </Route>

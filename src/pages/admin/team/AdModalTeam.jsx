@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Spin } from 'antd';
 import _ from "lodash";
 import {toast} from "react-toastify";
-import {createTeam} from "../../../services/admin/teamService";
+import {createTeam, updateTeam} from "../../../services/admin/teamService";
 
 const AdModalTeam = (props) => {
+
+    const [loading, setLoading] = useState(false);
 
     const defaultTeamData = {
         name: "",
@@ -93,11 +95,24 @@ const AdModalTeam = (props) => {
         }
     }
 
+    useEffect(() => {
+        if(props.actionModalTeam === "EDIT") {
+            setTeamData(props.dataUpdate);
+
+            const image = props.dataUpdate.image ? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.image}` : "";
+            setPreviewImage(image);
+        }
+    }, [props.dataUpdate]);
+
     const handleSubmit = async () => {
         let check = isValidInputs();
         if(check) {
+            setLoading(true);
             try {
-                let res = await createTeam(teamData.name, image);
+                let res = props.actionModalTeam === "CREATE" ?
+                    await createTeam(teamData.name, image)
+                    :
+                    await updateTeam(teamData.id, teamData.name, image);
 
                 if(res && res.EC === 0) {
                     toast.success(res.EM);
@@ -105,6 +120,15 @@ const AdModalTeam = (props) => {
                     setTeamData(defaultTeamData);
                     setImage("");
                     setPreviewImage("");
+
+                    if(props.actionModalTeam === "CREATE") {
+                        props.setCurrentPage(1);
+                        props.setSortConfig({ key: 'id', direction: 'DESC' });
+                        await props.fetchAllTeam(1, props.numRows);
+                    } else {
+                        props.fetchAllTeam(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
+                    }
+
                 } else if (res && res.EC === 1){
                     handleBackendValidationErrors(res.DT, res.EM);
                 } else {
@@ -112,6 +136,9 @@ const AdModalTeam = (props) => {
                 }
             } catch (e) {
                 console.log(e);
+                toast.error(e);
+            } finally {
+                setLoading(false);
             }
         }
     }
@@ -125,12 +152,12 @@ const AdModalTeam = (props) => {
     }
 
     return (
-        <Modal show={props.isShowModalTeam} onHide={() => handleClickCloseModal()} size={"lg"} className="modal-user" centered>
-            {/*<Spin spinning={loading}>*/}
+        <Modal show={props.isShowModalTeam} onHide={() => handleClickCloseModal()} size={"lg"} className="modal-team" centered>
+            <Spin spinning={loading}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <span>
-                            Thêm đội bóng
+                            {props.actionModalTeam === "CREATE" ? "Thêm đội bóng" : "Sửa đội bóng"}
                         </span>
                     </Modal.Title>
                 </Modal.Header>
@@ -141,7 +168,7 @@ const AdModalTeam = (props) => {
                             <input
                                 type="text"
                                 className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
-                                value={teamData.name}
+                                value={teamData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
                             />
                         </div>
@@ -168,7 +195,7 @@ const AdModalTeam = (props) => {
                         Save
                     </Button>
                 </Modal.Footer>
-            {/*</Spin>*/}
+            </Spin>
         </Modal>
     );
 };

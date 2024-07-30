@@ -29,6 +29,7 @@ const AdNavbarHeader = (props) => {
             }
         } catch (error) {
             console.log("Error: ", error);
+            toast.error(error);
         } finally {
             setLoading(false);
         }
@@ -347,7 +348,7 @@ const AdNavbarHeader = (props) => {
                                     />
                                 </div>
                                 <span className="profile-username">
-                                  <span className="op-7">Hi, </span>
+                                  <span className="op-7">Xin chào, </span>
                                   <span className="fw-bold">{user?.username ? user?.username : "User"}</span>
                                 </span>
                             </a>
@@ -357,7 +358,7 @@ const AdNavbarHeader = (props) => {
                                         <div className="user-box">
                                             <div className="avatar-lg">
                                                 <img
-                                                    src={user?.image ? user?.image : ""}
+                                                    src={user?.image ? `${process.env.REACT_APP_URL_BACKEND}/${user?.image}` : ""}
                                                     alt="image profile"
                                                     className="avatar-img rounded"
                                                 />
@@ -368,7 +369,7 @@ const AdNavbarHeader = (props) => {
                                                 <a
                                                     href="profile.html"
                                                     className="btn btn-xs btn-secondary btn-sm"
-                                                >View Profile</a
+                                                >Thông tin</a
                                                 >
                                             </div>
                                         </div>

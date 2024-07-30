@@ -73,6 +73,7 @@ const PasswordReset = (props) => {
             }
         } catch (e) {
             console.log(e);
+            toast.error(e);
             setValidUrl(false);
         } finally {
             setLoadingPage(false);

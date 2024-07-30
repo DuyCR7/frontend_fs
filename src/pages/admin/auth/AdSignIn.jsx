@@ -1,7 +1,7 @@
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { FaEye, FaEyeSlash} from 'react-icons/fa';
 import {useEffect, useState} from 'react';
-import "./AdSignIn.scss";
+import "./adSignIn.scss";
 import { Spin } from 'antd';
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
@@ -100,6 +100,7 @@ const AdSignIn = () => {
                 }
             } catch (error) {
                 console.log("Error: ", error);
+                toast.error(error);
             } finally {
                 setLoading(false);
             }

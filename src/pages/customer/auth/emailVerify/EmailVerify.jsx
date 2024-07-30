@@ -25,6 +25,7 @@ const EmailVerify = (props) => {
             }
         } catch (e) {
             console.log(e);
+            toast.error(e);
             setValidUrl(false);
         } finally {
             setLoading(false);
