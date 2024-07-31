@@ -1,5 +1,5 @@
-.table-team {
-  max-height: 68vh;
+.table-category {
+  max-height: 70vh;
   overflow-y: auto;
 
   .on-top {
@@ -9,7 +9,7 @@
 }
 
 @media (max-width: 576px) {
-  .modal-team {
+  .modal-category {
     .modal-dialog {
       max-width: calc(100% - 50px);
       margin: 0 auto;

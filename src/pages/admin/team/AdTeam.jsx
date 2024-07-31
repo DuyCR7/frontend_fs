@@ -129,19 +129,20 @@ const AdTeam = () => {
                     />
                     <div className="col-md-5 col-1"></div>
                     <button
-                        className="d-flex align-items-center justify-content-center gap-1 col-md-3 col-xl-3 col-5 btn btn-primary"
+                        className="d-flex align-items-center justify-content-center gap-1 col-md-3 col-xl-3 col-5 btn btn-outline-primary"
                         onClick={() => {
                             setIsShowModalTeam(true);
                             setActionModalTeam("CREATE");
                         }}
+                        style={{width: "max-content"}}
                     >
                         <IoAddCircleOutline size={25}/>
-                        <span>Thêm đội bóng</span>
+                        <span className="d-none d-sm-block">Thêm đội bóng</span>
                     </button>
                 </div>
                 <div className="table-team table-responsive">
                     <Spin spinning={loading}>
-                        <table className="table table-striped table-hover">
+                        <table className="table table-hover">
                             <thead className="on-top">
                             <tr className="text-center table-active">
                                 <th scope="col">STT</th>

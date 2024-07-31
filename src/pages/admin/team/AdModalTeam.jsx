@@ -189,10 +189,10 @@ const AdModalTeam = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="dark" onClick={() => handleClickCloseModal()}>
-                        Close
+                        Đóng
                     </Button>
                     <Button variant="primary" onClick={() => handleSubmit()}>
-                        Save
+                        Lưu
                     </Button>
                 </Modal.Footer>
             </Spin>
