@@ -68,6 +68,7 @@ const AdTeam = () => {
             let res = await setActiveTeam(id);
             if (res && res.EC === 0) {
                 await fetchAllTeam(currentPage, numRows, searchKeyword, sortConfig);
+                toast.success(res.EM);
             } else {
                 await fetchAllTeam(currentPage, numRows, searchKeyword, sortConfig);
             }

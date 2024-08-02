@@ -1,23 +1,24 @@
 import React, {useState} from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { Spin } from 'antd';
+import Modal from "react-bootstrap/Modal";
+import {Spin} from "antd";
+import Button from "react-bootstrap/Button";
 import {toast} from "react-toastify";
-import {deleteTeam} from "../../../services/admin/teamService";
+import {deleteCategory} from "../../../services/admin/categoryService";
 
-const AdModalDeleteTeam = (props) => {
+const AdModalDeleteCategory = (props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const confirmDeleteTeam = async () => {
+    const confirmDeleteCategory = async () => {
         setLoading(true);
         try {
-            let res = await deleteTeam(props.dataDelete);
+            let res = await deleteCategory(props.dataDelete);
             if(res && res.EC === 0) {
                 toast.success(res.EM);
                 props.handleCloseModalDelete();
-                props.setCurrentPage(1);
-                await props.fetchAllTeam(1, props.numRows);
+                await props.handelFetchAllCategory();
+                await props.fetchAllParentCategory();
+
             } else {
                 toast.error(res.EM);
             }
@@ -35,12 +36,14 @@ const AdModalDeleteTeam = (props) => {
                     <Modal.Header closeButton>
                         <Modal.Title>Xác nhận xóa</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Bạn có chắc muốn xóa đội bóng: <b>{props.dataDelete.name}</b>?</Modal.Body>
+                    <Modal.Body>
+                        Bạn có chắc muốn xóa danh mục: <b>{props.dataDelete.name}</b> và <b style={{ color: "red" }}>tất cả</b> các danh mục con của nó?
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="dark" onClick={props.handleCloseModalDelete}>
                             Đóng
                         </Button>
-                        <Button variant="danger" onClick={confirmDeleteTeam}>
+                        <Button variant="danger" onClick={confirmDeleteCategory}>
                             Xác nhận
                         </Button>
                     </Modal.Footer>
@@ -50,4 +53,4 @@ const AdModalDeleteTeam = (props) => {
     );
 };
 
-export default AdModalDeleteTeam;
+export default AdModalDeleteCategory;

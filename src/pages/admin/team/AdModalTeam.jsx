@@ -48,8 +48,6 @@ const AdModalTeam = (props) => {
                 setObjCheckInputs({...objCheckInputs, image: true});
             }
         } else {
-            toast.error("Vui lòng chọn hình ảnh!");
-            setObjCheckInputs({...objCheckInputs, image: false});
             setImage("");
 
             _teamData.image = "";

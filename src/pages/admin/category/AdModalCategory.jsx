@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import _ from "lodash";
 import {toast} from "react-toastify";
-import {createCategory, getParentCategory} from "../../../services/admin/categoryService";
+import {createCategory, updateCategory} from "../../../services/admin/categoryService";
 
 const AdModalCategory = (props) => {
 
@@ -16,7 +16,6 @@ const AdModalCategory = (props) => {
         description: ""
     }
 
-    const [listParentCategory, setListParentCategory] = useState([]);
     const [categoryData, setCategoryData] = useState(defaultCategoryData);
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
@@ -51,8 +50,6 @@ const AdModalCategory = (props) => {
                 setObjCheckInputs({...objCheckInputs, image: true});
             }
         } else {
-            toast.error("Vui lòng chọn hình ảnh!");
-            setObjCheckInputs({...objCheckInputs, image: false});
             setImage("");
 
             _categoryData.image = "";
@@ -90,22 +87,18 @@ const AdModalCategory = (props) => {
     }
 
     useEffect(() => {
-        fetchAllParentCategory();
+        props.fetchAllParentCategory();
     }, []);
 
-    const fetchAllParentCategory = async () => {
-        try {
-            let res = await getParentCategory();
-            if(res && res.EC === 0) {
-                if(res.DT && res.DT.length > 0) {
-                    setListParentCategory(res.DT);
-                }
-            }
-        } catch (e) {
-            console.log(e);
-            toast.error(e);
+    useEffect(() => {
+        if(props.actionModalCategory === "EDIT") {
+            setCategoryData(props.dataUpdate);
+
+            const image = props.dataUpdate.image? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.image}` : "";
+            setPreviewImage(image);
+            setImage(props.dataUpdate.image);
         }
-    }
+    }, [props.dataUpdate])
 
     const handleClickCloseModal = () => {
         props.handleCloseModalCategory();
@@ -120,9 +113,12 @@ const AdModalCategory = (props) => {
         if(check) {
             setLoading(true);
             try {
-                let res = await createCategory(categoryData.name, categoryData.parent_id, categoryData.description, image);
+                let res = props.actionModalCategory === "CREATE" ?
+                    await createCategory(categoryData.name, categoryData.parent_id, categoryData.description, image)
+                    :
+                    await updateCategory(categoryData.id, categoryData.name, categoryData.parent_id, categoryData.description, image);
                 if(res && res.EC === 0) {
-                    await fetchAllParentCategory();
+                    await props.fetchAllParentCategory();
                     toast.success(res.EM);
                     props.handleCloseModalCategory();
                     setCategoryData(defaultCategoryData);
@@ -144,6 +140,20 @@ const AdModalCategory = (props) => {
             }
         }
     }
+
+    const renderCategoryOptions = (categories, level = 0) => {
+        return categories.map(category => (
+            <React.Fragment key={category.id}>
+                <option value={category.id}>
+                    {Array(level).fill().map((_, i) => (
+                        '--'
+                    ))}
+                    {category.name}
+                </option>
+                {category.children && category.children.length > 0 && renderCategoryOptions(category.children, level + 1)}
+            </React.Fragment>
+        ));
+    };
 
     return (
         <Modal show={props.isShowModalCategory} onHide={() => handleClickCloseModal()} className="modal-category
@@ -169,21 +179,14 @@ const AdModalCategory = (props) => {
                         </div>
 
                         <div className="col-12 col-sm-6 form-group">
-                            <label>Loại danh mục (<span style={{color: "red"}}>*</span>):</label>
+                            <label>Chọn danh mục cha (<span style={{color: "red"}}>*</span>):</label>
                             <select
                                 className="form-select form-group"
                                 value={categoryData.parent_id || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "parent_id")}
                             >
-                                <option value={0}>--- Danh mục cha ---</option>
-                                {
-                                    listParentCategory && listParentCategory.length > 0 &&
-                                    listParentCategory.map((item, index) => {
-                                        return (
-                                            <option key={`parent-${index}`} value={item.id}>{item.name}</option>
-                                        )
-                                    })
-                                }
+                                <option value={0}>--- Là danh mục gốc ---</option>
+                                {renderCategoryOptions(props.listParentCategory)}
                             </select>
                         </div>
 
