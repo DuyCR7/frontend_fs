@@ -21,7 +21,7 @@ const AdCategory = () => {
     const [filteredCategory, setFilteredCategory] = useState([]);
 
     const [sortKey, setSortKey] = useState('id');
-    const [sortOrder, setSortOrder] = useState('asc');
+    const [sortOrder, setSortOrder] = useState('desc');
 
     const handleSearch = (e) => {
         const keyword = e.target.value.toLowerCase();
@@ -109,7 +109,7 @@ const AdCategory = () => {
     const handleRefresh = () => {
         setSearchKeyword("");
         setSortKey('id');
-        setSortOrder('asc');
+        setSortOrder('desc');
         setFilteredCategory([...listCategory]);
     };
 
@@ -149,15 +149,16 @@ const AdCategory = () => {
         setDataDelete(category);
     }
 
-    const renderCategoryRow = (category, level = 0) => {
+    const renderCategoryRow = (category, level = 0, prefix = "") => {
+        const currentPrefix = prefix ? `${prefix}.${category.id}` : `${category.id}`;
         return (
             <React.Fragment key={category.id}>
                 <tr>
-                    {/*<td className="text-center">{category.id}</td>*/}
+                    <td className="text-center">{currentPrefix}</td>
                     <td className="text-center">{category.id}</td>
                     <td>
                         {Array(level).fill().map((_, i) => (
-                            <TbArrowBarRight key={i} className="mb-1" size={20} />
+                            <TbArrowBarRight key={i} className="mb-1" size={20}/>
                         ))}
                         {category.name}
                     </td>
@@ -191,7 +192,7 @@ const AdCategory = () => {
                         </div>
                     </td>
                 </tr>
-                {category.children && category.children.length > 0 && category.children.map(child => renderCategoryRow(child, level + 1))}
+                {category.children && category.children.length > 0 && category.children.map(child => renderCategoryRow(child, level + 1, `${currentPrefix}`))}
             </React.Fragment>
         );
     }
@@ -233,7 +234,7 @@ const AdCategory = () => {
                         <table className="table table-hover">
                             <thead className="on-top">
                             <tr className="text-center table-active">
-                                {/*<th scope="col">STT</th>*/}
+                                <th scope="col">STT</th>
                                 <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('id')}>
                                     Mã danh mục
                                     {sortKey === 'id' && (sortOrder === 'asc' ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />)}

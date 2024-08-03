@@ -124,7 +124,7 @@ const AdModalTeam = (props) => {
                         props.setSortConfig({ key: 'id', direction: 'DESC' });
                         await props.fetchAllTeam(1, props.numRows);
                     } else {
-                        props.fetchAllTeam(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
+                        await props.fetchAllTeam(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }
 
                 } else if (res && res.EC === 1){
@@ -165,6 +165,7 @@ const AdModalTeam = (props) => {
                             <label>Tên đội bóng (<span style={{color: "red"}}>*</span>):</label>
                             <input
                                 type="text"
+                                placeholder={"Nhập tên đội bóng..."}
                                 className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
                                 value={teamData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
@@ -186,10 +187,10 @@ const AdModalTeam = (props) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="dark" onClick={() => handleClickCloseModal()}>
+                    <Button variant="dark" disabled={loading} onClick={() => handleClickCloseModal()}>
                         Đóng
                     </Button>
-                    <Button variant="primary" onClick={() => handleSubmit()}>
+                    <Button variant="primary" disabled={loading} onClick={() => handleSubmit()}>
                         Lưu
                     </Button>
                 </Modal.Footer>

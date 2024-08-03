@@ -13,11 +13,14 @@ const AdSidebar = (props) => {
         if (path.includes("/admin/categories")) {
             setActiveItem("categories");
             setActiveGroup("manageProducts");
-        } else if (path.includes("/admin/products")) {
-            setActiveItem("products");
-            setActiveGroup("manageProducts");
         } else if (path.includes("/admin/teams")) {
             setActiveItem("teams");
+            setActiveGroup("manageProducts");
+        } else if (path.includes("/admin/sizes-colors")) {
+            setActiveItem("sizes-colors");
+            setActiveGroup("manageProducts");
+        } else if (path.includes("/admin/products")) {
+            setActiveItem("products");
             setActiveGroup("manageProducts");
         } else if (path.includes("/admin")) {
             setActiveItem("dashboard");
@@ -45,7 +48,8 @@ const AdSidebar = (props) => {
                             />
                         </Link>
                         <div className="nav-toggle">
-                            <button className="btn btn-toggle toggle-sidebar">
+                            <button className="btn btn-toggle toggle-sidebar"
+                                    style={{height: "40px", border: "none"}}>
                                 <i className="gg-menu-right"></i>
                             </button>
                             <button className="btn btn-toggle sidenav-toggler">
@@ -69,12 +73,12 @@ const AdSidebar = (props) => {
                                     <p>Trang chủ</p>
                                 </Link>
                             </li>
-                            <li className="nav-section">
-                                <span className="sidebar-mini-icon">
-                                  <i className="fa fa-ellipsis-h"></i>
-                                </span>
-                                <h4 className="text-section">Components</h4>
-                            </li>
+                            {/*<li className="nav-section">*/}
+                            {/*    <span className="sidebar-mini-icon">*/}
+                            {/*      <i className="fa fa-ellipsis-h"></i>*/}
+                            {/*    </span>*/}
+                            {/*    <h4 className="text-section">Components</h4>*/}
+                            {/*</li>*/}
                             <li className={`nav-item ${activeGroup === "manageProducts" ? "active" : ""}`}>
                                 <a data-bs-toggle="collapse" href="#manageProducts">
                                     <i className="fas fa-th-list"></i>
@@ -88,14 +92,19 @@ const AdSidebar = (props) => {
                                                 <span className="sub-item">Danh mục</span>
                                             </Link>
                                         </li>
-                                        <li className={`${activeItem === "products" ? "active" : ""}`}>
-                                            <Link to="/admin/products">
-                                                <span className="sub-item">Sản phẩm</span>
-                                            </Link>
-                                        </li>
                                         <li className={`${activeItem === "teams" ? "active" : ""}`}>
                                             <Link to="/admin/teams">
                                                 <span className="sub-item">Đội bóng</span>
+                                            </Link>
+                                        </li>
+                                        <li className={`${activeItem === "sizes-colors" ? "active" : ""}`}>
+                                            <Link to="/admin/sizes-colors">
+                                                <span className="sub-item">Màu sắc - Size</span>
+                                            </Link>
+                                        </li>
+                                        <li className={`${activeItem === "products" ? "active" : ""}`}>
+                                            <Link to="/admin/products">
+                                                <span className="sub-item">Sản phẩm</span>
                                             </Link>
                                         </li>
                                     </ul>

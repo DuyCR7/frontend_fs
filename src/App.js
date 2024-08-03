@@ -24,6 +24,7 @@ import ScrollToTop from "./ScrollToTop";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdTeam from "./pages/admin/team/AdTeam";
 import AdCategory from "./pages/admin/category/AdCategory";
+import AdSizeColor from "./pages/admin/size-color/AdSizeColor";
 
 const App = () => {
     return (
@@ -39,8 +40,9 @@ const App = () => {
                 }>
                     <Route index element={<AdDashboard />}/>
                     <Route path="categories" element={<AdCategory />}/>
-                    <Route path="products" element={<AdProduct />}/>
                     <Route path="teams" element={<AdTeam />}/>
+                    <Route path="sizes-colors" element={<AdSizeColor />}/>
+                    <Route path="products" element={<AdProduct />}/>
                 </Route>
                 <Route path="/admin/sign-in" element={<AdSignIn />}/>
 

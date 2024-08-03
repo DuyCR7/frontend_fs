@@ -7,7 +7,7 @@ import { MdEdit, MdDelete } from "react-icons/md";
 import { Spin } from 'antd';
 import { GrStatusGood } from "react-icons/gr";
 import { MdOutlineDangerous } from "react-icons/md";
-import { IoAddCircleOutline } from "react-icons/io5";
+import {IoAddCircleOutline, IoReload} from "react-icons/io5";
 import "./adTeam.scss"
 import AdModalDeleteTeam from "./AdModalDeleteTeam";
 import {toast} from "react-toastify";
@@ -117,10 +117,24 @@ const AdTeam = () => {
         setDataDelete(team);
     }
 
+    const handleRefresh = () => {
+        setCurrentPage(1);
+        setSearchKeyword("");
+        setSortConfig({ key: 'id', direction: 'DESC' });
+    }
+
     return (
         <>
             <div className="page-inner">
                 <div className="d-flex align-items-center mb-3">
+                    <button
+                        className="d-flex align-items-center justify-content-center gap-1 col-md-2 col-xl-2 col-5 btn btn-outline-success"
+                        onClick={handleRefresh}
+                        style={{width: "max-content", marginRight: "10px"}}
+                    >
+                        <IoReload size={22}/>
+                        <span className="d-none d-sm-block">Làm mới</span>
+                    </button>
                     <input
                         type="text"
                         className="form-control"

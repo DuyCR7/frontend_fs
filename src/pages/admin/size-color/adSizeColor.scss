@@ -1,0 +1,35 @@
+.table-size {
+  max-height: 68vh;
+  overflow-y: auto;
+
+  .on-top {
+    position: sticky;
+    top: 0;
+  }
+}
+
+.table-color {
+  max-height: 68vh;
+  overflow-y: auto;
+
+  .on-top {
+    position: sticky;
+    top: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-size {
+    .modal-dialog {
+      max-width: calc(100% - 50px);
+      margin: 0 auto;
+    }
+  }
+
+  .modal-color {
+    .modal-dialog {
+      max-width: calc(100% - 50px);
+      margin: 0 auto;
+    }
+  }
+}

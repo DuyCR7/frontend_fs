@@ -32,7 +32,7 @@ const AdModalCategory = (props) => {
         _categoryData[name] = value;
         setCategoryData(_categoryData);
 
-        if(!objCheckInputs.name) {
+        if(name === "name" && !objCheckInputs.name) {
             setObjCheckInputs({...objCheckInputs, name: true});
         }
     }
@@ -172,6 +172,7 @@ const AdModalCategory = (props) => {
                             <label>Tên danh mục (<span style={{color: "red"}}>*</span>):</label>
                             <input
                                 type="text"
+                                placeholder={"Nhập tên danh mục..."}
                                 className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
                                 value={categoryData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
@@ -194,6 +195,7 @@ const AdModalCategory = (props) => {
                         <label>Mô tả:</label>
                             <input
                                 type="text"
+                                placeholder={"Nhập mô tả..."}
                                 className="form-control"
                                 value={categoryData.description || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "description")}
@@ -215,10 +217,10 @@ const AdModalCategory = (props) => {
                     </div>
                 </Modal.Body>
             <Modal.Footer>
-                <Button variant="dark" onClick={() => handleClickCloseModal()}>
+                <Button variant="dark" disabled={loading} onClick={() => handleClickCloseModal()}>
                     Đóng
                 </Button>
-                <Button variant="primary" onClick={() => handleSubmit()}>
+                <Button variant="primary" disabled={loading} onClick={() => handleSubmit()}>
                     Lưu
                 </Button>
             </Modal.Footer>
