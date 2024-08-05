@@ -1,0 +1,64 @@
+.content-product {
+  .img-content {
+    position: relative;
+
+    img {
+      &:hover {
+        border: 3px solid #1178f2;
+      }
+    }
+
+    .img-main {
+      border: 3px solid #1178f2;
+    }
+
+    .img-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      pointer-events: none;
+    }
+  }
+
+  .file-input-group {
+    border-radius: 0.25rem;
+    overflow: hidden;
+    display: flex;
+    gap: 0.5em;
+
+    .file-name-input {
+      border-radius: 0.25rem !important;
+      background-color: #f8f9fa !important;
+      color: #495057;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      border-radius: 0.25rem !important;
+      cursor: pointer;
+      padding: 0.375rem 0.75rem;
+      color: #6c757d;
+      background-color: #e9ecef;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #dde0e3;
+        color: #495057;
+      }
+    }
+  }
+}

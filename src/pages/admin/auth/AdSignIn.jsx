@@ -123,7 +123,7 @@ const AdSignIn = () => {
         if (user && user.isAuthenticated) {
             navigate('/admin')
         }
-    }, []);
+    }, [user, navigate]);
 
     return (
         <Container fluid className="my-5">

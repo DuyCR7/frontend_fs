@@ -175,13 +175,14 @@ const AdModalTeam = (props) => {
                         <div className="col-12 col-sm-6 form-group">
                             <label>Chọn ảnh (<span style={{color: "red"}}>*</span>):</label>
                             <input type="file"
+                                   accept="image/*"
                                    className={objCheckInputs.image ? "form-control" : "form-control is-invalid"}
                                    onChange={(e) => handleUpLoadImage(e)}/>
                         </div>
                         {previewImage === "" || previewImage === null ? ""
                             :
                             <div className="col-12 col-sm-12 form-group mt-3 text-center">
-                                <img src={previewImage} width={150} height={150}/>
+                                <img src={previewImage} width={150} height={150} className="img-thumbnail"/>
                             </div>
                         }
                     </div>
