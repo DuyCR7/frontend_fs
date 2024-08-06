@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import _ from "lodash";
 import {getAllCategory, getAllColor, getAllSize, getAllTeam} from "../../../services/admin/productService";
 import {toast} from "react-toastify";
-import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
-import { MdDeleteOutline } from "react-icons/md";
-import { v4 as uuidv4 } from 'uuid';
+import {FiPlusCircle, FiMinusCircle} from "react-icons/fi";
+import {MdDeleteOutline} from "react-icons/md";
+import {v4 as uuidv4} from 'uuid';
 import "./adProduct.scss";
 
 const AdProduct = () => {
@@ -19,10 +19,12 @@ const AdProduct = () => {
     const [images, setImages] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
 
+    const [errors, setErrors] = useState({});
+
     const fetchAllCategories = async () => {
         try {
             let res = await getAllCategory();
-            if(res && res.EC === 0) {
+            if (res && res.EC === 0) {
                 setCategories(res.DT);
             }
         } catch (error) {
@@ -47,7 +49,7 @@ const AdProduct = () => {
     const fetchAllTeams = async () => {
         try {
             let res = await getAllTeam();
-            if(res && res.EC === 0) {
+            if (res && res.EC === 0) {
                 setTeams(res.DT);
             }
         } catch (error) {
@@ -58,7 +60,7 @@ const AdProduct = () => {
     const fetchAllColors = async () => {
         try {
             let res = await getAllColor();
-            if(res && res.EC === 0) {
+            if (res && res.EC === 0) {
                 setColors(res.DT);
             }
         } catch (error) {
@@ -69,7 +71,7 @@ const AdProduct = () => {
     const fetchAllSizes = async () => {
         try {
             let res = await getAllSize();
-            if(res && res.EC === 0) {
+            if (res && res.EC === 0) {
                 setSizes(res.DT);
             }
         } catch (error) {
@@ -86,8 +88,8 @@ const AdProduct = () => {
 
     const defaultProductData = {
         name: "",
-        price: 0,
-        price_sale: 0,
+        price: "",
+        price_sale: "",
         isSale: false,
         isBestSeller: false,
         isTrending: false,
@@ -98,36 +100,15 @@ const AdProduct = () => {
 
     const [productData, setProductData] = useState(defaultProductData);
 
-    const defaultValidInputs = {
-        name: true,
-        price: true,
-        image: true,
-        categoryId: true,
-        teamId: true,
-    }
-
-    const [objCheckInputs, setObjCheckInputs] = useState(defaultValidInputs);
-
     const handleOnChangeInput = (value, name) => {
         let _productData = _.cloneDeep(productData);
         _productData[name] = value;
         setProductData(_productData);
 
-        if(!objCheckInputs.name) {
-            setObjCheckInputs({...objCheckInputs, name: true});
-        }
-
-        if(!objCheckInputs.price) {
-            setObjCheckInputs({...objCheckInputs, price: true});
-        }
-
-        if(!objCheckInputs.categoryId) {
-            setObjCheckInputs({...objCheckInputs, categoryId: true});
-        }
-
-        if(!objCheckInputs.teamId) {
-            setObjCheckInputs({...objCheckInputs, teamId: true});
-        }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: undefined
+        }));
     }
 
     const handleUploadImages = (e) => {
@@ -148,9 +129,10 @@ const AdProduct = () => {
             _productData.mainImage = newImages[0].file;
             setProductData(_productData);
 
-            if (!objCheckInputs.image) {
-                setObjCheckInputs({ ...objCheckInputs, image: true });
-            }
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                image: undefined
+            }));
         } else {
             setImages([]);
             setPreviewImages([]);
@@ -174,46 +156,11 @@ const AdProduct = () => {
         setProductData(_productData);
     };
 
-    const isValidInputs = () => {
-        setObjCheckInputs(defaultValidInputs);
-        if(!productData.name){
-            setObjCheckInputs({...defaultValidInputs, name: false});
-            toast.error("Vui lòng nhập tên sản phẩm!");
-            return false;
-        }
-
-        if(!productData.price){
-            setObjCheckInputs({...defaultValidInputs, price: false});
-            toast.error("Vui lòng nhập giá sản phẩm!");
-            return false;
-        }
-
-        if(!productData.categoryId || productData.categoryId === "0"){
-            setObjCheckInputs({...defaultValidInputs, categoryId: false});
-            toast.error("Vui lòng chọn danh mục sản phẩm!");
-            return false;
-        }
-
-        if(!productData.teamId || productData.teamId === "0"){
-            setObjCheckInputs({...defaultValidInputs, teamId: false});
-            toast.error("Vui lòng chọn đội bóng!");
-            return false;
-        }
-
-        if(images.length === 0){
-            setObjCheckInputs({...defaultValidInputs, image: false});
-            toast.error("Vui lòng chọn hình ảnh!");
-            return false;
-        }
-
-        return true;
-    }
-
     const [productDetails, setProductDetails] = useState([{
         colorId: '',
         image: null,
         imageName: '',
-        sizes: [{ sizeId: '', quantity: 1 }]
+        sizes: [{sizeId: '', quantity: 1}]
     }]);
 
     const addProductDetail = () => {
@@ -221,14 +168,81 @@ const AdProduct = () => {
             colorId: '',
             image: null,
             imageName: '',
-            sizes: [{ sizeId: '', quantity: 1 }]
+            sizes: [{sizeId: '', quantity: 1}]
         }]);
+    };
+
+    const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
+
+        if (!productData.name.trim()) {
+            newErrors.name = "Vui lòng nhập tên sản phẩm";
+            isValid = false;
+        }
+
+        if (!productData.price || productData.price <= 0) {
+            newErrors.price = "Vui lòng nhập giá sản phẩm hợp lệ";
+            isValid = false;
+        }
+
+        if(productData.price_sale && +productData.price_sale > +productData.price) {
+            newErrors.price_sale = "Giá sale phải nhỏ hơn giá sản phẩm";
+            isValid = false;
+        }
+
+        if (!productData.categoryId || productData.categoryId === "0") {
+            newErrors.categoryId = "Vui lòng chọn danh mục sản phẩm";
+            isValid = false;
+        }
+
+        if (!productData.teamId || productData.teamId === "0") {
+            newErrors.teamId = "Vui lòng chọn đội bóng";
+            isValid = false;
+        }
+
+        if (images.length === 0) {
+            newErrors.image = "Vui lòng chọn hình ảnh";
+            isValid = false;
+        }
+
+        // Validate product details
+        let detailErrors = productDetails.map(detail => {
+            let detailError = {};
+            if (!detail.colorId) {
+                detailError.colorId = "Vui lòng chọn màu sắc";
+                isValid = false;
+            }
+            if (!detail.image) {
+                detailError.image = "Vui lòng chọn hình ảnh";
+                isValid = false;
+            }
+            let sizeErrors = detail.sizes.map(size => {
+                let sizeError = {};
+                if (!size.sizeId) {
+                    sizeError.sizeId = "Vui lòng chọn kích thước";
+                    isValid = false;
+                }
+                if (!size.quantity || size.quantity <= 0) {
+                    sizeError.quantity = "Vui lòng nhập số lượng hợp lệ";
+                    isValid = false;
+                }
+                return sizeError;
+            });
+            detailError.sizes = sizeErrors;
+            return detailError;
+        });
+
+        newErrors.productDetails = detailErrors;
+
+        setErrors(newErrors);
+        return isValid;
     };
 
     const updateProductDetail = (index, field, value) => {
         const updatedDetails = [...productDetails];
         if (field === 'image') {
-            if(value) {
+            if (value) {
                 updatedDetails[index].image = value;
                 updatedDetails[index].imagePreview = URL.createObjectURL(value);
                 updatedDetails[index].imageName = value.name;
@@ -241,17 +255,36 @@ const AdProduct = () => {
             updatedDetails[index][field] = value;
         }
         setProductDetails(updatedDetails);
+
+        setErrors(prevErrors => {
+            const newErrors = { ...prevErrors };
+            if (newErrors.productDetails && newErrors.productDetails[index]) {
+                newErrors.productDetails[index][field] = undefined;
+            }
+            return newErrors;
+        });
     };
 
     const updateSize = (detailIndex, sizeIndex, field, value) => {
         const updatedDetails = [...productDetails];
         updatedDetails[detailIndex].sizes[sizeIndex][field] = value;
         setProductDetails(updatedDetails);
+
+        setErrors(prevErrors => {
+            const newErrors = { ...prevErrors };
+            if (newErrors.productDetails &&
+                newErrors.productDetails[detailIndex] &&
+                newErrors.productDetails[detailIndex].sizes &&
+                newErrors.productDetails[detailIndex].sizes[sizeIndex]) {
+                newErrors.productDetails[detailIndex].sizes[sizeIndex][field] = undefined;
+            }
+            return newErrors;
+        });
     };
 
     const addSize = (detailIndex) => {
         const updatedDetails = [...productDetails];
-        updatedDetails[detailIndex].sizes.push({ sizeId: '', quantity: 1 });
+        updatedDetails[detailIndex].sizes.push({sizeId: '', quantity: 1});
         setProductDetails(updatedDetails);
     };
 
@@ -266,8 +299,12 @@ const AdProduct = () => {
     };
 
     const handleSubmit = async () => {
-        let check = isValidInputs();
+        let check = validateForm();
     }
+
+    const renderError = (error) => {
+        return error ? <div className="text-danger mt-1">{error}</div> : null;
+    };
 
     return (
         <div className="page-inner content-product">
@@ -277,10 +314,11 @@ const AdProduct = () => {
                     <input
                         type="text"
                         placeholder={"Nhập tên sản phẩm..."}
-                        className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
+                        className={errors.name ? "form-control is-invalid" : "form-control"}
                         value={productData.name || ""}
                         onChange={(e) => handleOnChangeInput(e.target.value, "name")}
                     />
+                    {renderError(errors.name)}
                 </div>
 
                 <div className="col-12 col-sm-6 form-group">
@@ -288,11 +326,12 @@ const AdProduct = () => {
                     <input
                         type="number"
                         placeholder={"Nhập giá sản phẩm..."}
-                        className={objCheckInputs.price ? "form-control" : "form-control is-invalid"}
+                        className={errors.price ? "form-control is-invalid" : "form-control"}
                         value={productData.price || ""}
                         onChange={(e) => handleOnChangeInput(e.target.value, "price")}
                         min={1}
                     />
+                    {renderError(errors.price)}
                 </div>
 
                 <div className="col-12 col-sm-6 form-group">
@@ -300,29 +339,31 @@ const AdProduct = () => {
                     <input
                         type="number"
                         placeholder={"Nhập giá sale..."}
-                        className="form-control"
+                        className={errors.price_sale ? "form-control is-invalid" : "form-control"}
                         value={productData.price_sale || ""}
                         onChange={(e) => handleOnChangeInput(e.target.value, "price_sale")}
                         min={1}
                     />
+                    {renderError(errors.price_sale)}
                 </div>
 
                 <div className="col-12 col-sm-6 form-group">
                     <label>Danh mục sản phẩm (<span style={{color: "red"}}>*</span>):</label>
                     <select
-                        className={objCheckInputs.categoryId ? "form-select form-group" : "form-select form-group is-invalid"}
+                        className={errors.categoryId ? "form-select form-group is-invalid" : "form-select form-group"}
                         value={productData.categoryId || ""}
                         onChange={(e) => handleOnChangeInput(e.target.value, "categoryId")}
                     >
                         <option value={0}>--- Chọn danh mục sản phẩm ---</option>
                         {renderCategoryOptions(categories)}
                     </select>
+                    {renderError(errors.categoryId)}
                 </div>
 
                 <div className="col-12 col-sm-6 form-group">
                     <label>Đội bóng (<span style={{color: "red"}}>*</span>):</label>
                     <select
-                        className={objCheckInputs.teamId ? "form-select form-group" : "form-select form-group is-invalid"}
+                            className={errors.teamId ? "form-select form-group is-invalid" : "form-select form-group"}
                         value={productData.teamId || ""}
                         onChange={(e) => handleOnChangeInput(e.target.value, "teamId")}
                     >
@@ -334,68 +375,78 @@ const AdProduct = () => {
                             ))
                         }
                     </select>
+                    {renderError(errors.teamId)}
                 </div>
 
                 <div className="col-12 col-sm-6 form-group">
                     <label>Chọn ảnh (<span style={{color: "red"}}>*</span>):</label>
                     <input type="file"
                            accept="image/*"
-                           className={objCheckInputs.image ? "form-control" : "form-control is-invalid"}
+                           className={errors.image ? "form-control is-invalid" : "form-control"}
                            onChange={(e) => handleUploadImages(e)}
                            multiple
                     />
+                    {renderError(errors.image)}
                 </div>
-                {
-                    previewImages && previewImages.length > 0 &&
-                    <div
-                        className="d-flex flex-wrap gap-3 justify-content-center align-items-center col-12 form-group text-center">
-                        {previewImages.map((preview, index) => (
-                            <div key={index} className="img-content">
-                                <img
-                                    src={preview}
-                                    alt="preview"
-                                    className={`img-thumbnail ${images[index].isMainImage ? 'img-main' : ''}`}
-                                    width={120}
-                                    height={120}
-                                    onClick={() => handleSetMainImage(index)}
-                                    style={{cursor: "pointer"}}/>
-
-                                {images[index].isMainImage && (
-                                    <div className="img-label">
-                                        Ảnh chính
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                }
 
                 <div className="col-12 form-group">
+                    <div
+                        className="form-control d-flex flex-wrap gap-3 preview-images justify-content-center align-items-center text-center">
+                        {
+                            previewImages && previewImages.length > 0 ?
+                                previewImages.map((preview, index) => (
+                                    <div key={index} className="img-content">
+                                        <img
+                                            src={preview}
+                                            alt="preview"
+                                            className={`img-thumbnail ${images[index].isMainImage ? 'img-main' : ''}`}
+                                            width={120}
+                                            height={120}
+                                            onClick={() => handleSetMainImage(index)}
+                                            style={{cursor: "pointer"}}/>
+
+                                        {images[index].isMainImage && (
+                                            <div className="img-label">
+                                                Ảnh chính
+                                            </div>
+                                        )}
+                                    </div>
+                                ))
+                                :
+                                <div className="img-placeholder">
+                                    <span>Ảnh preview</span>
+                                </div>
+                        }
+                    </div>
+                </div>
+
+                <div className="ad-product-detail col-12 form-group">
                     <label className="mb-3">Chi tiết sản phẩm:</label>
                     {productDetails.map((detail, detailIndex) => (
                         <div key={`${detailIndex}`} className="card mb-3">
                             <div className="card-body">
-                                <div className="row">
+                                <div className="color-image row">
                                     <div className="col-sm-5 mb-3">
-                                        <label className="form-label">Màu sắc:</label>
+                                        <label className="form-label">Màu sắc (<span style={{color: "red"}}>*</span>):</label>
                                         <select
                                             value={detail.colorId}
                                             onChange={(e) => updateProductDetail(detailIndex, 'colorId', e.target.value)}
-                                            className="form-group form-select"
+                                            className={errors.productDetails?.[detailIndex]?.colorId ? "form-group form-select is-invalid" : "form-group form-select"}
                                         >
                                             <option value="">--- Chọn màu ---</option>
                                             {colors && colors.map(color => (
                                                 <option key={color.id} value={color.id}>{color.name}</option>
                                             ))}
                                         </select>
+                                        {renderError(errors.productDetails?.[detailIndex]?.colorId)}
                                     </div>
                                     <div className="col-sm-5 mb-3">
-                                        <label className="form-label">Hình ảnh:</label>
+                                        <label className="form-label">Hình ảnh (<span style={{color: "red"}}>*</span>):</label>
                                         <div className="input-group file-input-group">
                                             <input
                                                 type="file"
                                                 onChange={(e) => updateProductDetail(detailIndex, 'image', e.target.files[0])}
-                                                className="form-control d-none"
+                                                className={errors.productDetails?.[detailIndex]?.image ? "form-control d-none is-invalid" : "form-control d-none"}
                                                 id={`file-input-${detailIndex}`}
                                                 accept="image/*"
                                             />
@@ -403,41 +454,48 @@ const AdProduct = () => {
                                                 type="text"
                                                 value={detail.imageName || ''}
                                                 readOnly
-                                                className="form-control file-name-input"
+                                                className={errors.productDetails?.[detailIndex]?.image ? "form-control file-name-input is-invalid" : "form-control file-name-input"}
                                                 placeholder="No file chosen"
                                             />
-                                            <label className="btn btn-outline-secondary" htmlFor={`file-input-${detailIndex}`}>
+                                            <label className={`btn btn-outline-secondary ${errors.productDetails?.[detailIndex]?.image ? 'is-invalid' : ''}`}
+                                                   htmlFor={`file-input-${detailIndex}`}>
                                                 Choose File
                                             </label>
                                         </div>
+                                        {renderError(errors.productDetails?.[detailIndex]?.image)}
                                     </div>
                                     <div className="col-sm-2 d-flex justify-content-center align-items-center">
-                                    {detail.imagePreview && (
-                                            <img
-                                                src={detail.imagePreview}
-                                                alt="Preview"
-                                                className="img-thumbnail"
-                                                width={80}
-                                                height={80}
-                                            />
-                                        )}
+                                        <div className="img-preview-wrapper">
+                                            {detail.imagePreview ? (
+                                                <img
+                                                    src={detail.imagePreview}
+                                                    alt="Preview"
+                                                    className="img-thumbnail"
+                                                    width={80}
+                                                    height={80}
+                                                />
+                                            ) : (
+                                                <span>Ảnh preview</span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
 
-                                <label className="mt-3 mb-2">Kích thước và số lượng:</label>
+                                <label className="mt-3 mb-2">Kích thước và số lượng (<span style={{color: "red"}}>*</span>):</label>
                                 {detail.sizes.map((size, sizeIndex) => (
                                     <div key={sizeIndex} className="row mb-2">
                                         <div className="col-sm-5">
                                             <select
                                                 value={size.sizeId}
                                                 onChange={(e) => updateSize(detailIndex, sizeIndex, 'sizeId', e.target.value)}
-                                                className="form-group form-select"
+                                                className={errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.sizeId ? "form-group form-select is-invalid" : "form-group form-select"}
                                             >
                                                 <option value="">--- Chọn size ---</option>
                                                 {sizes.map(s => (
                                                     <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
                                                 ))}
                                             </select>
+                                            {renderError(errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.sizeId)}
                                         </div>
                                         <div className="col-sm-5 mt-3 mt-sm-0">
                                             <input
@@ -445,9 +503,10 @@ const AdProduct = () => {
                                                 value={size.quantity}
                                                 onChange={(e) => updateSize(detailIndex, sizeIndex, 'quantity', e.target.value)}
                                                 placeholder="Số lượng"
-                                                className="form-control"
+                                                className={errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.quantity ? "form-control is-invalid" : "form-control"}
                                                 min={1}
                                             />
+                                            {renderError(errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.quantity)}
                                         </div>
                                         <div
                                             className="d-flex gap-3 justify-content-end justify-content-sm-center align-items-center col-sm-2 mt-3 mt-sm-0 mb-1 mb-sm-0">
@@ -461,7 +520,8 @@ const AdProduct = () => {
                                     </div>
                                 ))}
 
-                                <div className="d-flex gap-3 justify-content-center justify-content-sm-end align-items-center mt-3">
+                                <div
+                                    className="d-flex gap-3 justify-content-center justify-content-sm-end align-items-center mt-3">
                                     <div>
                                         {productDetails.length > 1 && (
                                             <button

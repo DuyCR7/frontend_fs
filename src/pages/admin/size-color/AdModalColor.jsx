@@ -19,61 +19,50 @@ const AdModalColor = (props) => {
 
     const [colorData, setColorData] = useState(defaultColorData);
 
-    const defaultValidInputs = {
-        name: true,
-        code: true,
-    }
-
-    const [objCheckInputs, setObjCheckInputs] = useState(defaultValidInputs);
+    const [errors, setErrors] = useState({});
 
     const handleOnChangeInput = (value, name) => {
         let _colorData = _.cloneDeep(colorData);
         _colorData[name] = value;
         setColorData(_colorData);
 
-        if (name === "name" && !objCheckInputs.name) {
-            setObjCheckInputs({...objCheckInputs, name: true});
-        }
-        if (name === "code" && !objCheckInputs.code) {
-            setObjCheckInputs({...objCheckInputs, code: true});
-        }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: undefined
+        }));
     }
 
-    const isValidInputs = () => {
-        setObjCheckInputs(defaultValidInputs);
+    const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
 
-        let arr = ['name', 'code'];
-        let check = true;
-
-        for (let i = 0; i < arr.length; i++) {
-            if (!colorData[arr[i]]) {
-                let _objCheckInputs = _.cloneDeep(defaultValidInputs);
-                _objCheckInputs[arr[i]] = false;
-                setObjCheckInputs(_objCheckInputs);
-
-                if (arr[i] === "name") {
-                    toast.error(`Vui lòng nhập tên màu!`);
-                }
-                if (arr[i] === "code") {
-                    toast.error(`Vui lòng nhập mã code!`);
-                }
-
-                check = false;
-                break;
-            }
+        if(!colorData.name.trim()) {
+            newErrors.name = "Vui lòng nhập tên màu!";
+            isValid = false;
         }
-        return check;
+        if(!colorData.code.trim()) {
+            newErrors.code = "Vui lòng nhập mã code!";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
     }
 
     const handleBackendValidationErrors = (errorField, message) => {
-        let _objCheckInputs = _.cloneDeep(defaultValidInputs);
-        _objCheckInputs[errorField] = false;
-        setObjCheckInputs(_objCheckInputs);
-
-        if (errorField === "name" || errorField === "code") {
-            toast.error(message);
+        let newErrors = {};
+        if (errorField && message) {
+            newErrors[errorField] = message;
         }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            ...newErrors
+        }));
     }
+
+    const renderError = (error) => {
+        return error ? <div className="text-danger mt-1">{error}</div> : null;
+    };
 
     useEffect(() => {
         if (props.actionModalColor === "EDIT") {
@@ -82,7 +71,7 @@ const AdModalColor = (props) => {
     }, [props.dataUpdate]);
 
     const handleSubmit = async () => {
-        let check = isValidInputs();
+        let check = validateForm();
         if (check) {
             setLoading(true);
             try {
@@ -94,6 +83,7 @@ const AdModalColor = (props) => {
                     toast.success(res.EM);
                     props.handleCloseModalColor();
                     setColorData(defaultColorData);
+                    setErrors({});
 
                     if (props.actionModalColor === "CREATE") {
                         props.setCurrentPage(1);
@@ -119,7 +109,7 @@ const AdModalColor = (props) => {
 
     const handleClickCloseModal = () => {
         props.handleCloseModalColor();
-        setObjCheckInputs(defaultValidInputs);
+        setErrors({});
         setColorData(defaultColorData);
     }
 
@@ -142,10 +132,11 @@ const AdModalColor = (props) => {
                                 <input
                                     type="text"
                                     placeholder={"Nhập tên màu..."}
-                                    className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
+                                    className={errors.name ? "form-control is-invalid" : "form-control"}
                                     value={colorData.name || ""}
                                     onChange={(e) => handleOnChangeInput(e.target.value, "name")}
                                 />
+                                {renderError(errors.name)}
                             </div>
 
                             <div className="form-group">
@@ -153,10 +144,11 @@ const AdModalColor = (props) => {
                                 <input
                                     type="text"
                                     placeholder={"Nhập mã màu..."}
-                                    className={objCheckInputs.code ? "form-control" : "form-control is-invalid"}
+                                    className={errors.code ? "form-control is-invalid" : "form-control"}
                                     value={colorData.code || ""}
                                     onChange={(e) => handleOnChangeInput(e.target.value, "code")}
                                 />
+                                {renderError(errors.code)}
                             </div>
 
                             <div className="form-group">

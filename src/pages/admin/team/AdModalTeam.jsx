@@ -18,21 +18,17 @@ const AdModalTeam = (props) => {
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
 
-    const defaultValidInputs = {
-        name: true,
-        image: true,
-    }
-
-    const [objCheckInputs, setObjCheckInputs] = useState(defaultValidInputs);
+    const [errors, setErrors] = useState({});
 
     const handleOnChangeInput = (value, name) => {
         let _teamData = _.cloneDeep(teamData);
         _teamData[name] = value;
         setTeamData(_teamData);
 
-        if(!objCheckInputs.name) {
-            setObjCheckInputs({...objCheckInputs, name: true});
-        }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: undefined
+        }));
     }
 
     const handleUpLoadImage = (e) => {
@@ -44,9 +40,10 @@ const AdModalTeam = (props) => {
             _teamData.image = e.target.files[0];
             setTeamData(_teamData);
 
-            if(!objCheckInputs.image) {
-                setObjCheckInputs({...objCheckInputs, image: true});
-            }
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                image: undefined
+            }));
         } else {
             setImage("");
 
@@ -57,41 +54,37 @@ const AdModalTeam = (props) => {
         }
     }
 
-    const isValidInputs = () => {
-        setObjCheckInputs(defaultValidInputs);
+    const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
 
-        let arr = ['name', 'image'];
-        let check = true;
-
-        for (let i = 0; i < arr.length; i++) {
-            if(!teamData[arr[i]]) {
-                let _objCheckInputs = _.cloneDeep(defaultValidInputs);
-                _objCheckInputs[arr[i]] = false;
-                setObjCheckInputs(_objCheckInputs);
-
-                if(arr[i] === "name") {
-                    toast.error(`Vui lòng nhập tên đội bóng!`);
-                }
-                if(arr[i] === "image") {
-                    toast.error(`Vui lòng chọn hình ảnh!`);
-                }
-
-                check = false;
-                break;
-            }
+        if(!teamData.name.trim()) {
+            newErrors.name = "Vui lòng nhập tên đội bóng!";
+            isValid = false;
         }
-        return check;
+
+        if(!image) {
+            newErrors.image = "Vui lòng chọn hình ảnh!";
+            isValid = false;
+        }
+        setErrors(newErrors);
+        return isValid;
     }
 
     const handleBackendValidationErrors = (errorField, message) => {
-        let _objCheckInputs = _.cloneDeep(defaultValidInputs);
-        _objCheckInputs[errorField] = false;
-        setObjCheckInputs(_objCheckInputs);
-
-        if (errorField === "name" || errorField === "image") {
-            toast.error(message);
+        let newErrors = {};
+        if (errorField && message) {
+            newErrors[errorField] = message;
         }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            ...newErrors
+        }));
     }
+
+    const renderError = (error) => {
+        return error ? <div className="text-danger mt-1">{error}</div> : null;
+    };
 
     useEffect(() => {
         if(props.actionModalTeam === "EDIT") {
@@ -103,7 +96,7 @@ const AdModalTeam = (props) => {
     }, [props.dataUpdate]);
 
     const handleSubmit = async () => {
-        let check = isValidInputs();
+        let check = validateForm();
         if(check) {
             setLoading(true);
             try {
@@ -118,6 +111,7 @@ const AdModalTeam = (props) => {
                     setTeamData(defaultTeamData);
                     setImage("");
                     setPreviewImage("");
+                    setErrors({});
 
                     if(props.actionModalTeam === "CREATE") {
                         props.setCurrentPage(1);
@@ -143,10 +137,10 @@ const AdModalTeam = (props) => {
 
     const handleClickCloseModal = () => {
         props.handleCloseModalTeam();
-        setObjCheckInputs(defaultValidInputs);
         setTeamData(defaultTeamData);
         setImage("");
         setPreviewImage("");
+        setErrors({});
     }
 
     return (
@@ -166,18 +160,20 @@ const AdModalTeam = (props) => {
                             <input
                                 type="text"
                                 placeholder={"Nhập tên đội bóng..."}
-                                className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
+                                className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={teamData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
                             />
+                            {renderError(errors.name)}
                         </div>
 
                         <div className="col-12 col-sm-6 form-group">
                             <label>Chọn ảnh (<span style={{color: "red"}}>*</span>):</label>
                             <input type="file"
                                    accept="image/*"
-                                   className={objCheckInputs.image ? "form-control" : "form-control is-invalid"}
+                                   className={errors.image ? "form-control is-invalid" : "form-control"}
                                    onChange={(e) => handleUpLoadImage(e)}/>
+                            {renderError(errors.image)}
                         </div>
                         {previewImage === "" || previewImage === null ? ""
                             :

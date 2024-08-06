@@ -18,61 +18,50 @@ const AdModalSize = (props) => {
 
     const [sizeData, setSizeData] = useState(defaultSizeData);
 
-    const defaultValidInputs = {
-        name: true,
-        code: true,
-    }
-
-    const [objCheckInputs, setObjCheckInputs] = useState(defaultValidInputs);
+    const [errors, setErrors] = useState({});
 
     const handleOnChangeInput = (value, name) => {
         let _sizeData = _.cloneDeep(sizeData);
         _sizeData[name] = value;
         setSizeData(_sizeData);
 
-        if(name === "name" && !objCheckInputs.name) {
-            setObjCheckInputs({...objCheckInputs, name: true});
-        }
-        if(name === "code" && !objCheckInputs.code) {
-            setObjCheckInputs({...objCheckInputs, code: true});
-        }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: undefined
+        }));
     }
 
-    const isValidInputs = () => {
-        setObjCheckInputs(defaultValidInputs);
+    const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
 
-        let arr = ['name', 'code'];
-        let check = true;
-
-        for (let i = 0; i < arr.length; i++) {
-            if(!sizeData[arr[i]]) {
-                let _objCheckInputs = _.cloneDeep(defaultValidInputs);
-                _objCheckInputs[arr[i]] = false;
-                setObjCheckInputs(_objCheckInputs);
-
-                if(arr[i] === "name") {
-                    toast.error(`Vui lòng nhập tên size!`);
-                }
-                if(arr[i] === "code") {
-                    toast.error(`Vui lòng nhập mã code!`);
-                }
-
-                check = false;
-                break;
-            }
+        if(!sizeData.name.trim()) {
+            newErrors.name = "Vui lòng nhập tên size!";
+            isValid = false;
         }
-        return check;
+        if(!sizeData.code.trim()) {
+            newErrors.code = "Vui lòng nhập mã code!";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
     }
 
     const handleBackendValidationErrors = (errorField, message) => {
-        let _objCheckInputs = _.cloneDeep(defaultValidInputs);
-        _objCheckInputs[errorField] = false;
-        setObjCheckInputs(_objCheckInputs);
-
-        if (errorField === "name" || errorField === "code") {
-            toast.error(message);
+        let newErrors = {};
+        if (errorField && message) {
+            newErrors[errorField] = message;
         }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            ...newErrors
+        }));
     }
+
+    const renderError = (error) => {
+        return error ? <div className="text-danger mt-1">{error}</div> : null;
+    };
 
     useEffect(() => {
         if(props.actionModalSize === "EDIT") {
@@ -81,7 +70,7 @@ const AdModalSize = (props) => {
     }, [props.dataUpdate]);
 
     const handleSubmit = async () => {
-        let check = isValidInputs();
+        let check = validateForm();
         if(check) {
             setLoading(true);
             try {
@@ -93,6 +82,7 @@ const AdModalSize = (props) => {
                     toast.success(res.EM);
                     props.handleCloseModalSize();
                     setSizeData(defaultSizeData);
+                    setErrors({});
 
                     if(props.actionModalSize === "CREATE") {
                         props.setCurrentPage(1);
@@ -118,7 +108,7 @@ const AdModalSize = (props) => {
 
     const handleClickCloseModal = () => {
         props.handleCloseModalSize();
-        setObjCheckInputs(defaultValidInputs);
+        setErrors({});
         setSizeData(defaultSizeData);
     }
 
@@ -139,10 +129,11 @@ const AdModalSize = (props) => {
                             <input
                                 type="text"
                                 placeholder={"Nhập tên size..."}
-                                className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
+                                className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={sizeData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
                             />
+                            {renderError(errors.name)}
                         </div>
 
                         <div className="col-12 col-sm-6 form-group">
@@ -150,10 +141,11 @@ const AdModalSize = (props) => {
                             <input
                                 type="text"
                                 placeholder={"Nhập mã size..."}
-                                className={objCheckInputs.code ? "form-control" : "form-control is-invalid"}
+                                className={errors.code ? "form-control is-invalid" : "form-control"}
                                 value={sizeData.code || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "code")}
                             />
+                            {renderError(errors.code)}
                         </div>
 
                         <div className="col-12 form-group">

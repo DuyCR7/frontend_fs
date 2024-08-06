@@ -20,21 +20,17 @@ const AdModalCategory = (props) => {
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
 
-    const defaultValidInputs = {
-        name: true,
-        image: true,
-    }
-
-    const [objCheckInputs, setObjCheckInputs] = useState(defaultValidInputs);
+    const [errors, setErrors] = useState({});
 
     const handleOnChangeInput = (value, name) => {
         let _categoryData = _.cloneDeep(categoryData);
         _categoryData[name] = value;
         setCategoryData(_categoryData);
 
-        if(name === "name" && !objCheckInputs.name) {
-            setObjCheckInputs({...objCheckInputs, name: true});
-        }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: undefined
+        }));
     }
 
     const handleUpLoadImage = (e) => {
@@ -46,9 +42,10 @@ const AdModalCategory = (props) => {
             _categoryData.image = e.target.files[0];
             setCategoryData(_categoryData);
 
-            if(!objCheckInputs.image) {
-                setObjCheckInputs({...objCheckInputs, image: true});
-            }
+            setErrors(prevErrors => ({
+               ...prevErrors,
+                image: undefined
+            }));
         } else {
             setImage("");
 
@@ -59,32 +56,37 @@ const AdModalCategory = (props) => {
         }
     }
 
-    const isValidInputs = () => {
-        setObjCheckInputs(defaultValidInputs);
-        if(!categoryData.name){
-            setObjCheckInputs({...defaultValidInputs, name: false});
-            toast.error("Vui lòng nhập tên danh mục!");
-            return false;
+    const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
+
+        if(!categoryData.name.trim()) {
+            newErrors.name = "Vui lòng nhập tên danh mục!";
+            isValid = false;
         }
 
-        if(!image){
-            setObjCheckInputs({...defaultValidInputs, image: false});
-            toast.error("Vui lòng chọn hình ảnh!");
-            return false;
+        if(!image) {
+            newErrors.image = "Vui lòng chọn hình ảnh!";
+            isValid = false;
         }
-
-        return true;
+        setErrors(newErrors);
+        return isValid;
     }
 
     const handleBackendValidationErrors = (errorField, message) => {
-        let _objCheckInputs = _.cloneDeep(defaultValidInputs);
-        _objCheckInputs[errorField] = false;
-        setObjCheckInputs(_objCheckInputs);
-
-        if (errorField === "name" || errorField === "image") {
-            toast.error(message);
+        let newErrors = {};
+        if (errorField && message) {
+            newErrors[errorField] = message;
         }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            ...newErrors
+        }));
     }
+
+    const renderError = (error) => {
+        return error ? <div className="text-danger mt-1">{error}</div> : null;
+    };
 
     useEffect(() => {
         props.fetchAllParentCategory();
@@ -102,14 +104,14 @@ const AdModalCategory = (props) => {
 
     const handleClickCloseModal = () => {
         props.handleCloseModalCategory();
-        setObjCheckInputs(defaultValidInputs);
         setCategoryData(defaultCategoryData);
         setPreviewImage("");
         setImage("");
+        setErrors({});
     }
 
     const handleSubmit = async () => {
-        let check = isValidInputs();
+        let check = validateForm();
         if(check) {
             setLoading(true);
             try {
@@ -124,6 +126,7 @@ const AdModalCategory = (props) => {
                     setCategoryData(defaultCategoryData);
                     setPreviewImage("");
                     setImage("");
+                    setErrors({});
 
                     await props.handelFetchAllCategory();
                 } else if (res && res.EC === 1) {
@@ -173,10 +176,11 @@ const AdModalCategory = (props) => {
                             <input
                                 type="text"
                                 placeholder={"Nhập tên danh mục..."}
-                                className={objCheckInputs.name ? "form-control" : "form-control is-invalid"}
+                                className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={categoryData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
                             />
+                            {renderError(errors.name)}
                         </div>
 
                         <div className="col-12 col-sm-6 form-group">
@@ -206,8 +210,9 @@ const AdModalCategory = (props) => {
                             <label>Chọn ảnh (<span style={{color: "red"}}>*</span>):</label>
                             <input type="file"
                                    accept="image/*"
-                                   className={objCheckInputs.image ? "form-control" : "form-control is-invalid"}
+                                   className={errors.image ? "form-control is-invalid" : "form-control"}
                                    onChange={(e) => handleUpLoadImage(e)}/>
+                            {renderError(errors.image)}
                         </div>
                         {previewImage === "" || previewImage === null ? ""
                             :
