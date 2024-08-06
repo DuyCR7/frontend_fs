@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import _ from "lodash";
-import {getAllCategory, getAllColor, getAllSize, getAllTeam} from "../../../services/admin/productService";
+import {
+    createProduct,
+    getAllCategory,
+    getAllColor,
+    getAllSize,
+    getAllTeam
+} from "../../../services/admin/productService";
 import {toast} from "react-toastify";
 import {FiPlusCircle, FiMinusCircle} from "react-icons/fi";
 import {MdDeleteOutline} from "react-icons/md";
@@ -90,10 +96,6 @@ const AdProduct = () => {
         name: "",
         price: "",
         price_sale: "",
-        isSale: false,
-        isBestSeller: false,
-        isTrending: false,
-        isActive: true,
         categoryId: 0,
         teamId: 0
     }
@@ -207,33 +209,64 @@ const AdProduct = () => {
         }
 
         // Validate product details
-        let detailErrors = productDetails.map(detail => {
+        let detailErrors = [];
+        let usedColors = new Set();
+
+        productDetails.forEach((detail, detailIndex) => {
             let detailError = {};
             if (!detail.colorId) {
                 detailError.colorId = "Vui lòng chọn màu sắc";
                 isValid = false;
+            } else if (usedColors.has(detail.colorId)) {
+                detailError.colorId = "Màu sắc đã được chọn";
+                isValid = false;
+            } else {
+                usedColors.add(detail.colorId);
             }
+
             if (!detail.image) {
                 detailError.image = "Vui lòng chọn hình ảnh";
                 isValid = false;
             }
-            let sizeErrors = detail.sizes.map(size => {
+
+            let sizeErrors = [];
+            let usedSizes = new Set();
+            detail.sizes.forEach((size, sizeIndex) => {
                 let sizeError = {};
                 if (!size.sizeId) {
                     sizeError.sizeId = "Vui lòng chọn kích thước";
                     isValid = false;
+                } else if (usedSizes.has(size.sizeId)) {
+                    sizeError.sizeId = "Kích thước này đã được chọn cho màu này";
+                    isValid = false;
+                } else {
+                    usedSizes.add(size.sizeId);
                 }
+
                 if (!size.quantity || size.quantity <= 0) {
                     sizeError.quantity = "Vui lòng nhập số lượng hợp lệ";
                     isValid = false;
                 }
-                return sizeError;
+
+                if(Object.keys(sizeError).length > 0) {
+                    sizeErrors[sizeIndex] = sizeError;
+                }
+
             });
-            detailError.sizes = sizeErrors;
-            return detailError;
+
+            if(sizeErrors.length > 0) {
+                detailError.sizes = sizeErrors;
+            }
+
+            if(Object.keys(detailError).length > 0) {
+                detailErrors[detailIndex] = detailError;
+            }
+
         });
 
-        newErrors.productDetails = detailErrors;
+        if(detailErrors.length > 0) {
+            newErrors.productDetails = detailErrors;
+        }
 
         setErrors(newErrors);
         return isValid;
@@ -300,6 +333,25 @@ const AdProduct = () => {
 
     const handleSubmit = async () => {
         let check = validateForm();
+        if(check) {
+            setLoading(true);
+            try {
+                let res = await createProduct(productData.name, productData.price, productData.price_sale,
+                    productData.categoryId, productData.teamId, images, productDetails);
+                if(res && res.EC === 0) {
+                    toast.success(res.EM);
+                } else if (res && res.EC === 1) {
+                    toast.error(res.EM);
+                } else {
+                    toast.error(res.EM);
+                }
+            } catch (e) {
+                console.error(e);
+                toast.error(e);
+            } finally {
+                setLoading(false);
+            }
+        }
     }
 
     const renderError = (error) => {
