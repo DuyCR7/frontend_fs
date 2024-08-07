@@ -162,7 +162,7 @@ const AdTeam = () => {
                             <tr className="text-center table-active">
                                 <th scope="col">STT</th>
                                 <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('id')}>
-                                Mã đội bóng
+                                Mã
                                 {
                                     sortConfig && sortConfig.key === 'id' && sortConfig.direction === 'ASC' &&
                                     <FaLongArrowAltDown />

@@ -159,7 +159,7 @@ const AdSize = () => {
                         <tr className="text-center table-active">
                             <th scope="col">STT</th>
                             <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('id')}>
-                                Mã size
+                                Mã
                                 {
                                     sortConfig && sortConfig.key === 'id' && sortConfig.direction === 'ASC' &&
                                     <FaLongArrowAltDown />

@@ -122,11 +122,7 @@ const AdModalCategory = (props) => {
                 if(res && res.EC === 0) {
                     await props.fetchAllParentCategory();
                     toast.success(res.EM);
-                    props.handleCloseModalCategory();
-                    setCategoryData(defaultCategoryData);
-                    setPreviewImage("");
-                    setImage("");
-                    setErrors({});
+                    handleClickCloseModal();
 
                     await props.handelFetchAllCategory();
                 } else if (res && res.EC === 1) {
@@ -165,7 +161,7 @@ const AdModalCategory = (props) => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <span>
-                            Thêm danh mục
+                            {props.actionModalCategory === "CREATE" ? "Thêm danh mục" : "Sửa danh mục"}
                         </span>
                     </Modal.Title>
                 </Modal.Header>

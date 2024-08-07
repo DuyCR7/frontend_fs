@@ -236,7 +236,7 @@ const AdCategory = () => {
                             <tr className="text-center table-active">
                                 <th scope="col">STT</th>
                                 <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('id')}>
-                                    Mã danh mục
+                                    Mã
                                     {sortKey === 'id' && (sortOrder === 'asc' ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />)}
                                 </th>
                                 <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('name')}>

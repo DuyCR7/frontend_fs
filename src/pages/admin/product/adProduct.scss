@@ -1,3 +1,13 @@
+.table-product {
+  max-height: 68vh;
+  overflow-y: auto;
+
+  .on-top {
+    position: sticky;
+    top: 0;
+  }
+}
+
 .content-product {
   .preview-images {
     border: 1px solid #dee2e6;
@@ -102,6 +112,15 @@
           color: #888;
         }
       }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-product {
+    .modal-dialog {
+      max-width: calc(100% - 50px);
+      margin: 0 auto;
     }
   }
 }

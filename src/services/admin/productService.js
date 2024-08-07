@@ -16,9 +16,10 @@ const getAllSize = () => {
     return axios.get('/api/v1/admin/product/get-size');
 }
 
-const createProduct = (name, price, price_sale, categoryId, teamId, images, productDetails) => {
+const createProduct = (name, description, price, price_sale, categoryId, teamId, images, productDetails) => {
     const data = new FormData();
     data.append("name", name);
+    data.append("description", description);
     data.append("price", price);
     data.append("price_sale", price_sale);
     data.append("categoryId", categoryId);
@@ -44,10 +45,26 @@ const createProduct = (name, price, price_sale, categoryId, teamId, images, prod
     return axios.post("/api/v1/admin/product/create", data);
 }
 
+const getAllProduct = (page, limit, search = "", sort = {}) => {
+    let query = `/api/v1/admin/product/read?page=${page}&limit=${limit}`;
+
+    if (search) {
+        query += `&search=${encodeURIComponent(search)}`;
+    }
+
+    if (sort && sort.key && sort.direction) {
+        const sortQuery = JSON.stringify(sort);
+        query += `&sort=${encodeURIComponent(sortQuery)}`;
+    }
+
+    return axios.get(query);
+}
+
 export {
     getAllCategory,
     getAllTeam,
     getAllColor,
     getAllSize,
-    createProduct
+    createProduct,
+    getAllProduct
 }

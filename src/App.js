@@ -19,12 +19,12 @@ import CartPage from "./pages/customer/shop/cartPage/CartPage";
 import About from "./pages/customer/about/About";
 import Contact from "./pages/customer/contact/Contact";
 import AdDashboard from "./pages/admin/dashboard/AdDashboard";
-import AdProduct from "./pages/admin/product/AdProduct";
 import ScrollToTop from "./ScrollToTop";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdTeam from "./pages/admin/team/AdTeam";
 import AdCategory from "./pages/admin/category/AdCategory";
 import AdSizeColor from "./pages/admin/size-color/AdSizeColor";
+import AdProduct from "./pages/admin/product/AdProduct";
 
 const App = () => {
     return (
