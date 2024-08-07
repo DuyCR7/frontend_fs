@@ -7,9 +7,10 @@ import {FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa";
 import {GrStatusGood} from "react-icons/gr";
 import {MdDelete, MdEdit, MdOutlineDangerous} from "react-icons/md";
 import ReactPaginate from "react-paginate";
-import {getAllProduct} from "../../../services/admin/productService";
+import {getAllProduct, setActiveField} from "../../../services/admin/productService";
 import {toast} from "react-toastify";
 import {formatCurrency} from "../../../utils/formatCurrency";
+import AdModalDeleteProduct from "./AdModalDeleteProduct";
 
 const AdProduct = () => {
 
@@ -69,10 +70,57 @@ const AdProduct = () => {
         fetchData();
     }, [currentPage, numRows, searchKeyword, sortConfig]);
 
+    const toggleProductStatus = async (id, field) => {
+        setLoading(true);
+        try {
+            const validFields = ['isSale', 'isTrending', 'isActive'];
+            if (!validFields.includes(field)) {
+                toast.error("Lỗi, vui lòng thử lại sau!");
+            }
+
+            const res = await setActiveField(id, field);
+            if (res && res.EC === 0) {
+                toast.success(res.EM);
+                await fetchAllProduct(currentPage, numRows, searchKeyword, sortConfig);
+            } else {
+                toast.error(res.EM);
+            }
+
+        } catch (e) {
+            console.error(e);
+            toast.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const [isShowModalProduct, setIsShowModalProduct] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState({});
+
+    const [actionModalProduct, setActionModalProduct] = useState("CREATE");
+
+    const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+    const [dataDelete, setDataDelete] = useState({});
 
     const handleCloseModalProduct = () => {
         setIsShowModalProduct(false);
+        setDataUpdate({});
+    }
+
+    const handleCloseModalDelete = () => {
+        setIsShowModalDelete(false);
+        setDataDelete({});
+    }
+
+    const handleEditProduct = async (product) => {
+        setIsShowModalProduct(true);
+        setActionModalProduct("EDIT");
+        setDataUpdate(product);
+    }
+
+    const handleDeleteProduct = async (product) => {
+        setIsShowModalDelete(true);
+        setDataDelete(product);
     }
 
     const handleRefresh = () => {
@@ -105,7 +153,7 @@ const AdProduct = () => {
                         className="d-flex align-items-center justify-content-center gap-1 col-md-3 col-xl-3 col-5 btn btn-outline-primary"
                         onClick={() => {
                             setIsShowModalProduct(true);
-                            // setActionModalTeam("CREATE");
+                            setActionModalProduct("CREATE");
                         }}
                         style={{width: "max-content"}}
                     >
@@ -157,6 +205,8 @@ const AdProduct = () => {
                                     <>
                                         {
                                             listProduct.map((item, index) => {
+                                                const mainImage = item.Product_Images.find(image => image.isMainImage);
+
                                                 return (
                                                     <tr className="text-center" key={index}>
                                                         <td>{(currentPage - 1) * numRows + index + 1}</td>
@@ -166,38 +216,45 @@ const AdProduct = () => {
                                                         <td>{formatCurrency(item.price_sale)}</td>
                                                         <td>
                                                             <img
-                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}
+                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${mainImage.image}`}
                                                                 width={50} height={50} alt={item.image}/>
                                                         </td>
                                                         <td>
-                                                            {item.isBestSeller ?
-                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}/>
+                                                            {item.isSale ?
+                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
+                                                                              onClick={() => toggleProductStatus(item.id, 'isSale')}/>
                                                                 :
-                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}/>
+                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
+                                                                                    onClick={() => toggleProductStatus(item.id, 'isSale')}/>
                                                             }
                                                         </td>
                                                         <td>
                                                             {item.isTrending ?
-                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}/>
+                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
+                                                                              onClick={() => toggleProductStatus(item.id, 'isTrending')}/>
                                                                 :
-                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"
-                                                                }}/>
+                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
+                                                                                    onClick={() => toggleProductStatus(item.id, 'isTrending')}/>
                                                             }
                                                         </td>
                                                         <td>
                                                             {item.isActive ?
-                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}/>
+                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
+                                                                              onClick={() => toggleProductStatus(item.id, 'isActive')}/>
                                                                 :
-                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}/>
+                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
+                                                                                    onClick={() => toggleProductStatus(item.id, 'isActive')}/>
                                                             }
                                                         </td>
                                                         <td>
                                                             <div className="d-flex justify-content-center gap-2">
                                                                 <MdEdit size={25} title={"Chỉnh sửa"}
                                                                         style={{color: "orange", cursor: "pointer"}}
+                                                                        onClick={() => handleEditProduct(item)}
                                                                 />
                                                                 <MdDelete size={25} title={"Xóa"}
                                                                           style={{color: "red", cursor: "pointer"}}
+                                                                          onClick={() => handleDeleteProduct(item)}
                                                                 />
                                                             </div>
                                                         </td>
@@ -266,6 +323,18 @@ const AdProduct = () => {
                 searchKeyword={searchKeyword}
                 sortConfig={sortConfig}
                 setSortConfig={setSortConfig}
+                setCurrentPage={setCurrentPage}
+                actionModalProduct={actionModalProduct}
+                dataUpdate={dataUpdate}
+            />
+
+            <AdModalDeleteProduct
+                isShowModalDelete={isShowModalDelete}
+                handleCloseModalDelete={handleCloseModalDelete}
+                dataDelete={dataDelete}
+                fetchAllProduct={fetchAllProduct}
+                numRows={numRows}
+                currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
             />
         </>

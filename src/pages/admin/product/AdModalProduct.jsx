@@ -5,7 +5,7 @@ import {
     getAllCategory,
     getAllColor,
     getAllSize,
-    getAllTeam
+    getAllTeam, updateProduct
 } from "../../../services/admin/productService";
 import {toast} from "react-toastify";
 import {FiPlusCircle, FiMinusCircle} from "react-icons/fi";
@@ -165,7 +165,46 @@ const AdModalProduct = (props) => {
         image: null,
         imageName: '',
         sizes: [{sizeId: '', quantity: 1}]
-    }]
+    }];
+
+    useEffect(() => {
+        if(props.actionModalProduct === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
+            const { Product_Images, Product_Details, ...productDataEdit } = props.dataUpdate;
+            // console.log("Product_Images: " , Product_Images);
+            // console.log("Product_Details: " , Product_Details);
+
+            setProductData(productDataEdit);
+
+            let updatedImages = Product_Images.map(img => ({
+                file: null,
+                isMainImage: img.isMainImage,
+                url: `${process.env.REACT_APP_URL_BACKEND}/${img.image}`
+            }));
+            setImages(updatedImages);
+            setPreviewImages(updatedImages.map(img => img.url));
+
+            let updateProductDetails = Object.values(Product_Details.reduce((acc, curr) => {
+                if (!acc[curr.colorId]) {
+                    acc[curr.colorId] = {
+                        colorId: curr.colorId,
+                        image: null,
+                        imageName: "",
+                        imagePreview: `${process.env.REACT_APP_URL_BACKEND}/${curr.image}`,
+                        sizes: []
+                    };
+                }
+                acc[curr.colorId].sizes.push({ sizeId: curr.sizeId, quantity: curr.quantity });
+                return acc;
+            }, {}));
+            setProductDetails(updateProductDetails);
+
+        } else {
+            setProductData(defaultProductData);
+            setImages([]);
+            setPreviewImages([]);
+            setProductDetails([...defauftProductDetails]);
+        }
+    }, [props.actionModalProduct, props.dataUpdate]);
 
     const [productDetails, setProductDetails] = useState(defauftProductDetails);
 
@@ -228,9 +267,11 @@ const AdModalProduct = (props) => {
                 usedColors.add(detail.colorId);
             }
 
-            if (!detail.image) {
-                detailError.image = "Vui lòng chọn hình ảnh";
-                isValid = false;
+            if(props.actionModalProduct === "CREATE") {
+                if (!detail.image) {
+                    detailError.image = "Vui lòng chọn hình ảnh";
+                    isValid = false;
+                }
             }
 
             let sizeErrors = [];
@@ -349,15 +390,23 @@ const AdModalProduct = (props) => {
         if (check) {
             setLoading(true);
             try {
-                let res = await createProduct(productData.name, productData.description, productData.price, productData.price_sale,
-                    productData.categoryId, productData.teamId, images, productDetails);
+                let res = props.actionModalProduct === "CREATE" ?
+                    await createProduct(productData.name, productData.description, productData.price, productData.price_sale,
+                    productData.categoryId, productData.teamId, images, productDetails)
+                    :
+                    await updateProduct(productData.id, productData.name, productData.description, productData.price, productData.price_sale,
+                        productData.categoryId, productData.teamId, images, productDetails);
                 if (res && res.EC === 0) {
                     toast.success(res.EM);
                     handleClickCloseModal();
 
-                    props.setCurrentPage(1);
-                    props.setSortConfig({key: 'id', direction: 'DESC'});
-                    await props.fetchAllProduct(1, props.numRows);
+                    if(props.actionModalProduct === "CREATE") {
+                        props.setCurrentPage(1);
+                        props.setSortConfig({key: 'id', direction: 'DESC'});
+                        await props.fetchAllProduct(1, props.numRows);
+                    } else {
+                        await props.fetchAllProduct(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
+                    }
 
                 } else if (res && res.EC === 1) {
                     toast.error(res.EM);
@@ -384,7 +433,7 @@ const AdModalProduct = (props) => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <span>
-                            Thêm sản phẩm
+                            {props.actionModalProduct === "CREATE" ? "Thêm sản phẩm" : "Sửa sản phẩm"}
                         </span>
                     </Modal.Title>
                 </Modal.Header>
