@@ -67,6 +67,7 @@ const AdModalTeam = (props) => {
             newErrors.image = "Vui lòng chọn hình ảnh!";
             isValid = false;
         }
+
         setErrors(newErrors);
         return isValid;
     }
@@ -87,13 +88,19 @@ const AdModalTeam = (props) => {
     };
 
     useEffect(() => {
-        if(props.actionModalTeam === "EDIT") {
+        if(props.actionModalTeam === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
             setTeamData(props.dataUpdate);
 
             const image = props.dataUpdate.image ? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.image}` : "";
             setPreviewImage(image);
+            setImage(props.dataUpdate.image);
+        } else {
+            setTeamData(defaultTeamData);
+            setImage("");
+            setPreviewImage("");
+            setErrors({});
         }
-    }, [props.dataUpdate]);
+    }, [props.actionModalTeam, props.dataUpdate]);
 
     const handleSubmit = async () => {
         let check = validateForm();
@@ -135,6 +142,14 @@ const AdModalTeam = (props) => {
         }
     }
 
+    const handlePressEnter = (e) => {
+        if (e.key === "Enter") {
+            if (!loading){
+                handleSubmit();
+            }
+        }
+    }
+
     const handleClickCloseModal = () => {
         props.handleCloseModalTeam();
         setTeamData(defaultTeamData);
@@ -163,6 +178,7 @@ const AdModalTeam = (props) => {
                                 className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={teamData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
+                                onKeyPress={(e) => handlePressEnter(e)}
                             />
                             {renderError(errors.name)}
                         </div>
@@ -172,7 +188,8 @@ const AdModalTeam = (props) => {
                             <input type="file"
                                    accept="image/*"
                                    className={errors.image ? "form-control is-invalid" : "form-control"}
-                                   onChange={(e) => handleUpLoadImage(e)}/>
+                                   onChange={(e) => handleUpLoadImage(e)}
+                            />
                             {renderError(errors.image)}
                         </div>
                         {previewImage === "" || previewImage === null ? ""

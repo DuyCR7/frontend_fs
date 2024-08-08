@@ -93,14 +93,19 @@ const AdModalCategory = (props) => {
     }, []);
 
     useEffect(() => {
-        if(props.actionModalCategory === "EDIT") {
+        if(props.actionModalCategory === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
             setCategoryData(props.dataUpdate);
 
             const image = props.dataUpdate.image? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.image}` : "";
             setPreviewImage(image);
             setImage(props.dataUpdate.image);
+        } else {
+            setCategoryData(defaultCategoryData);
+            setPreviewImage("");
+            setImage("");
+            setErrors({});
         }
-    }, [props.dataUpdate])
+    }, [props.actionModalCategory, props.dataUpdate])
 
     const handleClickCloseModal = () => {
         props.handleCloseModalCategory();
@@ -140,6 +145,14 @@ const AdModalCategory = (props) => {
         }
     }
 
+    const handlePressEnter = (e) => {
+        if (e.key === "Enter") {
+            if (!loading){
+                handleSubmit();
+            }
+        }
+    }
+
     const renderCategoryOptions = (categories, level = 0) => {
         return categories.map(category => (
             <React.Fragment key={category.id}>
@@ -175,6 +188,7 @@ const AdModalCategory = (props) => {
                                 className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={categoryData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
+                                onKeyPress={(e) => handlePressEnter(e)}
                             />
                             {renderError(errors.name)}
                         </div>
@@ -199,6 +213,7 @@ const AdModalCategory = (props) => {
                                 className="form-control"
                                 value={categoryData.description || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "description")}
+                                onKeyPress={(e) => handlePressEnter(e)}
                             />
                         </div>
 

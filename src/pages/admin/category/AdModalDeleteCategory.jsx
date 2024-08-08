@@ -37,10 +37,12 @@ const AdModalDeleteCategory = (props) => {
                         <Modal.Title>Xác nhận xóa</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Bạn có chắc muốn xóa danh mục: <b>{props.dataDelete.name}</b> và <b style={{ color: "red" }}>tất cả</b> các danh mục con của nó?
+                        Bạn có chắc muốn xóa danh mục: <b>{props.dataDelete.name}</b> và <b style={{color: "red"}}>tất
+                        cả</b> các danh mục con của nó?
+                        (Bao gồm <b style={{color: "red"}}>tất cả</b> các sản phẩm liên quan)
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="dark" onClick={props.handleCloseModalDelete}>
+                    <Button variant="dark" onClick={props.handleCloseModalDelete}>
                             Đóng
                         </Button>
                         <Button variant="danger" onClick={confirmDeleteCategory}>

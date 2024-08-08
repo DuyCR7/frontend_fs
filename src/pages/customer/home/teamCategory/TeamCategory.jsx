@@ -1,83 +1,57 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
+import "./teamCategory.scss";
+import {getAllTeams} from "../../../../services/customer/homeService";
 
 const subTitle = "ĐẶC SẮC";
 const title = "ĐỘI BÓNG";
 const btnText = "Mua ngay";
 
-const categoryList = [
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        imgAlt: 'category rajibraj91 rajibraj',
-        iconName: 'icofont-brand-windows',
-        title: 'DSLR Camera',
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        imgAlt: 'category rajibraj91 rajibraj',
-        iconName: 'icofont-brand-windows',
-        title: 'Shoes',
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        imgAlt: 'category rajibraj91 rajibraj',
-        iconName: 'icofont-brand-windows',
-        title: 'Photography',
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        imgAlt: 'category rajibraj91 rajibraj',
-        iconName: 'icofont-brand-windows',
-        title: 'Formal Dress',
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        imgAlt: 'category rajibraj91 rajibraj',
-        iconName: 'icofont-brand-windows',
-        title: 'Colorful Bags',
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        imgAlt: 'category rajibraj91 rajibraj',
-        iconName: 'icofont-brand-windows',
-        title: 'AdApp Decor',
-    },
-];
-
 const TeamCategory = () => {
+
+    const [listTeam, setListTeam] = useState([]);
+
+    useEffect(() => {
+        fetchAllTeams();
+    }, []);
+
+    const fetchAllTeams = async () => {
+        try {
+            let res = await getAllTeams();
+            if (res && res.EC === 0) {
+                setListTeam(res.DT);
+            } else {
+                console.log("Error: ", res.EM);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     const navigate = useNavigate();
 
     return (
-        <div className="category-section style-4 padding-tb">
+        <div className="team-category category-section style-4 padding-tb" style={{background: "transparent"}}>
             <div className="container-fluid ps-5 pe-5">
                 {/*section header*/}
                 <div className="section-header text-center">
-                    <span className="subtitle">{subTitle}</span>
+                    <h3 style={{color: "#1178f2"}}>{subTitle}</h3>
                     <h2 className="title">{title}</h2>
                 </div>
 
                 {/*section card*/}
                 <div className="section-wrapper">
-                    <div className="row g-4 justify-content-center row-cols-md-5 row-cols-sm-3 row-cols-1">
+                    <div className="row g-4 justify-content-center row-cols-md-6 row-cols-sm-4 row-cols-1">
                         {
-                            categoryList.map((item, index) => {
+                            listTeam.map((item, index) => {
                                 return (
                                     <div key={index} className="col">
-                                        <Link to="/shop" className="category-item">
-                                            <div className="category-inner">
-                                                {/*image thumbnail*/}
-                                                <div className="category-thumb">
-                                                    <img src={item.imgUrl} alt={item.imgAlt}  />
-                                                </div>
-
-                                                {/*content*/}
-                                                <div className="category-content">
-                                                    <div className="cate-icon" style={{color: "#1877f2", background: "#f0f2f5"}}>
-                                                        <i className={item.iconName}></i>
-                                                    </div>
-                                                    <h6>{item.title}</h6>
-                                                </div>
+                                        <Link to={`/shop/${item.slug}`}
+                                              className="image-team d-flex justify-content-center align-items-center">
+                                            {/*image thumbnail*/}
+                                            <div className="">
+                                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}
+                                                     alt={item.image}/>
                                             </div>
                                         </Link>
                                     </div>

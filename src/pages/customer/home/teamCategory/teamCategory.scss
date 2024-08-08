@@ -1,0 +1,35 @@
+.team-category{
+  .image-team {
+    position: relative;
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%; // Đảm bảo ảnh chiếm toàn bộ diện tích của phần tử chứa
+      height: auto;
+      transition: transform 0.3s ease; // Thêm hiệu ứng mượt mà cho ảnh
+    }
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit; // Đảm bảo nền kế thừa từ phần tử chứa
+      transition: transform 0.8s cubic-bezier(.25,.46,.45,.94); // Hiệu ứng mở rộng khi hover
+      transform-origin: center;
+      z-index: 1; // Đảm bảo ::before nằm trên ảnh
+    }
+
+    &:hover::before {
+      transform: scale(1.1); // Tăng kích thước khi hover
+    }
+
+    &:hover img {
+      transform: scale(1.1); // Tăng kích thước ảnh khi hover
+    }
+  }
+}

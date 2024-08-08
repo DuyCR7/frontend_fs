@@ -64,10 +64,13 @@ const AdModalSize = (props) => {
     };
 
     useEffect(() => {
-        if(props.actionModalSize === "EDIT") {
+        if(props.actionModalSize === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
             setSizeData(props.dataUpdate);
+        } else {
+            setSizeData(defaultSizeData);
+            setErrors({});
         }
-    }, [props.dataUpdate]);
+    }, [props.actionModalSize, props.dataUpdate]);
 
     const handleSubmit = async () => {
         let check = validateForm();
@@ -106,6 +109,14 @@ const AdModalSize = (props) => {
         }
     }
 
+    const handlePressEnter = (e) => {
+        if (e.key === "Enter") {
+            if (!loading){
+                handleSubmit();
+            }
+        }
+    }
+
     const handleClickCloseModal = () => {
         props.handleCloseModalSize();
         setErrors({});
@@ -132,6 +143,7 @@ const AdModalSize = (props) => {
                                 className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={sizeData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
+                                onKeyPress={(e) => handlePressEnter(e)}
                             />
                             {renderError(errors.name)}
                         </div>
@@ -144,6 +156,7 @@ const AdModalSize = (props) => {
                                 className={errors.code ? "form-control is-invalid" : "form-control"}
                                 value={sizeData.code || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "code")}
+                                onKeyPress={(e) => handlePressEnter(e)}
                             />
                             {renderError(errors.code)}
                         </div>
@@ -156,6 +169,7 @@ const AdModalSize = (props) => {
                                 className="form-control"
                                 value={sizeData.description || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "description")}
+                                onKeyPress={(e) => handlePressEnter(e)}
                             />
                         </div>
 

@@ -65,10 +65,13 @@ const AdModalColor = (props) => {
     };
 
     useEffect(() => {
-        if (props.actionModalColor === "EDIT") {
+        if (props.actionModalColor === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
             setColorData(props.dataUpdate);
+        } else {
+            setColorData(defaultColorData);
+            setErrors({});
         }
-    }, [props.dataUpdate]);
+    }, [props.actionModalColor, props.dataUpdate]);
 
     const handleSubmit = async () => {
         let check = validateForm();
@@ -107,6 +110,14 @@ const AdModalColor = (props) => {
         }
     }
 
+    const handlePressEnter = (e) => {
+        if (e.key === "Enter") {
+            if (!loading){
+                handleSubmit();
+            }
+        }
+    }
+
     const handleClickCloseModal = () => {
         props.handleCloseModalColor();
         setErrors({});
@@ -135,6 +146,7 @@ const AdModalColor = (props) => {
                                     className={errors.name ? "form-control is-invalid" : "form-control"}
                                     value={colorData.name || ""}
                                     onChange={(e) => handleOnChangeInput(e.target.value, "name")}
+                                    onKeyPress={(e) => handlePressEnter(e)}
                                 />
                                 {renderError(errors.name)}
                             </div>
@@ -147,6 +159,7 @@ const AdModalColor = (props) => {
                                     className={errors.code ? "form-control is-invalid" : "form-control"}
                                     value={colorData.code || ""}
                                     onChange={(e) => handleOnChangeInput(e.target.value, "code")}
+                                    onKeyPress={(e) => handlePressEnter(e)}
                                 />
                                 {renderError(errors.code)}
                             </div>
@@ -159,6 +172,7 @@ const AdModalColor = (props) => {
                                     className="form-control"
                                     value={colorData.description || ""}
                                     onChange={(e) => handleOnChangeInput(e.target.value, "description")}
+                                    onKeyPress={(e) => handlePressEnter(e)}
                                 />
                             </div>
                         </div>
