@@ -1,0 +1,18 @@
+.table-banner {
+  max-height: 68vh;
+  overflow-y: auto;
+
+  .on-top {
+    position: sticky;
+    top: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-banner {
+    .modal-dialog {
+      max-width: calc(100% - 50px);
+      margin: 0 auto;
+    }
+  }
+}

@@ -37,10 +37,10 @@ const AdModalDeleteProduct = (props) => {
                     </Modal.Header>
                     <Modal.Body>Bạn có chắc muốn xóa sản phẩm: <b>{props.dataDelete.name}</b>?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant="dark" onClick={props.handleCloseModalDelete}>
+                        <Button variant="dark" disabled={loading} onClick={props.handleCloseModalDelete}>
                             Đóng
                         </Button>
-                        <Button variant="danger" onClick={confirmDeleteProduct}>
+                        <Button variant="danger" disabled={loading} onClick={confirmDeleteProduct}>
                             Xác nhận
                         </Button>
                     </Modal.Footer>

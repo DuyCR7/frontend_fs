@@ -42,10 +42,10 @@ const AdModalDeleteCategory = (props) => {
                         (Bao gồm <b style={{color: "red"}}>tất cả</b> các sản phẩm liên quan)
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="dark" onClick={props.handleCloseModalDelete}>
+                    <Button variant="dark" disabled={loading} onClick={props.handleCloseModalDelete}>
                             Đóng
                         </Button>
-                        <Button variant="danger" onClick={confirmDeleteCategory}>
+                        <Button variant="danger" disabled={loading} onClick={confirmDeleteCategory}>
                             Xác nhận
                         </Button>
                     </Modal.Footer>

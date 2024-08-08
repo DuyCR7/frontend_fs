@@ -70,7 +70,7 @@ const AdTeam = () => {
                 await fetchAllTeam(currentPage, numRows, searchKeyword, sortConfig);
                 toast.success(res.EM);
             } else {
-                await fetchAllTeam(currentPage, numRows, searchKeyword, sortConfig);
+                toast.error(res.EM);
             }
         } catch (e) {
             console.error(e);

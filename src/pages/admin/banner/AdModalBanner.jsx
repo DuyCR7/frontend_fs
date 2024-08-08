@@ -1,29 +1,31 @@
 import React, {useEffect, useState} from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { Spin } from 'antd';
+import {Spin} from "antd";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import _ from "lodash";
+import {createBanner, updateBanner} from "../../../services/admin/bannerService";
 import {toast} from "react-toastify";
-import {createTeam, updateTeam} from "../../../services/admin/teamService";
 
-const AdModalTeam = (props) => {
+const AdModalBanner = (props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const defaultTeamData = {
+    const defaultBannerData = {
         name: "",
+        image: "",
+        url: "",
     }
 
-    const [teamData, setTeamData] = useState(defaultTeamData);
+    const [bannerData, setBannerData] = useState(defaultBannerData);
     const [image, setImage] = useState("");
     const [previewImage, setPreviewImage] = useState("");
 
     const [errors, setErrors] = useState({});
 
     const handleOnChangeInput = (value, name) => {
-        let _teamData = _.cloneDeep(teamData);
-        _teamData[name] = value;
-        setTeamData(_teamData);
+        let _bannerData = _.cloneDeep(bannerData);
+        _bannerData[name] = value;
+        setBannerData(_bannerData);
 
         setErrors(prevErrors => ({
             ...prevErrors,
@@ -32,13 +34,13 @@ const AdModalTeam = (props) => {
     }
 
     const handleUpLoadImage = (e) => {
-        let _teamData = _.cloneDeep(teamData);
+        let _bannerData = _.cloneDeep(bannerData);
 
         if (e.target && e.target.files && e.target.files[0]) {
             setImage(e.target.files[0]);
             setPreviewImage(URL.createObjectURL(e.target.files[0]));
-            _teamData.image = e.target.files[0];
-            setTeamData(_teamData);
+            _bannerData.image = e.target.files[0];
+            setBannerData(_bannerData);
 
             setErrors(prevErrors => ({
                 ...prevErrors,
@@ -47,8 +49,8 @@ const AdModalTeam = (props) => {
         } else {
             setImage("");
 
-            _teamData.image = "";
-            setTeamData(_teamData);
+            _bannerData.image = "";
+            setBannerData(_bannerData);
 
             setPreviewImage("");
         }
@@ -58,13 +60,18 @@ const AdModalTeam = (props) => {
         let newErrors = {};
         let isValid = true;
 
-        if(!teamData.name.trim()) {
-            newErrors.name = "Vui lòng nhập tên đội bóng!";
+        if(!bannerData.name.trim()) {
+            newErrors.name = "Vui lòng nhập tên banner!";
             isValid = false;
         }
 
         if(!image) {
             newErrors.image = "Vui lòng chọn hình ảnh!";
+            isValid = false;
+        }
+
+        if(!bannerData.url.trim()) {
+            newErrors.url = "Vui lòng nhập đường dẫn!";
             isValid = false;
         }
 
@@ -88,23 +95,23 @@ const AdModalTeam = (props) => {
     };
 
     useEffect(() => {
-        if(props.actionModalTeam === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
-            setTeamData(props.dataUpdate);
+        if(props.actionModalBanner === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
+            setBannerData(props.dataUpdate);
 
-            const image = props.dataUpdate.image ? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.image}` : "";
+            const image = props.dataUpdate.image? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.image}` : "";
             setPreviewImage(image);
             setImage(props.dataUpdate.image);
         } else {
-            setTeamData(defaultTeamData);
-            setImage("");
+            setBannerData(defaultBannerData);
             setPreviewImage("");
+            setImage("");
             setErrors({});
         }
-    }, [props.actionModalTeam, props.dataUpdate]);
+    }, [props.actionModalBanner, props.dataUpdate]);
 
     const handleClickCloseModal = () => {
-        props.handleCloseModalTeam();
-        setTeamData(defaultTeamData);
+        props.handleCloseModalBanner();
+        setBannerData(defaultBannerData);
         setImage("");
         setPreviewImage("");
         setErrors({});
@@ -115,24 +122,22 @@ const AdModalTeam = (props) => {
         if(check) {
             setLoading(true);
             try {
-                let res = props.actionModalTeam === "CREATE" ?
-                    await createTeam(teamData.name, image)
+                let res = props.actionModalBanner === "CREATE" ?
+                    await createBanner(bannerData.name, image, bannerData.url)
                     :
-                    await updateTeam(teamData.id, teamData.name, image);
-
+                    await updateBanner(bannerData.id, bannerData.name, image, bannerData.url);
                 if(res && res.EC === 0) {
                     toast.success(res.EM);
                     handleClickCloseModal();
 
-                    if(props.actionModalTeam === "CREATE") {
+                    if(props.actionModalBanner === "CREATE") {
                         props.setCurrentPage(1);
-                        props.setSortConfig({ key: 'id', direction: 'DESC' });
-                        await props.fetchAllTeam(1, props.numRows);
+                        props.setSortConfig({key: 'id', direction: 'DESC'});
+                        await props.fetchAllBanner(1, props.numRows);
                     } else {
-                        await props.fetchAllTeam(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
+                        props.fetchAllBanner(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }
-
-                } else if (res && res.EC === 1){
+                } else if (res && res.EC === 1) {
                     handleBackendValidationErrors(res.DT, res.EM);
                 } else {
                     toast.error(res.EM);
@@ -155,24 +160,24 @@ const AdModalTeam = (props) => {
     }
 
     return (
-        <Modal show={props.isShowModalTeam} onHide={() => handleClickCloseModal()} size={"lg"} className="modal-team" centered>
+        <Modal show={props.isShowModalBanner} onHide={() => handleClickCloseModal()} size={"lg"} className="modal-banner" centered>
             <Spin spinning={loading}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <span>
-                            {props.actionModalTeam === "CREATE" ? "Thêm đội bóng" : "Sửa đội bóng"}
+                            {props.actionModalBanner === "CREATE" ? "Thêm banner" : "Sửa banner"}
                         </span>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="content-body row">
                         <div className="col-12 col-sm-6 form-group">
-                            <label>Tên đội bóng (<span style={{color: "red"}}>*</span>):</label>
+                            <label>Tên banner (<span style={{color: "red"}}>*</span>):</label>
                             <input
                                 type="text"
-                                placeholder={"Nhập tên đội bóng..."}
+                                placeholder={"Nhập tên banner..."}
                                 className={errors.name ? "form-control is-invalid" : "form-control"}
-                                value={teamData.name || ""}
+                                value={bannerData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}
                                 onKeyPress={(e) => handlePressEnter(e)}
                             />
@@ -194,6 +199,19 @@ const AdModalTeam = (props) => {
                                 <img src={previewImage} width={150} height={150} className="img-thumbnail"/>
                             </div>
                         }
+
+                        <div className="col-12 form-group">
+                            <label>Đường dẫn (<span style={{color: "red"}}>*</span>):</label>
+                            <input
+                                type="text"
+                                placeholder={"Nhập đường dẫn..."}
+                                className={errors.url ? "form-control is-invalid" : "form-control"}
+                                value={bannerData.url || ""}
+                                onChange={(e) => handleOnChangeInput(e.target.value, "url")}
+                                onKeyPress={(e) => handlePressEnter(e)}
+                            />
+                            {renderError(errors.url)}
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -209,4 +227,4 @@ const AdModalTeam = (props) => {
     );
 };
 
-export default AdModalTeam;
+export default AdModalBanner;

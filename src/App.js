@@ -25,6 +25,7 @@ import AdTeam from "./pages/admin/team/AdTeam";
 import AdCategory from "./pages/admin/category/AdCategory";
 import AdSizeColor from "./pages/admin/size-color/AdSizeColor";
 import AdProduct from "./pages/admin/product/AdProduct";
+import AdBanner from "./pages/admin/banner/AdBanner";
 
 const App = () => {
     return (
@@ -39,6 +40,7 @@ const App = () => {
                     </PrivateRoute>
                 }>
                     <Route index element={<AdDashboard />}/>
+                    <Route path="banners" element={<AdBanner />}/>
                     <Route path="categories" element={<AdCategory />}/>
                     <Route path="teams" element={<AdTeam />}/>
                     <Route path="sizes-colors" element={<AdSizeColor />}/>

@@ -22,6 +22,9 @@ const AdSidebar = (props) => {
         } else if (path.includes("/admin/products")) {
             setActiveItem("products");
             setActiveGroup("manageProducts");
+        } else if (path.includes('/admin/banners')) {
+            setActiveItem("banners");
+            setActiveGroup(null);
         } else if (path.includes("/admin")) {
             setActiveItem("dashboard");
             setActiveGroup(null);
@@ -73,6 +76,12 @@ const AdSidebar = (props) => {
                                     <p>Trang chủ</p>
                                 </Link>
                             </li>
+                            <li className={`nav-item ${activeItem === "banners" ? "active" : ""}`}>
+                                <Link to='/admin/banners'>
+                                    <i className="fas fa-layer-group"></i>
+                                    <p>Quản lý banner</p>
+                                </Link>
+                            </li>
                             {/*<li className="nav-section">*/}
                             {/*    <span className="sidebar-mini-icon">*/}
                             {/*      <i className="fa fa-ellipsis-h"></i>*/}
@@ -81,7 +90,7 @@ const AdSidebar = (props) => {
                             {/*</li>*/}
                             <li className={`nav-item ${activeGroup === "manageProducts" ? "active" : ""}`}>
                                 <a data-bs-toggle="collapse" href="#manageProducts">
-                                    <i className="fas fa-th-list"></i>
+                                    <i className="fas fa-th-large"></i>
                                     <p>Quản lý sản phẩm</p>
                                     <span className="caret"></span>
                                 </a>

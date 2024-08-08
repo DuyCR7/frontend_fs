@@ -37,10 +37,10 @@ const AdModalDeleteSize = (props) => {
                     </Modal.Header>
                     <Modal.Body>Bạn có chắc muốn xóa size: <b>{props.dataDelete.name} ({props.dataDelete.code})</b>?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant="dark" onClick={props.handleCloseModalDelete}>
+                        <Button variant="dark" disabled={loading} onClick={props.handleCloseModalDelete}>
                             Đóng
                         </Button>
-                        <Button variant="danger" onClick={confirmDeleteSize}>
+                        <Button variant="danger" disabled={loading} onClick={confirmDeleteSize}>
                             Xác nhận
                         </Button>
                     </Modal.Footer>
