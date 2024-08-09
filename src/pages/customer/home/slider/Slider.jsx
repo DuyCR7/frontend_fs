@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import {getAllBanners} from "../../../../services/customer/homeService";
+import {Link} from "react-router-dom";
 
 const divStyle = {
     display: 'flex',
@@ -18,19 +20,6 @@ const imageStyle = {
     maxHeight: '100%',
     objectFit: 'contain'
 };
-
-
-const slideImages = [
-    {
-        url: '/admin/assets/img/banner1.png',
-    },
-    {
-        url: '/admin/assets/img/banner2.png',
-    },
-    {
-        url: '/admin/assets/img/banner3.png',
-    },
-];
 
 const buttonStyle = {
     width: "40px",
@@ -57,22 +46,46 @@ const properties = {
 };
 
 const Slider = () => {
+
+    const [listBanner, setListBanner] = useState([]);
+
+    useEffect(() => {
+        fetchAllBanners();
+    }, []);
+
+    const fetchAllBanners = async () => {
+        try {
+            let res = await getAllBanners();
+            if(res && res.EC === 0) {
+                setListBanner(res.DT);
+            } else {
+                console.log('Error:', res.EM);
+            }
+        } catch (e) {
+            console.error('Error fetching banners:', e);
+        }
+    }
+
     return (
         <div className="slide-container" style={{paddingTop: "100px"}}>
-            <Slide duration={2000}
-                   transitionDuration={700}
-                   pauseOnHover={true}
-                   autoplay={true}
-                   infinite={true}
-                   defaultIndex={0}
-                   {...properties}
-            >
-                {slideImages.map((slideImage, index)=> (
-                    <div key={index} style={divStyle}>
-                        <img src={slideImage.url} alt={`Slide ${index}`} style={imageStyle}/>
-                    </div>
-                ))}
-            </Slide>
+            {
+                listBanner.length > 0 && (
+                    <Slide duration={2000}
+                           transitionDuration={700}
+                           pauseOnHover={true}
+                           autoplay={true}
+                           infinite={true}
+                           defaultIndex={0}
+                           {...properties}
+                    >
+                        {listBanner.map((item, index)=> (
+                            <Link to={item.url} key={index} style={divStyle}>
+                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`} alt={`Slide ${index}`} style={imageStyle}/>
+                            </Link>
+                        ))}
+                    </Slide>
+                )
+            }
         </div>
     )
 }

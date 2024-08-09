@@ -26,6 +26,7 @@ import AdCategory from "./pages/admin/category/AdCategory";
 import AdSizeColor from "./pages/admin/size-color/AdSizeColor";
 import AdProduct from "./pages/admin/product/AdProduct";
 import AdBanner from "./pages/admin/banner/AdBanner";
+import AdEvent from "./pages/admin/event/AdEvent";
 
 const App = () => {
     return (
@@ -41,6 +42,7 @@ const App = () => {
                 }>
                     <Route index element={<AdDashboard />}/>
                     <Route path="banners" element={<AdBanner />}/>
+                    <Route path="events" element={<AdEvent />} />
                     <Route path="categories" element={<AdCategory />}/>
                     <Route path="teams" element={<AdTeam />}/>
                     <Route path="sizes-colors" element={<AdSizeColor />}/>

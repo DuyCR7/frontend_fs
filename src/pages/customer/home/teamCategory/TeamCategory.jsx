@@ -43,20 +43,22 @@ const TeamCategory = () => {
                 <div className="section-wrapper">
                     <div className="row g-4 justify-content-center row-cols-lg-6 row-cols-md-5 row-cols-sm-3 row-cols-2">
                         {
-                            listTeam.map((item, index) => {
-                                return (
-                                    <div key={index} className="col">
-                                        <Link to={`/shop/${item.slug}`}
-                                              className="image-team d-flex justify-content-center align-items-center">
-                                            {/*image thumbnail*/}
-                                            <div className="">
-                                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}
-                                                     alt={item.image}/>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                )
-                            })
+                            listTeam.length > 0 && (
+                                listTeam.map((item, index) => {
+                                    return (
+                                        <div key={index} className="col">
+                                            <Link to={`/shop/${item.slug}`}
+                                                  className="image-team d-flex justify-content-center align-items-center">
+                                                {/*image thumbnail*/}
+                                                <div className="">
+                                                    <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}
+                                                         alt={item.image}/>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    )
+                                })
+                            )
                         }
                     </div>
 

@@ -25,6 +25,9 @@ const AdSidebar = (props) => {
         } else if (path.includes('/admin/banners')) {
             setActiveItem("banners");
             setActiveGroup(null);
+        } else if (path.includes('/admin/events')) {
+            setActiveItem("events");
+            setActiveGroup(null);
         } else if (path.includes("/admin")) {
             setActiveItem("dashboard");
             setActiveGroup(null);
@@ -82,6 +85,12 @@ const AdSidebar = (props) => {
                                     <p>Quản lý banner</p>
                                 </Link>
                             </li>
+                            <li className={`nav-item ${activeItem === "events" ? "active" : ""}`}>
+                                <Link to='/admin/events'>
+                                    <i className="fas fa-calendar"></i>
+                                    <p>Quản lý sự kiện</p>
+                                </Link>
+                            </li>
                             {/*<li className="nav-section">*/}
                             {/*    <span className="sidebar-mini-icon">*/}
                             {/*      <i className="fa fa-ellipsis-h"></i>*/}
@@ -94,7 +103,8 @@ const AdSidebar = (props) => {
                                     <p>Quản lý sản phẩm</p>
                                     <span className="caret"></span>
                                 </a>
-                                <div className={`collapse ${activeGroup === "manageProducts" ? "show" : ""}`} id="manageProducts">
+                                <div className={`collapse ${activeGroup === "manageProducts" ? "show" : ""}`}
+                                     id="manageProducts">
                                     <ul className="nav nav-collapse">
                                         <li className={`${activeItem === "categories" ? "active" : ""}`}>
                                             <Link to="/admin/categories">

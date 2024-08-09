@@ -1,36 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import "./countdown.scss";
+import {toast} from "react-toastify";
+import {getNewEvent} from "../../../../services/customer/homeService";
+import {Link} from "react-router-dom";
 
 const Countdown = () => {
 
-    const [backgroundImage, setBackgroundImage] = useState('/admin/assets/img/Countdown.png');
+    const [eventFootball, setEventFootball] = useState({});
+    const [backgroundImage, setBackgroundImage] = useState('');
     const [backgroundHeight, setBackgroundHeight] = useState('300px');
     const [isCountdownFinished, setIsCountdownFinished] = useState(false);
+    const [timeLeft, setTimeLeft] = useState({});
+
+    const fetchNewEvent = async () => {
+        try {
+            let res = await getNewEvent();
+            if(res && res.EC === 0) {
+                setEventFootball(res.DT);
+            } else {
+                toast.error(res.EM);
+            }
+        } catch (e) {
+            console.error(e);
+            toast.error(e);
+        }
+    }
+
+    useEffect(() => {
+        fetchNewEvent();
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
             if (window.matchMedia("(max-width: 768px)").matches) {
-                setBackgroundImage('/admin/assets/img/Countdown2.png');
+                setBackgroundImage(`${process.env.REACT_APP_URL_BACKEND}/${eventFootball.imageMobile}`);
                 setBackgroundHeight('800px');
             } else {
-                setBackgroundImage('/admin/assets/img/Countdown.png');
+                setBackgroundImage(`${process.env.REACT_APP_URL_BACKEND}/${eventFootball.imageDesktop}`);
                 setBackgroundHeight('500px');
             }
         };
 
-        // Initial check
-        handleResize();
-
-        // Add event listener
-        window.addEventListener('resize', handleResize);
+        if (eventFootball.imageMobile && eventFootball.imageDesktop) {
+            handleResize();
+            window.addEventListener('resize', handleResize);
+        }
 
         // Clean up event listener on unmount
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [eventFootball]);
 
     const calculateTimeLeft = () => {
-        const difference = +new Date('2024-07-30 09:37:10') - +new Date();
+        const difference = +new Date(eventFootball.eventDate) - +new Date();
         let timeLeft = {};
 
         if (difference > 0) {
@@ -45,19 +67,20 @@ const Countdown = () => {
         return timeLeft;
     };
 
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setTimeLeft(calculateTimeLeft());
+        if (eventFootball.eventDate) {
+            const timer = setTimeout(() => {
+                const newTimeLeft = calculateTimeLeft();
+                setTimeLeft(newTimeLeft);
 
-            if (Object.keys(timeLeft).length === 0) {
-                setIsCountdownFinished(true);
-            }
-        }, 1000);
+                if (Object.keys(newTimeLeft).length === 0) {
+                    setIsCountdownFinished(true);
+                }
+            }, 1000);
 
-        return () => clearTimeout(timer);
-    });
+            return () => clearTimeout(timer);
+        }
+    }, [eventFootball, timeLeft]);
 
     const timerComponents = [
         { label: 'DAY', value: timeLeft.days },
@@ -105,12 +128,14 @@ const Countdown = () => {
                 }
                 <Col xs={12} lg={6} className="p-4 text-center order-lg-1 order-1">
                     <div className="d-flex flex-column justify-content-center align-items-center flex-wrap">
-                        <h2 style={{color: "white", fontSize: "2.5rem"}}>THE 2024 FA COMMUNITY SHIELD</h2>
+                        <h2 style={{color: "white", fontSize: "2.5rem"}}>{eventFootball.name}</h2>
                         <span style={{
                             color: "white",
                             fontSize: "2rem"
-                        }}>Việc đếm ngược đang diễn ra! Hãy mua bộ sưu tập Community Shield của chúng tôi và chuẩn bị sẵn sàng cho mùa giải Premier League mới.</span>
-                        <button type='button' className='btn btn-outline-primary mt-3'>Mua ngay</button>
+                        }}>{eventFootball.description}</span>
+                        <Link to={`${eventFootball.url}`}>
+                            <button type='button' className='btn btn-outline-primary mt-3'>Mua ngay</button>
+                        </Link>
                     </div>
                 </Col>
             </Row>

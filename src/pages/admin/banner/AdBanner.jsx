@@ -16,7 +16,7 @@ const AdBanner = () => {
     const [listBanner, setListBanner] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
-    const [numRows, setNumRows] = useState(2);
+    const [numRows, setNumRows] = useState(5);
 
     const [searchKeyword, setSearchKeyword] = useState("");
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'DESC' });
@@ -353,9 +353,9 @@ const AdBanner = () => {
                                 <select className="form-select" aria-label="Default select example"
                                         onChange={(e) => handleShowRows(e.target.value)}
                                         value={numRows}>
-                                    <option value={2}>Show 2</option>
-                                    <option value={4}>Show 4</option>
-                                    <option value={6}>Show 6</option>
+                                    <option value={5}>Show 5</option>
+                                    <option value={10}>Show 10</option>
+                                    <option value={15}>Show 15</option>
                                 </select>
                             </div>
                         </div>

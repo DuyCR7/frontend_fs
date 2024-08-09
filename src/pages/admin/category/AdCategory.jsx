@@ -85,7 +85,7 @@ const AdCategory = () => {
         }
     }
 
-    const toggleCateogoryStatus = async (id) => {
+    const toggleCategoryStatus = async (id) => {
         setLoading(true);
         try {
             let res = await setActiveCategory(id);
@@ -170,12 +170,12 @@ const AdCategory = () => {
                         {category.isActive ?
                             <GrStatusGood size={25} title={"Trạng thái"}
                                           style={{color: "green", cursor: "pointer"}}
-                                          onClick={() => toggleCateogoryStatus(category.id)}
+                                          onClick={() => toggleCategoryStatus(category.id)}
                             />
                             :
                             <MdOutlineDangerous size={25} title={"Trạng thái"}
                                                 style={{color: "red", cursor: "pointer"}}
-                                                onClick={() => toggleCateogoryStatus(category.id)}
+                                                onClick={() => toggleCategoryStatus(category.id)}
                             />
                         }
                     </td>
