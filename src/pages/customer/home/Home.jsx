@@ -1,7 +1,7 @@
 import React from 'react';
 import Banner from "./banner/Banner.jsx";
 import TeamCategory from "./teamCategory/TeamCategory.jsx";
-import AllProducts from "./allProducts/AllProducts.jsx";
+import Trending from "./trending/Trending.jsx";
 import Slider from "./slider/Slider";
 import BestSellerClothing from "./bestSellerClothing/BestSellerClothing";
 import Countdown from "./countdown/Countdown";
@@ -18,7 +18,7 @@ const Home = () => {
             <Banner />
             <TeamCategory />
             <Countdown />
-            <AllProducts />
+            <Trending />
             <Category />
             <BestSellerClothing />
             <NationAndHat />

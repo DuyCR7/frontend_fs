@@ -16,9 +16,14 @@ const getNewEvent = () => {
     return axios.get("/api/v1/event/get-new-event");
 }
 
+const getAllTrending = () => {
+    return axios.get("/api/v1/product/get-all-trending");
+}
+
 export {
     getAllBanners,
     getAllTeams,
     getAllParentCategories,
     getNewEvent,
+    getAllTrending,
 }
