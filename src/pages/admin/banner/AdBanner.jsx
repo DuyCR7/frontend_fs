@@ -206,7 +206,7 @@ const AdBanner = () => {
                         className="d-flex align-items-center justify-content-center gap-1 col-md-3 col-xl-3 col-5 btn btn-outline-primary"
                         onClick={() => {
                             setIsShowModalBanner(true);
-                            // setActionModalTeam("CREATE");
+                            setActionModalBanner("CREATE");
                         }}
                         style={{width: "max-content"}}
                     >
@@ -250,7 +250,8 @@ const AdBanner = () => {
                                         <FaLongArrowAltUp/>
                                     }
                                 </th>
-                                <th scope="col">Ảnh</th>
+                                <th scope="col">Ảnh desktop</th>
+                                <th scope="col">Ảnh mobile</th>
                                 <th scope="col">Đường dẫn</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Hành động</th>
@@ -276,7 +277,12 @@ const AdBanner = () => {
                                                         <td>{item.name}</td>
                                                         <td>
                                                             <img
-                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}
+                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.imageDesktop}`}
+                                                                width={50} height={50} alt={item.image}/>
+                                                        </td>
+                                                        <td>
+                                                            <img
+                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.imageMobile}`}
                                                                 width={50} height={50} alt={item.image}/>
                                                         </td>
                                                         <td>{item.url}</td>
@@ -314,7 +320,7 @@ const AdBanner = () => {
                                     :
                                     <>
                                         <tr>
-                                            <td colSpan={8}>Không tìm thấy dữ liệu</td>
+                                            <td colSpan={9}>Không tìm thấy dữ liệu</td>
                                         </tr>
                                     </>
                             }

@@ -1,9 +1,10 @@
 import axios from "../../config/admin/axios";
 
-const createBanner = (name, image, url) => {
+const createBanner = (name, imageDesktop, imageMobile, url) => {
     const data = new FormData();
     data.append("name", name);
-    data.append("image", image);
+    data.append("imageDesktop", imageDesktop);
+    data.append("imageMobile", imageMobile);
     data.append("url", url);
 
     return axios.post("/api/v1/admin/banner/create", data);
@@ -28,11 +29,12 @@ const setActiveBanner = (id) => {
     return axios.put(`/api/v1/admin/banner/set-active`, { id: id });
 }
 
-const updateBanner = (id, name, image, url) => {
+const updateBanner = (id, name, imageDesktop, imageMobile, url) => {
     const data = new FormData();
     data.append("id", id);
     data.append("name", name);
-    data.append("image", image);
+    data.append("imageDesktop", imageDesktop);
+    data.append("imageMobile", imageMobile);
     data.append("url", url);
 
     return axios.put(`/api/v1/admin/banner/update`, data);

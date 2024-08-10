@@ -91,7 +91,7 @@ const Trending = () => {
                             filteredTrending && filteredTrending.length > 0 &&
                             filteredTrending.map((item, index) => {
                                 return (
-                                    <div key={index} className="col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <div key={index} className="col-lg-3 col-md-4 col-6">
                                         <div className="product-item">
                                             {/*product images*/}
                                             <div className="product-thumb">

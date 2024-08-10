@@ -48,9 +48,13 @@ const properties = {
 const Slider = () => {
 
     const [listBanner, setListBanner] = useState([]);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         fetchAllBanners();
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const fetchAllBanners = async () => {
@@ -66,6 +70,10 @@ const Slider = () => {
         }
     }
 
+    const handleResize = () => {
+        setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+
     return (
         <div className="slide-container" style={{paddingTop: "100px"}}>
             {
@@ -80,7 +88,7 @@ const Slider = () => {
                     >
                         {listBanner.map((item, index)=> (
                             <Link to={item.url} key={index} style={divStyle}>
-                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`} alt={`Slide ${index}`} style={imageStyle}/>
+                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${isMobile ? item.imageMobile : item.imageDesktop}`} alt={`Slide ${index}`} style={imageStyle}/>
                             </Link>
                         ))}
                     </Slide>

@@ -17,8 +17,10 @@ const AdModalBanner = (props) => {
     }
 
     const [bannerData, setBannerData] = useState(defaultBannerData);
-    const [image, setImage] = useState("");
-    const [previewImage, setPreviewImage] = useState("");
+    const [imageDesktop, setImageDesktop] = useState("");
+    const [imageMobile, setImageMobile] = useState("");
+    const [previewImageDesktop, setPreviewImageDesktop] = useState("");
+    const [previewImageMobile, setPreviewImageMobile] = useState("");
 
     const [errors, setErrors] = useState({});
 
@@ -33,26 +35,43 @@ const AdModalBanner = (props) => {
         }));
     }
 
-    const handleUpLoadImage = (e) => {
+    const handleUploadImage = (e, name) => {
         let _bannerData = _.cloneDeep(bannerData);
 
         if (e.target && e.target.files && e.target.files[0]) {
-            setImage(e.target.files[0]);
-            setPreviewImage(URL.createObjectURL(e.target.files[0]));
-            _bannerData.image = e.target.files[0];
-            setBannerData(_bannerData);
+            if (name === "imageDesktop") {
+                setImageDesktop(e.target.files[0]);
+                setPreviewImageDesktop(URL.createObjectURL(e.target.files[0]));
+                _bannerData.imageDesktop = e.target.files[0];
 
-            setErrors(prevErrors => ({
-                ...prevErrors,
-                image: undefined
-            }));
+                setErrors(prevErrors => ({
+                    ...prevErrors,
+                    imageDesktop: undefined,
+                }));
+            } else {
+                setImageMobile(e.target.files[0]);
+                setPreviewImageMobile(URL.createObjectURL(e.target.files[0]));
+                _bannerData.imageMobile = e.target.files[0];
+
+                setErrors(prevErrors => ({
+                    ...prevErrors,
+                    imageMobile: undefined,
+                }));
+            }
+
+            setBannerData(_bannerData);
         } else {
-            setImage("");
+            if (name === "imageDesktop") {
+                setImageDesktop("");
+                setPreviewImageDesktop("");
+                _bannerData.imageDesktop = "";
+            } else {
+                setImageMobile("");
+                setPreviewImageMobile("");
+                _bannerData.imageMobile = "";
+            }
 
-            _bannerData.image = "";
             setBannerData(_bannerData);
-
-            setPreviewImage("");
         }
     }
 
@@ -65,13 +84,18 @@ const AdModalBanner = (props) => {
             isValid = false;
         }
 
-        if(!image) {
-            newErrors.image = "Vui lòng chọn hình ảnh!";
+        if(!bannerData.url.trim()) {
+            newErrors.url = "Vui lòng nhập đường dẫn!";
             isValid = false;
         }
 
-        if(!bannerData.url.trim()) {
-            newErrors.url = "Vui lòng nhập đường dẫn!";
+        if (!imageDesktop) {
+            newErrors.imageDesktop = "Vui lòng chọn hình ảnh desktop!";
+            isValid = false;
+        }
+
+        if (!imageMobile) {
+            newErrors.imageMobile = "Vui lòng chọn hình ảnh mobile!";
             isValid = false;
         }
 
@@ -98,13 +122,18 @@ const AdModalBanner = (props) => {
         if(props.actionModalBanner === "EDIT" && props.dataUpdate && Object.keys(props.dataUpdate).length > 0) {
             setBannerData(props.dataUpdate);
 
-            const image = props.dataUpdate.image? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.image}` : "";
-            setPreviewImage(image);
-            setImage(props.dataUpdate.image);
+            const imageDesktop = props.dataUpdate.imageDesktop ? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.imageDesktop}` : "";
+            const imageMobile = props.dataUpdate.imageMobile? `${process.env.REACT_APP_URL_BACKEND}/${props.dataUpdate.imageMobile}` : "";
+            setPreviewImageDesktop(imageDesktop);
+            setPreviewImageMobile(imageMobile);
+            setImageDesktop(props.dataUpdate.imageDesktop);
+            setImageMobile(props.dataUpdate.imageMobile);
         } else {
             setBannerData(defaultBannerData);
-            setPreviewImage("");
-            setImage("");
+            setImageDesktop("");
+            setImageMobile("");
+            setPreviewImageDesktop("");
+            setPreviewImageMobile("");
             setErrors({});
         }
     }, [props.actionModalBanner, props.dataUpdate]);
@@ -112,8 +141,10 @@ const AdModalBanner = (props) => {
     const handleClickCloseModal = () => {
         props.handleCloseModalBanner();
         setBannerData(defaultBannerData);
-        setImage("");
-        setPreviewImage("");
+        setImageDesktop("");
+        setImageMobile("");
+        setPreviewImageDesktop("");
+        setPreviewImageMobile("");
         setErrors({});
     }
 
@@ -123,9 +154,9 @@ const AdModalBanner = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalBanner === "CREATE" ?
-                    await createBanner(bannerData.name, image, bannerData.url)
+                    await createBanner(bannerData.name, imageDesktop, imageMobile, bannerData.url)
                     :
-                    await updateBanner(bannerData.id, bannerData.name, image, bannerData.url);
+                    await updateBanner(bannerData.id, bannerData.name, imageDesktop, imageMobile, bannerData.url);
                 if(res && res.EC === 0) {
                     toast.success(res.EM);
                     handleClickCloseModal();
@@ -185,22 +216,6 @@ const AdModalBanner = (props) => {
                         </div>
 
                         <div className="col-12 col-sm-6 form-group">
-                            <label>Chọn ảnh (<span style={{color: "red"}}>*</span>):</label>
-                            <input type="file"
-                                   accept="image/*"
-                                   className={errors.image ? "form-control is-invalid" : "form-control"}
-                                   onChange={(e) => handleUpLoadImage(e)}
-                            />
-                            {renderError(errors.image)}
-                        </div>
-                        {previewImage === "" || previewImage === null ? ""
-                            :
-                            <div className="col-12 col-sm-12 form-group mt-3 text-center">
-                                <img src={previewImage} width={150} height={150} className="img-thumbnail"/>
-                            </div>
-                        }
-
-                        <div className="col-12 form-group">
                             <label>Đường dẫn (<span style={{color: "red"}}>*</span>):</label>
                             <input
                                 type="text"
@@ -211,6 +226,39 @@ const AdModalBanner = (props) => {
                                 onKeyPress={(e) => handlePressEnter(e)}
                             />
                             {renderError(errors.url)}
+                        </div>
+
+                        <div className="col-12 col-sm-6 form-group">
+                            <label>Chọn ảnh desktop (<span style={{color: "red"}}>*</span>):</label>
+                            <input type="file"
+                                   accept="image/*"
+                                   className={errors.imageDesktop ? "form-control is-invalid" : "form-control"}
+                                   onChange={(e) => handleUploadImage(e, "imageDesktop")}/>
+                            {renderError(errors.imageDesktop)}
+                        </div>
+
+                        <div className="col-12 col-sm-6 form-group">
+                            <label>Chọn ảnh mobile (<span style={{color: "red"}}>*</span>):</label>
+                            <input type="file"
+                                   accept="image/*"
+                                   className={errors.imageMobile ? "form-control is-invalid" : "form-control"}
+                                   onChange={(e) => handleUploadImage(e, "imageMobile")}/>
+                            {renderError(errors.imageMobile)}
+                        </div>
+
+                        <div className="col-12 col-sm-6 form-group mt-3 text-center">
+                            {previewImageDesktop === "" || previewImageDesktop === null ? ""
+                                :
+                                <img src={previewImageDesktop} width={150} height={150} className="img-thumbnail"/>
+                            }
+                        </div>
+
+
+                        <div className="col-12 col-sm-6 form-group mt-3 text-center">
+                            {previewImageMobile === "" || previewImageMobile === null ? ""
+                                :
+                                <img src={previewImageMobile} width={150} height={150} className="img-thumbnail"/>
+                            }
                         </div>
                     </div>
                 </Modal.Body>

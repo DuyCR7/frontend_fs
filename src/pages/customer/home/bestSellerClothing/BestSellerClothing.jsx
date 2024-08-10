@@ -123,7 +123,7 @@ const BestSellerClothing = () => {
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 576) {
-                setSlidesToShow(1);
+                setSlidesToShow(2);
             } else if (window.innerWidth <= 768) {
                 setSlidesToShow(2);
             } else if (window.innerWidth <= 1024) {
@@ -154,7 +154,7 @@ const BestSellerClothing = () => {
                 </div>
 
                 <div className={`shop-page`}>
-                    <div className={`shop-product-wrap row justify-content-center grid ps-3 pe-3`}>
+                    <div className={`shop-product-wrap row justify-content-center grid`}>
                         <Slide duration={5000}
                                transitionDuration={700}
                                pauseOnHover={true}
