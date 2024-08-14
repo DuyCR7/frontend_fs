@@ -3,18 +3,18 @@ import {Link} from "react-router-dom";
 import Rating from "../../components/rating/Rating.jsx";
 
 const ProductCards = ({GridList, products}) => {
-
     return (
         <div className={`shop-product-wrap row justify-content-center ${GridList ? "grid" : "list"}`}>
             {
                 products.map((item, index) => {
+
                     return (
                         <div key={index} className="col-lg-4 col-md-6 col-12">
                             <div className="product-item">
                                 {/*product images*/}
                                 <div className="product-thumb">
                                     <div className="pro-thumb">
-                                        <img src={item.img} alt={item.img}/>
+                                        <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`} alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}/>
                                     </div>
 
                                     {/*product action links*/}
@@ -35,7 +35,7 @@ const ProductCards = ({GridList, products}) => {
                                     <p className="productRating">
                                         <Rating/>
                                     </p>
-                                    <h6>${item.price}</h6>
+                                    <h6>{item.isSale ? item.price_sale : item.price}</h6>
                                 </div>
                             </div>
 
@@ -44,7 +44,7 @@ const ProductCards = ({GridList, products}) => {
                                 {/*product images*/}
                                 <div className="product-thumb">
                                     <div className="pro-thumb">
-                                        <img src={item.img} alt={item.img}/>
+                                        <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`} alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`} />
                                     </div>
 
                                     {/*product action links*/}
@@ -65,7 +65,7 @@ const ProductCards = ({GridList, products}) => {
                                     <p className="productRating">
                                         <Rating/>
                                     </p>
-                                    <h6>${item.price}</h6>
+                                    <h6>{item.isSale ? item.price_sale : item.price}</h6>
                                 </div>
                             </div>
                         </div>

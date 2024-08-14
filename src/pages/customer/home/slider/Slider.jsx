@@ -14,7 +14,7 @@ const divStyle = {
 };
 
 const imageStyle = {
-    width: 'auto',
+    width: '100%',
     height: 'auto',
     maxWidth: '100%',
     maxHeight: '100%',
