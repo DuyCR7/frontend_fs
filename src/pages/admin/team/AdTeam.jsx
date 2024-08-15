@@ -11,6 +11,7 @@ import {IoAddCircleOutline, IoReload} from "react-icons/io5";
 import "./adTeam.scss"
 import AdModalDeleteTeam from "./AdModalDeleteTeam";
 import {toast} from "react-toastify";
+import useDebounce from "../../../utils/useDebounce";
 
 const AdTeam = () => {
 
@@ -21,6 +22,8 @@ const AdTeam = () => {
     const [numRows, setNumRows] = useState(5);
 
     const [searchKeyword, setSearchKeyword] = useState("");
+    const debouncedSearchInput = useDebounce(searchKeyword, 500);
+
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'DESC' });
 
     const handlePageClick = async (event) => {
@@ -49,7 +52,7 @@ const AdTeam = () => {
     const fetchAllTeam = async (currentPage, numRows, searchKeyword = "", sortConfig = {key: 'id', direction: 'DESC'}) => {
         setLoading(true);
         try {
-            let res = await getAllTeam(currentPage, numRows, searchKeyword, sortConfig);
+            let res = await getAllTeam(currentPage, numRows, searchKeyword.trim(), sortConfig);
             if (res && res.EC === 0) {
                 setListTeam(res.DT.teams);
                 setTotalPage(res.DT.totalPages);
@@ -67,7 +70,7 @@ const AdTeam = () => {
         try {
             let res = await setActiveTeam(id);
             if (res && res.EC === 0) {
-                await fetchAllTeam(currentPage, numRows, searchKeyword, sortConfig);
+                await fetchAllTeam(currentPage, numRows, debouncedSearchInput, sortConfig);
                 toast.success(res.EM);
             } else {
                 toast.error(res.EM);
@@ -82,11 +85,11 @@ const AdTeam = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchAllTeam(currentPage, numRows, searchKeyword, sortConfig);
+            await fetchAllTeam(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
         fetchData();
-    }, [currentPage, numRows, searchKeyword, sortConfig]);
+    }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const [isShowModalTeam, setIsShowModalTeam] = useState(false);
     const [dataUpdate, setDataUpdate] = useState({});
@@ -283,7 +286,7 @@ const AdTeam = () => {
                 fetchAllTeam={fetchAllTeam}
                 numRows={numRows}
                 currentPage={currentPage}
-                searchKeyword={searchKeyword}
+                searchKeyword={debouncedSearchInput}
                 sortConfig={sortConfig}
                 setSortConfig={setSortConfig}
                 setCurrentPage={setCurrentPage}

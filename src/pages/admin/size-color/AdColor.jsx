@@ -9,6 +9,7 @@ import {MdDelete, MdEdit, MdOutlineDangerous} from "react-icons/md";
 import ReactPaginate from "react-paginate";
 import {toast} from "react-toastify";
 import AdModalDeleteColor from "./AdModalDeleteColor";
+import useDebounce from "../../../utils/useDebounce";
 
 const AdColor = () => {
 
@@ -19,6 +20,8 @@ const AdColor = () => {
     const [numRows, setNumRows] = useState(5);
 
     const [searchKeyword, setSearchKeyword] = useState("");
+    const debouncedSearchInput = useDebounce(searchKeyword, 500);
+
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'DESC' });
 
     const handlePageClick = async (event) => {
@@ -47,7 +50,7 @@ const AdColor = () => {
     const fetchAllColor = async (currentPage, numRows, searchKeyword = "", sortConfig = {key: "id", direction: "DESC"}) => {
         setLoading(true);
         try {
-            let res = await getAllColor(currentPage, numRows, searchKeyword, sortConfig);
+            let res = await getAllColor(currentPage, numRows, searchKeyword.trim(), sortConfig);
             if (res && res.EC === 0) {
                 setListColor(res.DT.colors);
                 setTotalPage(res.DT.totalPages);
@@ -64,10 +67,10 @@ const AdColor = () => {
         try {
             let res = await setActiveColor(id);
             if (res && res.EC === 0) {
-                await fetchAllColor(currentPage, numRows, searchKeyword, sortConfig);
+                await fetchAllColor(currentPage, numRows, debouncedSearchInput, sortConfig);
                 toast.success(res.EM);
             } else {
-                await fetchAllColor(currentPage, numRows, searchKeyword, sortConfig);
+                await fetchAllColor(currentPage, numRows, debouncedSearchInput, sortConfig);
             }
         } catch (e) {
             console.error(e);
@@ -79,11 +82,11 @@ const AdColor = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchAllColor(currentPage, numRows, searchKeyword, sortConfig);
+            await fetchAllColor(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
         fetchData();
-    }, [currentPage, numRows, searchKeyword, sortConfig]);
+    }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const [isShowModalColor, setIsShowModalColor] = useState(false);
     const [dataUpdate, setDataUpdate] = useState({});
@@ -299,7 +302,7 @@ const AdColor = () => {
                 fetchAllColor={fetchAllColor}
                 numRows={numRows}
                 currentPage={currentPage}
-                searchKeyword={searchKeyword}
+                searchKeyword={debouncedSearchInput}
                 sortConfig={sortConfig}
                 setSortConfig={setSortConfig}
                 setCurrentPage={setCurrentPage}

@@ -1,5 +1,5 @@
 import React from 'react';
-import Banner from "./banner/Banner.jsx";
+import Search from "./search/Search.jsx";
 import TeamCategory from "./teamCategory/TeamCategory.jsx";
 import Trending from "./trending/Trending.jsx";
 import Slider from "./slider/Slider";
@@ -15,7 +15,7 @@ const Home = () => {
     return (
         <div>
             <Slider />
-            <Banner />
+            <Search />
             <TeamCategory />
             <Countdown />
             <Trending />

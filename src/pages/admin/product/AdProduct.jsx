@@ -11,6 +11,7 @@ import {getAllProduct, setActiveField} from "../../../services/admin/productServ
 import {toast} from "react-toastify";
 import {formatCurrency} from "../../../utils/formatCurrency";
 import AdModalDeleteProduct from "./AdModalDeleteProduct";
+import useDebounce from "../../../utils/useDebounce";
 
 const AdProduct = () => {
 
@@ -21,6 +22,8 @@ const AdProduct = () => {
     const [numRows, setNumRows] = useState(5);
 
     const [searchKeyword, setSearchKeyword] = useState("");
+    const debouncedSearchInput = useDebounce(searchKeyword, 500);
+
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'DESC' });
 
     const handlePageClick = async (event) => {
@@ -49,7 +52,7 @@ const AdProduct = () => {
     const fetchAllProduct = async (currentPage, numRows, searchKeyword = "", sortConfig = {key: 'id', direction: 'DESC'}) => {
         setLoading(true);
         try {
-            let res = await getAllProduct(currentPage, numRows, searchKeyword, sortConfig);
+            let res = await getAllProduct(currentPage, numRows, searchKeyword.trim(), sortConfig);
             if (res && res.EC === 0) {
                 setListProduct(res.DT.products);
                 setTotalPage(res.DT.totalPages);
@@ -64,11 +67,11 @@ const AdProduct = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchAllProduct(currentPage, numRows, searchKeyword, sortConfig);
+            await fetchAllProduct(currentPage, numRows, debouncedSearchInput, sortConfig);
         }
 
         fetchData();
-    }, [currentPage, numRows, searchKeyword, sortConfig]);
+    }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const toggleProductStatus = async (id, field) => {
         setLoading(true);
@@ -81,7 +84,7 @@ const AdProduct = () => {
             const res = await setActiveField(id, field);
             if (res && res.EC === 0) {
                 toast.success(res.EM);
-                await fetchAllProduct(currentPage, numRows, searchKeyword, sortConfig);
+                await fetchAllProduct(currentPage, numRows, debouncedSearchInput, sortConfig);
             } else {
                 toast.error(res.EM);
             }
@@ -320,7 +323,7 @@ const AdProduct = () => {
                 fetchAllProduct={fetchAllProduct}
                 numRows={numRows}
                 currentPage={currentPage}
-                searchKeyword={searchKeyword}
+                searchKeyword={debouncedSearchInput}
                 sortConfig={sortConfig}
                 setSortConfig={setSortConfig}
                 setCurrentPage={setCurrentPage}

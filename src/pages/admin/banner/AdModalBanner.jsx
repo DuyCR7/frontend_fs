@@ -80,7 +80,7 @@ const AdModalBanner = (props) => {
         let isValid = true;
 
         if(!bannerData.name.trim()) {
-            newErrors.name = "Vui lòng nhập tên banner!";
+            newErrors.name = "Vui lòng nhập tên search!";
             isValid = false;
         }
 
@@ -196,7 +196,7 @@ const AdModalBanner = (props) => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <span>
-                            {props.actionModalBanner === "CREATE" ? "Thêm banner" : "Sửa banner"}
+                            {props.actionModalBanner === "CREATE" ? "Thêm search" : "Sửa search"}
                         </span>
                     </Modal.Title>
                 </Modal.Header>
@@ -206,7 +206,7 @@ const AdModalBanner = (props) => {
                             <label>Tên banner (<span style={{color: "red"}}>*</span>):</label>
                             <input
                                 type="text"
-                                placeholder={"Nhập tên banner..."}
+                                placeholder={"Nhập tên search..."}
                                 className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={bannerData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}

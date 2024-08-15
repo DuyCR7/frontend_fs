@@ -9,6 +9,7 @@ import {MdDelete, MdEdit, MdOutlineDangerous} from "react-icons/md";
 import ReactPaginate from "react-paginate";
 import {toast} from "react-toastify";
 import AdModalDeleteSize from "./AdModalDeleteSize";
+import useDebounce from "../../../utils/useDebounce";
 
 const AdSize = () => {
 
@@ -19,6 +20,8 @@ const AdSize = () => {
     const [numRows, setNumRows] = useState(5);
 
     const [searchKeyword, setSearchKeyword] = useState("");
+    const debouncedSearchInput = useDebounce(searchKeyword, 500);
+
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'DESC' });
 
     const handlePageClick = async (event) => {
@@ -47,7 +50,7 @@ const AdSize = () => {
     const fetchAllSize = async (currentPage, numRows, searchKeyword = "", sortConfig = {key: "id", direction: "DESC"}) => {
         setLoading(true);
         try {
-            let res = await getAllSize(currentPage, numRows, searchKeyword, sortConfig);
+            let res = await getAllSize(currentPage, numRows, searchKeyword.trim(), sortConfig);
             if (res && res.EC === 0) {
                 setListSize(res.DT.sizes);
                 setTotalPage(res.DT.totalPages);
@@ -64,10 +67,10 @@ const AdSize = () => {
         try {
             let res = await setActiveSize(id);
             if (res && res.EC === 0) {
-                await fetchAllSize(currentPage, numRows, searchKeyword, sortConfig);
+                await fetchAllSize(currentPage, numRows, debouncedSearchInput, sortConfig);
                 toast.success(res.EM);
             } else {
-                await fetchAllSize(currentPage, numRows, searchKeyword, sortConfig);
+                await fetchAllSize(currentPage, numRows, debouncedSearchInput, sortConfig);
             }
         } catch (e) {
             console.error(e);
@@ -79,11 +82,11 @@ const AdSize = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchAllSize(currentPage, numRows, searchKeyword, sortConfig);
+            await fetchAllSize(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
         fetchData();
-    }, [currentPage, numRows, searchKeyword, sortConfig]);
+    }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const [isShowModalSize, setIsShowModalSize] = useState(false);
     const [dataUpdate, setDataUpdate] = useState({});
@@ -286,7 +289,7 @@ const AdSize = () => {
                 fetchAllSize={fetchAllSize}
                 numRows={numRows}
                 currentPage={currentPage}
-                searchKeyword={searchKeyword}
+                searchKeyword={debouncedSearchInput}
                 sortConfig={sortConfig}
                 setSortConfig={setSortConfig}
                 setCurrentPage={setCurrentPage}

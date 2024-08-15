@@ -10,6 +10,7 @@ import {GrStatusGood} from "react-icons/gr";
 import {MdDelete, MdEdit, MdOutlineDangerous} from "react-icons/md";
 import ReactPaginate from "react-paginate";
 import AdModalDeleteBanner from "./AdModalDeleteBanner";
+import useDebounce from "../../../utils/useDebounce";
 
 const AdBanner = () => {
     const [loading, setLoading] = useState(false);
@@ -19,6 +20,8 @@ const AdBanner = () => {
     const [numRows, setNumRows] = useState(5);
 
     const [searchKeyword, setSearchKeyword] = useState("");
+    const debouncedSearchInput = useDebounce(searchKeyword, 500);
+
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'DESC' });
 
     const [selectedIds, setSelectedIds] = useState([]);
@@ -50,7 +53,7 @@ const AdBanner = () => {
     const fetchAllBanner = async (currentPage, numRows, searchKeyword = "", sortConfig = {key: 'id', direction: 'DESC'}) => {
         setLoading(true);
         try {
-            let res = await getAllBanner(currentPage, numRows, searchKeyword, sortConfig);
+            let res = await getAllBanner(currentPage, numRows, searchKeyword.trim(), sortConfig);
             if (res && res.EC === 0) {
                 setListBanner(res.DT.banners);
                 setTotalPage(res.DT.totalPages);
@@ -65,13 +68,13 @@ const AdBanner = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchAllBanner(currentPage, numRows, searchKeyword, sortConfig);
+            await fetchAllBanner(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
         fetchData();
         setSelectedIds([]);
         setSelectAll(false);
-    }, [currentPage, numRows, searchKeyword, sortConfig]);
+    }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const toggleCheckbox = (id) => {
         const currentIndex = selectedIds.indexOf(id);
@@ -123,7 +126,7 @@ const AdBanner = () => {
         try {
             let res = await setActiveBanner(id);
             if (res && res.EC === 0) {
-                await fetchAllBanner(currentPage, numRows, searchKeyword, sortConfig);
+                await fetchAllBanner(currentPage, numRows, debouncedSearchInput, sortConfig);
                 toast.success(res.EM);
             } else {
                 toast.error(res.EM);
@@ -376,7 +379,7 @@ const AdBanner = () => {
                 fetchAllBanner={fetchAllBanner}
                 numRows={numRows}
                 currentPage={currentPage}
-                searchKeyword={searchKeyword}
+                searchKeyword={debouncedSearchInput}
                 sortConfig={sortConfig}
                 setSortConfig={setSortConfig}
                 setCurrentPage={setCurrentPage}
