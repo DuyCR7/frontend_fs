@@ -19,10 +19,10 @@ const ShopCategory = ({filterItem, menuItems, selectedItems}) => {
                 {
                     menuItems.map((category, index) => {
                         return (
-                            <button className={`m-2 ${selectedItems.includes(category.id) ? "bg-warning" : ""}`}
+                            <button className={`m-2 fs-5  ${selectedItems.includes(category.id) ? "bg-primary text-white" : ""}`}
                                     key={index}
                                     onClick={() => handleSelection(category.id)}>
-                                {category.name}
+                                {category.name} ({category.productCount})
                             </button>
                         )
                     })

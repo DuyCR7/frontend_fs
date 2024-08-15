@@ -20,10 +20,10 @@ const ShopSize = ({filterItem, menuItems, selectedItems}) => {
                 {
                     menuItems.map((size, index) => {
                         return (
-                            <button className={`m-2 ${selectedItems.includes(size.id) ? "bg-warning" : ""}`}
+                            <button className={`m-2 fs-5  ${selectedItems.includes(size.id) ? "bg-primary text-white" : ""}`}
                                     key={index}
                                     onClick={() => handleSelection(size.id)}>
-                                {size.code}
+                                {size.code} ({size.productCount})
                             </button>
                         )
                     })

@@ -32,7 +32,7 @@ const Shop = () => {
     });
 
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(3);  // Số sản phẩm trên mỗi trang
+    const [limit, setLimit] = useState(20);  // Số sản phẩm trên mỗi trang
     const [totalPages, setTotalPages] = useState(1);
     const [totalRows, setTotalRows] = useState(1);
 
@@ -89,10 +89,10 @@ const Shop = () => {
 
     const updateMenuItems = (data) => {
         setMenuItems({
-            categories: data.updatedCategories.map(cat => ({ id: cat.id, name: cat.name })),
-            teams: data.updatedTeams.map(team => ({ id: team.id, name: team.name })),
-            sizes: data.updatedSizes.map(size => ({ id: size.id, code: size.code })),
-            colors: data.updatedColors.map(color => ({ id: color.id, name: color.name}))
+            categories: data.updatedCategories.map(cat => ({ id: cat.id, name: cat.name, productCount: cat.productCount })),
+            teams: data.updatedTeams.map(team => ({ id: team.id, name: team.name, productCount: team.productCount })),
+            sizes: data.updatedSizes.map(size => ({ id: size.id, code: size.code, productCount: size.productCount })),
+            colors: data.updatedColors.map(color => ({ id: color.id, name: color.name, productCount: color.productCount}))
         });
     };
 
@@ -145,11 +145,11 @@ const Shop = () => {
                             {/*left side*/}
                             <article>
                                 {/*layout and title here*/}
-                                <div className="shop-title d-flex flex-wrap justify-content-between">
-                                    <p className="mb-3 mb-md-0">Hiển thị {getDisplayedProductsCount()} / {totalRows} sản phẩm</p>
+                                <div className="shop-title d-flex flex-wrap justify-content-between align-items-center">
+                                    <p className="mb-3 mb-sm-0">Hiển thị {getDisplayedProductsCount()} / {totalRows} sản phẩm</p>
                                     <div className="d-flex align-items-center">
                                         <select
-                                            className="form-select me-5"
+                                            className="form-select me-3 fs-5"
                                             value={sortOption}
                                             onChange={(e) => handleSort(e.target.value)}
                                         >

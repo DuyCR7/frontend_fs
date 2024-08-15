@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import Rating from "../../components/rating/Rating.jsx";
+import {formatCurrency} from "../../../../utils/formatCurrency";
 
 const ProductCards = ({GridList, products}) => {
     return (
@@ -9,7 +10,7 @@ const ProductCards = ({GridList, products}) => {
                 products.map((item, index) => {
 
                     return (
-                        <div key={index} className="col-lg-4 col-md-6 col-12">
+                        <div key={index} className="col-lg-3 col-sm-4 col-6">
                             <div className="product-item">
                                 {/*product images*/}
                                 <div className="product-thumb">
@@ -29,13 +30,13 @@ const ProductCards = ({GridList, products}) => {
 
                                 {/*product content*/}
                                 <div className="product-content">
-                                    <h5>
+                                    <span style={{ fontSize: "18px" }}>
                                         <Link to={`/shop/${item.id}`}>{item.name}</Link>
-                                    </h5>
+                                    </span>
                                     <p className="productRating">
                                         <Rating/>
                                     </p>
-                                    <h6>{item.isSale ? item.price_sale : item.price}</h6>
+                                    <span style={{ fontWeight: "bold", fontSize: "18px" }}>{item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}</span>
                                 </div>
                             </div>
 

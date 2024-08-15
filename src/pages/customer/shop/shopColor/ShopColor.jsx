@@ -20,10 +20,10 @@ const ShopColor = ({filterItem, menuItems, selectedItems}) => {
                 {
                     menuItems.map((color, index) => {
                         return (
-                            <button className={`m-2 ${selectedItems.includes(color.id) ? "bg-warning" : ""}`}
+                            <button className={`m-2 fs-5 ${selectedItems.includes(color.id) ? "bg-primary text-white" : ""}`}
                                     key={index}
                                     onClick={() => handleSelection(color.id)}>
-                                {color.name}
+                                {color.name} ({color.productCount})
                             </button>
                         )
                     })

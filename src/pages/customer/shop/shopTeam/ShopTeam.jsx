@@ -9,6 +9,7 @@ const ShopTeam = ({filterItem, menuItems, selectedItems}) => {
             filterItem([...selectedItems, teamId]);
         }
     };
+    console.log(menuItems);
 
     return (
         <>
@@ -20,10 +21,10 @@ const ShopTeam = ({filterItem, menuItems, selectedItems}) => {
                 {
                     menuItems.map((team, index) => {
                         return (
-                            <button className={`m-2 ${selectedItems.includes(team.id) ? "bg-warning" : ""}`}
+                            <button className={`m-2 fs-5 ${selectedItems.includes(team.id) ? "bg-primary text-white" : ""}`}
                             key={index}
                             onClick={() => handleSelection(team.id)}>
-                                {team.name}
+                                {team.name} ({team.productCount})
                             </button>
                         )
                     })
