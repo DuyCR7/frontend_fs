@@ -18,6 +18,7 @@ const SignIn = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState("");
+    const [initialLoading, setInitialLoading] = useState(true);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -134,8 +135,18 @@ const SignIn = () => {
     useEffect(() => {
         if (customer && customer.isAuthenticated) {
             navigate('/');
+        } else {
+            setInitialLoading(false);
         }
-    }, []);
+    }, [customer, navigate]);
+
+    if (initialLoading) {
+        return (
+            <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75" style={{zIndex: 9999}}>
+                <Spin size="large" />
+            </div>
+        );
+    }
 
     return (
         <Container fluid className="my-5">

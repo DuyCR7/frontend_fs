@@ -47,7 +47,7 @@ const TeamCategory = () => {
                                 listTeam.map((item, index) => {
                                     return (
                                         <div key={index} className="col">
-                                            <Link to={`/shop/${item.slug}`}
+                                            <Link to={`/shops/${item.slug}`}
                                                   className="image-team d-flex justify-content-center align-items-center">
                                                 {/*image thumbnail*/}
                                                 <div className="">

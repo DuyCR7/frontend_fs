@@ -21,7 +21,7 @@ const Search = ({products, GridList}) => {
                 {
                     searchTerm && filteredProducts.map((item) => {
                         return (
-                            <Link key={item.id} to={`/shop/${item.id}`}>
+                            <Link key={item.id} to={`/products/${item.id}`}>
                                 <div className="d-flex gap-3 p-2">
                                     <div>
                                         <div className="pro-thumb h-25">

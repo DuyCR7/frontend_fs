@@ -101,7 +101,7 @@ const Trending = () => {
 
                                                 {/*product action links*/}
                                                 <div className="product-action-link">
-                                                    <Link to={`/shop/${item.id}`}><i className="icofont-eye"></i></Link>
+                                                    <Link to={`/products/${item.slug}`}><i className="icofont-eye"></i></Link>
                                                     <a href="#">
                                                         <i className="icofont-heart"></i>
                                                     </a>
@@ -112,7 +112,7 @@ const Trending = () => {
                                             {/*product content*/}
                                             <div className="product-content">
                                                 <h5>
-                                                    <Link to={`/shop/${item.slug}`}>{item.name}</Link>
+                                                    <Link to={`/products/${item.slug}`}>{item.name}</Link>
                                                 </h5>
                                                 <p className="productRating">
                                                     <Rating/>

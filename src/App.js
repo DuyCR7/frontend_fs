@@ -53,13 +53,13 @@ const App = () => {
                 {/*Customer routes*/}
                 <Route path="/" element={<CusApp />}>
                     <Route index element={<Home />}/>
-                    <Route path="blog" element={<Blog />} />
-                    <Route path="blog/:id" element={<SingleBlog />} />
-                    <Route path="shop" element={<Shop />} />
-                    <Route path="shop/:id" element={<SingleProduct />} />
-                    <Route path="cart-page" element={<CartPage />} />
-                    <Route path="about" element={<About />} />
-                    <Route path="contact" element={<Contact />} />
+                    <Route path="blogs" element={<Blog />} />
+                    <Route path="blogs/:id" element={<SingleBlog />} />
+                    <Route path="shops" element={<Shop />} />
+                    <Route path="products/:id" element={<SingleProduct />} />
+                    <Route path="carts" element={<CartPage />} />
+                    <Route path="abouts" element={<About />} />
+                    <Route path="contacts" element={<Contact />} />
                 </Route>
 
                 <Route path="/sign-in" element={<SignIn />}/>

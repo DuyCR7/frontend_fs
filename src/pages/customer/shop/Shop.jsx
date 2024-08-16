@@ -32,7 +32,7 @@ const Shop = () => {
     });
 
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(20);  // Số sản phẩm trên mỗi trang
+    const [limit, setLimit] = useState(3);  // Số sản phẩm trên mỗi trang
     const [totalPages, setTotalPages] = useState(1);
     const [totalRows, setTotalRows] = useState(1);
 
@@ -159,7 +159,7 @@ const Shop = () => {
                                             <option value="name-asc">Tên: A đến Z</option>
                                             <option value="name-desc">Tên: Z đến A</option>
                                         </select>
-                                        <div className={`d-flex product-view-mode ${GridList ? "gridActive" : "listActive"}`}>
+                                        <div className={`d-flex me-3 product-view-mode ${GridList ? "gridActive" : "listActive"}`}>
                                             <a className="grid" onClick={() => setGridList(!GridList)}>
                                                 <i className="icofont-ghost"></i>
                                             </a>
@@ -167,6 +167,14 @@ const Shop = () => {
                                                 <i className="icofont-listine-dots"></i>
                                             </a>
                                         </div>
+                                        {hasActiveFilters() && (
+                                            <div>
+                                                <button onClick={clearAllFilters}
+                                                        className="btn btn-outline-danger" style={{width: "max-content"}}>
+                                                    Xóa bộ lọc
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -229,12 +237,6 @@ const Shop = () => {
                             {/*right side*/}
                             <aside>
                                 {/*<Search products={products} GridList={GridList}/>*/}
-
-                                {hasActiveFilters() && (
-                                    <button onClick={clearAllFilters} className="btn btn-outline-danger mb-4">
-                                        Xóa bộ lọc
-                                    </button>
-                                )}
 
                                 <ShopTeam
                                     filterItem={setSelectedTeams}

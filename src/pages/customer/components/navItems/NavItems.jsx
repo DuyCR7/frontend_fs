@@ -63,17 +63,17 @@ const NavItems = () => {
                             <div className="menu">
                                 <ul className={`lab-ul ${menuToggle ? "active" : ""}`}>
                                     <li><Link to="/" onClick={() => setMenuToggle(false)}>Trang chủ</Link></li>
-                                    <li><Link to="/shop" onClick={() => setMenuToggle(false)}>Cửa hàng</Link></li>
-                                    <li><Link to="/blog" onClick={() => setMenuToggle(false)}>Bài viết</Link></li>
-                                    <li><Link to="/about" onClick={() => setMenuToggle(false)}>Về chúng tôi</Link></li>
-                                    <li><Link to="/contact" onClick={() => setMenuToggle(false)}>Liên hệ</Link></li>
+                                    <li><Link to="/shops" onClick={() => setMenuToggle(false)}>Cửa hàng</Link></li>
+                                    <li><Link to="/blogs" onClick={() => setMenuToggle(false)}>Bài viết</Link></li>
+                                    <li><Link to="/abouts" onClick={() => setMenuToggle(false)}>Về chúng tôi</Link></li>
+                                    <li><Link to="/contacts" onClick={() => setMenuToggle(false)}>Liên hệ</Link></li>
                                     <li className="d-flex wish-cart flex-wrap ms-lg-3 ms-0" style={{}}>
                                         <Link title="Yêu thích" to="/wish-list" className={'count-icon'}
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>
                                             <i className="icofont-heart" style={{fontSize: '1.5rem'}}></i>
                                             <span>2</span>
                                         </Link>
-                                        <Link title="Giỏ hàng" to="/cart-page" className={'count-icon'}
+                                        <Link title="Giỏ hàng" to="/carts" className={'count-icon'}
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>
                                             <i className="icofont-cart" style={{fontSize: '1.5rem'}}></i>
                                             <span>5</span>

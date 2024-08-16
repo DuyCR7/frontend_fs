@@ -60,7 +60,7 @@ const Search = () => {
                             filteredProducts && filteredProducts.length > 0 && filteredProducts.map((product, index) => {
                                 return (
                                     <li key={index}>
-                                        <Link to={`/shop/${product.slug}`} className="d-flex align-items-center p-3">
+                                        <Link to={`/products/${product.slug}`} className="d-flex align-items-center p-3">
                                             <img src={`${process.env.REACT_APP_URL_BACKEND}/${product.Product_Images[0].image}`}
                                             alt={`${process.env.REACT_APP_URL_BACKEND}/${product.Product_Images[0].image}`}
                                             style={{ width: "30px", height: "30px" }} className="me-3"/>

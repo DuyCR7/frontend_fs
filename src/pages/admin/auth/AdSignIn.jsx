@@ -16,6 +16,7 @@ const AdSignIn = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -122,8 +123,18 @@ const AdSignIn = () => {
     useEffect(() => {
         if (user && user.isAuthenticated) {
             navigate('/admin')
+        } else {
+            setInitialLoading(false);
         }
     }, [user, navigate]);
+
+    if (initialLoading) {
+        return (
+            <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75" style={{zIndex: 9999}}>
+                <Spin size="large" />
+            </div>
+        );
+    }
 
     return (
         <Container fluid className="my-5">
