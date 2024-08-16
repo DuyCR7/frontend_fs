@@ -11,8 +11,11 @@ import ShopTeam from "./shopTeam/ShopTeam.jsx";
 import {getAllInfoProduct} from "../../../services/customer/shopService";
 import ReactPaginate from "react-paginate";
 import {Spin} from "antd";
+import {useParams} from "react-router-dom";
 
 const Shop = () => {
+
+    const { team } = useParams();
 
     const [loading, setLoading] = useState(false);
     const [GridList, setGridList] = useState(true);
@@ -32,7 +35,7 @@ const Shop = () => {
     });
 
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(3);  // Số sản phẩm trên mỗi trang
+    const [limit, setLimit] = useState(4);  // Số sản phẩm trên mỗi trang
     const [totalPages, setTotalPages] = useState(1);
     const [totalRows, setTotalRows] = useState(1);
 
@@ -44,7 +47,7 @@ const Shop = () => {
             const filterSize = selectedSizes.join(',');
             const filterColor = selectedColors.join(',');
 
-            let res = await getAllInfoProduct(currentPage, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption);
+            let res = await getAllInfoProduct(currentPage, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team);
             if (res && res.EC === 0) {
                 setProducts(res.DT.products.products.data);
                 setTotalRows(res.DT.products.totalRows);
@@ -64,7 +67,7 @@ const Shop = () => {
         } finally {
             setLoading(false);
         }
-    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, sortOption, limit]);
+    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, sortOption, limit, team]);
 
     useEffect(() => {
         fetchAllInforProduct(1);  // Always start from page 1 when filters change
@@ -196,12 +199,12 @@ const Shop = () => {
                                                                 <div className="col d-flex justify-content-center align-items-center">
                                                                     <div className="me-3">
                                                                         <ReactPaginate
-                                                                            nextLabel="Next"
+                                                                            nextLabel="Sau"
                                                                             onPageChange={handlePageClick}
                                                                             pageRangeDisplayed={3}
                                                                             marginPagesDisplayed={2}
                                                                             pageCount={totalPages}
-                                                                            previousLabel="Prev"
+                                                                            previousLabel="Trước"
                                                                             pageClassName="page-item"
                                                                             pageLinkClassName="page-link"
                                                                             previousClassName="page-item"
