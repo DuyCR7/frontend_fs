@@ -11,11 +11,13 @@ import ShopTeam from "./shopTeam/ShopTeam.jsx";
 import {getAllInfoProduct} from "../../../services/customer/shopService";
 import ReactPaginate from "react-paginate";
 import {Spin} from "antd";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import NotFoundPage from "../../../NotFoundPage";
 
 const Shop = () => {
 
-    const { team } = useParams();
+    const { team, category } = useParams();
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [GridList, setGridList] = useState(true);
@@ -47,7 +49,7 @@ const Shop = () => {
             const filterSize = selectedSizes.join(',');
             const filterColor = selectedColors.join(',');
 
-            let res = await getAllInfoProduct(currentPage, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team);
+            let res = await getAllInfoProduct(currentPage, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team, category);
             if (res && res.EC === 0) {
                 setProducts(res.DT.products.products.data);
                 setTotalRows(res.DT.products.totalRows);
@@ -60,14 +62,14 @@ const Shop = () => {
                     setPage(currentPage);
                 }
             } else {
-                console.log("Error: ", res);
+                console.log("Error: ", res.EM);
             }
         } catch (e) {
             console.error(e);
         } finally {
             setLoading(false);
         }
-    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, sortOption, limit, team]);
+    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, sortOption, limit, team, category]);
 
     useEffect(() => {
         fetchAllInforProduct(1);  // Always start from page 1 when filters change
@@ -92,8 +94,8 @@ const Shop = () => {
 
     const updateMenuItems = (data) => {
         setMenuItems({
-            categories: data.updatedCategories.map(cat => ({ id: cat.id, name: cat.name, productCount: cat.productCount })),
-            teams: data.updatedTeams.map(team => ({ id: team.id, name: team.name, productCount: team.productCount })),
+            categories: data.updatedCategories.map(cat => ({ id: cat.id, name: cat.name, slug: cat.slug, productCount: cat.productCount })),
+            teams: data.updatedTeams.map(team => ({ id: team.id, name: team.name, slug: team.slug, productCount: team.productCount })),
             sizes: data.updatedSizes.map(size => ({ id: size.id, code: size.code, productCount: size.productCount })),
             colors: data.updatedColors.map(color => ({ id: color.id, name: color.name, productCount: color.productCount}))
         });

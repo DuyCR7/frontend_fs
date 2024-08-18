@@ -1,8 +1,9 @@
 import axios from "../../config/admin/axios";
 
-const createTeam = (name, image) => {
+const createTeam = (name, type, image) => {
     const data = new FormData();
     data.append("name", name);
+    data.append("type", type);
     data.append("image", image);
 
     return axios.post("/api/v1/admin/team/create", data);
@@ -23,10 +24,11 @@ const getAllTeam = (page, limit, search = "", sort = {}) => {
     return axios.get(query);
 }
 
-const updateTeam = (id, name, image) => {
+const updateTeam = (id, name, type, image) => {
     const data = new FormData();
     data.append("id", id);
     data.append("name", name);
+    data.append("type", type);
     data.append("image", image);
 
     return axios.put("/api/v1/admin/team/update", data);

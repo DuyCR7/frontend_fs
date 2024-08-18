@@ -174,22 +174,23 @@ const AdTeam = () => {
                                     sortConfig && sortConfig.key === 'id' && sortConfig.direction === 'DESC' &&
                                     <FaLongArrowAltUp />
                                 }
-                            </th>
-                            <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('name')}>
-                                Tên đội bóng
-                                {
-                                    sortConfig && sortConfig.key === 'name' && sortConfig.direction === 'ASC' &&
-                                    <FaLongArrowAltDown />
-                                }
-                                {
-                                    sortConfig && sortConfig.key === 'name' && sortConfig.direction === 'DESC' &&
-                                    <FaLongArrowAltUp />
-                                }
-                            </th>
-                            <th scope="col">Ảnh</th>
-                            <th scope="col">Trạng thái</th>
-                            <th scope="col">Hành động</th>
-                        </tr>
+                                </th>
+                                <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('name')}>
+                                    Tên đội bóng
+                                    {
+                                        sortConfig && sortConfig.key === 'name' && sortConfig.direction === 'ASC' &&
+                                        <FaLongArrowAltDown />
+                                    }
+                                    {
+                                        sortConfig && sortConfig.key === 'name' && sortConfig.direction === 'DESC' &&
+                                        <FaLongArrowAltUp />
+                                    }
+                                </th>
+                                <th scope="col">Loại đội bóng</th>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Hành động</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {
@@ -202,6 +203,7 @@ const AdTeam = () => {
                                                     <td>{(currentPage - 1) * numRows + index + 1}</td>
                                                     <td>{item.id}</td>
                                                     <td>{item.name}</td>
+                                                    <td>{item.type === 'cau-lac-bo' ? 'Câu lạc bộ' : 'Đội tuyển quốc gia'}</td>
                                                     <td>
                                                         <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}
                                                              width={50} height={50} alt={item.image}/>

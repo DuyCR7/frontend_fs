@@ -111,13 +111,13 @@ const Trending = () => {
 
                                             {/*product content*/}
                                             <div className="product-content">
-                                                <h5>
+                                                <span style={{fontSize: "18px"}}>
                                                     <Link to={`/products/${item.slug}`}>{item.name}</Link>
-                                                </h5>
+                                                </span>
                                                 <p className="productRating">
                                                     <Rating/>
                                                 </p>
-                                                <h6>{item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}</h6>
+                                                <span style={{fontWeight: "bold", fontSize: "18px"}}>{item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}</span>
                                             </div>
                                         </div>
                                     </div>

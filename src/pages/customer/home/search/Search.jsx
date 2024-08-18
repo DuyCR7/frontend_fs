@@ -41,7 +41,6 @@ const Search = () => {
         setSearchInput(e.target.value);
     }
 
-    console.log(filteredProducts);
     return (
         <div className="banner-section style-4">
             <div className="container-fluid ps-5 pe-5">

@@ -1,6 +1,6 @@
 import axios from "../../config/customer/axios";
 
-const getAllInfoProduct = (page, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team) => {
+const getAllInfoProduct = (page, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team, category) => {
     return axios.get("/api/v1/shop/get-all-infor-product", {
         params: {
             page,
@@ -10,7 +10,8 @@ const getAllInfoProduct = (page, limit, filterCategory, filterTeam, filterSize, 
             filterSize,
             filterColor,
             sortOption,
-            team
+            team,
+            category
         }
     });
 }

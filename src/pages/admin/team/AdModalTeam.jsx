@@ -12,6 +12,7 @@ const AdModalTeam = (props) => {
 
     const defaultTeamData = {
         name: "",
+        type: "cau-lac-bo",
     }
 
     const [teamData, setTeamData] = useState(defaultTeamData);
@@ -116,9 +117,9 @@ const AdModalTeam = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalTeam === "CREATE" ?
-                    await createTeam(teamData.name, image)
+                    await createTeam(teamData.name, teamData.type, image)
                     :
-                    await updateTeam(teamData.id, teamData.name, image);
+                    await updateTeam(teamData.id, teamData.name, teamData.type, image);
 
                 if(res && res.EC === 0) {
                     toast.success(res.EM);
@@ -180,6 +181,18 @@ const AdModalTeam = (props) => {
                         </div>
 
                         <div className="col-12 col-sm-6 form-group">
+                            <label>Loại đội bóng (<span style={{color: "red"}}>*</span>):</label>
+                            <select
+                                className="form-select form-group"
+                                value={teamData.type || ""}
+                                onChange={(e) => handleOnChangeInput(e.target.value, "type")}
+                            >
+                                <option value={'cau-lac-bo'}>Câu lạc bộ</option>
+                                <option value={'doi-tuyen-quoc-gia'}>Đội tuyển quốc gia</option>
+                            </select>
+                        </div>
+
+                        <div className="col-12 form-group">
                             <label>Chọn ảnh (<span style={{color: "red"}}>*</span>):</label>
                             <input type="file"
                                    accept="image/*"

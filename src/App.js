@@ -27,6 +27,7 @@ import AdSizeColor from "./pages/admin/size-color/AdSizeColor";
 import AdProduct from "./pages/admin/product/AdProduct";
 import AdBanner from "./pages/admin/banner/AdBanner";
 import AdEvent from "./pages/admin/event/AdEvent";
+import NotFoundPage from "./NotFoundPage";
 
 const App = () => {
     return (
@@ -57,6 +58,7 @@ const App = () => {
                     <Route path="blogs/:id" element={<SingleBlog />} />
                     <Route path="shops" element={<Shop />} />
                     <Route path="shops/:team" element={<Shop />} />
+                    <Route path="shops/category/:category" element={<Shop />} />
                     <Route path="products/:id" element={<SingleProduct />} />
                     <Route path="carts" element={<CartPage />} />
                     <Route path="abouts" element={<About />} />
@@ -71,7 +73,7 @@ const App = () => {
                 <Route path="/password-reset/:id/:token" element={<PasswordReset />}/>
 
                 {/*Not found*/}
-                <Route path="*" element={<h1 className="container mt-3 text-center">404 Not Found</h1>}/>
+                <Route path="*" element={<NotFoundPage />}/>
             </Routes>
           </Router>
 

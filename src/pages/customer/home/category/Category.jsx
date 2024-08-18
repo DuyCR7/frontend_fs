@@ -31,7 +31,7 @@ const Category = () => {
                     {
                         listParentCategory && listParentCategory[0] && (
                             <div className="category-box" style={{ backgroundImage: `url(${process.env.REACT_APP_URL_BACKEND}/${listParentCategory[0].image})`}}>
-                                <Link to={`/shops/${listParentCategory[0].slug}`}>
+                                <Link to={`/shops/category/${listParentCategory[0].slug}`}>
                                     <button type="button" className="btn btn-outline-primary text-uppercase">{listParentCategory[0].name}</button>
                                 </Link>
                             </div>
@@ -45,7 +45,7 @@ const Category = () => {
                                 {
                                     listParentCategory && listParentCategory[1] && (
                                         <div className="category-box content-box-top" style={{ backgroundImage: `url(${process.env.REACT_APP_URL_BACKEND}/${listParentCategory[1].image})`}}>
-                                            <Link to={`/shops/${listParentCategory[1].slug}`}>
+                                            <Link to={`/shops/category/${listParentCategory[1].slug}`}>
                                                 <button type="button"
                                                     className="btn btn-outline-primary text-uppercase">{listParentCategory[1].name}</button>
                                             </Link>
@@ -59,7 +59,7 @@ const Category = () => {
                                 {
                                     listParentCategory && listParentCategory[2] && (
                                         <div className="category-box content-box-bottom" style={{ backgroundImage: `url(${process.env.REACT_APP_URL_BACKEND}/${listParentCategory[2].image})`}}>
-                                            <Link to={`/shops/${listParentCategory[2].slug}`}>
+                                            <Link to={`/shops/category/${listParentCategory[2].slug}`}>
                                                 <button type="button" className="btn btn-outline-primary text-uppercase">{listParentCategory[2].name}</button>
                                             </Link>
                                         </div>
