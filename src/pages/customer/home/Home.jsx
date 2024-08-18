@@ -7,7 +7,7 @@ import BestSellerClothing from "./bestSellerClothing/BestSellerClothing";
 import Countdown from "./countdown/Countdown";
 import Category from "./category/Category";
 import BestSellerGifts from "./bestSellerGifts/BestSellerGifts";
-import NationAndHat from "./nationAndHat/NationAndHat";
+import NationAndClub from "./nationAndClub/NationAndClub";
 import AboutUs from "./aboutUs/AboutUs";
 import Sponsor from "./sponsor/Sponsor";
 
@@ -21,7 +21,7 @@ const Home = () => {
             <Trending />
             <Category />
             <BestSellerClothing />
-            <NationAndHat />
+            <NationAndClub />
             <BestSellerGifts />
             <AboutUs />
             <Sponsor />

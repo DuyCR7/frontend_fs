@@ -1,8 +1,8 @@
-.nation-hat {
+.nation-club {
   border-top: 1px solid #c5c5c5;
   border-bottom: 1px solid #c5c5c5;
 
-  .nation-hat-bg {
+  .nation-club-bg {
     min-height: 465px;
     background-size: cover;
     background-position: center;
@@ -28,7 +28,7 @@
     }
   }
 
-  .nation-hat-content {
+  .nation-club-content {
     min-height: 465px;
     padding: 40px 60px;
     display: flex;
@@ -47,8 +47,8 @@
 }
 
 @media(max-width: 768px){
-  .nation-hat {
-    .nation-hat-content {
+  .nation-club {
+    .nation-club-content {
       min-height: max-content;
       align-items: center;
     }
