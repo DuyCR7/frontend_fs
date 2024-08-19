@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logoutCustomer} from "../../../../services/customer/authService";
 import {resetCustomer} from "../../../../redux/customer/slices/customerSlice";
 import {toast} from "react-toastify";
+import {IoCartOutline, IoHeartOutline} from "react-icons/io5";
 
 const NavItems = () => {
 
@@ -70,12 +71,14 @@ const NavItems = () => {
                                     <li className="d-flex wish-cart flex-wrap ms-lg-3 ms-0" style={{}}>
                                         <Link title="Yêu thích" to="/wish-list" className={'count-icon'}
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>
-                                            <i className="icofont-heart" style={{fontSize: '1.5rem'}}></i>
+                                            {/*<i className="icofont-heart" style={{fontSize: '1.5rem'}}></i>*/}
+                                            <IoHeartOutline size={20} />
                                             <span>2</span>
                                         </Link>
                                         <Link title="Giỏ hàng" to="/carts" className={'count-icon'}
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>
-                                            <i className="icofont-cart" style={{fontSize: '1.5rem'}}></i>
+                                            {/*<i className="icofont-cart" style={{fontSize: '1.5rem'}}></i>*/}
+                                            <IoCartOutline size={20} />
                                             <span>5</span>
                                         </Link>
                                     </li>

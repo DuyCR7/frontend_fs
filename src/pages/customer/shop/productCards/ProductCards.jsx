@@ -2,10 +2,12 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import Rating from "../../components/rating/Rating.jsx";
 import {formatCurrency} from "../../../../utils/formatCurrency";
+import "./productCards.scss";
+import {IoCartOutline, IoEyeOutline, IoHeartOutline} from "react-icons/io5";
 
 const ProductCards = ({GridList, products}) => {
     return (
-        <div className={`shop-product-wrap row justify-content-center ${GridList ? "grid" : "list"}`}>
+        <div className={`product-cards shop-product-wrap row justify-content-center ${GridList ? "grid" : "list"}`}>
             {
                 products.map((item, index) => {
 
@@ -22,12 +24,15 @@ const ProductCards = ({GridList, products}) => {
 
                                     {/*product action links*/}
                                     <div className="product-action-link">
-                                        <Link to={`/products/${item.slug}`} title='Xem nhanh'><i className="icofont-eye"></i></Link>
-                                        <a href="#" title='Yêu thích'>
-                                            <i className="icofont-heart"></i>
-                                        </a>
-                                        <Link to="/cart-page" title='Giỏ hàng'><i
-                                            className="icofont-cart-alt"></i></Link>
+                                        <span title='Xem nhanh'>
+                                            <IoEyeOutline size={16} style={{cursor: "pointer"}} />
+                                        </span>
+                                        <span title='Yêu thích'>
+                                            <IoHeartOutline size={16} style={{cursor: "pointer"}} />
+                                        </span>
+                                        <span title='Giỏ hàng'>
+                                            <IoCartOutline size={16} style={{cursor: "pointer"}} />
+                                        </span>
                                     </div>
                                 </div>
 
@@ -39,10 +44,14 @@ const ProductCards = ({GridList, products}) => {
                                     <p className="productRating">
                                         <Rating/>
                                     </p>
-                                    <span style={{
-                                        fontWeight: "bold",
-                                        fontSize: "18px"
-                                    }}>{item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}</span>
+                                    <div className={`price-container ${item.isSale ? 'on-sale' : ''}`}>
+                                        {item.isSale && (
+                                            <span className="original-price">{formatCurrency(item.price)}</span>
+                                        )}
+                                        <span className={item.isSale ? 'sale-price' : ''}>
+                                            {item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -58,11 +67,15 @@ const ProductCards = ({GridList, products}) => {
 
                                     {/*product action links*/}
                                     <div className="product-action-link">
-                                        <Link to={`/products/${item.slug}`}><i className="icofont-eye"></i></Link>
-                                        <a href="#">
-                                            <i className="icofont-heart"></i>
-                                        </a>
-                                        <Link to="/cart-page"><i className="icofont-cart-alt"></i></Link>
+                                        <span title='Xem nhanh'>
+                                            <IoEyeOutline size={16} style={{cursor: "pointer"}} />
+                                        </span>
+                                        <span title='Yêu thích'>
+                                            <IoHeartOutline size={16} style={{cursor: "pointer"}} />
+                                        </span>
+                                        <span title='Giỏ hàng'>
+                                            <IoCartOutline size={16} style={{cursor: "pointer"}} />
+                                        </span>
                                     </div>
                                 </div>
 
@@ -74,10 +87,14 @@ const ProductCards = ({GridList, products}) => {
                                     <p className="productRating">
                                         <Rating/>
                                     </p>
-                                    <span style={{
-                                        fontWeight: "bold",
-                                        fontSize: "18px"
-                                    }}>{item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}</span>
+                                    <div className={`price-list-container ${item.isSale ? 'on-sale' : ''}`}>
+                                        {item.isSale && (
+                                            <span className="original-price">{formatCurrency(item.price)}</span>
+                                        )}
+                                        <span className={item.isSale ? 'sale-price' : ''}>
+                                            {item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

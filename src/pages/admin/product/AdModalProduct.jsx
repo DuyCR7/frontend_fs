@@ -222,32 +222,37 @@ const AdModalProduct = (props) => {
         let isValid = true;
 
         if (!productData.name.trim()) {
-            newErrors.name = "Vui lòng nhập tên sản phẩm";
+            newErrors.name = "Vui lòng nhập tên sản phẩm!";
             isValid = false;
         }
 
         if (!productData.price || productData.price <= 0) {
-            newErrors.price = "Vui lòng nhập giá sản phẩm hợp lệ";
+            newErrors.price = "Vui lòng nhập giá sản phẩm hợp lệ!";
+            isValid = false;
+        }
+
+        if (!productData.price_sale || productData.price_sale <= 0) {
+            newErrors.price_sale = "Vui lòng nhập giá sale hợp lệ!";
             isValid = false;
         }
 
         if (productData.price_sale && +productData.price_sale > +productData.price) {
-            newErrors.price_sale = "Giá sale phải nhỏ hơn giá sản phẩm";
+            newErrors.price_sale = "Giá sale phải nhỏ hơn giá sản phẩm!";
             isValid = false;
         }
 
         if (!productData.categoryId || productData.categoryId === "0") {
-            newErrors.categoryId = "Vui lòng chọn danh mục sản phẩm";
+            newErrors.categoryId = "Vui lòng chọn danh mục sản phẩm!";
             isValid = false;
         }
 
         if (!productData.teamId || productData.teamId === "0") {
-            newErrors.teamId = "Vui lòng chọn đội bóng";
+            newErrors.teamId = "Vui lòng chọn đội bóng!";
             isValid = false;
         }
 
         if (images.length === 0) {
-            newErrors.image = "Vui lòng chọn hình ảnh";
+            newErrors.image = "Vui lòng chọn hình ảnh!";
             isValid = false;
         }
 
@@ -258,10 +263,10 @@ const AdModalProduct = (props) => {
         productDetails.forEach((detail, detailIndex) => {
             let detailError = {};
             if (!detail.colorId) {
-                detailError.colorId = "Vui lòng chọn màu sắc";
+                detailError.colorId = "Vui lòng chọn màu sắc!";
                 isValid = false;
             } else if (usedColors.has(detail.colorId)) {
-                detailError.colorId = "Màu sắc đã được chọn";
+                detailError.colorId = "Màu sắc đã được chọn!";
                 isValid = false;
             } else {
                 usedColors.add(detail.colorId);
@@ -269,7 +274,7 @@ const AdModalProduct = (props) => {
 
             if(props.actionModalProduct === "CREATE") {
                 if (!detail.image) {
-                    detailError.image = "Vui lòng chọn hình ảnh";
+                    detailError.image = "Vui lòng chọn hình ảnh!";
                     isValid = false;
                 }
             }
@@ -279,17 +284,17 @@ const AdModalProduct = (props) => {
             detail.sizes.forEach((size, sizeIndex) => {
                 let sizeError = {};
                 if (!size.sizeId) {
-                    sizeError.sizeId = "Vui lòng chọn kích thước";
+                    sizeError.sizeId = "Vui lòng chọn kích thước!";
                     isValid = false;
                 } else if (usedSizes.has(size.sizeId)) {
-                    sizeError.sizeId = "Kích thước này đã được chọn cho màu này";
+                    sizeError.sizeId = "Kích thước này đã được chọn cho màu này!";
                     isValid = false;
                 } else {
                     usedSizes.add(size.sizeId);
                 }
 
                 if (!size.quantity || size.quantity <= 0) {
-                    sizeError.quantity = "Vui lòng nhập số lượng hợp lệ";
+                    sizeError.quantity = "Vui lòng nhập số lượng hợp lệ!";
                     isValid = false;
                 }
 
@@ -466,7 +471,7 @@ const AdModalProduct = (props) => {
                             </div>
 
                             <div className="col-12 col-sm-6 form-group">
-                                <label>Giá sale:</label>
+                                <label>Giá sale (<span style={{color: "red"}}>*</span>):</label>
                                 <input
                                     type="number"
                                     placeholder={"Nhập giá sale..."}
