@@ -31,7 +31,7 @@ const postList = [{
 
 const PopularPost = () => {
     return (
-        <div className="widget widget-post mt-3">
+        <div className="widget widget-post mt-3 mt-md-0">
             <div className="widget-header">
                 <h5 className="title">{title}</h5>
             </div>

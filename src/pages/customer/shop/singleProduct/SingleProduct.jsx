@@ -8,29 +8,33 @@ import PopularPost from "../popularPost/PopularPost.jsx";
 import Tags from "../tags/Tags.jsx";
 import Data from "../../../../products.json";
 import "./singleProduct.scss";
+import {getSingleProduct} from "../../../../services/customer/shopService";
 
 const SingleProduct = () => {
 
-    const [product, setProduct] = useState([]);
-    const {id} = useParams();
+    const {slug} = useParams();
+    const [productData, setProductData] = useState({});
+    const [activeImage, setActiveImage] = useState("");
+    const [images, setImages] = useState([]);
 
     useEffect(() => {
-        setProduct(Data);
+        fetchSingleProduct();
     }, []);
 
-    // console.log(product);
-    const result = product.filter((p) => p.id === id);
+    const fetchSingleProduct = async () => {
+        let res = await getSingleProduct(slug);
+        if (res && res.EC === 0) {
+            setProductData(res.DT);
 
-    const [images, setImages] = useState([
-        "https://fastly.picsum.photos/id/7/4728/3168.jpg?hmac=c5B5tfYFM9blHHMhuu4UKmhnbZoJqrzNOP9xjkV4w3o",
-        "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU",
-        "https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4",
-        "https://fastly.picsum.photos/id/4/5000/3333.jpg?hmac=ghf06FdmgiD0-G4c9DdNM8RnBIN7BO0-ZGEw47khHP4",
-        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-        "https://picsum.photos/200/300?grayscale",
-    ])
-
-    const [activeImage, setActiveImage] = useState(images[0]);
+            let mainImage = res.DT.images.filter((image) => image.isMainImage === true);
+            if (mainImage) {
+                setActiveImage(mainImage[0].image);
+            }
+            setImages(res.DT.images);
+        } else {
+            console.log("Error: ", res.EM);
+        }
+    }
 
     return (
         <div>
@@ -46,16 +50,19 @@ const SingleProduct = () => {
                                     <div className="row align-items-center">
                                         <div className="col-md-6 col-12">
                                             <div className="product-thumb">
-                                                <img src={activeImage} alt="" className="mb-3 main-image"/>
+                                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${activeImage}`} alt=""
+                                                     className="mb-3 main-image"/>
 
                                                 <div className="scroll-container">
-                                                    {images.map((image, index) => (
+                                                    {images.length > 0 && images.map((image, index) => (
                                                         <div
                                                             key={index}
-                                                            className={`scroll-item ${activeImage === image ? 'active' : ''}`}
-                                                            onClick={() => setActiveImage(image)}
+                                                            className={`scroll-item ${activeImage === image.image ? 'active' : ''}`}
+                                                            onClick={() => setActiveImage(image.image)}
                                                         >
-                                                            <img src={image} alt=""/>
+                                                            <img
+                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${image.image}`}
+                                                                alt=""/>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -65,11 +72,9 @@ const SingleProduct = () => {
                                         <div className="col-md-6 col-12">
                                             <div className="post-content">
                                                 <div>
-                                                    {
-                                                        result.map((item) => <ProductDisplay key={item.id}
-                                                                                             item={item}
-                                                                                              setActiveImage={setActiveImage}/>)
-                                                    }
+                                                    <ProductDisplay
+                                                        productData={productData}
+                                                        setActiveImage={setActiveImage}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +83,7 @@ const SingleProduct = () => {
 
                                 {/*review*/}
                                 <div className="review">
-                                    <Review />
+                                    <Review/>
                                 </div>
                             </article>
                         </div>
@@ -86,8 +91,8 @@ const SingleProduct = () => {
                         {/*right sight*/}
                         <div className="col-lg-4 col-12">
                             <aside className="ps-lg-4">
-                                <PopularPost />
-                                <Tags />
+                                <PopularPost/>
+                                <Tags/>
                             </aside>
                         </div>
                     </div>

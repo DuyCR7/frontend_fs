@@ -16,6 +16,11 @@ const getAllInfoProduct = (page, limit, filterCategory, filterTeam, filterSize, 
     });
 }
 
+const getSingleProduct = (slug) => {
+    return axios.get(`/api/v1/shop/get-single-product/${slug}`);
+}
+
 export {
     getAllInfoProduct,
+    getSingleProduct,
 }
