@@ -166,9 +166,6 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                         {isSale ? formatCurrency(price_sale) : formatCurrency(price)}
                     </span>
                 </div>
-                <div className="mt-2">
-                    <span>{description}</span>
-                </div>
                 <div className="mt-2 d-flex align-items-center gap-1">
                     <label className="fw-extrabold">Đội bóng:</label>
                     <span>{team}</span>

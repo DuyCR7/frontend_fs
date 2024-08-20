@@ -13,6 +13,11 @@ import {MdDeleteOutline} from "react-icons/md";
 import {Modal} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {Spin} from "antd";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const AdModalProduct = (props) => {
 
@@ -115,6 +120,13 @@ const AdModalProduct = (props) => {
         }));
     }
 
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const onEditorStateChange = (newEditorState) => {
+        setEditorState(newEditorState);
+        const htmlContent = draftToHtml(convertToRaw(newEditorState.getCurrentContent()));
+        handleOnChangeInput(htmlContent, "description");
+    };
+
     const handleUploadImages = (e) => {
         let _productData = _.cloneDeep(productData);
         const files = e.target.files;
@@ -173,6 +185,12 @@ const AdModalProduct = (props) => {
             // console.log("Product_Images: " , Product_Images);
             // console.log("Product_Details: " , Product_Details);
 
+            const contentBlock = htmlToDraft(productDataEdit.description);
+            if (contentBlock) {
+                const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                const editorState = EditorState.createWithContent(contentState);
+                setEditorState(editorState);
+            }
             setProductData(productDataEdit);
 
             let updatedImages = Product_Images.map(img => ({
@@ -203,6 +221,7 @@ const AdModalProduct = (props) => {
             setImages([]);
             setPreviewImages([]);
             setProductDetails([...defauftProductDetails]);
+            setEditorState(EditorState.createEmpty());
         }
     }, [props.actionModalProduct, props.dataUpdate]);
 
@@ -556,13 +575,26 @@ const AdModalProduct = (props) => {
                                 </div>
                             </div>
 
+                            {/*<div className="col-12 form-group">*/}
+                            {/*    <label>Mô tả:</label>*/}
+                            {/*    <textarea value={productData.description || ""}*/}
+                            {/*              className="form-control"*/}
+                            {/*              placeholder="Nhập mô tả sản phẩm tại đây..."*/}
+                            {/*              rows="4"*/}
+                            {/*              onChange={(e) => handleOnChangeInput(e.target.value, "description")} />*/}
+                            {/*</div>*/}
+
                             <div className="col-12 form-group">
                                 <label>Mô tả:</label>
-                                <textarea value={productData.description || ""}
-                                          className="form-control"
-                                          placeholder="Nhập mô tả sản phẩm tại đây..."
-                                          rows="4"
-                                          onChange={(e) => handleOnChangeInput(e.target.value, "description")} />
+                                <div className="form-control">
+                                    <Editor
+                                        editorState={editorState}
+                                        toolbarClassName="toolbarClassName"
+                                        wrapperClassName="wrapperClassName"
+                                        editorClassName="editorClassName"
+                                        onEditorStateChange={onEditorStateChange}
+                                    />
+                                </div>
                             </div>
 
                             <div className="ad-product-detail col-12 form-group">

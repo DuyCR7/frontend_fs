@@ -84,7 +84,8 @@ const ProductCards = ({GridList, products}) => {
 
                                         {/*product action links*/}
                                         <div className="product-action-link">
-                                        <span title='Xem nhanh'>
+                                        <span title='Xem nhanh'
+                                              onClick={() => handleShowModalQuickView(item)}>
                                             <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
                                         </span>
                                             <span title='Yêu thích'>

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import parse from 'html-react-parser';
 import Rating from "../../components/rating/Rating.jsx";
 
 const reviewtitle = "Thêm đánh giá";
@@ -29,9 +30,10 @@ let ReviewList = [{
     desc: "Enthusiast build innovativ initiatives before lonterm high-impact awesome theme seo psd porta monetize covalent leadership after without resource.",
 },];
 
-const Review = () => {
+const Review = (props) => {
 
     const [reviewShow, setReviewShow] = useState(true);
+    const { description } = props.productData;
 
     return (
         <>
@@ -104,45 +106,46 @@ const Review = () => {
 
                 {/*description*/}
                 <div className="description">
-                    <p>Introducing our state-of-the-art wireless earbuds, designed to deliver an unparalleled audio
-                        experience. These sleek and stylish earbuds feature advanced noise-cancellation technology,
-                        ensuring crystal-clear sound quality in any environment. With a comfortable, ergonomic design,
-                        they fit snugly in your ears for hours of listening pleasure. The long-lasting battery life
-                        provides up to 8 hours of continuous playtime, and the portable charging case adds an additional
-                        24 hours, making them perfect for on-the-go use. Seamlessly connect to your devices via
-                        Bluetooth
-                        5.0 for a stable and efficient connection. Elevate your audio experience with our cutting-edge
-                        wireless
-                        earbuds.
-                    </p>
+                    {/*<p>Introducing our state-of-the-art wireless earbuds, designed to deliver an unparalleled audio*/}
+                    {/*    experience. These sleek and stylish earbuds feature advanced noise-cancellation technology,*/}
+                    {/*    ensuring crystal-clear sound quality in any environment. With a comfortable, ergonomic design,*/}
+                    {/*    they fit snugly in your ears for hours of listening pleasure. The long-lasting battery life*/}
+                    {/*    provides up to 8 hours of continuous playtime, and the portable charging case adds an additional*/}
+                    {/*    24 hours, making them perfect for on-the-go use. Seamlessly connect to your devices via*/}
+                    {/*    Bluetooth*/}
+                    {/*    5.0 for a stable and efficient connection. Elevate your audio experience with our cutting-edge*/}
+                    {/*    wireless*/}
+                    {/*    earbuds.*/}
+                    {/*</p>*/}
 
-                    <div className="post-item">
-                        <div className="post-thumb">
-                            <img src="/admin/assets/img/examples/example1.jpeg" alt=""/>
-                        </div>
-                        <div className="post-content">
-                            <ul className="lab-ul">
-                                <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>
-                                <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>
-                                <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>
-                                <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>
-                                <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>
-                                <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>
-                            </ul>
-                        </div>
-                    </div>
+                    {/*<div className="post-item">*/}
+                    {/*    <div className="post-thumb">*/}
+                    {/*        <img src="/admin/assets/img/examples/example1.jpeg" alt=""/>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="post-content">*/}
+                    {/*        <ul className="lab-ul">*/}
+                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
+                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
+                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
+                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
+                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
+                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
+                    {/*        </ul>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
-                    <p>Introducing our state-of-the-art wireless earbuds, designed to deliver an unparalleled audio
-                        experience. These sleek and stylish earbuds feature advanced noise-cancellation technology,
-                        ensuring crystal-clear sound quality in any environment. With a comfortable, ergonomic design,
-                        they fit snugly in your ears for hours of listening pleasure. The long-lasting battery life
-                        provides up to 8 hours of continuous playtime, and the portable charging case adds an additional
-                        24 hours, making them perfect for on-the-go use. Seamlessly connect to your devices via
-                        Bluetooth
-                        5.0 for a stable and efficient connection. Elevate your audio experience with our cutting-edge
-                        wireless
-                        earbuds.
-                    </p>
+                    {/*<p>Introducing our state-of-the-art wireless earbuds, designed to deliver an unparalleled audio*/}
+                    {/*    experience. These sleek and stylish earbuds feature advanced noise-cancellation technology,*/}
+                    {/*    ensuring crystal-clear sound quality in any environment. With a comfortable, ergonomic design,*/}
+                    {/*    they fit snugly in your ears for hours of listening pleasure. The long-lasting battery life*/}
+                    {/*    provides up to 8 hours of continuous playtime, and the portable charging case adds an additional*/}
+                    {/*    24 hours, making them perfect for on-the-go use. Seamlessly connect to your devices via*/}
+                    {/*    Bluetooth*/}
+                    {/*    5.0 for a stable and efficient connection. Elevate your audio experience with our cutting-edge*/}
+                    {/*    wireless*/}
+                    {/*    earbuds.*/}
+                    {/*</p>*/}
+                    {parse(description)}
                 </div>
             </div>
         </>

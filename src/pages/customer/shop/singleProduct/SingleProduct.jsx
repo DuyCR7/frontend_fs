@@ -105,7 +105,7 @@ const SingleProduct = () => {
 
                                 {/*review*/}
                                 <div className="review">
-                                    <Review/>
+                                    <Review productData={productData}/>
                                 </div>
                             </article>
                         </div>
