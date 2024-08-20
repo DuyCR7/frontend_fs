@@ -12,7 +12,6 @@ import {getAllInfoProduct} from "../../../services/customer/shopService";
 import ReactPaginate from "react-paginate";
 import {Spin} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
-import NotFoundPage from "../../../NotFoundPage";
 
 const Shop = () => {
 

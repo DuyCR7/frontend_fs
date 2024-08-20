@@ -19,7 +19,7 @@ import CartPage from "./pages/customer/shop/cartPage/CartPage";
 import About from "./pages/customer/about/About";
 import Contact from "./pages/customer/contact/Contact";
 import AdDashboard from "./pages/admin/dashboard/AdDashboard";
-import ScrollToTop from "./ScrollToTop";
+import ScrollToTop from "./components/ScrollToTop";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdTeam from "./pages/admin/team/AdTeam";
 import AdCategory from "./pages/admin/category/AdCategory";
@@ -27,7 +27,8 @@ import AdSizeColor from "./pages/admin/size-color/AdSizeColor";
 import AdProduct from "./pages/admin/product/AdProduct";
 import AdBanner from "./pages/admin/banner/AdBanner";
 import AdEvent from "./pages/admin/event/AdEvent";
-import NotFoundPage from "./NotFoundPage";
+import NotFoundPageCus from "./components/NotFoundPageCus/NotFoundPageCus";
+import NotFoundPageAd from "./components/NotFoundPageAd/NotFoundPageAd";
 
 const App = () => {
     return (
@@ -48,6 +49,8 @@ const App = () => {
                     <Route path="teams" element={<AdTeam />}/>
                     <Route path="sizes-colors" element={<AdSizeColor />}/>
                     <Route path="products" element={<AdProduct />}/>
+
+                    <Route path="*" element={<NotFoundPageAd />}/>
                 </Route>
                 <Route path="/admin/sign-in" element={<AdSignIn />}/>
 
@@ -63,6 +66,8 @@ const App = () => {
                     <Route path="carts" element={<CartPage />} />
                     <Route path="abouts" element={<About />} />
                     <Route path="contacts" element={<Contact />} />
+
+                    <Route path="*" element={<NotFoundPageCus />}/>
                 </Route>
 
                 <Route path="/sign-in" element={<SignIn />}/>
@@ -72,8 +77,6 @@ const App = () => {
                 <Route path="/forgot-password" element={<ForgotPassword />}/>
                 <Route path="/password-reset/:id/:token" element={<PasswordReset />}/>
 
-                {/*Not found*/}
-                <Route path="*" element={<NotFoundPage />}/>
             </Routes>
           </Router>
 

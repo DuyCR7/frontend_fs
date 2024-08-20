@@ -10,6 +10,7 @@ import Alert from "react-bootstrap/Alert";
 import {Spin} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
+import NotFoundPageCus from "../../../../components/NotFoundPageCus/NotFoundPageCus";
 
 const PasswordReset = (props) => {
 
@@ -155,7 +156,7 @@ const PasswordReset = (props) => {
                         </Row>
                     </Container>
                     :
-                    <h1 className="container mt-3 text-center">404 Not Found</h1>
+                    <NotFoundPageCus />
             }
         </>
     )

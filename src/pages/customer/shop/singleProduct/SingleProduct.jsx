@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import PageHeader from "../../components/pageHeader/PageHeader.jsx";
 
 import ProductDisplay from "../productDisplay/ProductDisplay.jsx";
 import Review from "../review/Review.jsx";
 import PopularPost from "../popularPost/PopularPost.jsx";
 import Tags from "../tags/Tags.jsx";
-import Data from "../../../../products.json";
 import "./singleProduct.scss";
 import {getSingleProduct} from "../../../../services/customer/shopService";
+import {Spin} from "antd";
+import NotFoundPageCus from "../../../../components/NotFoundPageCus/NotFoundPageCus";
 
 const SingleProduct = () => {
 
@@ -16,24 +17,45 @@ const SingleProduct = () => {
     const [productData, setProductData] = useState({});
     const [activeImage, setActiveImage] = useState("");
     const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         fetchSingleProduct();
     }, []);
 
     const fetchSingleProduct = async () => {
-        let res = await getSingleProduct(slug);
-        if (res && res.EC === 0) {
-            setProductData(res.DT);
+        try {
+            let res = await getSingleProduct(slug);
+            if (res && res.EC === 0) {
+                setProductData(res.DT);
 
-            let mainImage = res.DT.images.filter((image) => image.isMainImage === true);
-            if (mainImage) {
-                setActiveImage(mainImage[0].image);
+                let mainImage = res.DT.images.filter((image) => image.isMainImage === true);
+                if (mainImage) {
+                    setActiveImage(mainImage[0].image);
+                }
+                setImages(res.DT.images);
+            } else {
+                console.log("Error: ", res.EM);
+                setError(res.DT);
             }
-            setImages(res.DT.images);
-        } else {
-            console.log("Error: ", res.EM);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
         }
+    }
+
+    if (loading) {
+        return (
+            <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75" style={{zIndex: 9999}}>
+                <Spin size="large" />
+            </div>
+        );
+    }
+
+    if (Object.keys(productData).length === 0 && error === 'not-found') {
+        return <NotFoundPageCus />
     }
 
     return (

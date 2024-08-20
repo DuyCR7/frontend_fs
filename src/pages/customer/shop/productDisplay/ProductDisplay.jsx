@@ -7,7 +7,7 @@ import { PiMoney } from "react-icons/pi";
 
 const ProductDisplay = ({productData, setActiveImage}) => {
 
-    const {name, price, price_sale, isSale, image, description, details = []} = productData;
+    const {name, price, price_sale, isSale, team, category, description, details = []} = productData;
 
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState(null);
@@ -16,6 +16,13 @@ const ProductDisplay = ({productData, setActiveImage}) => {
 
     const [error, setError] = useState("");
     const [cartItem, setCartItem] = useState(null);
+
+    useEffect(() => {
+        // Chỉ gọi updateAvailableQuantity sau khi productData được cập nhật
+        if (productData.details) {
+            updateAvailableQuantity(null, null);
+        }
+    }, [productData]);
 
     const getUniqueSizes = (details) => {
         return details
@@ -53,6 +60,9 @@ const ProductDisplay = ({productData, setActiveImage}) => {
             setSelectedColor(null);
         } else {
             setSelectedColor(colorId);
+            setActiveImage(productData.details.find(
+                detail => detail.color.id === colorId
+            ).image);
         }
         updateAvailableQuantity(selectedSize, colorId);
         setQuantity(1);
@@ -159,11 +169,22 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                 <div className="mt-2">
                     <span>{description}</span>
                 </div>
+                <div className="mt-2 d-flex align-items-center gap-1">
+                    <label className="fw-extrabold">Đội bóng:</label>
+                    <span>{team}</span>
+                </div>
+                <div className="mt-2 d-flex align-items-center gap-1">
+                    <label className="fw-extrabold">Danh mục:</label>
+                    <span>{category}</span>
+                </div>
+
             </div>
+
+            <hr className="m-0"/>
 
             {/*cart components*/}
             <div className="">
-                <label>Chọn size (<span style={{color: "red"}}>*</span>):</label>
+                <label className="fw-extrabold">Chọn size (<span style={{color: "red"}}>*</span>):</label>
                 <div className="sizes mt-2">
                     {getUniqueSizes(details).map(size => (
                         <span
@@ -178,7 +199,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                 </div>
             </div>
             <div className="">
-                <label>Chọn màu (<span style={{color: "red"}}>*</span>):</label>
+                <label className="fw-extrabold">Chọn màu (<span style={{color: "red"}}>*</span>):</label>
                 <div className="colors mt-2">
                     {getUniqueColors(details).map(color => (
                         <div
