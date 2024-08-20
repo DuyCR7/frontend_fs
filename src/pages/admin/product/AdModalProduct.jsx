@@ -126,6 +126,11 @@ const AdModalProduct = (props) => {
         const htmlContent = draftToHtml(convertToRaw(newEditorState.getCurrentContent()));
         handleOnChangeInput(htmlContent, "description");
     };
+    const handlePastedText = (text, html, editorState) => {
+        // Tùy chỉnh cách xử lý văn bản dán vào
+        // Trả về false để sử dụng xử lý mặc định, hoặc true nếu bạn xử lý nó tùy chỉnh
+        return false;
+    };
 
     const handleUploadImages = (e) => {
         let _productData = _.cloneDeep(productData);
@@ -593,6 +598,7 @@ const AdModalProduct = (props) => {
                                         wrapperClassName="wrapperClassName"
                                         editorClassName="editorClassName"
                                         onEditorStateChange={onEditorStateChange}
+                                        handlePastedText={handlePastedText}
                                     />
                                 </div>
                             </div>
