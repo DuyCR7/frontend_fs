@@ -112,10 +112,12 @@ const Trending = () => {
                                             <div className="product-item">
                                                 {/*product images*/}
                                                 <div className="product-thumb">
+                                                    <Link to={`/products/${item.slug}`}>
                                                     <div className="pro-thumb">
                                                         <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}
                                                              alt={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}/>
                                                     </div>
+                                                    </Link>
 
                                                     {/*product action links*/}
                                                     <div className="product-action-link">

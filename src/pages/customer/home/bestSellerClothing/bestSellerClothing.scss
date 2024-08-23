@@ -1,0 +1,93 @@
+.best-seller-clothing {
+  .best-seller-clothing-slider {
+    position: relative;
+
+    .price-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: bold;
+
+      .original-price {
+        color: #888;
+        text-decoration: line-through;
+      }
+
+      .sale-price {
+        color: #e44d26;
+      }
+
+      &.on-sale {
+        .original-price {
+          font-size: 16px;
+          font-weight: normal;
+        }
+      }
+    }
+
+    .swiper-slide {
+      height: auto;
+    }
+
+    .best-seller-clothing-prev,
+    .best-seller-clothing-next{
+      &.custom-nav {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+        color: rgb(24, 119, 242);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute; /* Sử dụng position absolute */
+        top: 50%; /* Đặt vị trí top */
+        transform: translateY(-50%); /* Căn chỉnh dọc */
+
+        &.swiper-button-prev {
+          left: 25px; /* Đặt vị trí cho nút prev */
+        }
+
+        &.swiper-button-next {
+          right: 25px; /* Đặt vị trí cho nút next */
+        }
+
+        &::after {
+          content: none;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.9);
+        }
+
+        svg {
+          width: 24px; // Thay đổi kích thước biểu tượng
+          height: 24px; // Thay đổi kích thước biểu tượng
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      .swiper-pagination {
+        bottom: -30px;
+      }
+
+      .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+        background: #999;
+        opacity: 1;
+
+        &-active {
+          background: #333;
+        }
+      }
+
+      .product-item {
+        margin-right: 15px; // Add some space to show part of the next item
+      }
+    }
+  }
+}

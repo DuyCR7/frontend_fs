@@ -4,6 +4,7 @@ import {formatCurrency} from "../../../../utils/formatCurrency";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import "./modalQuickView.scss";
 import {IoCartOutline} from "react-icons/io5";
+import {Link} from "react-router-dom";
 
 const ModalQuickView = (props) => {
 
@@ -149,7 +150,7 @@ const ModalQuickView = (props) => {
         setError('');
     }
 
-    const { name, price, price_sale, isSale, image, details = []} = productData;
+    const { name, price, price_sale, isSale, slug, image, details = []} = productData;
 
     const handleAddToCart = () => {
         if (selectedSize && selectedColor && quantity > 0) {
@@ -187,7 +188,9 @@ const ModalQuickView = (props) => {
                     </div>
 
                     <div className="col-md-6">
-                        <h3 className="form-group">{name}</h3>
+                        <Link to={`/products/${slug}`}>
+                            <h3 className="form-group">{name}</h3>
+                        </Link>
                         <div className={`price-container form-group ${isSale ? 'on-sale' : ''}`}>
                             {isSale && (
                                 <span className="original-price">{formatCurrency(price)}</span>

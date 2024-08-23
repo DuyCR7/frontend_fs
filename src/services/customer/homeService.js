@@ -26,6 +26,10 @@ const getAllForSearch = (search) => {
     });
 }
 
+const getAllSellerClothing = () => {
+    return axios.get("/api/v1/product/get-all-seller-clothing");
+}
+
 export {
     getAllBanners,
     getAllTeams,
@@ -33,4 +37,5 @@ export {
     getNewEvent,
     getAllTrending,
     getAllForSearch,
+    getAllSellerClothing,
 }

@@ -1,205 +1,139 @@
-import React, {useEffect, useRef, useState} from 'react';
-import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css'
-import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
-import Rating from "../../components/rating/Rating.jsx";
+import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
+import {getAllSellerClothing} from "../../../../services/customer/homeService";
+import {Swiper, SwiperSlide} from "swiper/react";
+import {FreeMode, Mousewheel, Navigation, Pagination} from "swiper/modules";
+import {IoCartOutline, IoEyeOutline, IoHeartOutline} from "react-icons/io5";
+import Rating from "../../components/rating/Rating";
+import {formatCurrency} from "../../../../utils/formatCurrency";
+import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/free-mode';
+import "./bestSellerGifts.scss"
 
 const title = "Quà tặng bán chạy nhất";
 
-const ProductData = [
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Shoes',
-        title: 'Nike Premier X',
-        author: 'assets/images/course/author/01.jpg',
-        brand: 'Nike',
-        price: '$199.00',
-        id: 1,
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Bags',
-        title: 'Asthetic Bags',
-        author: 'assets/images/course/author/02.jpg',
-        brand: 'D&J Bags',
-        price: '$199.00',
-        id: 2,
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Phones',
-        title: 'iPhone 12',
-        author: 'customer/assets/images/categoryTab/brand/apple.png',
-        brand: 'Apple',
-        price: '$199.00',
-        id: 3,
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Bags',
-        title: 'Hiking Bag 15 Nh100',
-        author: 'assets/images/course/author/04.jpg',
-        brand: 'Gucci',
-        price: '$199.00',
-        id: 4,
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Shoes',
-        title: 'Outdoor Sports Shoes',
-        author: 'assets/images/course/author/05.jpg',
-        brand: 'Nike',
-        price: '$199.00',
-        id: 5,
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Beauty',
-        title: 'COSRX Snail Mucin',
-        author: 'assets/images/course/author/06.jpg',
-        brand: 'Zaara',
-        price: '$199.00',
-        id: 6,
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Bags',
-        title: 'Look Less Chanel Bag ',
-        author: 'assets/images/course/author/01.jpg',
-        brand: 'Gucci',
-        price: '$199.00',
-        id: 7,
-    },
-    {
-        imgUrl: '/admin/assets/img/examples/example1.jpeg',
-        cate: 'Shoes',
-        title: 'Casual Sneakers',
-        author: 'assets/images/course/author/02.jpg',
-        brand: 'Bata',
-        price: '$199.00',
-        id: 8,
-    },
-];
+const BestSellerGifts = () => {
 
-const divStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-};
-
-const buttonStyle = {
-    width: "40px",
-    height: "40px",
-    background: 'rgba(255, 255, 255, 0.7)',
-    cursor: 'pointer',
-    position: 'absolute',
-    top: '40%',
-    transform: 'translateY(-50%)',
-    zIndex: 2,
-};
-
-const properties = {
-    prevArrow: (
-        <button style={{ ...buttonStyle, borderRadius: "50%", left: '20px' }}>
-            <FaArrowLeft color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}} />
-        </button>
-    ),
-    nextArrow: (
-        <button style={{ ...buttonStyle, borderRadius: "50%", right: '20px' }}>
-            <FaArrowRight color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}}/>
-        </button>
-    ),
-};
-
-const BestSellerClothing = () => {
-
+    const [products, setProducts] = useState([]);
     const navigate = useNavigate();
-
-    const [slidesToShow, setSlidesToShow] = useState(3);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth <= 576) {
-                setSlidesToShow(2);
-            } else if (window.innerWidth <= 768) {
-                setSlidesToShow(2);
-            } else if (window.innerWidth <= 1024) {
-                setSlidesToShow(3);
-            }
-            else {
-                setSlidesToShow(4);
-            }
+            const width = window.innerWidth;
+            setIsMobile(width <= 768);
         };
 
-        // Initial check
-        handleResize();
-
-        // Add resize event listener
+        handleResize(); // Call once to set initial values
         window.addEventListener('resize', handleResize);
-
-        // Clean up event listener
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        fetchAllSellerClothing();
+    }, []);
+    const fetchAllSellerClothing = async () => {
+        try {
+            let res = await getAllSellerClothing();
+            if (res && res.EC === 0) {
+                setProducts(res.DT);
+            } else {
+                console.log('Error:', res.EM);
+            }
+        } catch (e) {
+            console.error('Error fetching seller clothing', e);
+        }
+    }
     return (
-        <div className="course-section style-3 padding-tb">
+        <div className="best-seller-gifts course-section style-3 padding-tb">
             {/*main section*/}
             <div className="container-fluid ps-5 pe-5">
                 {/*section header*/}
                 <div className="section-header">
-                    <h2 className="title" style={{ color: "red" }}>{title}</h2>
+                    <h2 className="title" style={{color: "red"}}>{title}</h2>
                 </div>
 
                 <div className={`shop-page`}>
                     <div className={`shop-product-wrap row justify-content-center grid`}>
-                        <Slide duration={5000}
-                               transitionDuration={700}
-                               pauseOnHover={true}
-                               autoplay={true}
-                               infinite={true}
-                               defaultIndex={0}
-                               slidesToShow={slidesToShow}
-                               slidesToScroll={slidesToShow}
-                               {...properties}
-                        >
-                            {
-                                ProductData.map((item, index) => (
-                                    // <SwiperSlide key={index}>
-                                        <div className="product-item mx-2" key={index}>
-                                            {/*product images*/}
+                        {/*<ResponsiveProductSlider products={products} />*/}
+                        <div className="best-seller-gifts-slider">
+                            <Swiper
+                                modules={[Navigation, Pagination, Mousewheel, FreeMode]}
+                                spaceBetween={20}
+                                slidesPerView={'auto'}
+                                navigation={!isMobile ? {
+                                    nextEl: '.best-seller-gifts-next',
+                                    prevEl: '.best-seller-gifts-prev',
+                                } : false}
+                                pagination={isMobile ? {clickable: true} : false}
+                                mousewheel={true}
+                                freeMode={true}
+                                speed={500}
+                                breakpoints={{
+                                    320: {
+                                        slidesPerView: 1.4,
+                                        slidesPerGroup: 1,
+                                    },
+                                    768: {
+                                        slidesPerView: 3,
+                                        slidesPerGroup: 2,
+                                    },
+                                    1024: {
+                                        slidesPerView: 4,
+                                        slidesPerGroup: 3,
+                                    },
+                                }}
+                            >
+                                {products.length > 0 && products.map((item, index) => (
+                                    <SwiperSlide key={item.id}>
+                                        <div className="product-item">
                                             <div className="product-thumb">
                                                 <div className="pro-thumb">
-                                                    <img src={item.imgUrl} alt={item.imgUrl}/>
+                                                    <img
+                                                        src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}
+                                                        alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}/>
                                                 </div>
-
-                                                {/*product action links*/}
                                                 <div className="product-action-link">
-                                                    <Link to={`/shop/${item.id}`}><i className="icofont-eye"></i></Link>
-                                                    <a href="#">
-                                                        <i className="icofont-heart"></i>
-                                                    </a>
-                                                    <Link to="/cart-page"><i className="icofont-cart-alt"></i></Link>
+                                                    <span title="Xem nhanh"><IoEyeOutline size={16}/></span>
+                                                    <span title="Yêu thích"><IoHeartOutline size={16}/></span>
+                                                    <span title="Giỏ hàng"><IoCartOutline size={16}/></span>
                                                 </div>
                                             </div>
-
-                                            {/*product content*/}
                                             <div className="product-content">
-                                                <h5>
-                                                    <Link to={`/shop/${item.id}`}>{item.title}</Link>
-                                                </h5>
+                                <span style={{fontSize: "18px"}}>
+                                    <Link to={`/products/${item.slug}`}>{item.name}</Link>
+                                </span>
                                                 <p className="productRating">
                                                     <Rating/>
                                                 </p>
-                                                <h6>{item.price}</h6>
+                                                <div className={`price-container ${item.isSale ? 'on-sale' : ''}`}>
+                                                    {item.isSale && (
+                                                        <span
+                                                            className="original-price">{formatCurrency(item.price)}</span>
+                                                    )}
+                                                    <span className={item.isSale ? 'sale-price' : ''}>
+                                                      {item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    // </SwiperSlide>
-                                ))
-                            }
-                        </Slide>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                            {!isMobile && (
+                                <>
+                                    <div className="swiper-button-prev best-seller-gifts-prev custom-nav">
+                                        <FaArrowLeft/>
+                                    </div>
+                                    <div className="swiper-button-next best-seller-gifts-next custom-nav">
+                                        <FaArrowRight/>
+                                    </div>
+                                </>
+                            )}
+                        </div>
                     </div>
 
                     <div className="text-center">
@@ -214,4 +148,4 @@ const BestSellerClothing = () => {
     );
 };
 
-export default BestSellerClothing;
+export default BestSellerGifts;
