@@ -22,7 +22,7 @@ const SingleProduct = () => {
 
     useEffect(() => {
         fetchSingleProduct();
-    }, []);
+    }, [slug]);
 
     const fetchSingleProduct = async () => {
         try {

@@ -29,6 +29,7 @@ import AdBanner from "./pages/admin/banner/AdBanner";
 import AdEvent from "./pages/admin/event/AdEvent";
 import NotFoundPageCus from "./components/NotFoundPageCus/NotFoundPageCus";
 import NotFoundPageAd from "./components/NotFoundPageAd/NotFoundPageAd";
+import AdPost from "./pages/admin/post/AdPost";
 
 const App = () => {
     return (
@@ -45,6 +46,7 @@ const App = () => {
                     <Route index element={<AdDashboard />}/>
                     <Route path="banners" element={<AdBanner />}/>
                     <Route path="events" element={<AdEvent />} />
+                    <Route path="posts" element={<AdPost />}/>
                     <Route path="categories" element={<AdCategory />}/>
                     <Route path="teams" element={<AdTeam />}/>
                     <Route path="sizes-colors" element={<AdSizeColor />}/>
@@ -58,7 +60,7 @@ const App = () => {
                 <Route path="/" element={<CusApp />}>
                     <Route index element={<Home />}/>
                     <Route path="blogs" element={<Blog />} />
-                    <Route path="blogs/:id" element={<SingleBlog />} />
+                    <Route path="blogs/:slug" element={<SingleBlog />} />
                     <Route path="shops" element={<Shop />} />
                     <Route path="shops/:team" element={<Shop />} />
                     <Route path="shops/category/:category" element={<Shop />} />

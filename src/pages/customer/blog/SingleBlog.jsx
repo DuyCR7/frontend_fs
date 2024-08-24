@@ -1,9 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import blogList from "../../../utils/blogdata";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import PageHeader from "../components/pageHeader/PageHeader.jsx";
 import Tags from "../shop/tags/Tags.jsx";
 import PopularPost from "../shop/popularPost/PopularPost.jsx";
+import {getSinglePost} from "../../../services/customer/postService";
+import {Spin} from "antd";
+import NotFoundPageCus from "../../../components/NotFoundPageCus/NotFoundPageCus";
+import {formatDate} from "../../../utils/formatDate";
+import parse from "html-react-parser";
 
 const socialList = [{link: "#", iconName: "icofont-facebook", className: "facebook",}, {
     link: "#",
@@ -13,10 +18,47 @@ const socialList = [{link: "#", iconName: "icofont-facebook", className: "facebo
 
 const SingleBlog = () => {
 
-    const [blog, setBlog] = useState(blogList);
-    const {id} = useParams();
+    const {slug} = useParams();
+    const [currentPost, setCurrentPost] = useState({});
+    const [previousPost, setPreviousPost] = useState({});
+    const [nextPost, setNextPost] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    const result = blogList.filter((blog) => blog.id === +id);
+    useEffect(() => {
+        fetchSinglePost();
+    }, [slug]);
+
+    const fetchSinglePost = async () => {
+        try {
+            let res = await getSinglePost(slug);
+            if (res && res.EC === 0) {
+                setCurrentPost(res.DT.currentPost);
+                setPreviousPost(res.DT.previousPost);
+                setNextPost(res.DT.nextPost);
+            } else {
+                setError(res.DT);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    if (loading) {
+        return (
+            <div
+                className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
+                style={{zIndex: 9999}}>
+                <Spin size="large"/>
+            </div>
+        );
+    }
+
+    if (Object.keys(currentPost).length === 0 && error === 'not-found') {
+        return <NotFoundPageCus/>
+    }
 
     return (
         <div>
@@ -33,100 +75,54 @@ const SingleBlog = () => {
                                         <div className="col">
                                             <div className="post-item style-2">
                                                 <div className="post-inner">
-                                                    {
-                                                        result.map((item) => {
-                                                            return (
-                                                                <div key={item.id}>
-                                                                    <div className="post-thumb">
-                                                                        <img src={item.imgUrl} alt=""
-                                                                             className="w-100"/>
-                                                                    </div>
-                                                                    <div className="post-content">
-                                                                        <h3>{item.title}</h3>
-                                                                        <div className="meta-post">
-                                                                            <ul className="lab-ul">
-                                                                                {
-                                                                                    item.metaList.map((val, i) => {
-                                                                                        return (
-                                                                                            <li key={i}><i
-                                                                                                className={val.iconName}></i> {val.text}
-                                                                                            </li>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </ul>
-                                                                        </div>
-                                                                        <p>{item.desc}</p>
+                                                    <div>
+                                                        <div className="post-thumb">
+                                                            <img src={`${process.env.REACT_APP_URL_BACKEND}/${currentPost.image}`} alt=""
+                                                                 className="w-100"/>
+                                                        </div>
+                                                        <div className="post-content">
+                                                            <h3>{currentPost.title}</h3>
+                                                            <div className="meta-post">
+                                                                <ul className="lab-ul">
+                                                                    <li>
+                                                                        <i className="icofont-ui-user"></i>{currentPost.User.username}
+                                                                    </li>
+                                                                    <li>
+                                                                        <i className="icofont-calendar"></i>{formatDate(currentPost.createdAt)}
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            {parse(currentPost.content)}
+                                                        </div>
+                                                    </div>
 
-                                                                        <blockquote>
-                                                                            <p>{item.desc}</p>
-                                                                            <cite>
-                                                                                <a href="#">...Vu Duc Duy</a>
-                                                                            </cite>
-                                                                        </blockquote>
-
-                                                                        <p>{item.desc}</p>
-
-                                                                        <img src="/admin/assets/img/examples/example1.jpeg"
-                                                                             alt=""/>
-
-                                                                        <p>{item.desc}</p>
-
-                                                                        <div className="video-thumb">
-                                                                            <img
-                                                                                src="/admin/assets/img/examples/example1.jpeg"
-                                                                                alt=""/>
-                                                                            <a href="https://youtu.be/bVAxHPEHOVE?si=jNco0YQlScD2luLG"
-                                                                               className="video-button popup"
-                                                                               target="_blank">
-                                                                                <i className="icofont-ui-play"></i>
-                                                                            </a>
-                                                                        </div>
-
-                                                                        <p>{item.desc}</p>
-
-                                                                        <div className="tags-section">
-                                                                            <ul className="lab-ul social-icons">
-                                                                                {
-                                                                                    socialList.map((item, index) => {
-                                                                                        return (
-                                                                                            <li key={index}>
-                                                                                                <a href="#"
-                                                                                                   className={item.className}>
-                                                                                                    <i className={item.iconName}></i>
-                                                                                                </a>
-                                                                                            </li>
-                                                                                        )
-                                                                                    })
-                                                                                }
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    }
                                                 </div>
                                             </div>
 
                                             <div className="navigations-part">
                                                 <div className="left">
-                                                    <a href="#" className="prev">
-                                                        <i className="icofont-double-left"></i> Bài viết trước
-                                                    </a>
-                                                    <a href="#" className="title">
-                                                        Evisculate Parallel Processes vis Technica Sound Models
-                                                        Authoritative
-                                                    </a>
+                                                    {previousPost && (
+                                                        <>
+                                                            <Link to={`/blogs/${previousPost.slug}`} className="prev">
+                                                                <i className="icofont-double-left"></i> Bài viết trước
+                                                            </Link>
+                                                            <Link to={`/blogs/${previousPost.slug}`} className="title">
+                                                                {previousPost.title}
+                                                            </Link>
+                                                        </>
+                                                    )}
                                                 </div>
                                                 <div className="right">
-                                                    <a href="#" className="next">
-                                                        <i className="icofont-double-right"></i> Bài viết sau
-                                                    </a>
-                                                    <a href="#" className="title">
-                                                        Evisculate Parallel Processes vis Technica Sound Models
-                                                        Authoritative
-                                                    </a>
+                                                    {nextPost && (
+                                                        <>
+                                                            <Link to={`/blogs/${nextPost.slug}`} className="next">
+                                                                Bài viết sau <i className="icofont-double-right"></i>
+                                                            </Link>
+                                                            <Link to={`/blogs/${nextPost.slug}`} className="title">
+                                                                {nextPost.title}
+                                                            </Link>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -137,8 +133,8 @@ const SingleBlog = () => {
                         <div className="col-lg-4 col-12">
                             {/*right sight*/}
                             <aside>
-                                <Tags />
-                                <PopularPost />
+                                <Tags/>
+                                <PopularPost/>
                             </aside>
                         </div>
                     </div>

@@ -1,33 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import PageHeader from "../components/pageHeader/PageHeader.jsx";
-import blogList from "../../../utils/blogdata"
+import parse from 'html-react-parser';
 import {Link} from "react-router-dom";
-import {getAllPost} from "../../../services/customer/postService";
-import {formatDate} from "../../../utils/formatDate";
-import parse from "html-react-parser";
+import "./blog.scss";
+import {getPosts} from "../../../../services/customer/homeService";
+import {formatDate} from "../../../../utils/formatDate";
+import { FiUser } from "react-icons/fi";
 
 const Blog = () => {
 
     const [listPosts, setListPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchAllPosts();
+        fetchPosts();
     }, []);
 
-    const fetchAllPosts = async () => {
-        setLoading(true);
+    const fetchPosts = async () => {
         try {
-            let res = await getAllPost();
-            if(res && res.EC === 0) {
+            let res = await getPosts();
+            if (res && res.EC === 0) {
                 setListPosts(res.DT);
             } else {
-                console.log("Error: ", res);
+                console.error(res.EM);
             }
         } catch (e) {
             console.error(e);
-        } finally {
-            setLoading(false);
         }
     }
 
@@ -38,9 +34,11 @@ const Blog = () => {
     };
 
     return (
-        <div>
-            <PageHeader title="Bài viết" curPage="Bài viết" />
-            <div className="blog-section padding-tb section-bg">
+        <>
+            <div className="home-blog blog-section section-bg">
+                <div className="d-flex justify-content-center align-items-center pt-5 mb-5">
+                    <h2 className="title text-uppercase" style={{color: "red"}}>Bài viết</h2>
+                </div>
                 <div className="container-fluid ps-5 pe-5">
                     <div className="section-wrapper">
                         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center g-4">
@@ -91,8 +89,13 @@ const Blog = () => {
                         </div>
                     </div>
                 </div>
+                <div className="d-flex justify-content-center align-items-center mt-5">
+                    <Link to='/blogs'>
+                        <button className="btn btn-outline-primary">Xem tất cả bài viết</button>
+                    </Link>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

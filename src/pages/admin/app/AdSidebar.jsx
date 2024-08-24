@@ -28,6 +28,9 @@ const AdSidebar = (props) => {
         } else if (path.includes('/admin/events')) {
             setActiveItem("events");
             setActiveGroup(null);
+        } else if (path.includes('/admin/posts')) {
+            setActiveItem("posts");
+            setActiveGroup(null);
         } else if (path.includes("/admin")) {
             setActiveItem("dashboard");
             setActiveGroup(null);
@@ -89,6 +92,12 @@ const AdSidebar = (props) => {
                                 <Link to='/admin/events'>
                                     <i className="fas fa-calendar"></i>
                                     <p>Quản lý sự kiện</p>
+                                </Link>
+                            </li>
+                            <li className={`nav-item ${activeItem === "posts" ? "active" : ""}`}>
+                                <Link to='/admin/posts'>
+                                    <i className="fas fa-podcast"></i>
+                                    <p>Quản lý bài viết</p>
                                 </Link>
                             </li>
                             {/*<li className="nav-section">*/}

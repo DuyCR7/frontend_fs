@@ -30,6 +30,9 @@ const getAllSellerClothing = () => {
     return axios.get("/api/v1/product/get-all-seller-clothing");
 }
 
+const getPosts = () => {
+    return axios.get(`/api/v1/post/get-post`)
+}
 export {
     getAllBanners,
     getAllTeams,
@@ -38,4 +41,5 @@ export {
     getAllTrending,
     getAllForSearch,
     getAllSellerClothing,
+    getPosts,
 }

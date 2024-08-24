@@ -10,6 +10,7 @@ import BestSellerGifts from "./bestSellerGifts/BestSellerGifts";
 import NationAndClub from "./nationAndClub/NationAndClub";
 import AboutUs from "./aboutUs/AboutUs";
 import Sponsor from "./sponsor/Sponsor";
+import Blog from "./blog/Blog";
 
 const Home = () => {
     return (
@@ -23,6 +24,7 @@ const Home = () => {
             <BestSellerClothing />
             <NationAndClub />
             <BestSellerGifts />
+            <Blog />
             <AboutUs />
             <Sponsor />
         </div>

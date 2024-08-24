@@ -1,0 +1,22 @@
+.search-home {
+  .banner-section {
+    .banner-content {
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          background-color: white;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+        }
+      }
+    }
+  }
+}

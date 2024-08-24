@@ -166,7 +166,7 @@ const AdModalBanner = (props) => {
                         props.setSortConfig({key: 'id', direction: 'DESC'});
                         await props.fetchAllBanner(1, props.numRows);
                     } else {
-                        props.fetchAllBanner(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
+                        await props.fetchAllBanner(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }
                 } else if (res && res.EC === 1) {
                     handleBackendValidationErrors(res.DT, res.EM);

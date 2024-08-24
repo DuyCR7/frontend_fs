@@ -74,6 +74,7 @@ const AdSignIn = () => {
                 let res = await signInUser(email, password);
                 if (res && res.EC === 0) {
                     // let groupWithRoles = res.DT.groupWithRoles;
+                    let id = res.DT.id;
                     let email = res.DT.email;
                     let username = res.DT.username;
                     let access_token = res.DT.access_token;
@@ -83,6 +84,7 @@ const AdSignIn = () => {
                         isAuthenticated: true,
                         access_token,
                         // groupWithRoles,
+                        id,
                         email,
                         username,
                         image

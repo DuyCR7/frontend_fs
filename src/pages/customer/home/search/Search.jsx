@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
 import {getAllForSearch} from "../../../../services/customer/homeService";
 import useDebounce from "../../../../utils/useDebounce";
+import "./search.scss";
 
 const title = (
     <h2>Tìm kiếm sản phẩm</h2>
@@ -42,34 +43,38 @@ const Search = () => {
     }
 
     return (
-        <div className="banner-section style-4">
-            <div className="container-fluid ps-5 pe-5">
-                <div className="banner-content">
-                    {title}
-                    <form>
-                        <input type="text" className="fs-5" value={searchInput} placeholder="Tìm kiếm..."
-                        onChange={handleSearch}/>
-                        <button type="button">
-                            <IoIosSearch size={24} />
-                        </button>
-                    </form>
-                    <p>{desc}</p>
-                    <ul className="lab-ul">
-                        {
-                            filteredProducts && filteredProducts.length > 0 && filteredProducts.map((product, index) => {
-                                return (
-                                    <li key={index}>
-                                        <Link to={`/products/${product.slug}`} className="d-flex align-items-center p-3">
-                                            <img src={`${process.env.REACT_APP_URL_BACKEND}/${product.Product_Images[0].image}`}
-                                            alt={`${process.env.REACT_APP_URL_BACKEND}/${product.Product_Images[0].image}`}
-                                            style={{ width: "30px", height: "30px" }} className="me-3"/>
-                                            {product.name}
-                                        </Link>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
+        <div className="search-home">
+            <div className="banner-section style-4">
+                <div className="container-fluid ps-5 pe-5">
+                    <div className="banner-content">
+                        {title}
+                        <form>
+                            <input type="text" className="fs-5" value={searchInput} placeholder="Tìm kiếm..."
+                                   onChange={handleSearch}/>
+                            <button type="button">
+                                <IoIosSearch size={24}/>
+                            </button>
+                        </form>
+                        <p>{desc}</p>
+                        <ul className="lab-ul">
+                            {
+                                filteredProducts && filteredProducts.length > 0 && filteredProducts.map((product, index) => {
+                                    return (
+                                        <li key={index}>
+                                            <Link to={`/products/${product.slug}`}
+                                                  className="d-flex align-items-center p-3">
+                                                <img
+                                                    src={`${process.env.REACT_APP_URL_BACKEND}/${product.Product_Images[0].image}`}
+                                                    alt={`${process.env.REACT_APP_URL_BACKEND}/${product.Product_Images[0].image}`}
+                                                    style={{width: "30px", height: "30px"}} className="me-3"/>
+                                                {product.name}
+                                            </Link>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
