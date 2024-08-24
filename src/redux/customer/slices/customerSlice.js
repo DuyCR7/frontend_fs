@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     isAuthenticated: false,
+    id: '',
     email: '',
     image: '',
     access_token: '',
@@ -13,9 +14,10 @@ export const customerSlice = createSlice({
     initialState,
     reducers: {
         loginCustomer: (state, action) => {
-            const { isAuthenticated, email, image, access_token, typeLogin } = action.payload;
+            const { isAuthenticated, id, email, image, access_token, typeLogin } = action.payload;
 
             state.isAuthenticated = isAuthenticated;
+            state.id = id;
             state.email = email;
             state.image = image;
             state.access_token = access_token;
@@ -23,6 +25,7 @@ export const customerSlice = createSlice({
         },
         resetCustomer: (state) => {
             state.isAuthenticated = false;
+            state.id = "";
             state.email = "";
             state.image = "";
             state.access_token = "";

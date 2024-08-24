@@ -19,6 +19,7 @@ const GoogleLoginSuccess = (props) => {
     const fetchSignInGoogleSuccess = async () => {
         let res = await  signInGoogleSuccess(userId, tokenLoginGoogle);
         if (res && res.EC === 0) {
+            let id = res.DT.id;
             let email = res.DT.email;
             // let username = res.DT.username;
             let access_token = res.DT.access_token;
@@ -34,6 +35,7 @@ const GoogleLoginSuccess = (props) => {
                 isAuthenticated: true,
                 access_token,
                 // groupWithRoles,
+                id,
                 email,
                 // username,
                 image,
