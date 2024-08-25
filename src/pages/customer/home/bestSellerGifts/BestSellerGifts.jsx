@@ -6,6 +6,7 @@ import {FreeMode, Mousewheel, Navigation, Pagination} from "swiper/modules";
 import {IoCartOutline, IoEyeOutline, IoHeartOutline} from "react-icons/io5";
 import Rating from "../../components/rating/Rating";
 import {formatCurrency} from "../../../../utils/formatCurrency";
+import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -126,10 +127,10 @@ const BestSellerGifts = () => {
                             {!isMobile && (
                                 <>
                                     <div className="swiper-button-prev best-seller-gifts-prev custom-nav">
-                                        <FaArrowLeft/>
+                                        <MdNavigateBefore/>
                                     </div>
                                     <div className="swiper-button-next best-seller-gifts-next custom-nav">
-                                        <FaArrowRight/>
+                                        <MdNavigateNext/>
                                     </div>
                                 </>
                             )}

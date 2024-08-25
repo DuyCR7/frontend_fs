@@ -36,7 +36,7 @@
       &.custom-nav {
         width: 40px;
         height: 40px;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(237, 237, 237, 0.7);
         border-radius: 50%;
         color: rgb(24, 119, 242);
         display: flex;
@@ -59,12 +59,12 @@
         }
 
         &:hover {
-          background: rgba(255, 255, 255, 0.9);
+          background: rgba(237, 237, 237, 0.9);
         }
 
         svg {
-          width: 24px; // Thay đổi kích thước biểu tượng
-          height: 24px; // Thay đổi kích thước biểu tượng
+          width: 28px; // Thay đổi kích thước biểu tượng
+          height: 28px; // Thay đổi kích thước biểu tượng
         }
       }
     }

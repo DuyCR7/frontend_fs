@@ -2,45 +2,20 @@ import React, {useEffect, useState} from 'react';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import {getAllBanners} from "../../../../services/customer/homeService";
 import {Link} from "react-router-dom";
-
-const divStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-};
-
-const imageStyle = {
-    width: '100%',
-    height: 'auto',
-    maxWidth: '100%',
-    maxHeight: '100%',
-    objectFit: 'contain'
-};
-
-const buttonStyle = {
-    width: "40px",
-    height: "40px",
-    background: 'rgba(255, 255, 255, 0.7)',
-    cursor: 'pointer',
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    zIndex: 2,
-};
+import "./slider.scss";
 
 const properties = {
     prevArrow: (
-        <button style={{ ...buttonStyle, borderRadius: "50%", left: '10px' }}>
-            <FaArrowLeft color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}} />
+        <button className="btn-left">
+            <MdNavigateBefore />
         </button>
     ),
     nextArrow: (
-        <button style={{ ...buttonStyle, borderRadius: "50%", right: '10px' }}>
-            <FaArrowRight color="rgb(24, 119, 242)" size={24} style={{position: "relative", left: "8px", bottom: "5px"}}/>
+        <button className="btn-right">
+            <MdNavigateNext />
         </button>
     ),
 };
@@ -87,8 +62,8 @@ const Slider = () => {
                            {...properties}
                     >
                         {listBanner.map((item, index)=> (
-                            <Link to={item.url} key={index} style={divStyle}>
-                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${isMobile ? item.imageMobile : item.imageDesktop}`} alt={`Slide ${index}`} style={imageStyle}/>
+                            <Link className="slide-link" to={item.url} key={index}>
+                                <img src={`${process.env.REACT_APP_URL_BACKEND}/${isMobile ? item.imageMobile : item.imageDesktop}`} alt={`Slide ${index}`}/>
                             </Link>
                         ))}
                     </Slide>
