@@ -4,8 +4,17 @@ import {formatCurrency} from "../../../../utils/formatCurrency";
 import {FaMinus, FaPlus} from "react-icons/fa6";
 import {IoCartOutline} from "react-icons/io5";
 import { PiMoney } from "react-icons/pi";
+import {addToCart} from "../../../../services/customer/cartService";
+import {toast} from "react-toastify";
+import {updateCartCount} from "../../../../redux/customer/slices/customerSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const ProductDisplay = ({productData, setActiveImage}) => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const customer = useSelector((state) => state.customer);
 
     const {name, price, price_sale, isSale, team, category, description, details = []} = productData;
 
@@ -127,22 +136,34 @@ const ProductDisplay = ({productData, setActiveImage}) => {
         }
     };
 
-    const handleAddToCart = () => {
-        if (selectedSize && selectedColor && quantity > 0) {
-            const item = {
-                productId: productData.id,
-                name: productData.name,
-                price: isSale ? price_sale : price,
-                sizeId: selectedSize,
-                colorId: selectedColor,
-                quantity: quantity,
-                image: productData.image
-            };
-            setCartItem(item);
-            // Thực hiện thêm item vào giỏ hàng (gọi API hoặc lưu trữ vào state khác)
-            console.log("Thêm vào giỏ hàng:", item);
+    const handleAddToCart = async () => {
+        if (customer && !customer.isAuthenticated) {
+            navigate('/sign-in');
         } else {
-            setError("Vui lòng chọn phân loại hàng!");
+            if (selectedSize && selectedColor) {
+                const productDetail = productData.details.find(detail =>
+                    detail.size.id === selectedSize && detail.color.id === selectedColor
+                );
+                const item = {
+                    productId: productData.id,
+                    quantity: quantity,
+                };
+
+                try {
+                    let res = await addToCart(item.productId, productDetail.id, item.quantity);
+                    if (res && res.EC === 0) {
+                        toast.success(res.EM);
+                        dispatch(updateCartCount(res.DT));
+                        setError("");
+                    } else {
+                        setError(res.EM);
+                    }
+                } catch (e) {
+                    toast.error(e);
+                }
+            } else {
+                setError("Vui lòng chọn phân loại hàng!");
+            }
         }
     }
 
@@ -233,7 +254,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                 </div>
             </div>
             {error && (
-                <div className="ms-3 text-danger">{error}</div>
+                <div className="text-danger">{error}</div>
             )}
             <div className="d-flex gap-3">
                 <button className="btn btn-outline-primary d-flex align-items-center gap-1"

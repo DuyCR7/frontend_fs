@@ -102,7 +102,7 @@ const BestSellerClothing = () => {
                                                 <div className="product-action-link">
                                                     <span title="Xem nhanh"><IoEyeOutline size={16}/></span>
                                                     <span title="Yêu thích"><IoHeartOutline size={16}/></span>
-                                                    <span title="Giỏ hàng"><IoCartOutline size={16}/></span>
+                                                    {/*<span title="Giỏ hàng"><IoCartOutline size={16}/></span>*/}
                                                 </div>
                                             </div>
                                             <div className="product-content">

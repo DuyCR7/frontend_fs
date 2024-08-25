@@ -121,16 +121,17 @@ const Trending = () => {
 
                                                     {/*product action links*/}
                                                     <div className="product-action-link">
-                                                    <span title='Xem nhanh'
-                                                          onClick={() => handleShowModalQuickView(item)}>
-                                                        <IoEyeOutline size={16}/>
-                                                    </span>
+                                                        <span title='Xem nhanh'
+                                                              onClick={() => handleShowModalQuickView(item)}>
+                                                            <IoEyeOutline size={16}/>
+                                                        </span>
                                                         <span title='Yêu thích'>
-                                                        <IoHeartOutline size={16}/>
-                                                    </span>
-                                                        <span title='Giỏ hàng'>
-                                                        <IoCartOutline size={16}/>
-                                                    </span>
+                                                            <IoHeartOutline size={16}/>
+                                                        </span>
+                                                        {/*<span title='Giỏ hàng'*/}
+                                                        {/*      onClick={() => handleAddToCart(item)}>*/}
+                                                        {/*    <IoCartOutline size={16}/>*/}
+                                                        {/*</span>*/}
                                                     </div>
                                                 </div>
 

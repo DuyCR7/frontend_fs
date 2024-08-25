@@ -1,12 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {formatCurrency} from "../../../../utils/formatCurrency";
-import { FaMinus, FaPlus } from "react-icons/fa6";
+import {FaMinus, FaPlus} from "react-icons/fa6";
 import "./modalQuickView.scss";
 import {IoCartOutline} from "react-icons/io5";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import {addToCart} from "../../../../services/customer/cartService";
+import {useDispatch, useSelector} from "react-redux";
+import {updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 
 const ModalQuickView = (props) => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const customer = useSelector((state) => state.customer);
 
     const [productData, setProductData] = useState({});
 
@@ -20,7 +28,7 @@ const ModalQuickView = (props) => {
     const [cartItem, setCartItem] = useState(null);
 
     useEffect(() => {
-        if(props.dataQuickView && Object.keys(props.dataQuickView).length > 0) {
+        if (props.dataQuickView && Object.keys(props.dataQuickView).length > 0) {
             setProductData(props.dataQuickView);
             setQuantity(1);
         } else {
@@ -150,24 +158,36 @@ const ModalQuickView = (props) => {
         setError('');
     }
 
-    const { name, price, price_sale, isSale, slug, image, details = []} = productData;
+    const {name, price, price_sale, isSale, slug, image, details = []} = productData;
 
-    const handleAddToCart = () => {
-        if (selectedSize && selectedColor && quantity > 0) {
-            const item = {
-                productId: productData.id,
-                name: productData.name,
-                price: isSale ? price_sale : price,
-                sizeId: selectedSize,
-                colorId: selectedColor,
-                quantity: quantity,
-                image: productData.image
-            };
-            setCartItem(item);
-            // Thực hiện thêm item vào giỏ hàng (gọi API hoặc lưu trữ vào state khác)
-            console.log("Thêm vào giỏ hàng:", item);
+    const handleAddToCart = async () => {
+        if (customer && !customer.isAuthenticated) {
+            navigate('/sign-in');
         } else {
-            setError("Vui lòng chọn phân loại hàng!");
+            if (selectedSize && selectedColor) {
+                const productDetail = productData.details.find(detail =>
+                    detail.size.id === selectedSize && detail.color.id === selectedColor
+                );
+                const item = {
+                    productId: productData.id,
+                    quantity: quantity,
+                };
+
+                try {
+                    let res = await addToCart(item.productId, productDetail.id, item.quantity);
+                    if (res && res.EC === 0) {
+                        toast.success(res.EM);
+                        dispatch(updateCartCount(res.DT));
+                        setError("");
+                    } else {
+                        setError(res.EM);
+                    }
+                } catch (e) {
+                    toast.error(e);
+                }
+            } else {
+                setError("Vui lòng chọn phân loại hàng!");
+            }
         }
     }
 
@@ -184,7 +204,8 @@ const ModalQuickView = (props) => {
             <Modal.Body>
                 <div className="content-body row">
                     <div className="col-md-6">
-                        <img src={`${process.env.REACT_APP_URL_BACKEND}/${selectedColorImage || image}`} className="img-fluid"/>
+                        <img src={`${process.env.REACT_APP_URL_BACKEND}/${selectedColorImage || image}`}
+                             className="img-fluid"/>
                     </div>
 
                     <div className="col-md-6">
@@ -236,14 +257,14 @@ const ModalQuickView = (props) => {
                                 ))}
                             </div>
                         </div>
-                        {availableQuantity > 0 && (
+                        {availableQuantity >= 0 && (
                             <div className="form-group">
                                 <p>{availableQuantity} sản phẩm có sẵn</p>
                             </div>
                         )}
                         <div className="form-group d-flex">
                             <div className="cart-plus-minus ms-0">
-                                <div className="dec qtybutton" onClick={handleDecrease}><FaMinus /></div>
+                                <div className="dec qtybutton" onClick={handleDecrease}><FaMinus/></div>
                                 <input className="cart-plus-minus-box" type="text" name="qtybutton" id="qtybutton"
                                        value={quantity === '' ? '' : quantity}
                                        onChange={(e) => handleQuantityChange(parseInt(e.target.value, 10) || '')}
@@ -251,15 +272,16 @@ const ModalQuickView = (props) => {
                                        min={1}
                                        max={availableQuantity}
                                 />
-                                <div className="inc qtybutton" onClick={handleIncrease}><FaPlus /></div>
+                                <div className="inc qtybutton" onClick={handleIncrease}><FaPlus/></div>
                             </div>
                         </div>
                         {error && (
                             <div className="ms-3 text-danger">{error}</div>
                         )}
                         <div className="form-group">
-                            <button className="btn btn-outline-primary d-flex align-items-center gap-1" onClick={() => handleAddToCart()}>
-                                <IoCartOutline size={22} />
+                            <button className="btn btn-outline-primary d-flex align-items-center gap-1"
+                                    onClick={() => handleAddToCart()}>
+                                <IoCartOutline size={22}/>
                                 <span>Thêm vào giỏ hàng</span>
                             </button>
                         </div>

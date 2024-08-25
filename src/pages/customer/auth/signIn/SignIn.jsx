@@ -8,8 +8,9 @@ import {toast} from "react-toastify";
 import {validateEmail} from "../../../../utils/validateEmail";
 import {signInCustomer} from "../../../../services/customer/authService";
 import {useDispatch, useSelector} from "react-redux";
-import {loginCustomer} from "../../../../redux/customer/slices/customerSlice";
+import {loginCustomer, updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 import Alert from "react-bootstrap/Alert";
+import {getCount} from "../../../../services/customer/cartService";
 
 const SignIn = () => {
 
@@ -85,18 +86,28 @@ const SignIn = () => {
                     let data = {
                         isAuthenticated: true,
                         access_token,
-                        // groupWithRoles,
                         id,
                         email,
-                        // username,
                         image,
                         typeLogin
                     }
 
                     dispatch(loginCustomer(data));
 
+                    try {
+                        let resCartCount = await getCount(id);
+                        if(resCartCount && resCartCount.EC === 0) {
+                            dispatch(updateCartCount(resCartCount.DT));
+                        } else if (resCartCount && resCartCount.EC === 1){
+                            dispatch(updateCartCount(resCartCount.DT));
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        dispatch(updateCartCount(0));
+                    }
+
                     localStorage.setItem("cus_jwt", access_token);
-                    // loginContext(data);
+
                     toast.success(res.EM);
                     setMsg("");
                     navigate('/');
@@ -156,6 +167,9 @@ const SignIn = () => {
                 <Col xs={12} sm={8} md={6} lg={4}>
                     <Card className="p-4">
                         <Card.Body>
+                            <Link to="/" className="d-flex align-items-center justify-content-center">
+                                <img src="/admin/assets/img/kaiadmin/cus_logo_dark.png" width={90}/>
+                            </Link>
                             <h2 className="text-center mb-3">Đăng nhập</h2>
                             <div className="text-center mt-3">
                                 <span>Bạn chưa có tài khoản? </span><Link to="/sign-up" style={{color: "#007bff"}}>Tạo

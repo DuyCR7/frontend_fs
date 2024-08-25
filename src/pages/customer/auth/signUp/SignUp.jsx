@@ -128,6 +128,9 @@ const SignUp = () => {
                 <Col xs={12} sm={8} md={6} lg={4}>
                     <Card className="p-4">
                         <Card.Body>
+                            <Link to="/" className="d-flex align-items-center justify-content-center">
+                                <img src="/admin/assets/img/kaiadmin/cus_logo_dark.png" width={90}/>
+                            </Link>
                             <h2 className="text-center mb-3">Đăng ký</h2>
                             <div className="text-center mt-3">
                                 <span>Bạn đã có tài khoản? </span><Link to="/sign-in" style={{color: "#007bff"}}>Đăng

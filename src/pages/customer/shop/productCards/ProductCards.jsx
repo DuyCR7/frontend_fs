@@ -40,16 +40,16 @@ const ProductCards = ({GridList, products}) => {
 
                                         {/*product action links*/}
                                         <div className="product-action-link">
-                                        <span title='Xem nhanh'
-                                              onClick={() => handleShowModalQuickView(item)}>
-                                            <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
-                                        </span>
+                                            <span title='Xem nhanh'
+                                                  onClick={() => handleShowModalQuickView(item)}>
+                                                <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
+                                            </span>
                                             <span title='Yêu thích'>
-                                            <IoHeartOutline size={16} style={{cursor: "pointer"}}/>
-                                        </span>
-                                            <span title='Giỏ hàng'>
-                                            <IoCartOutline size={16} style={{cursor: "pointer"}}/>
-                                        </span>
+                                                <IoHeartOutline size={16} style={{cursor: "pointer"}}/>
+                                            </span>
+                                        {/*    <span title='Giỏ hàng'>*/}
+                                        {/*    <IoCartOutline size={16} style={{cursor: "pointer"}}/>*/}
+                                        {/*</span>*/}
                                         </div>
                                     </div>
 
@@ -84,16 +84,16 @@ const ProductCards = ({GridList, products}) => {
 
                                         {/*product action links*/}
                                         <div className="product-action-link">
-                                        <span title='Xem nhanh'
-                                              onClick={() => handleShowModalQuickView(item)}>
-                                            <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
-                                        </span>
+                                            <span title='Xem nhanh'
+                                                  onClick={() => handleShowModalQuickView(item)}>
+                                                <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
+                                            </span>
                                             <span title='Yêu thích'>
-                                            <IoHeartOutline size={16} style={{cursor: "pointer"}}/>
-                                        </span>
-                                            <span title='Giỏ hàng'>
-                                            <IoCartOutline size={16} style={{cursor: "pointer"}}/>
-                                        </span>
+                                                <IoHeartOutline size={16} style={{cursor: "pointer"}}/>
+                                            </span>
+                                            {/*<span title='Giỏ hàng'>*/}
+                                            {/*    <IoCartOutline size={16} style={{cursor: "pointer"}}/>*/}
+                                            {/*</span>*/}
                                         </div>
                                     </div>
 

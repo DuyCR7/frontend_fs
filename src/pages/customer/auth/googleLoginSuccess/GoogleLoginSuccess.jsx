@@ -1,9 +1,10 @@
 import {useEffect} from "react";
 import {signInGoogleSuccess} from "../../../../services/customer/authService";
 import {Navigate, useNavigate, useParams} from "react-router-dom";
-import {loginCustomer} from "../../../../redux/customer/slices/customerSlice";
+import {loginCustomer, updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
+import {getCount} from "../../../../services/customer/cartService";
 
 const GoogleLoginSuccess = (props) => {
 
@@ -17,7 +18,7 @@ const GoogleLoginSuccess = (props) => {
     }, []);
 
     const fetchSignInGoogleSuccess = async () => {
-        let res = await  signInGoogleSuccess(userId, tokenLoginGoogle);
+        let res = await signInGoogleSuccess(userId, tokenLoginGoogle);
         if (res && res.EC === 0) {
             let id = res.DT.id;
             let email = res.DT.email;
@@ -34,15 +35,25 @@ const GoogleLoginSuccess = (props) => {
             let data = {
                 isAuthenticated: true,
                 access_token,
-                // groupWithRoles,
                 id,
                 email,
-                // username,
                 image,
                 typeLogin
             }
 
             dispatch(loginCustomer(data));
+
+            try {
+                let resCartCount = await getCount(id);
+                if(resCartCount && resCartCount.EC === 0) {
+                    dispatch(updateCartCount(resCartCount.DT));
+                } else if (resCartCount && resCartCount.EC === 1){
+                    dispatch(updateCartCount(resCartCount.DT));
+                }
+            } catch (e) {
+                console.error(e);
+                dispatch(updateCartCount(0));
+            }
 
             localStorage.setItem("cus_jwt", access_token);
             toast.success(res.EM);

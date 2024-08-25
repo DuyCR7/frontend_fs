@@ -15,7 +15,7 @@ const ShopColor = ({filterItem, menuItems, selectedItems}) => {
             <div className="widget-header mt-4">
                 <span className="ms-2 fs-4 text-primary">COLOR</span>
             </div>
-            <div>
+            <div className="mb-4">
                 {
                     menuItems.length > 0 ? (
                         menuItems.map((color, index) => {

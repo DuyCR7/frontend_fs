@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import "./navItems.scss";
 import {useDispatch, useSelector} from "react-redux";
@@ -16,13 +16,12 @@ const NavItems = () => {
     const handleLogout = async () => {
         try {
             let data = await logoutCustomer(); // clear cookie
-            // logoutContext(); // clear user in context
             if (data && data.EC === 0) {
                 localStorage.removeItem("cus_jwt"); // clear local storage
                 dispatch(resetCustomer());
 
                 toast.success(data.EM);
-                navigate('/sign-in');
+                // navigate('/');
             } else {
                 toast.error(data.EM);
             }
@@ -79,7 +78,13 @@ const NavItems = () => {
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>
                                             {/*<i className="icofont-cart" style={{fontSize: '1.5rem'}}></i>*/}
                                             <IoCartOutline size={20} />
-                                            <span>5</span>
+                                                {
+                                                    customer && customer.isAuthenticated ? (
+                                                        <span>{customer.cartCount}</span>
+                                                    ) : (
+                                                        <span>0</span>
+                                                    )
+                                                }
                                         </Link>
                                     </li>
                                 </ul>
