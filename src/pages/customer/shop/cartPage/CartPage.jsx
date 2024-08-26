@@ -25,15 +25,15 @@ const CartPage = () => {
 
     useEffect(() => {
         if(customer && customer.isAuthenticated) {
-            fetchCartItems(customer.id);
+            fetchCartItems();
         } else {
             navigate('/sign-in');
         }
     }, [customer]);
 
-    const fetchCartItems = async (cusId) => {
+    const fetchCartItems = async () => {
         try {
-            let res = await getCart(cusId);
+            let res = await getCart();
             if (res && res.EC === 0) {
                 setCartItems(res.DT);
 
@@ -67,7 +67,7 @@ const CartPage = () => {
                     const { EC, EM } = res;
 
                     if (EC === 0 || EC === 2) {
-                        await fetchCartItems(customer.id);
+                        await fetchCartItems();
                         if (EC === 2) {
                             toast.warn(EM);
                         }
@@ -291,7 +291,6 @@ const CartPage = () => {
                     handleCloseModalConfirm={handleCloseModalConfirm}
                     selectedItemForDelete={selectedItemForDelete}
                     fetchCartItems={fetchCartItems}
-                    cusId={customer.id}
                 />
             </div>
         </>

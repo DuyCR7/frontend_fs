@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import "./navItems.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {logoutCustomer} from "../../../../services/customer/authService";
-import {resetCustomer} from "../../../../redux/customer/slices/customerSlice";
+import {resetCustomer, updateCartCount, updateWishListCount} from "../../../../redux/customer/slices/customerSlice";
 import {toast} from "react-toastify";
 import {IoCartOutline, IoHeartOutline} from "react-icons/io5";
 
@@ -19,6 +19,8 @@ const NavItems = () => {
             if (data && data.EC === 0) {
                 localStorage.removeItem("cus_jwt"); // clear local storage
                 dispatch(resetCustomer());
+                dispatch(updateCartCount(0));
+                dispatch(updateWishListCount(0));
 
                 toast.success(data.EM);
                 // navigate('/');

@@ -18,7 +18,7 @@ export const useWishlist = () => {
     const fetchWishlist = async () => {
         if (customer && customer.isAuthenticated) {
             try {
-                let res = await getWishList(customer.id);
+                let res = await getWishList();
                 if (res && res.EC === 0) {
                     dispatch(setWishList(res.DT));
                 }
@@ -50,7 +50,7 @@ export const useWishlist = () => {
         try {
             let res;
             if (isInWishlist(product.id)) {
-                res = await deleteWishListItem(customer.id, product.id);
+                res = await deleteWishListItem(product.id);
             } else {
                 res = await addToWishList(product.id);
             }

@@ -97,8 +97,8 @@ const SignIn = () => {
 
                     try {
                         const [resCartCount, resWishListCount] = await Promise.all([
-                            getCartCount(id),
-                            getWishListCount(id)
+                            getCartCount(),
+                            getWishListCount()
                         ])
 
                         if(resCartCount && resCartCount.EC === 0) {

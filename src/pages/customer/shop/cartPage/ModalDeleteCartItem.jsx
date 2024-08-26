@@ -18,7 +18,7 @@ const ModalDeleteCartItem = (props) => {
             const res = await deleteCartItem(props.selectedItemForDelete.id);
             if (res && res.EC === 0) {
                 props.handleCloseModalConfirm();
-                await props.fetchCartItems(props.cusId);
+                await props.fetchCartItems();
                 dispatch(updateCartCount(res.DT.count));
                 toast.success(res.EM);
             } else {

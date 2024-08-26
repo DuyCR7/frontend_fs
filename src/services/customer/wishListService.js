@@ -6,26 +6,17 @@ const addToWishList = (productId) => {
     });
 }
 
-const getWishListCount = (cusId) => {
-    return axios.get(`/api/v1/wishlist/get-count`, {
-        params: {
-            cusId: cusId
-        }
-    });
+const getWishListCount = () => {
+    return axios.get(`/api/v1/wishlist/get-count`);
 }
 
-const getWishList = (cusId) => {
-    return axios.get(`/api/v1/wishlist/get-wish-list`, {
-        params: {
-            cusId: cusId
-        }
-    });
+const getWishList = () => {
+    return axios.get(`/api/v1/wishlist/get-wish-list`);
 }
 
-const deleteWishListItem = (cusId, productId) => {
+const deleteWishListItem = (productId) => {
     return axios.delete(`/api/v1/wishlist/delete-wishlist-item`, {
         data: {
-            cusId: cusId,
             productId: productId
         }
     });

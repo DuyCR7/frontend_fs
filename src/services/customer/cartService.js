@@ -8,20 +8,12 @@ const addToCart = (productId, productDetailId, quantity) => {
     });
 }
 
-const getCartCount = (cusId) => {
-    return axios.get(`/api/v1/cart/get-count`, {
-        params: {
-            cusId,
-        }
-    });
+const getCartCount = () => {
+    return axios.get(`/api/v1/cart/get-count`);
 }
 
-const getCart = (cusId) => {
-    return axios.get(`/api/v1/cart/get-cart`, {
-        params: {
-            cusId,
-        }
-    });
+const getCart = () => {
+    return axios.get(`/api/v1/cart/get-cart`);
 }
 
 const updateCartItemQuantity = (cartDetailId, newQuantity) => {

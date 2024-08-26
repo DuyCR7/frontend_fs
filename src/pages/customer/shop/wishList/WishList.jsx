@@ -43,7 +43,7 @@ const WishList = () => {
             navigate('/sign-in');
         } else {
             try {
-                let res = await deleteWishListItem(customer.id, productId);
+                let res = await deleteWishListItem(productId);
                 if (res && res.EC === 0) {
                     toast.success(res.EM);
                     dispatch(updateWishListCount(res.DT));
