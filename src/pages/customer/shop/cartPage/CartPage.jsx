@@ -201,7 +201,7 @@ const CartPage = () => {
                                             :
                                             <>
                                                 <tr>
-                                                    <td colSpan={7}>Giỏ hàng trống!</td>
+                                                    <td colSpan={7}>Giỏ hàng trống! <Link to={'/shops'} style={{color: "#1178f2"}}>Cửa hàng</Link></td>
                                                 </tr>
                                             </>
                                     }

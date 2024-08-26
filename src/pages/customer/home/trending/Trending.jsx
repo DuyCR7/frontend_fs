@@ -1,15 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import Rating from "../../components/rating/Rating.jsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {getAllTrending} from "../../../../services/customer/homeService";
 import {formatCurrency} from "../../../../utils/formatCurrency";
-import {IoEyeOutline, IoHeartOutline, IoCartOutline} from "react-icons/io5";
+import {IoEyeOutline, IoHeartOutline, IoHeartSharp, IoCartOutline} from "react-icons/io5";
 import "./trending.scss";
 import ModalQuickView from "../../components/modal/ModalQuickView";
+import {useDispatch, useSelector} from "react-redux";
+import {useWishlist} from "../../components/wishList/useWishlist";
 
 const title = "Xu hướng";
 
 const Trending = () => {
+
+    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
+
+    const customer = useSelector((state) => state.customer);
 
     const [listTrending, setListTrending] = useState([]);
     const [filteredTrending, setFilteredTrending] = useState([]);
@@ -125,8 +131,13 @@ const Trending = () => {
                                                               onClick={() => handleShowModalQuickView(item)}>
                                                             <IoEyeOutline size={16}/>
                                                         </span>
-                                                        <span title='Yêu thích'>
-                                                            <IoHeartOutline size={16}/>
+                                                        <span title='Yêu thích'
+                                                              onClick={() => handleWishlistAction(item)}>
+                                                            {
+                                                                customer.isAuthenticated && isInWishlist(item.id)
+                                                                    ? <IoHeartSharp size={16}/>
+                                                                    : <IoHeartOutline size={16}/>
+                                                            }
                                                         </span>
                                                         {/*<span title='Giỏ hàng'*/}
                                                         {/*      onClick={() => handleAddToCart(item)}>*/}

@@ -8,9 +8,10 @@ import {toast} from "react-toastify";
 import {validateEmail} from "../../../../utils/validateEmail";
 import {signInCustomer} from "../../../../services/customer/authService";
 import {useDispatch, useSelector} from "react-redux";
-import {loginCustomer, updateCartCount} from "../../../../redux/customer/slices/customerSlice";
+import {loginCustomer, updateCartCount, updateWishListCount} from "../../../../redux/customer/slices/customerSlice";
 import Alert from "react-bootstrap/Alert";
-import {getCount} from "../../../../services/customer/cartService";
+import {getCartCount} from "../../../../services/customer/cartService";
+import {getWishListCount} from "../../../../services/customer/wishListService";
 
 const SignIn = () => {
 
@@ -95,15 +96,25 @@ const SignIn = () => {
                     dispatch(loginCustomer(data));
 
                     try {
-                        let resCartCount = await getCount(id);
+                        const [resCartCount, resWishListCount] = await Promise.all([
+                            getCartCount(id),
+                            getWishListCount(id)
+                        ])
+
                         if(resCartCount && resCartCount.EC === 0) {
                             dispatch(updateCartCount(resCartCount.DT));
                         } else if (resCartCount && resCartCount.EC === 1){
                             dispatch(updateCartCount(resCartCount.DT));
                         }
+
+                        if(resWishListCount && resWishListCount.EC === 0) {
+                            dispatch(updateWishListCount(resWishListCount.DT));
+                        }
+
                     } catch (e) {
                         console.error(e);
                         dispatch(updateCartCount(0));
+                        dispatch(updateWishListCount(0));
                     }
 
                     localStorage.setItem("cus_jwt", access_token);

@@ -3,16 +3,17 @@ import {Link, useNavigate} from "react-router-dom";
 import {getAllSellerClothing} from "../../../../services/customer/homeService";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Mousewheel, Navigation, Pagination} from "swiper/modules";
-import {IoCartOutline, IoEyeOutline, IoHeartOutline} from "react-icons/io5";
+import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import Rating from "../../components/rating/Rating";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
-import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/free-mode';
 import "./bestSellerGifts.scss"
+import {useSelector} from "react-redux";
+import {useWishlist} from "../../components/wishList/useWishlist";
 
 const title = "Quà tặng bán chạy nhất";
 
@@ -21,6 +22,10 @@ const BestSellerGifts = () => {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+    const customer = useSelector((state) => state.customer);
+
+    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     useEffect(() => {
         const handleResize = () => {
@@ -36,6 +41,7 @@ const BestSellerGifts = () => {
     useEffect(() => {
         fetchAllSellerClothing();
     }, []);
+
     const fetchAllSellerClothing = async () => {
         try {
             let res = await getAllSellerClothing();
@@ -48,6 +54,7 @@ const BestSellerGifts = () => {
             console.error('Error fetching seller clothing', e);
         }
     }
+
     return (
         <div className="best-seller-gifts course-section style-3 padding-tb">
             {/*main section*/}
@@ -99,7 +106,13 @@ const BestSellerGifts = () => {
                                                 </div>
                                                 <div className="product-action-link">
                                                     <span title="Xem nhanh"><IoEyeOutline size={16}/></span>
-                                                    <span title="Yêu thích"><IoHeartOutline size={16}/></span>
+                                                    <span title="Yêu thích" onClick={() => handleWishlistAction(item)}>
+                                                        {
+                                                            customer.isAuthenticated && isInWishlist(item.id)
+                                                                ? <IoHeartSharp size={16}/>
+                                                                : <IoHeartOutline size={16}/>
+                                                        }
+                                                    </span>
                                                     {/*<span title="Giỏ hàng"><IoCartOutline size={16}/></span>*/}
                                                 </div>
                                             </div>

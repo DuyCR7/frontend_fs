@@ -72,7 +72,13 @@ const NavItems = () => {
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>
                                             {/*<i className="icofont-heart" style={{fontSize: '1.5rem'}}></i>*/}
                                             <IoHeartOutline size={20} />
-                                            <span>2</span>
+                                            {
+                                                customer && customer.isAuthenticated ? (
+                                                    <span>{customer.wishListCount}</span>
+                                                ) : (
+                                                    <span>0</span>
+                                                )
+                                            }
                                         </Link>
                                         <Link title="Giỏ hàng" to="/carts" className={'count-icon'}
                                               onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>

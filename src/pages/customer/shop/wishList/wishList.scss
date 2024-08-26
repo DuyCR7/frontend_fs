@@ -1,0 +1,26 @@
+.wish-list {
+  .price-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: bold;
+
+    .original-price {
+      color: #888;
+      text-decoration: line-through;
+    }
+
+    .sale-price {
+      color: #e44d26;
+    }
+
+    &.on-sale {
+      .original-price {
+        font-size: 16px;
+        font-weight: normal;
+      }
+    }
+  }
+}

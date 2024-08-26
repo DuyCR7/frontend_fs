@@ -1,20 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import blogList from "../../../utils/blogdata";
 import {Link, useParams} from "react-router-dom";
 import PageHeader from "../components/pageHeader/PageHeader.jsx";
 import Tags from "../shop/tags/Tags.jsx";
 import PopularPost from "../shop/popularPost/PopularPost.jsx";
-import {getSinglePost} from "../../../services/customer/postService";
+import {getSinglePost, incrementViewCount} from "../../../services/customer/postService";
 import {Spin} from "antd";
 import NotFoundPageCus from "../../../components/NotFoundPageCus/NotFoundPageCus";
 import {formatDate} from "../../../utils/formatDate";
 import parse from "html-react-parser";
-
-const socialList = [{link: "#", iconName: "icofont-facebook", className: "facebook",}, {
-    link: "#",
-    iconName: "icofont-instagram",
-    className: "instagram",
-}];
 
 const SingleBlog = () => {
 
@@ -24,6 +17,7 @@ const SingleBlog = () => {
     const [nextPost, setNextPost] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [viewCount, setViewCount] = useState(0);
 
     useEffect(() => {
         fetchSinglePost();
@@ -36,6 +30,9 @@ const SingleBlog = () => {
                 setCurrentPost(res.DT.currentPost);
                 setPreviousPost(res.DT.previousPost);
                 setNextPost(res.DT.nextPost);
+
+                let updatedViewCount = await incrementViewCount(slug);
+                setViewCount(updatedViewCount.DT);
             } else {
                 setError(res.DT);
             }
@@ -89,6 +86,9 @@ const SingleBlog = () => {
                                                                     </li>
                                                                     <li>
                                                                         <i className="icofont-calendar"></i>{formatDate(currentPost.createdAt)}
+                                                                    </li>
+                                                                    <li>
+                                                                        <i className="icofont-eye"></i>{viewCount} lượt xem
                                                                     </li>
                                                                 </ul>
                                                             </div>

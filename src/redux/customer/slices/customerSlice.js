@@ -8,6 +8,8 @@ const initialState = {
     access_token: '',
     typeLogin: '',
     cartCount: 0,
+    wishListCount: 0,
+    wishList: [],
 }
 
 export const customerSlice = createSlice({
@@ -34,11 +36,17 @@ export const customerSlice = createSlice({
         },
         updateCartCount: (state, action) => {
             state.cartCount = action.payload;
-        }
+        },
+        setWishList: (state, action) => {
+            state.wishList = action.payload;
+        },
+        updateWishListCount: (state, action) => {
+            state.wishListCount = action.payload;
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { loginCustomer, resetCustomer, updateCartCount } = customerSlice.actions
+export const { loginCustomer, resetCustomer, updateCartCount, setWishList, updateWishListCount } = customerSlice.actions
 
 export default customerSlice.reducer

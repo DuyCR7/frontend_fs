@@ -1,12 +1,18 @@
-import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 import Rating from "../../components/rating/Rating.jsx";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import "./productCards.scss";
-import {IoCartOutline, IoEyeOutline, IoHeartOutline} from "react-icons/io5";
+import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import ModalQuickView from "../../components/modal/ModalQuickView";
+import {useSelector} from "react-redux";
+import {useWishlist} from "../../components/wishList/useWishlist";
 
 const ProductCards = ({GridList, products}) => {
+
+    const customer = useSelector((state) => state.customer);
+
+    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     const [isShowModalQuickView, setIsShowModalQuickView] = useState(false);
     const [dataQuickView, setDataQuickView] = useState({});
@@ -44,8 +50,12 @@ const ProductCards = ({GridList, products}) => {
                                                   onClick={() => handleShowModalQuickView(item)}>
                                                 <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
                                             </span>
-                                            <span title='Yêu thích'>
-                                                <IoHeartOutline size={16} style={{cursor: "pointer"}}/>
+                                            <span title='Yêu thích' onClick={() => handleWishlistAction(item)}>
+                                                {
+                                                    customer.isAuthenticated && isInWishlist(item.id)
+                                                        ? <IoHeartSharp size={16}/>
+                                                        : <IoHeartOutline size={16}/>
+                                                }
                                             </span>
                                         {/*    <span title='Giỏ hàng'>*/}
                                         {/*    <IoCartOutline size={16} style={{cursor: "pointer"}}/>*/}
@@ -88,8 +98,12 @@ const ProductCards = ({GridList, products}) => {
                                                   onClick={() => handleShowModalQuickView(item)}>
                                                 <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
                                             </span>
-                                            <span title='Yêu thích'>
-                                                <IoHeartOutline size={16} style={{cursor: "pointer"}}/>
+                                            <span title='Yêu thích' onClick={() => handleWishlistAction(item)}>
+                                                {
+                                                    customer.isAuthenticated && isInWishlist(item.id)
+                                                        ? <IoHeartSharp size={16}/>
+                                                        : <IoHeartOutline size={16}/>
+                                                }
                                             </span>
                                             {/*<span title='Giỏ hàng'>*/}
                                             {/*    <IoCartOutline size={16} style={{cursor: "pointer"}}/>*/}

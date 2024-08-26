@@ -8,7 +8,7 @@ const addToCart = (productId, productDetailId, quantity) => {
     });
 }
 
-const getCount = (cusId) => {
+const getCartCount = (cusId) => {
     return axios.get(`/api/v1/cart/get-count`, {
         params: {
             cusId,
@@ -41,7 +41,7 @@ const deleteCartItem = (cartDetailId) => {
 
 export {
     addToCart,
-    getCount,
+    getCartCount,
     getCart,
     updateCartItemQuantity,
     deleteCartItem,
