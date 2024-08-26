@@ -27,6 +27,7 @@ const AdModalDeleteBanner = (props) => {
             setLoading(false);
         }
     }
+    console.log(props.dataDelete);
 
     return (
         <>
