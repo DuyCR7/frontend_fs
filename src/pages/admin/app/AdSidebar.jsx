@@ -1,5 +1,6 @@
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {Helmet} from "react-helmet";
 
 const AdSidebar = (props) => {
 
@@ -193,6 +194,9 @@ const AdSidebar = (props) => {
                     </div>
                 </div>
             </div>
+            <Helmet>
+                <script src="/admin/assets/js/kaiadmin.min.js"></script>
+            </Helmet>
             {/*End AdSidebar*/}
         </>
     )
