@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PageHeader from "../components/pageHeader/PageHeader.jsx";
 import ProductCards from "./productCards/ProductCards.jsx";
 import Search from "./search/Search.jsx";
@@ -11,6 +11,8 @@ import {getAllInfoProduct} from "../../../services/customer/shopService";
 import ReactPaginate from "react-paginate";
 import {Spin} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
+import Slider from "react-slider";
+import ShopPriceRange from "./shopPriceRange/ShopPriceRange";
 
 const Shop = () => {
 
@@ -34,10 +36,16 @@ const Shop = () => {
         colors: []
     });
 
+    const [minPrice, setMinPrice] = useState(null);
+    const [maxPrice, setMaxPrice] = useState(null);
+    const [priceRange, setPriceRange] = useState([null, null]);
+
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(4);  // Số sản phẩm trên mỗi trang
     const [totalPages, setTotalPages] = useState(1);
     const [totalRows, setTotalRows] = useState(1);
+
+    const productCardsRef = useRef(null); // Khai báo ref
 
     const fetchAllInforProduct = useCallback(async (currentPage) => {
         setLoading(true);
@@ -46,13 +54,27 @@ const Shop = () => {
             const filterTeam = selectedTeams.join(',');
             const filterSize = selectedSizes.join(',');
             const filterColor = selectedColors.join(',');
+            const [minSelectedPrice, maxSelectedPrice] = priceRange;
 
-            let res = await getAllInfoProduct(currentPage, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team, category);
+            let res = await getAllInfoProduct(currentPage, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team, category, minSelectedPrice, maxSelectedPrice);
             if (res && res.EC === 0) {
                 setProducts(res.DT.products.products.data);
                 setTotalRows(res.DT.products.totalRows);
                 setTotalPages(res.DT.products.totalPages);
                 updateMenuItems(res.DT);
+
+                if (res.DT.minMaxPrices) {
+                    const newMinPrice = res.DT.minMaxPrices.minPrice;
+                    const newMaxPrice = res.DT.minMaxPrices.maxPrice;
+                    setMinPrice(newMinPrice);
+                    setMaxPrice(newMaxPrice);
+
+                    // Only update priceRange if it hasn't been set by the user
+                    if (priceRange[0] === null || priceRange[1] === null) {
+                        setPriceRange([newMinPrice, newMaxPrice]);
+                    }
+                }
+
                 // Nếu trang hiện tại lớn hơn tổng số trang, reset về trang 1
                 if (currentPage > res.DT.products.totalPages) {
                     setPage(1);
@@ -67,7 +89,7 @@ const Shop = () => {
         } finally {
             setLoading(false);
         }
-    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, sortOption, limit, team, category]);
+    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, priceRange, sortOption, limit, team, category]);
 
     useEffect(() => {
         fetchAllInforProduct(1);  // Always start from page 1 when filters change
@@ -82,11 +104,16 @@ const Shop = () => {
         setSortOption(option);
     };
 
+    const handlePriceChange = (newPriceRange) => {
+        setPriceRange(newPriceRange);
+    };
+
     const clearAllFilters = () => {
         setSelectedCategories([]);
         setSelectedTeams([]);
         setSelectedSizes([]);
         setSelectedColors([]);
+        setPriceRange([minPrice, maxPrice]);
         setSortOption('default');
     };
 
@@ -127,7 +154,8 @@ const Shop = () => {
             selectedCategories.length > 0 ||
             selectedTeams.length > 0 ||
             selectedSizes.length > 0 ||
-            selectedColors.length > 0
+            selectedColors.length > 0 ||
+            (priceRange[0] !== minPrice || priceRange[1] !== maxPrice)
         );
     };
 
@@ -137,11 +165,16 @@ const Shop = () => {
         return `${start} - ${end}`;
     };
 
+    useEffect(() => {
+        if (productCardsRef.current && !loading) {
+            productCardsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [products, loading]);
     return (
         <div>
             <PageHeader title="Cửa hàng" curPage="Cửa hàng"/>
             {/*shop page*/}
-            <div className="shop-page padding-tb">
+            <div ref={productCardsRef} className="shop-page padding-tb">
                 <div className="container-fluid ps-5 pe-5">
                     <div className="row justify-content-center">
                         <div className="col-lg-8 col-12">
@@ -264,6 +297,13 @@ const Shop = () => {
                                         filterItem={setSelectedColors}
                                         menuItems={menuItems.colors}
                                         selectedItems={selectedColors}
+                                    />
+                                    <hr/>
+                                    <ShopPriceRange
+                                        onPriceChange={handlePriceChange}
+                                        minPrice={minPrice}
+                                        maxPrice={maxPrice}
+                                        currentRange={priceRange}
                                     />
                                 </div>
                                 <PopularPost />
