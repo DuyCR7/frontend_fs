@@ -31,10 +31,15 @@ const deleteCartItem = (cartDetailId) => {
     });
 }
 
+const getRelatedProducts = () => {
+    return axios.get(`/api/v1/cart/get-related-products`);
+}
+
 export {
     addToCart,
     getCartCount,
     getCart,
     updateCartItemQuantity,
     deleteCartItem,
+    getRelatedProducts,
 }

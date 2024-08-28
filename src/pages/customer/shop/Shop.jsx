@@ -3,7 +3,6 @@ import PageHeader from "../components/pageHeader/PageHeader.jsx";
 import ProductCards from "./productCards/ProductCards.jsx";
 import Search from "./search/Search.jsx";
 import PopularPost from "./popularPost/PopularPost.jsx";
-import Tags from "./tags/Tags.jsx";
 import ShopCategory from "./shopCategory/ShopCategory";
 import ShopSize from "./shopSize/ShopSize";
 import ShopColor from "./shopColor/ShopColor";
@@ -242,28 +241,32 @@ const Shop = () => {
                             <aside>
                                 {/*<Search products={products} GridList={GridList}/>*/}
 
-                                <ShopTeam
-                                    filterItem={setSelectedTeams}
-                                    menuItems={menuItems.teams}
-                                    selectedItems={selectedTeams}
-                                />
-                                <ShopCategory
-                                    filterItem={setSelectedCategories}
-                                    menuItems={menuItems.categories}
-                                    selectedItems={selectedCategories}
-                                />
-                                <ShopSize
-                                    filterItem={setSelectedSizes}
-                                    menuItems={menuItems.sizes}
-                                    selectedItems={selectedSizes}
-                                />
-                                <ShopColor
-                                    filterItem={setSelectedColors}
-                                    menuItems={menuItems.colors}
-                                    selectedItems={selectedColors}
-                                />
+                                <div className="mt-3 mt-md-0" style={{boxShadow: "0 0 10px rgba(136, 136, 136, .3)", padding: "15px", marginBottom: "30px"}}>
+                                    <ShopTeam
+                                        filterItem={setSelectedTeams}
+                                        menuItems={menuItems.teams}
+                                        selectedItems={selectedTeams}
+                                    />
+                                    <hr/>
+                                    <ShopCategory
+                                        filterItem={setSelectedCategories}
+                                        menuItems={menuItems.categories}
+                                        selectedItems={selectedCategories}
+                                    />
+                                    <hr/>
+                                    <ShopSize
+                                        filterItem={setSelectedSizes}
+                                        menuItems={menuItems.sizes}
+                                        selectedItems={selectedSizes}
+                                    />
+                                    <hr/>
+                                    <ShopColor
+                                        filterItem={setSelectedColors}
+                                        menuItems={menuItems.colors}
+                                        selectedItems={selectedColors}
+                                    />
+                                </div>
                                 <PopularPost />
-                                <Tags />
                             </aside>
                         </div>
                     </div>

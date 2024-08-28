@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import Sponsor from "../../home/sponsor/Sponsor";
 
 const title = "Liên hệ chúng tôi";
 const desc = "CR7 Shop";
@@ -86,6 +87,9 @@ const tweetList = [
 
 const Footer = () => {
     return (
+        <>
+        <Sponsor />
+
         <footer className="style-2">
             <div className="footer-top dark-view padding-tb">
                 <div className="container-fluid ps-5 pe-5">
@@ -179,6 +183,7 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
+        </>
     );
 };
 

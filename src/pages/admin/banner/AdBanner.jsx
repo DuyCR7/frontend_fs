@@ -92,7 +92,7 @@ const AdBanner = () => {
         if (selectAll) {
             setSelectedIds([]);
         } else {
-            const ids = listBanner.map(role => role.id);
+            const ids = listBanner.map(item => item.id);
             setSelectedIds(ids);
         }
         setSelectAll(!selectAll);

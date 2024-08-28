@@ -77,7 +77,7 @@ const BestSellerGifts = () => {
                                     prevEl: '.best-seller-gifts-prev',
                                 } : false}
                                 pagination={isMobile ? {clickable: true} : false}
-                                mousewheel={true}
+                                // mousewheel={true}
                                 freeMode={true}
                                 speed={500}
                                 breakpoints={{

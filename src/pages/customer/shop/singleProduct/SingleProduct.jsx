@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Navigate, useParams} from "react-router-dom";
 import PageHeader from "../../components/pageHeader/PageHeader.jsx";
-
 import ProductDisplay from "../productDisplay/ProductDisplay.jsx";
 import Review from "../review/Review.jsx";
 import PopularPost from "../popularPost/PopularPost.jsx";
-import Tags from "../tags/Tags.jsx";
 import "./singleProduct.scss";
 import {getSingleProduct} from "../../../../services/customer/shopService";
 import {Spin} from "antd";
@@ -114,7 +112,6 @@ const SingleProduct = () => {
                         <div className="col-lg-4 col-12">
                             <aside className="ps-lg-4">
                                 <PopularPost/>
-                                <Tags/>
                             </aside>
                         </div>
                     </div>

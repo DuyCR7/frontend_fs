@@ -9,7 +9,6 @@ import Category from "./category/Category";
 import BestSellerGifts from "./bestSellerGifts/BestSellerGifts";
 import NationAndClub from "./nationAndClub/NationAndClub";
 import AboutUs from "./aboutUs/AboutUs";
-import Sponsor from "./sponsor/Sponsor";
 import Blog from "./blog/Blog";
 
 const Home = () => {
@@ -26,7 +25,6 @@ const Home = () => {
             <BestSellerGifts />
             <Blog />
             <AboutUs />
-            <Sponsor />
         </div>
     );
 };

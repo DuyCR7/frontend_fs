@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
 import PageHeader from "../components/pageHeader/PageHeader.jsx";
-import Tags from "../shop/tags/Tags.jsx";
 import PopularPost from "../shop/popularPost/PopularPost.jsx";
 import {getSinglePost, incrementViewCount} from "../../../services/customer/postService";
 import {Spin} from "antd";
@@ -133,7 +132,6 @@ const SingleBlog = () => {
                         <div className="col-lg-4 col-12">
                             {/*right sight*/}
                             <aside>
-                                <Tags/>
                                 <PopularPost/>
                             </aside>
                         </div>

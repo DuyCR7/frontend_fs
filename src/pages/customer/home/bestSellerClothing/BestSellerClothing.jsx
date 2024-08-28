@@ -78,7 +78,7 @@ const BestSellerClothing = () => {
                                     prevEl: '.best-seller-clothing-prev',
                                 } : false}
                                 pagination={isMobile ? {clickable: true} : false}
-                                mousewheel={true}
+                                // mousewheel={true}
                                 freeMode={true}
                                 speed={500}
                                 breakpoints={{
