@@ -11,12 +11,11 @@ import {getAllInfoProduct} from "../../../services/customer/shopService";
 import ReactPaginate from "react-paginate";
 import {Spin} from "antd";
 import {useNavigate, useParams} from "react-router-dom";
-import Slider from "react-slider";
 import ShopPriceRange from "./shopPriceRange/ShopPriceRange";
 
 const Shop = () => {
 
-    const { team, category } = useParams();
+    const {team, category} = useParams();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
@@ -39,6 +38,7 @@ const Shop = () => {
     const [minPrice, setMinPrice] = useState(null);
     const [maxPrice, setMaxPrice] = useState(null);
     const [priceRange, setPriceRange] = useState([null, null]);
+    const priceRangeRef = useRef(priceRange);
 
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(4);  // Số sản phẩm trên mỗi trang
@@ -54,7 +54,7 @@ const Shop = () => {
             const filterTeam = selectedTeams.join(',');
             const filterSize = selectedSizes.join(',');
             const filterColor = selectedColors.join(',');
-            const [minSelectedPrice, maxSelectedPrice] = priceRange;
+            const [minSelectedPrice, maxSelectedPrice] = priceRangeRef.current;
 
             let res = await getAllInfoProduct(currentPage, limit, filterCategory, filterTeam, filterSize, filterColor, sortOption, team, category, minSelectedPrice, maxSelectedPrice);
             if (res && res.EC === 0) {
@@ -63,16 +63,19 @@ const Shop = () => {
                 setTotalPages(res.DT.products.totalPages);
                 updateMenuItems(res.DT);
 
-                if (res.DT.minMaxPrices) {
-                    const newMinPrice = res.DT.minMaxPrices.minPrice;
-                    const newMaxPrice = res.DT.minMaxPrices.maxPrice;
-                    setMinPrice(newMinPrice);
-                    setMaxPrice(newMaxPrice);
+                if (res.DT.products.overallPriceRange) {
+                    if(minPrice === null || maxPrice === null) {
+                        const newMinPrice = res.DT.products.overallPriceRange.minPrice;
+                        const newMaxPrice = res.DT.products.overallPriceRange.maxPrice;
+                        setMinPrice(newMinPrice);
+                        setMaxPrice(newMaxPrice);
 
-                    // Only update priceRange if it hasn't been set by the user
-                    if (priceRange[0] === null || priceRange[1] === null) {
-                        setPriceRange([newMinPrice, newMaxPrice]);
+                        if (priceRangeRef.current[0] === null || priceRangeRef.current[1] === null) {
+                            setPriceRange([newMinPrice, newMaxPrice]);
+                            priceRangeRef.current = [newMinPrice, newMaxPrice];
+                        }
                     }
+
                 }
 
                 // Nếu trang hiện tại lớn hơn tổng số trang, reset về trang 1
@@ -89,24 +92,26 @@ const Shop = () => {
         } finally {
             setLoading(false);
         }
-    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, priceRange, sortOption, limit, team, category]);
+    }, [selectedCategories, selectedTeams, selectedSizes, selectedColors, sortOption, limit, team, category]);
 
     useEffect(() => {
         fetchAllInforProduct(1);  // Always start from page 1 when filters change
     }, [fetchAllInforProduct]);
 
-    const handlePageClick = (event) => {
+    const handlePageClick = async (event) => {
         const selectedPage = event.selected + 1;
-        fetchAllInforProduct(selectedPage);
+        await fetchAllInforProduct(selectedPage);
     };
 
     const handleSort = (option) => {
         setSortOption(option);
     };
 
-    const handlePriceChange = (newPriceRange) => {
+    const handlePriceChange = useCallback(async (newPriceRange) => {
         setPriceRange(newPriceRange);
-    };
+        priceRangeRef.current = newPriceRange;
+        await fetchAllInforProduct(1);
+    }, [fetchAllInforProduct]);
 
     const clearAllFilters = () => {
         setSelectedCategories([]);
@@ -114,39 +119,54 @@ const Shop = () => {
         setSelectedSizes([]);
         setSelectedColors([]);
         setPriceRange([minPrice, maxPrice]);
+        priceRangeRef.current = [null, null];
         setSortOption('default');
     };
 
     const updateMenuItems = (data) => {
         setMenuItems({
-            categories: data.updatedCategories.map(cat => ({ id: cat.id, name: cat.name, slug: cat.slug, productCount: cat.productCount })),
-            teams: data.updatedTeams.map(team => ({ id: team.id, name: team.name, slug: team.slug, productCount: team.productCount })),
-            sizes: data.updatedSizes.map(size => ({ id: size.id, code: size.code, productCount: size.productCount })),
-            colors: data.updatedColors.map(color => ({ id: color.id, name: color.name, productCount: color.productCount}))
+            categories: data.updatedCategories.map(cat => ({
+                id: cat.id,
+                name: cat.name,
+                slug: cat.slug,
+                productCount: cat.productCount
+            })),
+            teams: data.updatedTeams.map(team => ({
+                id: team.id,
+                name: team.name,
+                slug: team.slug,
+                productCount: team.productCount
+            })),
+            sizes: data.updatedSizes.map(size => ({id: size.id, code: size.code, productCount: size.productCount})),
+            colors: data.updatedColors.map(color => ({
+                id: color.id,
+                name: color.name,
+                productCount: color.productCount
+            }))
         });
     };
 
-    useEffect(() => {
-        // Temporary variables to hold updated selected values
-        let updatedSelectedCategories = selectedCategories.filter(cat => menuItems.categories.some(item => item.id === cat));
-        let updatedSelectedTeams = selectedTeams.filter(team => menuItems.teams.some(item => item.id === team));
-        let updatedSelectedSizes = selectedSizes.filter(size => menuItems.sizes.some(item => item.id === size));
-        let updatedSelectedColors = selectedColors.filter(color => menuItems.colors.some(item => item.id === color));
-
-        // Only update the state if there's a difference
-        if (updatedSelectedCategories.length !== selectedCategories.length) {
-            setSelectedCategories(updatedSelectedCategories);
-        }
-        if (updatedSelectedTeams.length !== selectedTeams.length) {
-            setSelectedTeams(updatedSelectedTeams);
-        }
-        if (updatedSelectedSizes.length !== selectedSizes.length) {
-            setSelectedSizes(updatedSelectedSizes);
-        }
-        if (updatedSelectedColors.length !== selectedColors.length) {
-            setSelectedColors(updatedSelectedColors);
-        }
-    }, [menuItems]);
+    // useEffect(() => {
+    //     // Temporary variables to hold updated selected values
+    //     let updatedSelectedCategories = selectedCategories.filter(cat => menuItems.categories.some(item => item.id === cat));
+    //     let updatedSelectedTeams = selectedTeams.filter(team => menuItems.teams.some(item => item.id === team));
+    //     let updatedSelectedSizes = selectedSizes.filter(size => menuItems.sizes.some(item => item.id === size));
+    //     let updatedSelectedColors = selectedColors.filter(color => menuItems.colors.some(item => item.id === color));
+    //
+    //     // Only update the state if there's a difference
+    //     if (updatedSelectedCategories.length !== selectedCategories.length) {
+    //         setSelectedCategories(updatedSelectedCategories);
+    //     }
+    //     if (updatedSelectedTeams.length !== selectedTeams.length) {
+    //         setSelectedTeams(updatedSelectedTeams);
+    //     }
+    //     if (updatedSelectedSizes.length !== selectedSizes.length) {
+    //         setSelectedSizes(updatedSelectedSizes);
+    //     }
+    //     if (updatedSelectedColors.length !== selectedColors.length) {
+    //         setSelectedColors(updatedSelectedColors);
+    //     }
+    // }, [menuItems]);
 
     // Kiểm tra có bộ lọc nào đang được áp dụng
     const hasActiveFilters = () => {
@@ -167,7 +187,7 @@ const Shop = () => {
 
     useEffect(() => {
         if (productCardsRef.current && !loading) {
-            productCardsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            productCardsRef.current.scrollIntoView({behavior: 'smooth', block: 'start'});
         }
     }, [products, loading]);
     return (
@@ -182,7 +202,8 @@ const Shop = () => {
                             <article>
                                 {/*layout and title here*/}
                                 <div className="shop-title d-flex flex-wrap justify-content-between align-items-center">
-                                    <p className="mb-3 mb-sm-0">Hiển thị {getDisplayedProductsCount()} / {totalRows} sản phẩm</p>
+                                    <p className="mb-3 mb-sm-0">Hiển thị {getDisplayedProductsCount()} / {totalRows} sản
+                                        phẩm</p>
                                     <div className="d-flex align-items-center">
                                         <select
                                             className="form-select me-3 fs-5"
@@ -195,7 +216,8 @@ const Shop = () => {
                                             <option value="name-asc">Tên: A đến Z</option>
                                             <option value="name-desc">Tên: Z đến A</option>
                                         </select>
-                                        <div className={`d-flex me-3 product-view-mode ${GridList ? "gridActive" : "listActive"}`}>
+                                        <div
+                                            className={`d-flex me-3 product-view-mode ${GridList ? "gridActive" : "listActive"}`}>
                                             <a className="grid" onClick={() => setGridList(!GridList)}>
                                                 <i className="icofont-ghost"></i>
                                             </a>
@@ -206,7 +228,8 @@ const Shop = () => {
                                         {hasActiveFilters() && (
                                             <div>
                                                 <button onClick={clearAllFilters}
-                                                        className="btn btn-outline-danger" style={{width: "max-content"}}>
+                                                        className="btn btn-outline-danger"
+                                                        style={{width: "max-content"}}>
                                                     Xóa bộ lọc
                                                 </button>
                                             </div>
@@ -229,7 +252,8 @@ const Shop = () => {
 
                                                         {totalPages > 0 &&
                                                             <div className="shop-footer mt-3 row">
-                                                                <div className="col d-flex justify-content-center align-items-center">
+                                                                <div
+                                                                    className="col d-flex justify-content-center align-items-center">
                                                                     <div className="me-3">
                                                                         <ReactPaginate
                                                                             nextLabel="Sau"
@@ -274,31 +298,39 @@ const Shop = () => {
                             <aside>
                                 {/*<Search products={products} GridList={GridList}/>*/}
 
-                                <div className="mt-3 mt-md-0" style={{boxShadow: "0 0 10px rgba(136, 136, 136, .3)", padding: "15px", marginBottom: "30px"}}>
+                                <div className="mt-3 mt-md-0" style={{
+                                    boxShadow: "0 0 10px rgba(136, 136, 136, .3)",
+                                    padding: "15px",
+                                    marginBottom: "30px"
+                                }}>
                                     <ShopTeam
                                         filterItem={setSelectedTeams}
                                         menuItems={menuItems.teams}
                                         selectedItems={selectedTeams}
+                                        loading={loading}
                                     />
-                                    <hr/>
+
                                     <ShopCategory
                                         filterItem={setSelectedCategories}
                                         menuItems={menuItems.categories}
                                         selectedItems={selectedCategories}
+                                        loading={loading}
                                     />
-                                    <hr/>
+
                                     <ShopSize
                                         filterItem={setSelectedSizes}
                                         menuItems={menuItems.sizes}
                                         selectedItems={selectedSizes}
+                                        loading={loading}
                                     />
-                                    <hr/>
+
                                     <ShopColor
                                         filterItem={setSelectedColors}
                                         menuItems={menuItems.colors}
                                         selectedItems={selectedColors}
+                                        loading={loading}
                                     />
-                                    <hr/>
+
                                     <ShopPriceRange
                                         onPriceChange={handlePriceChange}
                                         minPrice={minPrice}
@@ -306,7 +338,7 @@ const Shop = () => {
                                         currentRange={priceRange}
                                     />
                                 </div>
-                                <PopularPost />
+                                <PopularPost/>
                             </aside>
                         </div>
                     </div>

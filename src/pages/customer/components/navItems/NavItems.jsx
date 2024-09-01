@@ -83,7 +83,7 @@ const NavItems = () => {
                                             }
                                         </Link>
                                         <Link title="Giỏ hàng" to="/carts" className={'count-icon'}
-                                              onClick={() => setMenuToggle(false)} style={{padding: "15px 5px"}}>
+                                              onClick={() => setMenuToggle(false)} style={{padding: "15px 5px", marginLeft: "5px"}}>
                                             {/*<i className="icofont-cart" style={{fontSize: '1.5rem'}}></i>*/}
                                             <IoCartOutline size={20} />
                                                 {
