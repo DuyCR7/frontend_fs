@@ -75,7 +75,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 998;
+  z-index: 997;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
@@ -93,7 +93,7 @@
   left: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999; // Just below the header
+  z-index: 998; // Just below the header
   transition: top 0.3s ease-in-out;
 
   &.open {

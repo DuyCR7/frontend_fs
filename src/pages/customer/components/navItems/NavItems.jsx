@@ -44,6 +44,7 @@ const NavItems = () => {
     const searchInputRef = useRef(null);
 
     const toggleSearch = () => {
+        setMenuToggle(false);
         setIsSearchOpen(!isSearchOpen);
         if (!isSearchOpen) {
             setTimeout(() => searchInputRef.current?.focus(), 100);
@@ -70,7 +71,7 @@ const NavItems = () => {
     }
 
     useEffect(() => {
-        if(debouncedSearchInput) {
+        if (debouncedSearchInput) {
             fetchAllForSearch(debouncedSearchInput);
         } else {
             setSearchResults([]);
@@ -104,7 +105,11 @@ const NavItems = () => {
                             {/* logo */}
                             <div className="logo-search-acte">
                                 <div className="logo" title='Trang chủ'>
-                                    <Link to={"/"} onClick={() => setIsSearchOpen(false)}>
+                                    <Link to={"/"} onClick={() => {
+                                        setIsSearchOpen(false);
+                                        setSearchQuery('');
+                                        setSearchResults([]);
+                                    }}>
                                         <img src="/admin/assets/img/kaiadmin/cus_logo_dark.png" alt="" width={70}/>
                                     </Link>
                                 </div>
@@ -114,13 +119,33 @@ const NavItems = () => {
                             <div className="menu-area">
                                 <div className="menu">
                                     <ul className={`lab-ul ${menuToggle ? "active" : ""}`}>
-                                        <li><Link to="/" onClick={() => {setMenuToggle(false); setIsSearchOpen(false)}}>Trang chủ</Link></li>
-                                        <li><Link to="/shops" onClick={() => {setMenuToggle(false); setIsSearchOpen(false)}}>Cửa hàng</Link></li>
-                                        <li><Link to="/contacts" onClick={() => {setMenuToggle(false); setIsSearchOpen(false)}}>Liên hệ</Link>
+                                        <li><Link to="/" onClick={() => {
+                                            setMenuToggle(false);
+                                            setIsSearchOpen(false);
+                                            setSearchQuery('');
+                                            setSearchResults([]);
+                                        }}>Trang chủ</Link></li>
+                                        <li><Link to="/shops" onClick={() => {
+                                            setMenuToggle(false);
+                                            setIsSearchOpen(false);
+                                            setSearchQuery('');
+                                            setSearchResults([]);
+                                        }}>Cửa hàng</Link></li>
+                                        <li><Link to="/contacts" onClick={() => {
+                                            setMenuToggle(false);
+                                            setIsSearchOpen(false);
+                                            setSearchQuery('');
+                                            setSearchResults([]);
+                                        }}>Liên hệ</Link>
                                         </li>
                                         <li className="d-flex wish-cart flex-wrap ms-lg-3 ms-0" style={{}}>
                                             <Link title="Yêu thích" to="/wish-list" className={'count-icon'}
-                                                  onClick={() => {setMenuToggle(false); setIsSearchOpen(false)}} style={{padding: "15px 5px"}}>
+                                                  onClick={() => {
+                                                      setMenuToggle(false);
+                                                      setIsSearchOpen(false);
+                                                      setSearchQuery('');
+                                                      setSearchResults([]);
+                                                  }} style={{padding: "15px 5px"}}>
                                                 {/*<i className="icofont-heart" style={{fontSize: '1.5rem'}}></i>*/}
                                                 <IoHeartOutline size={20}/>
                                                 {
@@ -132,7 +157,12 @@ const NavItems = () => {
                                                 }
                                             </Link>
                                             <Link title="Giỏ hàng" to="/carts" className={'count-icon'}
-                                                  onClick={() => {setMenuToggle(false); setIsSearchOpen(false)}}
+                                                  onClick={() => {
+                                                      setMenuToggle(false);
+                                                      setIsSearchOpen(false);
+                                                      setSearchQuery('');
+                                                      setSearchResults([]);
+                                                  }}
                                                   style={{padding: "15px 5px", marginLeft: "5px"}}>
                                                 {/*<i className="icofont-cart" style={{fontSize: '1.5rem'}}></i>*/}
                                                 <IoCartOutline size={20}/>
@@ -193,7 +223,12 @@ const NavItems = () => {
                                 }
 
                                 {/*menu toggle*/}
-                                <div onClick={() => setMenuToggle(!menuToggle)}
+                                <div onClick={() => {
+                                    setMenuToggle(!menuToggle);
+                                    setIsSearchOpen(false);
+                                    setSearchQuery('');
+                                    setSearchResults([]);
+                                }}
                                      className={`header-bar ${menuToggle ? "active" : ""}`}>
                                     <span></span>
                                     <span></span>
@@ -224,14 +259,15 @@ const NavItems = () => {
                     {searchResults.length > 0 && (
                         <div className="search-results">
                             {searchResults.map((result) => (
-                                <Link to={`/products/${result.slug}`} onClick={toggleSearch} key={result.id} className="search-result-item">
+                                <Link to={`/products/${result.slug}`} onClick={toggleSearch} key={result.id}
+                                      className="search-result-item">
                                     <div className="result-name">
 
-                                            <img
-                                                src={`${process.env.REACT_APP_URL_BACKEND}/${result.Product_Images[0].image}`}
-                                                alt={`${process.env.REACT_APP_URL_BACKEND}/${result.Product_Images[0].image}`}
-                                                style={{width: "30px", height: "30px"}} className="me-3"/>
-                                            <span>{result.name}</span>
+                                        <img
+                                            src={`${process.env.REACT_APP_URL_BACKEND}/${result.Product_Images[0].image}`}
+                                            alt={`${process.env.REACT_APP_URL_BACKEND}/${result.Product_Images[0].image}`}
+                                            style={{width: "30px", height: "30px"}} className="me-3"/>
+                                        <span>{result.name}</span>
 
                                     </div>
                                     <span className="result-type">{result.Category.name}</span>
