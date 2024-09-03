@@ -24,3 +24,11 @@
     }
   }
 }
+
+@media (max-width: 576px) {
+  .wish-list {
+    .price-container {
+      flex-direction: column;
+    }
+  }
+}

@@ -113,10 +113,10 @@ const ProductCards = ({GridList, products}) => {
 
                                     {/*product content*/}
                                     <div className="product-content">
-                                    <span style={{fontSize: "18px"}}>
+                                    <span style={{fontSize: "18px", display: "flex", alignItems: "center", justifyContent: 'center'}}>
                                         <Link to={`/products/${item.slug}`}>{item.name}</Link>
                                     </span>
-                                        <p className="productRating">
+                                        <p className="productRating" style={{display: "flex", alignItems: "center", justifyContent: 'center'}}>
                                             <Rating/>
                                         </p>
                                         <div className={`price-list-container ${item.isSale ? 'on-sale' : ''}`}>

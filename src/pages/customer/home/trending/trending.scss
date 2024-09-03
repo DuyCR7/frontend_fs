@@ -32,4 +32,10 @@
       margin: 0 auto;
     }
   }
+
+  .trending {
+    .price-container {
+      flex-direction: column;
+    }
+  }
 }

@@ -15,7 +15,7 @@ const Home = () => {
     return (
         <div>
             <Slider />
-            <Search />
+            {/*<Search />*/}
             <TeamCategory />
             <Countdown />
             <Trending />

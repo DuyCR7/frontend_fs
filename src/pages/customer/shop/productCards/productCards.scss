@@ -27,7 +27,7 @@
   .price-list-container {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     gap: 10px;
     font-size: 18px;
     font-weight: bold;
@@ -46,6 +46,17 @@
         font-size: 16px;
         font-weight: normal;
       }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .product-cards {
+    .price-container {
+      flex-direction: column;
+    }
+    .price-list-container {
+      flex-direction: column;
     }
   }
 }

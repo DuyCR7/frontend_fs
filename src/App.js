@@ -16,7 +16,6 @@ import SingleBlog from "./pages/customer/blog/SingleBlog";
 import Shop from "./pages/customer/shop/Shop";
 import SingleProduct from "./pages/customer/shop/singleProduct/SingleProduct";
 import CartPage from "./pages/customer/shop/cartPage/CartPage";
-import About from "./pages/customer/about/About";
 import Contact from "./pages/customer/contact/Contact";
 import AdDashboard from "./pages/admin/dashboard/AdDashboard";
 import ScrollToTop from "./components/ScrollToTop";
@@ -68,7 +67,6 @@ const App = () => {
                     <Route path="products/:slug" element={<SingleProduct />} />
                     <Route path="carts" element={<CartPage />} />
                     <Route path="wish-list" element={<WishList />}/>
-                    <Route path="abouts" element={<About />} />
                     <Route path="contacts" element={<Contact />} />
 
                     <Route path="*" element={<NotFoundPageCus />}/>

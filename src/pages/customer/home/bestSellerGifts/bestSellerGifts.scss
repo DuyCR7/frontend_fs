@@ -91,3 +91,11 @@
     }
   }
 }
+
+@media (max-width: 576px) {
+  .best-seller-gifts {
+    .price-container {
+      flex-direction: column;
+    }
+  }
+}

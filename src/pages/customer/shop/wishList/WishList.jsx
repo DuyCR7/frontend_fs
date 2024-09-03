@@ -69,7 +69,7 @@ const WishList = () => {
                             wishList && wishList.length > 0 ? (
                                 wishList.map((item, index) => {
                                     return (
-                                        <div key={`${index}-${item.id}`} className="col-lg-3 col-md-4 col-6">
+                                        <div key={`${index}-${item.id}`} className="col-lg-3 col-md-4 col-sm-6 col-12">
                                             <div className="product-item">
                                                 {/*product images*/}
                                                 <div className="product-thumb">
