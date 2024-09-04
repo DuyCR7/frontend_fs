@@ -39,7 +39,7 @@ const ShopTeam = ({filterItem, menuItems, selectedItems, loading}) => {
                         menuItems.map((team, index) => (
                             <button
                                 className={`menu-item m-2 fs-5 ${selectedItems.includes(team.id) ? "bg-primary text-white" : ""}`}
-                                key={index}
+                                key={team.id}
                                 onClick={() => handleSelection(team.id)}
                             >
                                 {team.name} ({team.productCount})

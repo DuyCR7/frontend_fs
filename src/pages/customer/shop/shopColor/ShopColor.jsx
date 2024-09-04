@@ -43,7 +43,7 @@ const ShopColor = ({filterItem, menuItems, selectedItems, loading}) => {
                                     return (
                                         <button
                                             className={`menu-item m-2 fs-5 ${selectedItems.includes(color.id) ? "bg-primary text-white" : ""}`}
-                                            key={index}
+                                            key={color.id}
                                             onClick={() => handleSelection(color.id)}>
                                             {color.name} ({color.productCount})
                                         </button>

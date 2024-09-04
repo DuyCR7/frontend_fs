@@ -76,7 +76,7 @@ const SingleProduct = () => {
                                                 <div className="scroll-container">
                                                     {images.length > 0 && images.map((image, index) => (
                                                         <div
-                                                            key={index}
+                                                            key={image.id}
                                                             className={`scroll-item ${activeImage === image.image ? 'active' : ''}`}
                                                             onClick={() => setActiveImage(image.image)}
                                                         >

@@ -33,6 +33,10 @@ const setActiveCategory = (id) => {
     return axios.put(`/api/v1/admin/category/set-active`, { id: id });
 }
 
+const setIsHomeCategory = (id) => {
+    return axios.put(`/api/v1/admin/category/set-home`, { id: id });
+}
+
 const deleteCategory = (category) => {
     return axios.delete(`/api/v1/admin/category/delete`, { data: {id: category.id} });
 }
@@ -43,5 +47,6 @@ export {
     getAllCategory,
     updateCategory,
     setActiveCategory,
+    setIsHomeCategory,
     deleteCategory
 }

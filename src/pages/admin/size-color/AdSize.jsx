@@ -205,7 +205,7 @@ const AdSize = () => {
                                     {
                                         listSize.map((item, index) => {
                                             return (
-                                                <tr className="text-center" key={index}>
+                                                <tr className="text-center" key={item.id}>
                                                     <td>{(currentPage - 1) * numRows + index + 1}</td>
                                                     <td>{item.id}</td>
                                                     <td>{item.name}</td>

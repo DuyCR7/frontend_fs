@@ -267,7 +267,7 @@ const AdBanner = () => {
                                         {
                                             listBanner.map((item, index) => {
                                                 return (
-                                                    <tr className="text-center" key={index}>
+                                                    <tr className="text-center" key={item.id}>
                                                         <td>
                                                             <input
                                                                 type="checkbox"

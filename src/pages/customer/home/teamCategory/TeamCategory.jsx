@@ -46,7 +46,7 @@ const TeamCategory = () => {
                             listTeam.length > 0 && (
                                 listTeam.map((item, index) => {
                                     return (
-                                        <div key={index} className="col">
+                                        <div key={item.id} className="col">
                                             <Link to={`/shops/${item.slug}`}
                                                   className="image-team d-flex justify-content-center align-items-center">
                                                 {/*image thumbnail*/}

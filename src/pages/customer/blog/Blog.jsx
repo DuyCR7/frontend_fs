@@ -47,7 +47,7 @@ const Blog = () => {
                             {
                                 listPosts.length > 0 && listPosts.map((item, index) => {
                                     return (
-                                        <div key={index} className="col">
+                                        <div key={item.id} className="col">
                                             <div className="post-item">
                                                 <div className="post-inner">
                                                     <div className="post-thumb">

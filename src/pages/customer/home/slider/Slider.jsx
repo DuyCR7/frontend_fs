@@ -62,7 +62,7 @@ const Slider = () => {
                            {...properties}
                     >
                         {listBanner.map((item, index)=> (
-                            <Link className="slide-link" to={item.url} key={index}>
+                            <Link className="slide-link" to={item.url} key={item.id}>
                                 <img src={`${process.env.REACT_APP_URL_BACKEND}/${isMobile ? item.imageMobile : item.imageDesktop}`} alt={`Slide ${index}`}/>
                             </Link>
                         ))}

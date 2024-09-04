@@ -181,7 +181,7 @@ const AdEvent = () => {
                                 <th scope="col">Ảnh desktop</th>
                                 <th scope="col">Ảnh mobile</th>
                                 <th scope="col">Thời gian diễn ra</th>
-                                <th scope="col">Cập nhật</th>
+                                <th scope="col">Ngày tạo</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Hành động</th>
                             </tr>
@@ -193,7 +193,7 @@ const AdEvent = () => {
                                         {
                                             filteredEvent.map((item, index) => {
                                                 return (
-                                                    <tr className="text-center" key={index}>
+                                                    <tr className="text-center" key={item.id}>
                                                         <td>{index + 1}</td>
                                                         <td>{item.id}</td>
                                                         <td>{item.name}</td>
@@ -208,7 +208,7 @@ const AdEvent = () => {
                                                                 width={50} height={50} alt={item.image}/>
                                                         </td>
                                                         <td>{formatDate(item.eventDate)}</td>
-                                                        <td>{formatDate(item.updatedAt)}</td>
+                                                        <td>{formatDate(item.createdAt)}</td>
                                                         <td>
                                                             {item.isActive ?
                                                                 <GrStatusGood size={25} title={"Trạng thái"} style={{

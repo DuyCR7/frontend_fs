@@ -672,7 +672,7 @@ const AdModalProduct = (props) => {
                                             <label className="mt-3 mb-2">Kích thước và số lượng (<span
                                                 style={{color: "red"}}>*</span>):</label>
                                             {detail.sizes.map((size, sizeIndex) => (
-                                                <div key={sizeIndex} className="row mb-2">
+                                                <div key={size.sizeId} className="row mb-2">
                                                     <div className="col-sm-5">
                                                         <select
                                                             value={size.sizeId}

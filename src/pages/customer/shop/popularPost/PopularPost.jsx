@@ -37,7 +37,7 @@ const PopularPost = () => {
                     popularPosts && popularPosts.length > 0 &&
                     popularPosts.map((item, index) => {
                         return (
-                            <li key={index} className="d-flex flex-wrap justify-content-between">
+                            <li key={item.id} className="d-flex flex-wrap justify-content-between">
                                 <div className="post-thumb">
                                     <Link to={`/blogs/${item.slug}`}><img src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`} alt={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}/></Link>
                                 </div>

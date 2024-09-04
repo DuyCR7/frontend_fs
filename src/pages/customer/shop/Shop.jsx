@@ -298,46 +298,50 @@ const Shop = () => {
                             <aside>
                                 {/*<Search products={products} GridList={GridList}/>*/}
 
-                                <div className="mt-3 mt-md-0" style={{
-                                    boxShadow: "0 0 10px rgba(136, 136, 136, .3)",
-                                    padding: "15px",
-                                    marginBottom: "30px"
-                                }}>
-                                    <ShopTeam
-                                        filterItem={setSelectedTeams}
-                                        menuItems={menuItems.teams}
-                                        selectedItems={selectedTeams}
-                                        loading={loading}
-                                    />
+                                {
+                                    products.length > 0 && (
+                                        <div className="mt-3 mt-md-0" style={{
+                                            boxShadow: "0 0 10px rgba(136, 136, 136, .3)",
+                                            padding: "15px",
+                                            marginBottom: "30px"
+                                        }}>
+                                            <ShopTeam
+                                                filterItem={setSelectedTeams}
+                                                menuItems={menuItems.teams}
+                                                selectedItems={selectedTeams}
+                                                loading={loading}
+                                            />
 
-                                    <ShopCategory
-                                        filterItem={setSelectedCategories}
-                                        menuItems={menuItems.categories}
-                                        selectedItems={selectedCategories}
-                                        loading={loading}
-                                    />
+                                            <ShopCategory
+                                                filterItem={setSelectedCategories}
+                                                menuItems={menuItems.categories}
+                                                selectedItems={selectedCategories}
+                                                loading={loading}
+                                            />
 
-                                    <ShopSize
-                                        filterItem={setSelectedSizes}
-                                        menuItems={menuItems.sizes}
-                                        selectedItems={selectedSizes}
-                                        loading={loading}
-                                    />
+                                            <ShopSize
+                                                filterItem={setSelectedSizes}
+                                                menuItems={menuItems.sizes}
+                                                selectedItems={selectedSizes}
+                                                loading={loading}
+                                            />
 
-                                    <ShopColor
-                                        filterItem={setSelectedColors}
-                                        menuItems={menuItems.colors}
-                                        selectedItems={selectedColors}
-                                        loading={loading}
-                                    />
+                                            <ShopColor
+                                                filterItem={setSelectedColors}
+                                                menuItems={menuItems.colors}
+                                                selectedItems={selectedColors}
+                                                loading={loading}
+                                            />
 
-                                    <ShopPriceRange
-                                        onPriceChange={handlePriceChange}
-                                        minPrice={minPrice}
-                                        maxPrice={maxPrice}
-                                        currentRange={priceRange}
-                                    />
-                                </div>
+                                            <ShopPriceRange
+                                                onPriceChange={handlePriceChange}
+                                                minPrice={minPrice}
+                                                maxPrice={maxPrice}
+                                                currentRange={priceRange}
+                                            />
+                                        </div>
+                                    )
+                                }
                                 <PopularPost/>
                             </aside>
                         </div>

@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import AdModalCategory from "./AdModalCategory";
 import "./adCategory.scss";
 import {IoAddCircleOutline, IoReload} from "react-icons/io5";
-import {getAllCategory, getParentCategory, setActiveCategory} from "../../../services/admin/categoryService";
+import {
+    getAllCategory,
+    getParentCategory,
+    setActiveCategory,
+    setIsHomeCategory
+} from "../../../services/admin/categoryService";
 import {Spin} from "antd";
 import {FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa";
 import { TbArrowBarRight } from "react-icons/tb";
@@ -10,6 +15,7 @@ import {GrStatusGood} from "react-icons/gr";
 import {MdDelete, MdEdit, MdOutlineDangerous} from "react-icons/md";
 import {toast} from "react-toastify";
 import AdModalDeleteCategory from "./AdModalDeleteCategory";
+import {formatDate} from "../../../utils/formatDate";
 
 const AdCategory = () => {
 
@@ -106,6 +112,26 @@ const AdCategory = () => {
         }
     }
 
+    const toggleCategoryIsHomeStatus = async (id) => {
+        setLoading(true);
+        try {
+            let res = await setIsHomeCategory(id);
+            if (res && res.EC === 0) {
+                await handelFetchAllCategory();
+                toast.success(res.EM);
+            } else if (res && res.EC === 1) {
+                toast.error(res.EM);
+            } else {
+                await handelFetchAllCategory();
+            }
+        } catch (e) {
+            console.error(e);
+            toast.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const handleRefresh = () => {
         setSearchKeyword("");
         setSortKey('id');
@@ -165,6 +191,23 @@ const AdCategory = () => {
                     <td className="text-center">
                         <img src={`${process.env.REACT_APP_URL_BACKEND}/${category.image}`}
                              width={50} height={50} alt={category.image}/>
+                    </td>
+                    <td className="text-center">
+                        {formatDate(category.createdAt)}
+                    </td>
+                    <td className="text-center">
+                        {category.parent_id === 0 && (
+                            category.isHome ?
+                                <GrStatusGood size={25} title={"Hiển thị"}
+                                              style={{color: "green", cursor: "pointer"}}
+                                              onClick={() => toggleCategoryIsHomeStatus(category.id)}
+                                />
+                                :
+                                <MdOutlineDangerous size={25} title={"Hiển thị"}
+                                                    style={{color: "red", cursor: "pointer"}}
+                                                    onClick={() => toggleCategoryIsHomeStatus(category.id)}
+                                />
+                        )}
                     </td>
                     <td className="text-center">
                         {category.isActive ?
@@ -237,13 +280,17 @@ const AdCategory = () => {
                                 <th scope="col">STT</th>
                                 <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('id')}>
                                     Mã
-                                    {sortKey === 'id' && (sortOrder === 'asc' ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />)}
+                                    {sortKey === 'id' && (sortOrder === 'asc' ? <FaLongArrowAltDown/> :
+                                        <FaLongArrowAltUp/>)}
                                 </th>
                                 <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('name')}>
                                     Tên danh mục
-                                    {sortKey === 'name' && (sortOrder === 'asc' ? <FaLongArrowAltDown /> : <FaLongArrowAltUp />)}
+                                    {sortKey === 'name' && (sortOrder === 'asc' ? <FaLongArrowAltDown/> :
+                                        <FaLongArrowAltUp/>)}
                                 </th>
                                 <th scope="col">Ảnh</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Hiển thị</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Hành động</th>
                             </tr>

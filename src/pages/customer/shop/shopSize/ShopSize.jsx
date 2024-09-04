@@ -43,7 +43,7 @@ const ShopSize = ({filterItem, menuItems, selectedItems, loading}) => {
                                     return (
                                         <button
                                             className={`menu-item m-2 fs-5  ${selectedItems.includes(size.id) ? "bg-primary text-white" : ""}`}
-                                            key={index}
+                                            key={size.id}
                                             onClick={() => handleSelection(size.id)}>
                                             {size.code} ({size.productCount})
                                         </button>
