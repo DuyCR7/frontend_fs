@@ -10,6 +10,7 @@ const initialState = {
     cartCount: 0,
     wishListCount: 0,
     wishList: [],
+    selectedItemsForPayment: [],
 }
 
 export const customerSlice = createSlice({
@@ -33,6 +34,10 @@ export const customerSlice = createSlice({
             state.image = "";
             state.access_token = "";
             state.typeLogin = "";
+            state.cartCount = 0;
+            state.wishListCount = 0;
+            state.wishList = [];
+            state.selectedItemsForPayment = [];
         },
         updateCartCount: (state, action) => {
             state.cartCount = action.payload;
@@ -43,10 +48,13 @@ export const customerSlice = createSlice({
         updateWishListCount: (state, action) => {
             state.wishListCount = action.payload;
         },
+        setSelectedItemsForPayment: (state, action) => {
+            state.selectedItemsForPayment = action.payload;
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { loginCustomer, resetCustomer, updateCartCount, setWishList, updateWishListCount } = customerSlice.actions
+export const { loginCustomer, resetCustomer, updateCartCount, setWishList, updateWishListCount, setSelectedItemsForPayment } = customerSlice.actions
 
 export default customerSlice.reducer

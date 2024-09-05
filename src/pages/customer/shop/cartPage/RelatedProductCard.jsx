@@ -2,10 +2,8 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import Rating from "../../components/rating/Rating";
 import {formatCurrency} from "../../../../utils/formatCurrency";
-import {IoHeartSharp} from "react-icons/io5";
 
 const RelatedProductCard = ({product}) => {
-    console.log(product);
     return (
         <>
             <div className="product-item">

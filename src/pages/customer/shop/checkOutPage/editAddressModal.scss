@@ -1,0 +1,71 @@
+.edit-address-modal {
+  .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+
+  .checkbox-label-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &.disabled {
+      cursor: not-allowed;
+
+      input[type="checkbox"],
+      label {
+        cursor: not-allowed;
+      }
+    }
+
+    .tooltip {
+      visibility: hidden;
+      width: 300px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -85px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .edit-address-modal {
+    .modal-dialog {
+      max-width: calc(100% - 50px);
+      margin: 0 auto;
+    }
+  }
+}

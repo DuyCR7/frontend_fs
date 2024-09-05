@@ -30,6 +30,7 @@ import NotFoundPageCus from "./components/NotFoundPageCus/NotFoundPageCus";
 import NotFoundPageAd from "./components/NotFoundPageAd/NotFoundPageAd";
 import AdPost from "./pages/admin/post/AdPost";
 import WishList from "./pages/customer/shop/wishList/WishList";
+import CheckOutPage from "./pages/customer/shop/checkOutPage/CheckOutPage";
 
 const App = () => {
     return (
@@ -66,6 +67,7 @@ const App = () => {
                     <Route path="shops/category/:category" element={<Shop />} />
                     <Route path="products/:slug" element={<SingleProduct />} />
                     <Route path="carts" element={<CartPage />} />
+                    <Route path="carts/payment" element={<CheckOutPage />}/>
                     <Route path="wish-list" element={<WishList />}/>
                     <Route path="contacts" element={<Contact />} />
 

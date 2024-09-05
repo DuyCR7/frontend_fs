@@ -122,7 +122,7 @@ const AdModalSize = (props) => {
         setErrors({});
         setSizeData(defaultSizeData);
     }
-
+console.log("re render");
     return (
         <Modal show={props.isShowModalSize} onHide={() => handleClickCloseModal()} size={"lg"} className="modal-size" centered>
             <Spin spinning={loading}>

@@ -1,169 +1,367 @@
-import React, {useState} from 'react';
-import {Button, Modal} from "react-bootstrap";
-import {useLocation, useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {formatCurrency} from "../../../../utils/formatCurrency";
+import _ from "lodash";
+import AddressModal from "./AddressModal";
+import EditAddressModal from "./EditAddressModal";
+import {
+    createCustomerAddress,
+    getCustomerAddress, setDefaultAddress,
+    updateCustomerAddress
+} from "../../../../services/customer/checkOutService";
+import {toast} from "react-toastify";
 
 const CheckOutPage = () => {
 
-    const [show, setShow] = useState(false);
-    const [activeTab, setActiveTab] = useState("visa");
-
-    // handle Tab change
-    const handeTabChange = (tabId) => {
-        setActiveTab(tabId);
-    }
-
-    const handleShow = () => {
-        setShow(true);
-    }
-
-    const handleClose = () => {
-        setShow(false);
-    }
-
-    // direct to app page
-    const location = useLocation();
     const navigate = useNavigate();
-    const from = location.state?.from?.pathname || "/";
+    const dispatch = useDispatch();
+    const customer = useSelector((state) => state.customer);
+    const [loading, setLoading] = useState(false);
+    const [shippingMethod, setShippingMethod] = useState('standard');
 
-    const handleOrderConfirm = () => {
-        // your order confirmation logic goes here
-        alert("Your Order is placed successfully!");
-        localStorage.removeItem("cart");
-        setShow(false);
-        navigate(from, {replace: true});
+    const [actionModalAddress, setActionModalAddress] = useState("CREATE");
+    const [showAddressModal, setShowAddressModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState(null);
+    const [editingAddress, setEditingAddress] = useState(null);
+    const [originalIsDefault, setOriginalIsDefault] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const [addresses, setAddresses] = useState([]);
+
+    const fetchCustomerAddress = async () => {
+        setLoading(true);
+        try {
+            let res = await getCustomerAddress();
+            if (res && res.EC === 0) {
+                setAddresses(res.DT);
+                const defaultAddress = res.DT.find(addr => addr.isDefault);
+                if (defaultAddress) {
+                    setSelectedAddress(defaultAddress);
+                } else if (res.DT.length > 0) {
+                    setSelectedAddress(res.DT[0]);
+                }
+            } else {
+                console.error(res.EM);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
     }
+
+    useEffect(() => {
+        if (!customer || !customer.isAuthenticated) {
+            navigate('/sign-in');
+        } else if (customer.selectedItemsForPayment.length === 0) {
+            navigate('/carts');
+        } else {
+            fetchCustomerAddress();
+        }
+    }, [customer, navigate]);
+
+    const calculateSubtotal = () => {
+        return customer.selectedItemsForPayment.reduce((total, item) => {
+            const price = item.Product_Detail.Product.isSale
+                ? item.Product_Detail.Product.price_sale
+                : item.Product_Detail.Product.price;
+            return total + price * item.quantity;
+        }, 0);
+    };
+
+    const calculateShippingCost = () => {
+        // Giả sử phí vận chuyển
+        return shippingMethod === 'express' ? 50000 : 20000;
+    };
+
+    const calculateTotal = () => {
+        return calculateSubtotal() + calculateShippingCost();
+    };
+
+    const handleChangeAddress = () => {
+        setShowAddressModal(true);
+    };
+
+    const handleSelectAddress = (address) => {
+        setSelectedAddress(address);
+        setShowAddressModal(false);
+    };
+
+    const handleAddAddress = () => {
+        setActionModalAddress("CREATE");
+        setEditingAddress({
+            name: '',
+            address: '',
+            phone: '',
+            email: '',
+            isDefault: false
+        });
+        setShowEditModal(true);
+        setShowAddressModal(false);
+    }
+
+    const handleEditAddress = (address) => {
+        setActionModalAddress("EDIT");
+        setEditingAddress({ ...address });
+        setOriginalIsDefault(address.isDefault);
+        setShowEditModal(true);
+        setShowAddressModal(false);
+    };
+
+    const handleOnChangeInput = (value, name) => {
+        let _editingAddress = _.cloneDeep(editingAddress);
+        _editingAddress[name] = value;
+        setEditingAddress(_editingAddress);
+
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: undefined
+        }));
+    }
+
+    const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
+
+        if(!editingAddress.name.trim()) {
+            newErrors.name = "Vui lòng nhập tên!";
+            isValid = false;
+        }
+        if(!editingAddress.address.trim()) {
+            newErrors.address = "Vui lòng nhập địa chỉ!";
+            isValid = false;
+        }
+        if(!editingAddress.phone.trim()) {
+            newErrors.phone = "Vui lòng nhập số điện thoại!";
+            isValid = false;
+        }
+        if(!editingAddress.email.trim()) {
+            newErrors.email = "Vui lòng nhập email!";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    }
+
+    const handleUpdateAddress = async () => {
+        let check = validateForm();
+        if(check) {
+            setLoading(true);
+            try {
+                let res;
+                if (actionModalAddress === "CREATE") {
+                    res = await createCustomerAddress(editingAddress.name, editingAddress.address, editingAddress.phone, editingAddress.email, editingAddress.isDefault);
+                } else {
+                    res = await updateCustomerAddress(editingAddress.id, editingAddress.name, editingAddress.address, editingAddress.phone, editingAddress.email, editingAddress.isDefault);
+                }
+                if (res && res.EC === 0) {
+                    toast.success(res.EM);
+                    await fetchCustomerAddress();
+                    setEditingAddress(null);
+                    setShowEditModal(false);
+                    setShowAddressModal(true);
+                } else if (res && res.EC === 1) {
+                    toast.warn(res.EM);
+                } else {
+                    console.error(res.EM);
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
+    const renderError = (error) => {
+        return error ? <div className="text-danger mt-1">{error}</div> : null;
+    };
 
     return (
-        <div className="modalCard">
-            <Button variant="primary" className="py-2"
-                    onClick={handleShow}
-
-            >
-                Đặt hàng
-            </Button>
-
-            <Modal show={show} onHide={handleClose} animation={false}
-            className="modal fade" centered>
-                <div className="modal-dialog">
-                    <h5 className="px-3 mb-3">Select Your Payment Method</h5>
-                    <div className="modal-content">
-                        <div className="modal-body">
-                            <div className="tabs mt-3">
-                                <ul className="nav nav-tabs" id='myTab' role='tablist'>
-                                    <li className="nav-item" role="presentation">
-                                        <a href="#visa" className={`nav-link ${activeTab === "visa" ? "active" : ""}`}
-                                           id="visa-tab"
-                                           data-toggle="tab"
-                                           role="tab"
-                                           aria-controls="visa"
-                                           aria-selected={activeTab === "visa"}
-                                           onClick={() => handeTabChange("visa")}>
-                                            <img src="https://i.imgur.com/sB4jftM.png" alt="" width={"80"}/>
-                                        </a>
-                                    </li>
-                                    <li className="nav-item" role="presentation">
-                                        <a href="#paypal" className={`nav-link ${activeTab === "paypal" ? "active" : ""}`}
-                                           id="paypal-tab"
-                                           data-toggle="tab"
-                                           role="tab"
-                                           aria-controls="paypal"
-                                           aria-selected={activeTab === "paypal"}
-                                           onClick={() => handeTabChange("paypal")}>
-                                            <img src="https://i.imgur.com/yK7EDD1.png" alt="" width={"80"}/>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                {/*content*/}
-                                <div className="tab-content" id="myTabContent">
-                                    {/*visa content*/}
-                                    <div className={`tab-pane fade ${activeTab === "visa" ? "show active" : ""}`}
-                                    id="visa"
-                                    role="tabpanel"
-                                    aria-labelledby="visa-tab">
-                                        <div className="mt-4 mx-4">
-                                            <div className="text-center">
-                                                <h5>Credit card</h5>
-                                            </div>
-                                            <div className="form mt-3">
-                                                <div className="inputbox">
-                                                    <input type="text" name="visa-name" id="visa-name" className="form-control"
-                                                           required/>
-                                                    <span>Cardholder Name</span>
-                                                </div>
-                                                <div className="inputbox">
-                                                    <input type="text" name="visa-number" id="visa-number" className="form-control"
-                                                           required min="1" max="999"/>
-                                                    <span>Card Number</span> <i className="fa fa-eye"></i>
-                                                </div>
-                                                <div className="d-flex flex-row">
-                                                    <div className="inputbox">
-                                                        <input type="text" name="visa-date" id="visa-date"
-                                                               className="form-control"
-                                                               required min="1" max="999"/>
-                                                        <span>Expiration Date</span>
-                                                    </div>
-                                                    <div className="inputbox">
-                                                        <input type="text" name="visa-cvv" id="visa-cvv"
-                                                               className="form-control"
-                                                               required min="1" max="999"/>
-                                                        <span>CVV</span>
-                                                    </div>
-                                                </div>
-                                                <div className="px-5 pay">
-                                                    <button className="btn btn-success btn-block" onClick={handleOrderConfirm}>Order Now</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/*paypal content*/}
-                                    <div className={`tab-pane fade ${activeTab === "paypal" ? "show active" : ""}`}
-                                         id="paypal"
-                                         role="tabpanel"
-                                         aria-labelledby="paypal-tab">
-                                        <div className="mt-4 mx-4">
-                                            <div className="text-center">
-                                                <h5>Paypal Account Info</h5>
-                                            </div>
-                                            <div className="form mt-3">
-                                                <div className="inputbox">
-                                                    <input type="email" name="pp-email" id="pp-email" className="form-control"
-                                                           required/>
-                                                    <span>Enter Your Email</span>
-                                                </div>
-                                                <div className="inputbox">
-                                                    <input type="text" name="pp-name" id="pp-name"
-                                                           className="form-control" required/>
-                                                    <span>Your Name</span>
-                                                </div>
-                                                <div className="d-flex flex-row">
-                                                    <div className="inputbox">
-                                                        <input type="text" name="pp-desc" id="pp-desc"
-                                                               className="form-control" required/>
-                                                        <span>Extra info</span>
-                                                    </div>
-                                                    <div className="inputbox">
-                                                        <input type="text" name="pp-desc" id="pp-desc"
-                                                               className="form-control" required/>
-                                                        <span></span>
-                                                    </div>
-                                                </div>
-                                                <div className="px-5 pay">
-                                                    <button className="btn btn-success btn-block" onClick={handleOrderConfirm}>Add paypal</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/*payment desclaimer*/}
-                                <p className="mt-3 px-4 p-Disclaimer"><em>Payment Disclaimer:</em> In no event shall payment or partial payment by Owner for any material or service</p>
+        <div className="checkout-page">
+            <div className="pageheader-section">
+                <div className="container-fluid ps-5 pe-5">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="pageheader-content text-center">
+                                <h2>Thanh toán</h2>
+                                <nav aria-label="breadcrumb">
+                                    <ol className="breadcrumb justify-content-center">
+                                        <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
+                                        <li className="breadcrumb-item"><Link to="/carts">Giỏ hàng</Link></li>
+                                        <li className="breadcrumb-item active" aria-current="page">Thanh toán</li>
+                                    </ol>
+                                </nav>
                             </div>
                         </div>
                     </div>
                 </div>
-            </Modal>
+            </div>
+
+            <div className="mt-5">
+                <div className="container-fluid ps-5 pe-5">
+                    <div className="row">
+                        <div className="col-md-6 mb-4">
+                            <div className="card">
+                                <div className="card-header">
+                                    <h5 className="mb-0 mt-1">Thông tin đơn hàng</h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="table-responsive">
+                                        <table className="table">
+                                            <thead>
+                                            <tr className="text-center">
+                                                <th scope="col">Hình ảnh</th>
+                                                <th scope="col">Sản phẩm</th>
+                                                <th scope="col">Đơn giá</th>
+                                                <th scope="col">Số lượng</th>
+                                                <th scope="col">Tổng</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {customer.selectedItemsForPayment.map((item) => (
+                                                <tr key={item.id} className="text-center">
+                                                    <td>
+                                                        <img
+                                                            src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Detail.image}`}
+                                                            width={50}
+                                                            height={50}
+                                                            alt={item.Product_Detail.Product.name}
+                                                        />
+                                                    </td>
+                                                    <td>{item.Product_Detail.Product.name}</td>
+                                                    <td>{formatCurrency(item.Product_Detail.Product.isSale
+                                                        ? item.Product_Detail.Product.price_sale
+                                                        : item.Product_Detail.Product.price)}
+                                                    </td>
+                                                    <td>{item.quantity}</td>
+                                                    <td>{formatCurrency(item.Product_Detail.Product.isSale
+                                                        ? item.Product_Detail.Product.price_sale * item.quantity
+                                                        : item.Product_Detail.Product.price * item.quantity)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            <tr>
+                                                <td colSpan="4" className="text-end">Tạm tính:</td>
+                                                <td className="text-center">{formatCurrency(calculateSubtotal())}</td>
+                                            </tr>
+                                            {/* Phí vận chuyển */}
+                                            <tr>
+                                                <td colSpan="4" className="text-end">Phí vận chuyển:</td>
+                                                <td className="text-center">{formatCurrency(calculateShippingCost())}</td>
+                                            </tr>
+                                            {/* Tổng cộng */}
+                                            <tr className="fw-bold">
+                                                <td colSpan="4" className="text-end">Tổng cộng:</td>
+                                                <td className="text-center">{formatCurrency(calculateTotal())}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-6 mb-4">
+                            <div className="card">
+                                <div className="card-header">
+                                    <h5 className="mb-0 mt-1">Thông tin vận chuyển</h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="mb-3">
+                                        {selectedAddress ? (
+                                            <div>
+                                                <p><strong>Họ và tên:</strong> {selectedAddress.name}</p>
+                                                <p><strong>Địa chỉ:</strong> {selectedAddress.address}</p>
+                                                <p><strong>Số điện thoại:</strong> {selectedAddress.phone}</p>
+                                                <p><strong>Email:</strong> {selectedAddress.email}</p>
+                                                <button className="btn btn-outline-primary" onClick={() => handleChangeAddress()}>
+                                                    Thay đổi địa chỉ
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button className="btn btn-primary" onClick={() => handleChangeAddress()}>
+                                                Chọn địa chỉ giao hàng
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="form-label">Phương thức vận chuyển</label>
+                                        <div>
+                                            <div className="form-check">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="radio"
+                                                    name="shippingMethod"
+                                                    id="standardShipping"
+                                                    value="standard"
+                                                    // checked={shippingMethod === 'standard'}
+                                                    // onChange={(e) => setShippingMethod(e.target.value)}
+                                                />
+                                                <label className="form-check-label" htmlFor="standardShipping">
+                                                    Tiêu chuẩn (20.000đ)
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input
+                                                    className="form-check-input"
+                                                    type="radio"
+                                                    name="shippingMethod"
+                                                    id="expressShipping"
+                                                    value="express"
+                                                    // checked={shippingMethod === 'express'}
+                                                    // onChange={(e) => setShippingMethod(e.target.value)}
+                                                />
+                                                <label className="form-check-label" htmlFor="expressShipping">
+                                                    Nhanh (50.000đ)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button
+                                type="submit"
+                                className="btn btn-primary w-100"
+                                disabled={loading}
+                            >
+                                {loading ? 'Đang xử lý...' : 'Đặt hàng'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <AddressModal
+                show={showAddressModal}
+                onHide={() => setShowAddressModal(false)}
+                addresses={addresses}
+                onSelectAddress={handleSelectAddress}
+                onEditAddress={handleEditAddress}
+                onAddAddress={handleAddAddress}
+            />
+
+            <EditAddressModal
+                show={showEditModal}
+                onHide={() => {
+                    setShowEditModal(false);
+                    setShowAddressModal(true);
+                    setErrors({});
+                    setEditingAddress(null);
+                    setOriginalIsDefault(false);
+                }}
+                onActionModalAddress={actionModalAddress}
+                editingAddress={editingAddress}
+                originalIsDefault={originalIsDefault}
+                onUpdateAddress={handleUpdateAddress}
+                onChangeInput={handleOnChangeInput}
+                errors={errors}
+                onRenderError={renderError}
+            />
         </div>
     );
 };

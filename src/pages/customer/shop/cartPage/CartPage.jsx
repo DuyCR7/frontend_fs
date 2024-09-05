@@ -13,7 +13,7 @@ import {formatCurrency} from "../../../../utils/formatCurrency";
 import {FaMinus, FaPlus} from "react-icons/fa6";
 import {MdDelete} from "react-icons/md";
 import {toast} from "react-toastify";
-import {updateCartCount} from "../../../../redux/customer/slices/customerSlice";
+import {setSelectedItemsForPayment, updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 import ModalDeleteCartItem from "./ModalDeleteCartItem";
 import "./cartPage.scss";
 import RelatedProductCard from "./RelatedProductCard";
@@ -124,7 +124,7 @@ const CartPage = () => {
             handleQuantityChange(cartDetailId, newQuantity);
         }
     };
-    console.log(localQuantities);
+    // console.log(localQuantities);
 
     const toggleCheckbox = (id) => {
         const currentIndex = selectedIds.indexOf(id);
@@ -147,7 +147,6 @@ const CartPage = () => {
         }
         setSelectAll(!selectAll);
     };
-    console.log(selectedIds);
 
     const handleRemoveItem = async (cartDetail) => {
         setIsShowModalConfirm(true);
@@ -182,6 +181,17 @@ const CartPage = () => {
             return total;
         }, 0);
     };
+
+    const handlePurchase = () => {
+        if(selectedIds.length === 0) {
+            toast.warn("Vui lòng chọn sản phẩm để mua!");
+            return;
+        }
+
+        const selectedItemsForPayment = cartItems.filter(item => selectedIds.includes(item.id));
+        dispatch(setSelectedItemsForPayment(selectedItemsForPayment));
+        navigate('/carts/payment');
+    }
 
     return (
         <>
@@ -317,7 +327,7 @@ const CartPage = () => {
                                     </div>
                                     <div className="d-flex mt-3 mt-sm-0 justify-content-sm-end justify-content-center align-items-center col-sm-6 col-12">
                                         <span className="me-3">Tổng thanh toán ({selectedIds.length} sản phẩm): {formatCurrency(calculateTotal())}</span>
-                                        <button className="btn btn-primary">
+                                        <button className="btn btn-primary" onClick={() => handlePurchase()}>
                                             Mua hàng
                                         </button>
                                     </div>
