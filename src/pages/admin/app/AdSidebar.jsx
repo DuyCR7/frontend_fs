@@ -32,6 +32,9 @@ const AdSidebar = (props) => {
         } else if (path.includes('/admin/posts')) {
             setActiveItem("posts");
             setActiveGroup(null);
+        } else if (path.includes('/admin/chats')) {
+            setActiveItem("chats");
+            setActiveGroup(null);
         } else if (path.includes("/admin")) {
             setActiveItem("dashboard");
             setActiveGroup(null);
@@ -79,25 +82,25 @@ const AdSidebar = (props) => {
                                 <Link
                                     to="/admin"
                                 >
-                                    <i className="fas fa-home"></i>
+                                    <i className="icofont-home"></i>
                                     <p>Trang chủ</p>
                                 </Link>
                             </li>
                             <li className={`nav-item ${activeItem === "banners" ? "active" : ""}`}>
                                 <Link to='/admin/banners'>
-                                    <i className="fas fa-layer-group"></i>
+                                    <i className="icofont-navigation-menu"></i>
                                     <p>Quản lý banner</p>
                                 </Link>
                             </li>
                             <li className={`nav-item ${activeItem === "events" ? "active" : ""}`}>
                                 <Link to='/admin/events'>
-                                    <i className="fas fa-calendar"></i>
+                                    <i className="icofont-calendar"></i>
                                     <p>Quản lý sự kiện</p>
                                 </Link>
                             </li>
                             <li className={`nav-item ${activeItem === "posts" ? "active" : ""}`}>
                                 <Link to='/admin/posts'>
-                                    <i className="fas fa-podcast"></i>
+                                    <i className="icofont-blogger"></i>
                                     <p>Quản lý bài viết</p>
                                 </Link>
                             </li>
@@ -109,7 +112,7 @@ const AdSidebar = (props) => {
                             {/*</li>*/}
                             <li className={`nav-item ${activeGroup === "manageProducts" ? "active" : ""}`}>
                                 <a data-bs-toggle="collapse" href="#manageProducts">
-                                    <i className="fas fa-th-large"></i>
+                                    <i className="icofont-italic"></i>
                                     <p>Quản lý sản phẩm</p>
                                     <span className="caret"></span>
                                 </a>
@@ -138,6 +141,12 @@ const AdSidebar = (props) => {
                                         </li>
                                     </ul>
                                 </div>
+                            </li>
+                            <li className={`nav-item ${activeItem === "chats" ? "active" : ""}`}>
+                                <Link to='/admin/chats'>
+                                    <i className="icofont-chat"></i>
+                                    <p>Chăm sóc khách hàng</p>
+                                </Link>
                             </li>
                             <li className="nav-item">
                                 <a data-bs-toggle="collapse" href="#submenu">

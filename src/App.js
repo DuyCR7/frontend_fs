@@ -31,6 +31,7 @@ import NotFoundPageAd from "./components/NotFoundPageAd/NotFoundPageAd";
 import AdPost from "./pages/admin/post/AdPost";
 import WishList from "./pages/customer/shop/wishList/WishList";
 import CheckOutPage from "./pages/customer/shop/checkOutPage/CheckOutPage";
+import AdChat from "./pages/admin/chat/AdChat";
 
 const App = () => {
     return (
@@ -52,6 +53,7 @@ const App = () => {
                     <Route path="teams" element={<AdTeam />}/>
                     <Route path="sizes-colors" element={<AdSizeColor />}/>
                     <Route path="products" element={<AdProduct />}/>
+                    <Route path="chats" element={<AdChat />}/>
 
                     <Route path="*" element={<NotFoundPageAd />}/>
                 </Route>

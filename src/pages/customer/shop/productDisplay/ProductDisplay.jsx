@@ -9,6 +9,8 @@ import {toast} from "react-toastify";
 import {updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {IoIosChatboxes} from "react-icons/io";
+import {openChatBox} from "../../../../redux/customer/slices/chatSlice";
 
 const ProductDisplay = ({productData, setActiveImage}) => {
 
@@ -167,6 +169,10 @@ const ProductDisplay = ({productData, setActiveImage}) => {
         }
     }
 
+    const handleChatNow = () => {
+        dispatch(openChatBox(productData));
+    };
+
     return (
         <div className="product-display d-flex flex-column gap-3">
             <div>
@@ -256,11 +262,16 @@ const ProductDisplay = ({productData, setActiveImage}) => {
             {error && (
                 <div className="text-danger">{error}</div>
             )}
-            <div className="d-flex gap-3">
+            <div className="d-flex flex-wrap gap-3">
+                <button className="btn btn-outline-dark d-flex align-items-center gap-1"
+                        onClick={() => handleChatNow()}>
+                    <IoIosChatboxes size={22}/>
+                    <span>Chat ngay</span>
+                </button>
                 <button className="btn btn-outline-primary d-flex align-items-center gap-1"
                         onClick={() => handleAddToCart()}>
                     <IoCartOutline size={22}/>
-                    <span>Thêm vào giỏ hàng</span>
+                    <span>Giỏ hàng</span>
                 </button>
                 <button className="btn btn-outline-success d-flex align-items-center gap-1"
                         onClick={() => handleAddToCart()}>
