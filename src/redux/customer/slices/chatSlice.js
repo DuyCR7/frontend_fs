@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     isOpenChatBox: false,
     currentProduct: null,
+    unreadCount: 0,
 }
 
 export const chatSlice = createSlice({
@@ -19,11 +20,14 @@ export const chatSlice = createSlice({
         },
         setCurrentProduct: (state) => {
             state.currentProduct = null;
+        },
+        setUnreadCount: (state, action) => {
+            state.unreadCount = action.payload;
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { openChatBox, closeChatBox, setCurrentProduct } = chatSlice.actions
+export const { openChatBox, closeChatBox, setCurrentProduct, setUnreadCount } = chatSlice.actions
 
 export default chatSlice.reducer

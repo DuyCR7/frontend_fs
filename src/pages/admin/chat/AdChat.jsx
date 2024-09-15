@@ -3,10 +3,17 @@ import "./adChat.scss";
 import InputEmoji from "react-input-emoji";
 import { IoClose } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
-import {getAdminChats, getMessages, sendMessage} from "../../../services/chatService";
+import {
+    getAdminChats,
+    getMessages,
+    getUnreadMessageCount,
+    markMessagesAsRead,
+    sendMessage
+} from "../../../services/chatService";
 import {useSelector} from "react-redux";
 import {formatCurrency} from "../../../utils/formatCurrency";
 import moment from "moment";
+import 'moment/locale/vi';
 import { io } from "socket.io-client";
 
 const AdChat = () => {
@@ -30,16 +37,19 @@ const AdChat = () => {
                 const existingChat = prevChats.find(chat => chat.id === message.chatId);
                 if (existingChat) {
                     // Update existing chat
-                    return prevChats.map(chat =>
+                    const updatedChats = prevChats.map(chat =>
                         chat.id === message.chatId
                             ? {
                                 ...chat,
                                 lastMessage: message.content,
                                 lastMessageTime: message.createdAt,
-                                lastMessageSender: getSenderName(message, chat)
+                                lastMessageSender: getSenderName(message, chat),
+                                unreadCount: chat.id === selectedChat?.id ? 0 : (chat.unreadCount || 0) + 1,
                             }
                             : chat
                     );
+
+                    return updatedChats.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
                 } else {
                     // Add new chat
                     handleGetAdminChats(); // Fetch all chats to get the new one
@@ -49,6 +59,7 @@ const AdChat = () => {
 
             if (selectedChat && message.chatId === selectedChat.id) {
                 setMessages(prevMessages => [...prevMessages, message]);
+                markMessagesAsRead(selectedChat.id, user.id, 'user');
             }
         });
 
@@ -63,18 +74,29 @@ const AdChat = () => {
             if (res && res.EC === 0) {
                 const chatsWithLastMessage = await Promise.all(res.DT.map(async (chat) => {
                     const messagesRes = await getMessages(chat.id);
+                    const unreadCountRes = await getUnreadMessageCount(user.id, 'user', chat.id);
+
                     if (messagesRes && messagesRes.EC === 0 && messagesRes.DT.length > 0) {
                         const lastMessage = messagesRes.DT[messagesRes.DT.length - 1];
                         return {
                             ...chat,
                             lastMessage: lastMessage.content,
                             lastMessageTime: lastMessage.createdAt,
-                            lastMessageSender: getSenderName(lastMessage, chat)
+                            lastMessageSender: getSenderName(lastMessage, chat),
+                            unreadCount: unreadCountRes.EC === 0 ? unreadCountRes.DT : 0
                         };
                     }
-                    return chat;
+                    return {
+                        ...chat,
+                        unreadCount: unreadCountRes.EC === 0 ? unreadCountRes.DT : 0
+                    };
                 }));
-                setChats(chatsWithLastMessage);
+
+                const sortedChats = chatsWithLastMessage.sort((a, b) =>
+                    new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
+                );
+
+                setChats(sortedChats);
             } else {
                 console.error(res.EM);
             }
@@ -103,6 +125,10 @@ const AdChat = () => {
     useEffect(() => {
         if (selectedChat) {
             handleGetMessages(selectedChat.id);
+            markMessagesAsRead(selectedChat.id, user.id, 'user');
+            setChats(prevChats => prevChats.map(chat =>
+                chat.id === selectedChat.id ? { ...chat, unreadCount: 0 } : chat
+            ));
         }
     }, [selectedChat]);
 
@@ -125,14 +151,23 @@ const AdChat = () => {
                 setTextMessage("");
                 socket.emit("sendMessage", newMessage);
 
-                setChats(prevChats => prevChats.map(chat =>
-                    chat.id === selectedChat.id
-                        ? { ...chat,
-                            lastMessage: newMessage.content,
-                            lastMessageTime: newMessage.createdAt,
-                            lastMessageSender: getSenderName(newMessage, chat)}
-                        : chat
-                ));
+                setChats(prevChats => {
+                    const updatedChats = prevChats.map(chat =>
+                        chat.id === selectedChat.id
+                            ? {
+                                ...chat,
+                                lastMessage: newMessage.content,
+                                lastMessageTime: newMessage.createdAt,
+                                lastMessageSender: getSenderName(newMessage, chat),
+                                unreadCount: 0
+                            }
+                            : chat
+                    );
+
+                    return updatedChats.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
+                });
+
+                await markMessagesAsRead(selectedChat.id, user.id, 'user');
             } else {
                 console.error(res.EM);
             }
@@ -189,9 +224,9 @@ const AdChat = () => {
         } else {
             if (chat) {
                 const sender = JSON.parse(chat.participants).find(p => p.id === message.senderId);
-                return sender ? `Tư vấn viên ${sender.username}` : 'Tư vấn viên';
+                return sender ? `TVV ${sender.username}` : 'TVV';
             }
-            return 'Tư vấn viên';
+            return 'TVV';
         }
     };
 
@@ -220,10 +255,22 @@ const AdChat = () => {
                                  className="chat-avatar"/>
                             <div className="chat-info">
                                 <h3>{chat.Customer.email}</h3>
-                                <p> <strong>{truncateContent(chat.lastMessageSender, 12)}: </strong>
-                                    {truncateContent(chat.lastMessage) || "Chưa có tin nhắn"}</p>
+                                <p> <span>{truncateContent(chat.lastMessageSender, 12)}: </span>
+                                    <span className={chat.unreadCount > 0 ? 'unread-message' : ''}>
+                                        {truncateContent(chat.lastMessage) || "Chưa có tin nhắn"}
+                                    </span>
+                                </p>
                             </div>
-                            <span className="chat-time">{chat.lastMessageTime ? moment(chat.lastMessageTime).calendar() : ''}</span>
+                            <span className="chat-time">
+                                 {chat.lastMessageTime
+                                     ? moment(chat.lastMessageTime).isSame(new Date(), 'day')
+                                         ? moment(chat.lastMessageTime).format('HH:mm')  // Chỉ hiển thị giờ nếu là hôm nay
+                                         : moment(chat.lastMessageTime).format('ddd, HH:mm')  // Hiển thị thứ và giờ nếu không phải hôm nay
+                                     : ''}
+                            </span>
+                            {chat.unreadCount > 0 && (
+                                <span className="unread-count">{chat.unreadCount}</span>
+                            )}
                         </div>
                     )
                 })}
@@ -243,7 +290,13 @@ const AdChat = () => {
                                             <p className="chat-user">{getSenderName(message, selectedChat)}</p>
                                     )}
                                     <p className="chat-text">{message.content}</p>
-                                    <p className="chat-time">{moment(message.createdAt).calendar()}</p>
+                                    <p className="chat-time">
+                                        {
+                                            moment(message.createdAt).isSame(new Date(), 'day')
+                                               ? moment(message.createdAt).format('HH:mm')
+                                                : moment(message.createdAt).format('ddd, HH:mm')
+                                        }
+                                    </p>
                                 </div>
                             </React.Fragment>
                         ))}
