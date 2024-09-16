@@ -32,7 +32,7 @@ const AdChat = () => {
         const newSocket = io("http://localhost:4000");
         setSocket(newSocket);
 
-        newSocket.on("receiveMessage", (message) => {
+        newSocket.on("receiveMessage", async (message) => {
             setChats(prevChats => {
                 const existingChat = prevChats.find(chat => chat.id === message.chatId);
                 if (existingChat) {
@@ -59,7 +59,7 @@ const AdChat = () => {
 
             if (selectedChat && message.chatId === selectedChat.id) {
                 setMessages(prevMessages => [...prevMessages, message]);
-                markMessagesAsRead(selectedChat.id, user.id, 'user');
+                await markMessagesAsRead(selectedChat.id, user.id, 'user');
             }
         });
 
@@ -230,11 +230,12 @@ const AdChat = () => {
         }
     };
 
-    const truncateContent = (content, maxLength = 20) => {
+    const truncateContent = (content = '', maxLength = 20) => {
         const strippedContent = content.replace(/<[^>]+>/g, '');
-        if (strippedContent.length <= maxLength) return content;
+        if (strippedContent.length <= maxLength) return strippedContent;
         return strippedContent.slice(0, maxLength) + '...';
     };
+
 
     console.log(chats);
     return (
@@ -255,7 +256,13 @@ const AdChat = () => {
                                  className="chat-avatar"/>
                             <div className="chat-info">
                                 <h3>{chat.Customer.email}</h3>
-                                <p> <span>{truncateContent(chat.lastMessageSender, 12)}: </span>
+                                <p> {
+                                    chat.lastMessageSender ? (
+                                        <span>{truncateContent(chat.lastMessageSender, 12)}: </span>
+                                    ) : (
+                                        <span></span>
+                                    )
+                                }
                                     <span className={chat.unreadCount > 0 ? 'unread-message' : ''}>
                                         {truncateContent(chat.lastMessage) || "Chưa có tin nhắn"}
                                     </span>

@@ -34,9 +34,12 @@ const CusApp = () => {
     useEffect(() => {
         if (socket === null) return;
 
-        socket.on("receiveMessage", (message) => {
+        socket.on("receiveMessage", async (message) => {
             if (message.senderType === 'user' && !isOpenChatBox) {
-                dispatch(setUnreadCount(unreadCount + 1));
+                const response = await getUnreadMessageCount(customer.id, 'customer');
+                if (response.EC === 0) {
+                    dispatch(setUnreadCount(response.DT));
+                }
             }
         });
 
