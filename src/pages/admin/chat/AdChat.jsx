@@ -15,6 +15,7 @@ import {formatCurrency} from "../../../utils/formatCurrency";
 import moment from "moment";
 import 'moment/locale/vi';
 import { io } from "socket.io-client";
+import {debounce} from "lodash";
 
 const AdChat = () => {
 
@@ -27,6 +28,12 @@ const AdChat = () => {
     const scroll = useRef();
 
     const [socket, setSocket] = useState(null);
+
+    const debouncedMarkMessagesAsRead = useCallback(
+        debounce((chatId, userId) => {
+            markMessagesAsRead(chatId, userId, 'user');
+        }, 500), []
+    );
 
     useEffect(() => {
         const newSocket = io("http://localhost:4000");
@@ -59,14 +66,15 @@ const AdChat = () => {
 
             if (selectedChat && message.chatId === selectedChat.id) {
                 setMessages(prevMessages => [...prevMessages, message]);
-                await markMessagesAsRead(selectedChat.id, user.id, 'user');
+                // await markMessagesAsRead(selectedChat.id, user.id, 'user');
+                debouncedMarkMessagesAsRead(selectedChat.id, user.id);
             }
         });
 
         return () => {
             newSocket.disconnect();
         }
-    }, [selectedChat]);
+    }, [selectedChat, debouncedMarkMessagesAsRead]);
 
     const handleGetAdminChats = useCallback(async () => {
         try {
