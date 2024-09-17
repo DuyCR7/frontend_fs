@@ -245,7 +245,7 @@ const AdChat = () => {
     };
 
 
-    console.log(chats);
+    console.log(selectedChat);
     return (
         <div className="page-inner admin-chatbox">
             <div className="chat-list">
@@ -293,6 +293,11 @@ const AdChat = () => {
             {selectedChat ? (
                     <div className="chat-details">
                         <div className="chat-header">
+                            <img src={selectedChat.Customer.image.startsWith('https')
+                                ? selectedChat.Customer.image
+                                : `${process.env.REACT_APP_URL_BACKEND}/${selectedChat.Customer.image}`}
+                                 alt={selectedChat.Customer.email}
+                                 className="chat-avatar"/>
                             <h2>{selectedChat.Customer.email}</h2>
                             <IoClose className="close-btn" onClick={() => setSelectedChat(null)}/>
                         </div>

@@ -177,7 +177,7 @@ const ChatBox = () => {
                         <p className="chat-title">Tư vấn</p>
                         <p className="chat-status">
                             {lastMessageSender &&
-                                <b>{`${lastMessageSender}: `}</b>}<i>{truncateContent(lastMessageText)}</i>
+                                <b>{`${lastMessageSender}: `}</b>}<span>{truncateContent(lastMessageText)}</span>
                             {lastMessageTime && <span> - ({lastMessageTime})</span>}</p>
                     </div>
                 </div>
