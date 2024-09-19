@@ -192,6 +192,9 @@ const CheckOutPage = () => {
             }
 
             const orderDetails = customer.selectedItemsForPayment.map(item => ({
+                name: item.Product_Detail.Product.name,
+                size: item.Product_Detail.Size.code,
+                color: item.Product_Detail.Color.name,
                 productDetailId: item.productDetailId,
                 quantity: item.quantity,
                 price: item.Product_Detail.Product.isSale
@@ -201,7 +204,7 @@ const CheckOutPage = () => {
 
             let res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.id, orderDetails);
             if (res && res.EC === 0) {
-                toast.success(res.EM);
+                toast.success(`${res.EM} - Một email xác nhận đã được gửi đến địa chỉ email của bạn.`);
                 dispatch(clearSelectedItemsForPayment());
                 dispatch(updateCartCount(res.DT.remainingCartItems));
                 navigate('/carts');
@@ -240,6 +243,9 @@ const CheckOutPage = () => {
             console.log("Paypal transaction completed", details);
 
             const orderDetails = customer.selectedItemsForPayment.map(item => ({
+                name: item.Product_Detail.Product.name,
+                size: item.Product_Detail.Size.code,
+                color: item.Product_Detail.Color.name,
                 productDetailId: item.productDetailId,
                 quantity: item.quantity,
                 price: item.Product_Detail.Product.isSale
@@ -249,7 +255,7 @@ const CheckOutPage = () => {
 
             const res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.id, orderDetails, data.orderID);
             if (res && res.EC === 0) {
-                toast.success(res.EM);
+                toast.success(`${res.EM} - Một email xác nhận đã được gửi đến địa chỉ email của bạn.`);
                 dispatch(clearSelectedItemsForPayment());
                 dispatch(updateCartCount(res.DT.remainingCartItems));
                 navigate('/carts');
