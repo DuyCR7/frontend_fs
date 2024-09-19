@@ -25,13 +25,14 @@ const updateCustomerAddress = (id, name, address, phone, email, isDefault) => {
     });
 }
 
-const createOrder = (paymentMethod, shippingMethod, totalPrice, cusAddressId, orderDetails) => {
+const createOrder = (paymentMethod, shippingMethod, totalPrice, cusAddressId, orderDetails, paypalOrderId = null) => {
     return axios.post(`/api/v1/checkout/create-order`, {
         paymentMethod,
         shippingMethod,
         totalPrice,
         cusAddressId,
-        orderDetails
+        orderDetails,
+        paypalOrderId,
     });
 }
 
