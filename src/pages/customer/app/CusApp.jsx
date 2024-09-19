@@ -25,7 +25,7 @@ const CusApp = () => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io("http://localhost:4000");
+        const newSocket = io(process.env.REACT_APP_URL_SOCKET);
         setSocket(newSocket);
 
         return () => newSocket.disconnect();

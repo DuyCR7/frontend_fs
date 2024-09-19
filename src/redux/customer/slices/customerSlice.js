@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
     isAuthenticated: false,
@@ -18,7 +18,7 @@ export const customerSlice = createSlice({
     initialState,
     reducers: {
         loginCustomer: (state, action) => {
-            const { isAuthenticated, id, email, image, access_token, typeLogin } = action.payload;
+            const {isAuthenticated, id, email, image, access_token, typeLogin} = action.payload;
 
             state.isAuthenticated = isAuthenticated;
             state.id = id;
@@ -50,11 +50,22 @@ export const customerSlice = createSlice({
         },
         setSelectedItemsForPayment: (state, action) => {
             state.selectedItemsForPayment = action.payload;
+        },
+        clearSelectedItemsForPayment: (state, action) => {
+            state.selectedItemsForPayment = [];
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { loginCustomer, resetCustomer, updateCartCount, setWishList, updateWishListCount, setSelectedItemsForPayment } = customerSlice.actions
+export const {
+    loginCustomer,
+    resetCustomer,
+    updateCartCount,
+    setWishList,
+    updateWishListCount,
+    setSelectedItemsForPayment,
+    clearSelectedItemsForPayment
+} = customerSlice.actions
 
 export default customerSlice.reducer

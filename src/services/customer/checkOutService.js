@@ -25,8 +25,19 @@ const updateCustomerAddress = (id, name, address, phone, email, isDefault) => {
     });
 }
 
+const createOrder = (paymentMethod, shippingMethod, totalPrice, cusAddressId, orderDetails) => {
+    return axios.post(`/api/v1/checkout/create-order`, {
+        paymentMethod,
+        shippingMethod,
+        totalPrice,
+        cusAddressId,
+        orderDetails
+    });
+}
+
 export {
     getCustomerAddress,
     createCustomerAddress,
     updateCustomerAddress,
+    createOrder,
 }

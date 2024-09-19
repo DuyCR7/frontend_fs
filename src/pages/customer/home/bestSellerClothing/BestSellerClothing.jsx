@@ -100,11 +100,13 @@ const BestSellerClothing = () => {
                                     <SwiperSlide key={item.id}>
                                         <div className="product-item">
                                             <div className="product-thumb">
-                                                <div className="pro-thumb">
-                                                    <img
-                                                        src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}
-                                                        alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}/>
-                                                </div>
+                                                <Link to={`/products/${item.slug}`}>
+                                                    <div className="pro-thumb">
+                                                        <img
+                                                            src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}
+                                                            alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}/>
+                                                    </div>
+                                                </Link>
                                                 <div className="product-action-link">
                                                     <span title="Xem nhanh"><IoEyeOutline size={16}/></span>
                                                     <span title="Yêu thích" onClick={() => handleWishlistAction(item)}>

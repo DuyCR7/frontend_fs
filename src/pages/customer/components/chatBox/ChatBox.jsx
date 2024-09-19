@@ -26,7 +26,7 @@ const ChatBox = () => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io("http://localhost:4000");
+        const newSocket = io(process.env.REACT_APP_URL_SOCKET);
         setSocket(newSocket);
 
         newSocket.on("receiveMessage", async (message) => {

@@ -6,11 +6,12 @@ import _ from "lodash";
 import AddressModal from "./AddressModal";
 import EditAddressModal from "./EditAddressModal";
 import {
-    createCustomerAddress,
+    createCustomerAddress, createOrder,
     getCustomerAddress, setDefaultAddress,
     updateCustomerAddress
 } from "../../../../services/customer/checkOutService";
 import {toast} from "react-toastify";
+import {clearSelectedItemsForPayment, updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 
 const CheckOutPage = () => {
 
@@ -19,6 +20,7 @@ const CheckOutPage = () => {
     const customer = useSelector((state) => state.customer);
     const [loading, setLoading] = useState(false);
     const [shippingMethod, setShippingMethod] = useState('standard');
+    const [paymentMethod, setPaymentMethod] = useState('cod');
 
     const [actionModalAddress, setActionModalAddress] = useState("CREATE");
     const [showAddressModal, setShowAddressModal] = useState(false);
@@ -180,6 +182,38 @@ const CheckOutPage = () => {
         return error ? <div className="text-danger mt-1">{error}</div> : null;
     };
 
+    const handleCreateOrder = async () => {
+        setLoading(true);
+        try {
+            if (!selectedAddress) {
+                toast.error("Vui lòng chọn địa chỉ giao hàng!");
+                return;
+            }
+
+            const orderDetails = customer.selectedItemsForPayment.map(item => ({
+                productDetailId: item.productDetailId,
+                quantity: item.quantity,
+                price: item.Product_Detail.Product.isSale
+                    ? item.Product_Detail.Product.price_sale
+                    : item.Product_Detail.Product.price
+            }));
+
+            let res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.id, orderDetails);
+            if (res && res.EC === 0) {
+                toast.success(res.EM);
+                dispatch(clearSelectedItemsForPayment());
+                dispatch(updateCartCount(res.DT.remainingCartItems));
+                navigate('/carts');
+            } else {
+                toast.error(res.EM);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div className="checkout-page">
             <div className="pageheader-section">
@@ -278,7 +312,8 @@ const CheckOutPage = () => {
                                                 <p><strong>Địa chỉ:</strong> {selectedAddress.address}</p>
                                                 <p><strong>Số điện thoại:</strong> {selectedAddress.phone}</p>
                                                 <p><strong>Email:</strong> {selectedAddress.email}</p>
-                                                <button className="btn btn-outline-primary" onClick={() => handleChangeAddress()}>
+                                                <button className="btn btn-outline-primary"
+                                                        onClick={() => handleChangeAddress()}>
                                                     Thay đổi địa chỉ
                                                 </button>
                                             </div>
@@ -289,36 +324,65 @@ const CheckOutPage = () => {
                                         )}
                                     </div>
 
-                                    <div className="mb-3">
-                                        <label className="form-label">Phương thức vận chuyển</label>
-                                        <div>
-                                            <div className="form-check">
-                                                <input
-                                                    className="form-check-input"
-                                                    type="radio"
-                                                    name="shippingMethod"
-                                                    id="standardShipping"
-                                                    value="standard"
-                                                    // checked={shippingMethod === 'standard'}
-                                                    // onChange={(e) => setShippingMethod(e.target.value)}
-                                                />
-                                                <label className="form-check-label" htmlFor="standardShipping">
-                                                    Tiêu chuẩn (20.000đ)
-                                                </label>
+                                    <hr/>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-6 pe-sm-3">
+                                            <label className="form-label" style={{fontWeight: "bold"}}>Phương thức vận
+                                                chuyển</label>
+                                            <div>
+                                                <div className="form-check">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="radio"
+                                                        id="standardShipping"
+                                                        value="standard"
+                                                        checked={shippingMethod === 'standard'}
+                                                        onChange={(e) => setShippingMethod(e.target.value)}
+                                                    />
+                                                    <label className="form-check-label" htmlFor="standardShipping">
+                                                        Tiêu chuẩn ({formatCurrency(20000)})
+                                                    </label>
+                                                </div>
+                                                <div className="form-check">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="radio"
+                                                        id="expressShipping"
+                                                        value="express"
+                                                        checked={shippingMethod === 'express'}
+                                                        onChange={(e) => setShippingMethod(e.target.value)}
+                                                    />
+                                                    <label className="form-check-label" htmlFor="expressShipping">
+                                                        Nhanh ({formatCurrency(50000)})
+                                                    </label>
+                                                </div>
                                             </div>
-                                            <div className="form-check">
-                                                <input
-                                                    className="form-check-input"
-                                                    type="radio"
-                                                    name="shippingMethod"
-                                                    id="expressShipping"
-                                                    value="express"
-                                                    // checked={shippingMethod === 'express'}
-                                                    // onChange={(e) => setShippingMethod(e.target.value)}
-                                                />
-                                                <label className="form-check-label" htmlFor="expressShipping">
-                                                    Nhanh (50.000đ)
-                                                </label>
+                                        </div>
+                                        <div className="col-sm-6 ps-sm-3 position-relative">
+                                            <div className="d-none d-sm-block position-absolute h-100" style={{
+                                                width: '1px',
+                                                backgroundColor: '#dee2e6',
+                                                left: '0',
+                                                top: '0'
+                                            }}></div>
+                                            <div className="d-sm-none mb-3 mt-3"
+                                                 style={{height: '1px', backgroundColor: '#dee2e6'}}></div>
+                                            <label className="form-label" style={{fontWeight: "bold"}}>Phương thức thanh
+                                                toán</label>
+                                            <div>
+                                                <div className="form-check">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="radio"
+                                                        id="codPayment"
+                                                        value="cod"
+                                                        checked={paymentMethod === 'cod'}
+                                                        onChange={(e) => setPaymentMethod(e.target.value)}
+                                                    />
+                                                    <label className="form-check-label" htmlFor="codPayment">
+                                                        Thanh toán khi nhận hàng
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -328,6 +392,7 @@ const CheckOutPage = () => {
                                 type="submit"
                                 className="btn btn-primary w-100"
                                 disabled={loading}
+                                onClick={() => handleCreateOrder()}
                             >
                                 {loading ? 'Đang xử lý...' : 'Đặt hàng'}
                             </button>
