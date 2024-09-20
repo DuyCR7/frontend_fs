@@ -118,6 +118,7 @@ const AdProduct = () => {
     const handleEditProduct = async (product) => {
         setIsShowModalProduct(true);
         setActionModalProduct("EDIT");
+        console.log(product);
         setDataUpdate(product);
     }
 
@@ -131,7 +132,7 @@ const AdProduct = () => {
         setSearchKeyword("");
         setSortConfig({ key: 'id', direction: 'DESC' });
     }
-
+console.log(listProduct);
     return (
         <>
             <div className="page-inner">

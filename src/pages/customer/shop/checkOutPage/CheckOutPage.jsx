@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {formatCurrency} from "../../../../utils/formatCurrency";
@@ -33,6 +33,8 @@ const CheckOutPage = () => {
 
     const [addresses, setAddresses] = useState([]);
 
+    const orderPlacedRef = useRef(false);
+
     const fetchCustomerAddress = async () => {
         setLoading(true);
         try {
@@ -56,6 +58,11 @@ const CheckOutPage = () => {
     }
 
     useEffect(() => {
+        if (orderPlacedRef.current) {
+            navigate('/orders');
+            return;
+        }
+
         if (!customer || !customer.isAuthenticated) {
             navigate('/sign-in');
         } else if (customer.selectedItemsForPayment.length === 0) {
@@ -183,6 +190,13 @@ const CheckOutPage = () => {
         return error ? <div className="text-danger mt-1">{error}</div> : null;
     };
 
+    const handleSuccessfulOrder = useCallback((res) => {
+        toast.success(`${res.EM} - Một email xác nhận đã được gửi đến địa chỉ email của bạn.`);
+        dispatch(clearSelectedItemsForPayment());
+        dispatch(updateCartCount(res.DT.remainingCartItems));
+        orderPlacedRef.current = true;
+    }, [dispatch, navigate]);
+
     const handleCODOrder = async () => {
         setLoading(true);
         try {
@@ -202,12 +216,9 @@ const CheckOutPage = () => {
                     : item.Product_Detail.Product.price
             }));
 
-            let res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.id, orderDetails);
+            let res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, orderDetails);
             if (res && res.EC === 0) {
-                toast.success(`${res.EM} - Một email xác nhận đã được gửi đến địa chỉ email của bạn.`);
-                dispatch(clearSelectedItemsForPayment());
-                dispatch(updateCartCount(res.DT.remainingCartItems));
-                navigate('/carts');
+                handleSuccessfulOrder(res);
             } else {
                 toast.error(res.EM);
             }
@@ -253,12 +264,9 @@ const CheckOutPage = () => {
                     : item.Product_Detail.Product.price
             }));
 
-            const res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.id, orderDetails, data.orderID);
+            const res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, orderDetails, data.orderID);
             if (res && res.EC === 0) {
-                toast.success(`${res.EM} - Một email xác nhận đã được gửi đến địa chỉ email của bạn.`);
-                dispatch(clearSelectedItemsForPayment());
-                dispatch(updateCartCount(res.DT.remainingCartItems));
-                navigate('/carts');
+                handleSuccessfulOrder(res);
             } else {
                 toast.error(res.EM);
             }

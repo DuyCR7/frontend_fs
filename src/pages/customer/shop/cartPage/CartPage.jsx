@@ -94,9 +94,14 @@ const CartPage = () => {
                 if (res) {
                     const { EC, EM } = res;
 
-                    if (EC === 0 || EC === 2) {
+                    if (EC === 0 || EC === 2 || EC === 3) {
                         await fetchCartItems();
+                        await fetchRelatedProducts();
                         if (EC === 2) {
+                            toast.warn(EM);
+                            dispatch(updateCartCount(0))
+                        }
+                        if (EC === 3) {
                             toast.warn(EM);
                         }
                     } else if (EC === 1) {

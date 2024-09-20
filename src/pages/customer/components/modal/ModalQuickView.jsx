@@ -257,11 +257,16 @@ const ModalQuickView = (props) => {
                                 ))}
                             </div>
                         </div>
-                        {availableQuantity >= 0 && (
+                        {availableQuantity > 0 ? (
+                                <div className="form-group">
+                                    <span>{availableQuantity} sản phẩm có sẵn</span>
+                                </div>
+                            )
+                            :
                             <div className="form-group">
-                                <p>{availableQuantity} sản phẩm có sẵn</p>
+                                <span className="text-danger">Hết hàng</span>
                             </div>
-                        )}
+                        }
                         <div className="form-group d-flex">
                             <div className="cart-plus-minus ms-0">
                                 <div className="dec qtybutton" onClick={handleDecrease}><FaMinus/></div>

@@ -32,6 +32,7 @@ import AdPost from "./pages/admin/post/AdPost";
 import WishList from "./pages/customer/shop/wishList/WishList";
 import CheckOutPage from "./pages/customer/shop/checkOutPage/CheckOutPage";
 import AdChat from "./pages/admin/chat/AdChat";
+import MyOrder from "./pages/customer/order/MyOrder";
 
 const App = () => {
     return (
@@ -72,6 +73,7 @@ const App = () => {
                     <Route path="carts/payment" element={<CheckOutPage />}/>
                     <Route path="wish-list" element={<WishList />}/>
                     <Route path="contacts" element={<Contact />} />
+                    <Route path="orders" element={<MyOrder />}/>
 
                     <Route path="*" element={<NotFoundPageCus />}/>
                 </Route>

@@ -1,0 +1,205 @@
+.my-orders {
+  .section-wrapper {
+    .order-card {
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      overflow: hidden;
+
+      &:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #2c3e50;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        h5 {
+          margin-top: 5px;
+        }
+
+        .btn-outline-danger {
+          font-size: 0.9rem;
+          padding: 0.3rem 0.8rem;
+          border-radius: 20px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background-color: #dc3545;
+            color: white;
+          }
+        }
+      }
+
+      .table {
+        th {
+          background-color: #f8f9fa;
+          font-weight: 600;
+          text-transform: uppercase;
+          font-size: 0.9rem;
+          color: #34495e;
+        }
+
+        td {
+          vertical-align: middle;
+        }
+
+        .product-info {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          img {
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          }
+
+          span {
+            font-weight: 500;
+            color: #2c3e50;
+          }
+        }
+      }
+
+      .order-info {
+        margin-top: 1rem;
+        font-size: 1rem;
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+
+        .info-item {
+          margin-bottom: 0.5rem;
+
+          strong {
+            font-weight: 600;
+            margin-right: 0.5rem;
+            color: #34495e;
+          }
+        }
+      }
+
+      .order-status {
+        font-weight: bold;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        display: inline-block;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+
+        &.pending {
+          background-color: #ffeeba;
+          color: #856404;
+        }
+
+        &.confirmed {
+          background-color: #d4edda;
+          color: #155724;
+        }
+
+        &.shipping {
+          background-color: #cce5ff;
+          color: #004085;
+        }
+      }
+    }
+
+    .address-card {
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      overflow: hidden;
+
+      &:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .address-info {
+        font-size: 1rem;
+
+        .info-item {
+          margin-bottom: 0.5rem;
+
+          strong {
+            font-weight: 600;
+            margin-right: 0.5rem;
+            color: #34495e;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .my-orders {
+    .section-wrapper {
+      .order-card, .address-card {
+        margin-bottom: 1.5rem;
+      }
+
+      .card-title {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .btn-outline-danger {
+          margin-top: 1rem;
+        }
+      }
+
+      .table {
+        font-size: 0.9rem;
+
+        th, td {
+          padding: 0.75rem;
+        }
+
+        .product-info {
+          flex-direction: column;
+          align-items: flex-start;
+
+          img {
+            margin-bottom: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .my-orders {
+    .section-wrapper {
+      .order-card, .address-card {
+        margin-bottom: 1rem;
+      }
+
+      .table {
+        font-size: 0.8rem;
+
+        th, td {
+          padding: 0.5rem;
+        }
+      }
+
+      .order-info, .address-info {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

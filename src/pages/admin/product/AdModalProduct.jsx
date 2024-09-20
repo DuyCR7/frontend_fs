@@ -13,6 +13,7 @@ import {MdDeleteOutline} from "react-icons/md";
 import {Modal} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {Spin} from "antd";
+import { v4 as uuidv4 } from 'uuid';
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -178,10 +179,11 @@ const AdModalProduct = (props) => {
     };
 
     let defauftProductDetails = [{
-        colorId: '',
+        id: uuidv4(),
+        colorId: 0,
         image: null,
         imageName: '',
-        sizes: [{sizeId: '', quantity: 1}]
+        sizes: [{id: uuidv4(), sizeId: 0, quantity: 1}]
     }];
 
     useEffect(() => {
@@ -209,6 +211,7 @@ const AdModalProduct = (props) => {
             let updateProductDetails = Object.values(Product_Details.reduce((acc, curr) => {
                 if (!acc[curr.colorId]) {
                     acc[curr.colorId] = {
+                        id: uuidv4(),
                         colorId: curr.colorId,
                         image: null,
                         imageName: "",
@@ -216,7 +219,7 @@ const AdModalProduct = (props) => {
                         sizes: []
                     };
                 }
-                acc[curr.colorId].sizes.push({ sizeId: curr.sizeId, quantity: curr.quantity });
+                acc[curr.colorId].sizes.push({ id: uuidv4(), sizeId: curr.sizeId, quantity: curr.quantity });
                 return acc;
             }, {}));
             setProductDetails(updateProductDetails);
@@ -234,10 +237,11 @@ const AdModalProduct = (props) => {
 
     const addProductDetail = () => {
         setProductDetails([...productDetails, {
-            colorId: '',
+            id: uuidv4(),
+            colorId: 0,
             image: null,
             imageName: '',
-            sizes: [{sizeId: '', quantity: 1}]
+            sizes: [{id: uuidv4(), sizeId: 0, quantity: 1}]
         }]);
     };
 
@@ -303,6 +307,13 @@ const AdModalProduct = (props) => {
                 }
             }
 
+            if(props.actionModalProduct === "EDIT") {
+                if (!detail.image && !detail.imagePreview) {
+                    detailError.image = "Vui lòng chọn hình ảnh!";
+                    isValid = false;
+                }
+            }
+
             let sizeErrors = [];
             let usedSizes = new Set();
             detail.sizes.forEach((size, sizeIndex) => {
@@ -323,22 +334,22 @@ const AdModalProduct = (props) => {
                 }
 
                 if (Object.keys(sizeError).length > 0) {
-                    sizeErrors[sizeIndex] = sizeError;
+                    sizeErrors[size.id] = sizeError;
                 }
 
             });
 
-            if (sizeErrors.length > 0) {
+            if (Object.keys(sizeErrors).length > 0) {
                 detailError.sizes = sizeErrors;
             }
 
             if (Object.keys(detailError).length > 0) {
-                detailErrors[detailIndex] = detailError;
+                detailErrors[detail.id] = detailError;
             }
 
         });
 
-        if (detailErrors.length > 0) {
+        if (Object.keys(detailErrors).length > 0) {
             newErrors.productDetails = detailErrors;
         }
 
@@ -346,62 +357,97 @@ const AdModalProduct = (props) => {
         return isValid;
     };
 
-    const updateProductDetail = (index, field, value) => {
-        const updatedDetails = [...productDetails];
-        if (field === 'image') {
-            if (value) {
-                updatedDetails[index].image = value;
-                updatedDetails[index].imagePreview = URL.createObjectURL(value);
-                updatedDetails[index].imageName = value.name;
-            } else {
-                updatedDetails[index].image = null;
-                updatedDetails[index].imagePreview = null;
-                updatedDetails[index].imageName = '';
+    const updateProductDetail = (detailId, field, value) => {
+        const updatedDetails = productDetails.map(detail => {
+            if (detail.id === detailId) {
+                if (field === 'image') {
+                    if (value) {
+                        return {
+                            ...detail,
+                            image: value,
+                            imagePreview: URL.createObjectURL(value),
+                            imageName: value.name
+                        };
+                    } else {
+                        return {
+                            ...detail,
+                            image: null,
+                            imagePreview: null,
+                            imageName: ''
+                        };
+                    }
+                } else if (field === 'colorId') {
+                    return { ...detail, [field]: parseInt(value, 10) };
+                } else {
+                    return { ...detail, [field]: value };
+                }
             }
-        } else {
-            updatedDetails[index][field] = value;
-        }
+            return detail;
+        });
         setProductDetails(updatedDetails);
 
         setErrors(prevErrors => {
             const newErrors = {...prevErrors};
-            if (newErrors.productDetails && newErrors.productDetails[index]) {
-                newErrors.productDetails[index][field] = undefined;
+            if (newErrors.productDetails && newErrors.productDetails[detailId]) {
+                newErrors.productDetails[detailId][field] = undefined;
             }
             return newErrors;
         });
     };
 
-    const updateSize = (detailIndex, sizeIndex, field, value) => {
-        const updatedDetails = [...productDetails];
-        updatedDetails[detailIndex].sizes[sizeIndex][field] = value;
+    const updateSize = (detailId, sizeId, field, value) => {
+        const updatedDetails = productDetails.map(detail => {
+            if (detail.id === detailId) {
+                const updatedSizes = detail.sizes.map(size => {
+                    if (size.id === sizeId) {
+                        if (field === 'sizeId') {
+                            return { ...size, [field]: parseInt(value, 10) };
+                        }
+                        return { ...size, [field]: value };
+                    }
+                    return size;
+                });
+                return { ...detail, sizes: updatedSizes };
+            }
+            return detail;
+        });
         setProductDetails(updatedDetails);
 
         setErrors(prevErrors => {
             const newErrors = {...prevErrors};
             if (newErrors.productDetails &&
-                newErrors.productDetails[detailIndex] &&
-                newErrors.productDetails[detailIndex].sizes &&
-                newErrors.productDetails[detailIndex].sizes[sizeIndex]) {
-                newErrors.productDetails[detailIndex].sizes[sizeIndex][field] = undefined;
+                newErrors.productDetails[detailId] &&
+                newErrors.productDetails[detailId].sizes &&
+                newErrors.productDetails[detailId].sizes[sizeId]) {
+                newErrors.productDetails[detailId].sizes[sizeId][field] = undefined;
             }
             return newErrors;
         });
     };
 
-    const addSize = (detailIndex) => {
-        const updatedDetails = [...productDetails];
-        updatedDetails[detailIndex].sizes.push({sizeId: '', quantity: 1});
+    const addSize = (detailId) => {
+        const updatedDetails = productDetails.map(detail => {
+            if (detail.id === detailId) {
+                return {
+                    ...detail,
+                    sizes: [...detail.sizes, {id: uuidv4(), sizeId: 0, quantity: 1}]
+                };
+            }
+            return detail;
+        });
         setProductDetails(updatedDetails);
     };
 
-    const removeProductDetail = (indexToRemove) => {
-        setProductDetails(productDetails.filter((_, index) => index !== indexToRemove));
+    const removeProductDetail = (detailIdToRemove) => {
+        setProductDetails(productDetails.filter(detail => detail.id !== detailIdToRemove));
     };
 
-    const removeSize = (detailIndex, sizeIndexToRemove) => {
-        const updatedDetails = [...productDetails];
-        updatedDetails[detailIndex].sizes = updatedDetails[detailIndex].sizes.filter((_, index) => index !== sizeIndexToRemove);
+    const removeSize = (detailId, sizeIdToRemove) => {
+        const updatedDetails = productDetails.map(detail =>
+            detail.id === detailId
+                ? { ...detail, sizes: detail.sizes.filter(size => size.id !== sizeIdToRemove) }
+                : detail
+        );
         setProductDetails(updatedDetails);
     };
 
@@ -438,7 +484,9 @@ const AdModalProduct = (props) => {
                     }
 
                 } else if (res && res.EC === 1) {
-                    toast.error(res.EM);
+                    toast.warn(res.EM);
+                    handleClickCloseModal();
+                    await props.fetchAllProduct(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                 } else {
                     toast.error(res.EM);
                 }
@@ -605,8 +653,8 @@ const AdModalProduct = (props) => {
 
                             <div className="ad-product-detail col-12 form-group">
                                 <label className="mb-3">Chi tiết sản phẩm:</label>
-                                {productDetails.map((detail, detailIndex) => (
-                                    <div key={`${detailIndex}`} className="card mb-3">
+                                {productDetails.map((detail) => (
+                                    <div key={detail.id} className="card mb-3">
                                         <div className="card-body">
                                             <div className="color-image row">
                                                 <div className="col-sm-5 mb-3">
@@ -614,16 +662,16 @@ const AdModalProduct = (props) => {
                                                         style={{color: "red"}}>*</span>):</label>
                                                     <select
                                                         value={detail.colorId}
-                                                        onChange={(e) => updateProductDetail(detailIndex, 'colorId', e.target.value)}
-                                                        className={errors.productDetails?.[detailIndex]?.colorId ? "form-group form-select is-invalid" : "form-group form-select"}
+                                                        onChange={(e) => updateProductDetail(detail.id, 'colorId', e.target.value)}
+                                                        className={errors.productDetails?.[detail.id]?.colorId ? "form-group form-select is-invalid" : "form-group form-select"}
                                                     >
-                                                        <option value="">--- Chọn màu ---</option>
+                                                        <option value={0}>--- Chọn màu ---</option>
                                                         {colors && colors.map(color => (
                                                             <option key={color.id}
                                                                     value={color.id}>{color.name}</option>
                                                         ))}
                                                     </select>
-                                                    {renderError(errors.productDetails?.[detailIndex]?.colorId)}
+                                                    {renderError(errors.productDetails?.[detail.id]?.colorId)}
                                                 </div>
                                                 <div className="col-sm-5 mb-3">
                                                     <label className="form-label">Hình ảnh (<span
@@ -631,25 +679,25 @@ const AdModalProduct = (props) => {
                                                     <div className="input-group file-input-group">
                                                         <input
                                                             type="file"
-                                                            onChange={(e) => updateProductDetail(detailIndex, 'image', e.target.files[0])}
-                                                            className={errors.productDetails?.[detailIndex]?.image ? "form-control d-none is-invalid" : "form-control d-none"}
-                                                            id={`file-input-${detailIndex}`}
+                                                            onChange={(e) => updateProductDetail(detail.id, 'image', e.target.files[0])}
+                                                            className={errors.productDetails?.[detail.id]?.image ? "form-control d-none is-invalid" : "form-control d-none"}
+                                                            id={`file-input-${detail.id}`}
                                                             accept="image/*"
                                                         />
                                                         <input
                                                             type="text"
                                                             value={detail.imageName || ''}
                                                             readOnly
-                                                            className={errors.productDetails?.[detailIndex]?.image ? "form-control file-name-input is-invalid" : "form-control file-name-input"}
+                                                            className={errors.productDetails?.[detail.id]?.image ? "form-control file-name-input is-invalid" : "form-control file-name-input"}
                                                             placeholder="No file chosen"
                                                         />
                                                         <label
-                                                            className={`btn btn-outline-secondary ${errors.productDetails?.[detailIndex]?.image ? 'is-invalid' : ''}`}
-                                                            htmlFor={`file-input-${detailIndex}`}>
+                                                            className={`btn btn-outline-secondary ${errors.productDetails?.[detail.id]?.image ? 'is-invalid' : ''}`}
+                                                            htmlFor={`file-input-${detail.id}`}>
                                                             Choose File
                                                         </label>
                                                     </div>
-                                                    {renderError(errors.productDetails?.[detailIndex]?.image)}
+                                                    {renderError(errors.productDetails?.[detail.id]?.image)}
                                                 </div>
                                                 <div
                                                     className="col-sm-2 d-flex justify-content-center align-items-center">
@@ -671,41 +719,41 @@ const AdModalProduct = (props) => {
 
                                             <label className="mt-3 mb-2">Kích thước và số lượng (<span
                                                 style={{color: "red"}}>*</span>):</label>
-                                            {detail.sizes.map((size, sizeIndex) => (
-                                                <div key={size.sizeId} className="row mb-2">
+                                            {detail.sizes.map((size) => (
+                                                <div key={size.id} className="row mb-2">
                                                     <div className="col-sm-5">
                                                         <select
                                                             value={size.sizeId}
-                                                            onChange={(e) => updateSize(detailIndex, sizeIndex, 'sizeId', e.target.value)}
-                                                            className={errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.sizeId ? "form-group form-select is-invalid" : "form-group form-select"}
+                                                            onChange={(e) => updateSize(detail.id, size.id, 'sizeId', e.target.value)}
+                                                            className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.sizeId ? "form-group form-select is-invalid" : "form-group form-select"}
                                                         >
-                                                            <option value="">--- Chọn size ---</option>
+                                                            <option value={0}>--- Chọn size ---</option>
                                                             {sizes.map(s => (
                                                                 <option key={s.id}
                                                                         value={s.id}>{s.name} ({s.code})</option>
                                                             ))}
                                                         </select>
-                                                        {renderError(errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.sizeId)}
+                                                        {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.sizeId)}
                                                     </div>
                                                     <div className="col-sm-5 mt-3 mt-sm-0">
                                                         <input
                                                             type="number"
                                                             value={size.quantity}
-                                                            onChange={(e) => updateSize(detailIndex, sizeIndex, 'quantity', e.target.value)}
+                                                            onChange={(e) => updateSize(detail.id, size.id, 'quantity', e.target.value)}
                                                             placeholder="Số lượng"
-                                                            className={errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.quantity ? "form-control is-invalid" : "form-control"}
+                                                            className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity ? "form-control is-invalid" : "form-control"}
                                                             min={1}
                                                         />
-                                                        {renderError(errors.productDetails?.[detailIndex]?.sizes?.[sizeIndex]?.quantity)}
+                                                        {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity)}
                                                     </div>
                                                     <div
                                                         className="d-flex gap-3 justify-content-end justify-content-sm-center align-items-center col-sm-2 mt-3 mt-sm-0 mb-1 mb-sm-0">
                                                         {detail.sizes.length > 1 && (
                                                             <FiMinusCircle size={30} style={{color: "red"}}
-                                                                           onClick={() => removeSize(detailIndex, sizeIndex)}/>
+                                                                           onClick={() => removeSize(detail.id, size.id)}/>
                                                         )}
                                                         <FiPlusCircle size={30} style={{color: "#1178f2"}}
-                                                                      onClick={() => addSize(detailIndex)}/>
+                                                                      onClick={() => addSize(detail.id)}/>
                                                     </div>
                                                 </div>
                                             ))}
@@ -716,7 +764,7 @@ const AdModalProduct = (props) => {
                                                     {productDetails.length > 1 && (
                                                         <button
                                                             type="button"
-                                                            onClick={() => removeProductDetail(detailIndex)}
+                                                            onClick={() => removeProductDetail(detail.id)}
                                                             className="d-flex gap-1 justify-content-center align-items-center btn btn-outline-danger"
                                                         >
                                                             <MdDeleteOutline size={25}/>Xóa chi tiết

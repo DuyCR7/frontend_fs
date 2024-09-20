@@ -240,11 +240,12 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                     ))}
                 </div>
             </div>
-            {availableQuantity > 0 && (
-                <div className="">
-                    <span>{availableQuantity} sản phẩm có sẵn</span>
-                </div>
-            )}
+            {availableQuantity > 0 ? (
+                <span>{availableQuantity} sản phẩm có sẵn</span>
+            )
+            :
+                <span className="text-danger">Hết hàng</span>
+            }
 
             <div className="d-flex">
                 <div className="cart-plus-minus ms-0">

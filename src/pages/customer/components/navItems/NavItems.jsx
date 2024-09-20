@@ -195,7 +195,7 @@ const NavItems = () => {
                                                 </a>
                                                 <ul className="dropdown-menu dropdown-menu-end"
                                                     aria-labelledby="dropdownMenuLink">
-                                                    <li><Link className="dropdown-item" to="/">Đơn mua</Link></li>
+                                                    <li><Link className="dropdown-item" to="/orders">Đơn mua</Link></li>
                                                     <li>
                                                         <div className="dropdown-divider"></div>
                                                     </li>
