@@ -88,7 +88,9 @@ const AdTeam = () => {
             await fetchAllTeam(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
-        fetchData();
+        if (debouncedSearchInput === searchKeyword) {
+            fetchData();
+        }
     }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const [isShowModalTeam, setIsShowModalTeam] = useState(false);

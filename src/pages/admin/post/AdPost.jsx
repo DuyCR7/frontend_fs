@@ -66,7 +66,9 @@ const AdPost = () => {
     }
 
     useEffect(() => {
-        fetchAllPost(currentPage, numRows, debouncedSearchInput, sortConfig);
+        if(debouncedSearchInput === searchKeyword) {
+            fetchAllPost(currentPage, numRows, debouncedSearchInput, sortConfig);
+        }
     }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const togglePostStatus = async (id) => {

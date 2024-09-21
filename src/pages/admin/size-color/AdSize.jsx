@@ -85,7 +85,9 @@ const AdSize = () => {
             await fetchAllSize(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
-        fetchData();
+        if (debouncedSearchInput === searchKeyword) {
+            fetchData();
+        }
     }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const [isShowModalSize, setIsShowModalSize] = useState(false);

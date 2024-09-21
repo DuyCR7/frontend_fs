@@ -71,7 +71,9 @@ const AdBanner = () => {
             await fetchAllBanner(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
-        fetchData();
+        if(debouncedSearchInput === searchKeyword) {
+            fetchData();
+        }
         setSelectedIds([]);
         setSelectAll(false);
     }, [currentPage, numRows, debouncedSearchInput, sortConfig]);

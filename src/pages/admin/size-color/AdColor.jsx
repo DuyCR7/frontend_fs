@@ -85,7 +85,9 @@ const AdColor = () => {
             await fetchAllColor(currentPage, numRows, debouncedSearchInput, sortConfig);
         };
 
-        fetchData();
+        if (debouncedSearchInput === searchKeyword) {
+            fetchData();
+        }
     }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const [isShowModalColor, setIsShowModalColor] = useState(false);

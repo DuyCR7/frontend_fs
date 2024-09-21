@@ -70,7 +70,9 @@ const AdProduct = () => {
             await fetchAllProduct(currentPage, numRows, debouncedSearchInput, sortConfig);
         }
 
-        fetchData();
+        if (debouncedSearchInput === searchKeyword) {
+            fetchData();
+        }
     }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
 
     const toggleProductStatus = async (id, field) => {

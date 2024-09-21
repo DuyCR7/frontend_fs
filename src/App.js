@@ -33,6 +33,7 @@ import WishList from "./pages/customer/shop/wishList/WishList";
 import CheckOutPage from "./pages/customer/shop/checkOutPage/CheckOutPage";
 import AdChat from "./pages/admin/chat/AdChat";
 import MyOrder from "./pages/customer/order/MyOrder";
+import AdOrder from "./pages/admin/order/AdOrder";
 
 const App = () => {
     return (
@@ -54,6 +55,7 @@ const App = () => {
                     <Route path="teams" element={<AdTeam />}/>
                     <Route path="sizes-colors" element={<AdSizeColor />}/>
                     <Route path="products" element={<AdProduct />}/>
+                    <Route path="orders" element={<AdOrder />}/>
                     <Route path="chats" element={<AdChat />}/>
 
                     <Route path="*" element={<NotFoundPageAd />}/>

@@ -32,6 +32,9 @@ const AdSidebar = (props) => {
         } else if (path.includes('/admin/posts')) {
             setActiveItem("posts");
             setActiveGroup(null);
+        } else if (path.includes('/admin/orders')) {
+            setActiveItem("orders");
+            setActiveGroup(null);
         } else if (path.includes('/admin/chats')) {
             setActiveItem("chats");
             setActiveGroup(null);
@@ -141,6 +144,12 @@ const AdSidebar = (props) => {
                                         </li>
                                     </ul>
                                 </div>
+                            </li>
+                            <li className={`nav-item ${activeItem === "orders" ? "active" : ""}`}>
+                                <Link to='/admin/orders'>
+                                    <i className="icofont-briefcase-2"></i>
+                                    <p>Quản lý đơn hàng</p>
+                                </Link>
                             </li>
                             <li className={`nav-item ${activeItem === "chats" ? "active" : ""}`}>
                                 <Link to='/admin/chats'>

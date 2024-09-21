@@ -95,6 +95,11 @@
         text-transform: uppercase;
         font-size: 0.8rem;
 
+        &.canceled {
+          background-color: #f8d7da;
+          color: #721c24;
+        }
+
         &.pending {
           background-color: #ffeeba;
           color: #856404;
@@ -108,6 +113,11 @@
         &.shipping {
           background-color: #cce5ff;
           color: #004085;
+        }
+
+        &.received {
+          background-color: #c3e6cb;
+          color: #28a745;
         }
       }
     }
