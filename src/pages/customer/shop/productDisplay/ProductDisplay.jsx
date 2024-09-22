@@ -29,6 +29,8 @@ const ProductDisplay = ({productData, setActiveImage}) => {
     const [error, setError] = useState("");
     const [cartItem, setCartItem] = useState(null);
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         // Chỉ gọi updateAvailableQuantity sau khi productData được cập nhật
         if (productData.details) {
@@ -152,6 +154,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                     quantity: quantity,
                 };
 
+                setLoading(true);
                 try {
                     let res = await addToCart(item.productId, productDetail.id, item.quantity);
                     if (res && res.EC === 0) {
@@ -163,6 +166,8 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                     }
                 } catch (e) {
                     toast.error(e);
+                } finally {
+                    setLoading(false);
                 }
             } else {
                 setError("Vui lòng chọn phân loại hàng!");
@@ -268,11 +273,13 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                     <span>Chat ngay</span>
                 </button>
                 <button className="btn btn-outline-primary d-flex align-items-center gap-1"
+                        disabled={loading}
                         onClick={() => handleAddToCart()}>
                     <IoCartOutline size={22}/>
                     <span>Giỏ hàng</span>
                 </button>
                 <button className="btn btn-outline-success d-flex align-items-center gap-1"
+                        disabled={loading}
                         onClick={() => handleAddToCart()}>
                     <PiMoney size={22}/>
                     <span>Mua ngay</span>

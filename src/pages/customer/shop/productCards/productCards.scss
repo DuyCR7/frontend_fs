@@ -1,4 +1,55 @@
 .product-cards {
+  .product-item {
+    position: relative;
+    overflow: hidden;
+
+    .product-action-link {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 15px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      button {
+        background-color: #e6f0fe;
+        border: none;
+        border-radius: 50%;
+        width: 50px;  // Tăng kích thước nút
+        height: 50px; // Tăng kích thước nút
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        svg {
+          transition: all 0.3s ease;
+          color: #1178f2;
+        }
+
+        &:hover {
+          background-color: #1178f2;
+          transform: translateY(-3px);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+          svg {
+            color: white;
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .product-action-link {
+        opacity: 1;
+      }
+    }
+  }
+
   .price-container {
     display: flex;
     align-items: center;
@@ -45,6 +96,57 @@
       .original-price {
         font-size: 16px;
         font-weight: normal;
+      }
+    }
+  }
+
+  .product-list-item {
+    position: relative;
+    overflow: hidden;
+
+    .product-action-link {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 15px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      button {
+        background-color: #e6f0fe;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        svg {
+          transition: all 0.3s ease;
+          color: #1178f2;
+        }
+
+        &:hover {
+          background-color: #1178f2;
+          transform: translateY(-3px);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+          svg {
+            color: white;
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .product-action-link {
+        opacity: 1;
       }
     }
   }

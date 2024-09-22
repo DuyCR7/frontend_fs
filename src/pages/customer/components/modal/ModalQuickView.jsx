@@ -27,6 +27,8 @@ const ModalQuickView = (props) => {
     const [error, setError] = useState("");
     const [cartItem, setCartItem] = useState(null);
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         if (props.dataQuickView && Object.keys(props.dataQuickView).length > 0) {
             setProductData(props.dataQuickView);
@@ -173,6 +175,7 @@ const ModalQuickView = (props) => {
                     quantity: quantity,
                 };
 
+                setLoading(true);
                 try {
                     let res = await addToCart(item.productId, productDetail.id, item.quantity);
                     if (res && res.EC === 0) {
@@ -184,6 +187,8 @@ const ModalQuickView = (props) => {
                     }
                 } catch (e) {
                     toast.error(e);
+                } finally {
+                    setLoading(false);
                 }
             } else {
                 setError("Vui lòng chọn phân loại hàng!");
@@ -285,7 +290,8 @@ const ModalQuickView = (props) => {
                         )}
                         <div className="form-group">
                             <button className="btn btn-outline-primary d-flex align-items-center gap-1"
-                                    onClick={() => handleAddToCart()}>
+                                    onClick={() => handleAddToCart()}
+                                    disabled={loading}>
                                 <IoCartOutline size={22}/>
                                 <span>Thêm vào giỏ hàng</span>
                             </button>

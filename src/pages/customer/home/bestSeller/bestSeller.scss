@@ -1,6 +1,58 @@
-.best-seller-gifts {
-  .best-seller-gifts-slider {
+.all-best-seller {
+  .all-best-seller-slider {
     position: relative;
+
+    .product-item {
+      position: relative;
+      overflow: hidden;
+
+      .product-action-link {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        gap: 15px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        button {
+          background-color: #e6f0fe;
+          border: none;
+          border-radius: 50%;
+          width: 50px;  // Tăng kích thước nút
+          height: 50px; // Tăng kích thước nút
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+          svg {
+            transition: all 0.3s ease;
+            color: #1178f2;
+          }
+
+          &:hover {
+            background-color: #1178f2;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+            svg {
+              color: white;
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+
+      &:hover {
+        .product-action-link {
+          opacity: 1;
+        }
+      }
+    }
 
     .price-container {
       display: flex;
@@ -31,8 +83,8 @@
       height: auto;
     }
 
-    .best-seller-gifts-prev,
-    .best-seller-gifts-next {
+    .all-best-seller-prev,
+    .all-best-seller-next {
       &.custom-nav {
         width: 40px;
         height: 40px;
@@ -93,7 +145,7 @@
 }
 
 @media (max-width: 576px) {
-  .best-seller-gifts {
+  .all-best-seller {
     .price-container {
       flex-direction: column;
     }

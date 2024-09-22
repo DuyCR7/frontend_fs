@@ -1,5 +1,6 @@
 import {useState} from "react";
 import './starRating.scss';
+import {FaStar} from "react-icons/fa";
 
 const StarRating = ({rating, onRatingChange, readOnly = false}) => {
 
@@ -32,9 +33,10 @@ const StarRating = ({rating, onRatingChange, readOnly = false}) => {
                         className={`${index + 1 <= (hoverRating || rating) ? 'selected' : ''}`}
                         onClick={() => handleClick(index + 1)}
                         onMouseEnter={() => handleMouseEnter(index + 1)}
-                        onMouseOut={handleMouseLeave}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        &#9733;
+                        {/*&#9733;*/}
+                        <FaStar />
                     </span>
                 )
             })}

@@ -14,6 +14,7 @@ export const useWishlist = () => {
     const customer = useSelector((state) => state.customer);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const fetchWishlist = async () => {
         if (customer && customer.isAuthenticated) {
@@ -46,7 +47,7 @@ export const useWishlist = () => {
             navigate('/sign-in');
             return;
         }
-
+        setLoading(true);
         try {
             let res;
             if (isInWishlist(product.id)) {
@@ -65,8 +66,10 @@ export const useWishlist = () => {
         } catch (e) {
             console.error(e);
             toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+        } finally {
+            setLoading(false);
         }
     };
 
-    return { wishList, isInWishlist, handleWishlistAction };
+    return { loading, wishList, isInWishlist, handleWishlistAction };
 };

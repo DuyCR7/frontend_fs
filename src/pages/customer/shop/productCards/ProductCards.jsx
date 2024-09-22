@@ -13,7 +13,7 @@ const ProductCards = ({GridList, products}) => {
 
     const customer = useSelector((state) => state.customer);
 
-    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
+    const { loading, wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     const [isShowModalQuickView, setIsShowModalQuickView] = useState(false);
     const [dataQuickView, setDataQuickView] = useState({});
@@ -49,17 +49,17 @@ const ProductCards = ({GridList, products}) => {
 
                                         {/*product action links*/}
                                         <div className="product-action-link">
-                                            <span title='Xem nhanh'
+                                            <button title='Xem nhanh'
                                                   onClick={() => handleShowModalQuickView(item)}>
                                                 <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
-                                            </span>
-                                            <span title='Yêu thích' onClick={() => handleWishlistAction(item)}>
+                                            </button>
+                                            <button title='Yêu thích' disabled={loading} onClick={() => handleWishlistAction(item)}>
                                                 {
                                                     customer.isAuthenticated && isInWishlist(item.id)
                                                         ? <IoHeartSharp size={16}/>
                                                         : <IoHeartOutline size={16}/>
                                                 }
-                                            </span>
+                                            </button>
                                         {/*    <span title='Giỏ hàng'>*/}
                                         {/*    <IoCartOutline size={16} style={{cursor: "pointer"}}/>*/}
                                         {/*</span>*/}
@@ -100,17 +100,17 @@ const ProductCards = ({GridList, products}) => {
 
                                         {/*product action links*/}
                                         <div className="product-action-link">
-                                            <span title='Xem nhanh'
+                                            <button title='Xem nhanh'
                                                   onClick={() => handleShowModalQuickView(item)}>
                                                 <IoEyeOutline size={16} style={{cursor: "pointer"}}/>
-                                            </span>
-                                            <span title='Yêu thích' onClick={() => handleWishlistAction(item)}>
+                                            </button>
+                                            <button title='Yêu thích' disabled={loading} onClick={() => handleWishlistAction(item)}>
                                                 {
                                                     customer.isAuthenticated && isInWishlist(item.id)
                                                         ? <IoHeartSharp size={16}/>
                                                         : <IoHeartOutline size={16}/>
                                                 }
-                                            </span>
+                                            </button>
                                             {/*<span title='Giỏ hàng'>*/}
                                             {/*    <IoCartOutline size={16} style={{cursor: "pointer"}}/>*/}
                                             {/*</span>*/}
@@ -118,13 +118,16 @@ const ProductCards = ({GridList, products}) => {
                                     </div>
 
                                     {/*product content*/}
-                                    <div className="product-content">
+                                    <div className="product-content d-flex flex-column gap-2">
                                     <span style={{fontSize: "18px", display: "flex", alignItems: "center", justifyContent: 'center'}}>
                                         <Link to={`/products/${item.slug}`}>{item.name}</Link>
                                     </span>
-                                        <p className="productRating" style={{display: "flex", alignItems: "center", justifyContent: 'center'}}>
-                                            <Rating/>
-                                        </p>
+                                        <div className="productRating" style={{display: "flex", alignItems: "center", justifyContent: 'center'}}>
+                                            {/*<Rating/>*/}
+                                            {item.averageRating > 0 && (
+                                                <RatingOnlyView value={item.averageRating} />
+                                            )}
+                                        </div>
                                         <div className={`price-list-container ${item.isSale ? 'on-sale' : ''}`}>
                                             {item.isSale && (
                                                 <span className="original-price">{formatCurrency(item.price)}</span>

@@ -26,8 +26,12 @@ const getAllForSearch = (search) => {
     });
 }
 
-const getAllSellerClothing = () => {
-    return axios.get("/api/v1/product/get-all-seller-clothing");
+const getAllSalesProducts = () => {
+    return axios.get("/api/v1/product/get-all-sales-products");
+}
+
+const getAllBestSeller = () => {
+    return axios.get("/api/v1/product/get-all-best-seller");
 }
 
 const getPosts = () => {
@@ -40,6 +44,7 @@ export {
     getNewEvent,
     getAllTrending,
     getAllForSearch,
-    getAllSellerClothing,
+    getAllSalesProducts,
+    getAllBestSeller,
     getPosts,
 }

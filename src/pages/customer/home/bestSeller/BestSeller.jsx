@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
-import {getAllSellerClothing} from "../../../../services/customer/homeService";
+import {getAllBestSeller} from "../../../../services/customer/homeService";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Mousewheel, Navigation, Pagination} from "swiper/modules";
 import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
@@ -11,13 +11,14 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/free-mode';
-import "./bestSellerGifts.scss"
+import "./bestSeller.scss"
 import {useSelector} from "react-redux";
 import {useWishlist} from "../../components/wishList/useWishlist";
+import RatingOnlyView from "../../components/rating/RatingOnlyView";
 
-const title = "Quà tặng bán chạy nhất";
+const title = "Sản Phẩm Bán Chạy";
 
-const BestSellerGifts = () => {
+const BestSeller = () => {
 
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ const BestSellerGifts = () => {
 
     const fetchAllSellerClothing = async () => {
         try {
-            let res = await getAllSellerClothing();
+            let res = await getAllBestSeller();
             if (res && res.EC === 0) {
                 setProducts(res.DT);
             } else {
@@ -54,9 +55,9 @@ const BestSellerGifts = () => {
             console.error('Error fetching seller clothing', e);
         }
     }
-
+console.log(products);
     return (
-        <div className="best-seller-gifts course-section style-3 padding-tb">
+        <div className="all-best-seller course-section style-3 padding-tb">
             {/*main section*/}
             <div className="container-fluid ps-5 pe-5">
                 {/*section header*/}
@@ -67,14 +68,14 @@ const BestSellerGifts = () => {
                 <div className={`shop-page`}>
                     <div className={`shop-product-wrap row justify-content-center grid`}>
                         {/*<ResponsiveProductSlider products={products} />*/}
-                        <div className="best-seller-gifts-slider">
+                        <div className="all-best-seller-slider">
                             <Swiper
                                 modules={[Navigation, Pagination, Mousewheel, FreeMode]}
                                 spaceBetween={20}
                                 slidesPerView={'auto'}
                                 navigation={!isMobile ? {
-                                    nextEl: '.best-seller-gifts-next',
-                                    prevEl: '.best-seller-gifts-prev',
+                                    nextEl: '.all-best-seller-next',
+                                    prevEl: '.all-best-seller-prev',
                                 } : false}
                                 pagination={isMobile ? {clickable: true} : false}
                                 // mousewheel={true}
@@ -102,36 +103,39 @@ const BestSellerGifts = () => {
                                                 <Link to={`/products/${item.slug}`}>
                                                     <div className="pro-thumb">
                                                         <img
-                                                            src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}
-                                                            alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Images[0].image}`}/>
+                                                            src={`${process.env.REACT_APP_URL_BACKEND}/${item['Product_Images.image']}`}
+                                                            alt={`${process.env.REACT_APP_URL_BACKEND}/${item['Product_Images.image']}`}/>
                                                     </div>
                                                 </Link>
                                                 <div className="product-action-link">
-                                                    <span title="Xem nhanh"><IoEyeOutline size={16}/></span>
-                                                    <span title="Yêu thích" onClick={() => handleWishlistAction(item)}>
+                                                    <button title="Xem nhanh"><IoEyeOutline size={16}/></button>
+                                                    <button title="Yêu thích" onClick={() => handleWishlistAction(item)}>
                                                         {
                                                             customer.isAuthenticated && isInWishlist(item.id)
                                                                 ? <IoHeartSharp size={16}/>
                                                                 : <IoHeartOutline size={16}/>
                                                         }
-                                                    </span>
+                                                    </button>
                                                     {/*<span title="Giỏ hàng"><IoCartOutline size={16}/></span>*/}
                                                 </div>
                                             </div>
-                                            <div className="product-content">
+                                            <div className="product-content d-flex flex-column gap-2">
                                 <span style={{fontSize: "18px"}}>
                                     <Link to={`/products/${item.slug}`}>{item.name}</Link>
                                 </span>
-                                                <p className="productRating">
-                                                    <Rating/>
-                                                </p>
+                                                <div className="productRating">
+                                                    {/*<Rating/>*/}
+                                                    {item.averageRating > 0 && (
+                                                        <RatingOnlyView value={item.averageRating} />
+                                                    )}
+                                                </div>
                                                 <div className={`price-container ${item.isSale ? 'on-sale' : ''}`}>
-                                                    {item.isSale && (
+                                                    {item.isSale === 1 && (
                                                         <span
                                                             className="original-price">{formatCurrency(item.price)}</span>
                                                     )}
-                                                    <span className={item.isSale ? 'sale-price' : ''}>
-                                                      {item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}
+                                                    <span className={item.isSale === 1 ? 'sale-price' : ''}>
+                                                      {item.isSale === 1 ? formatCurrency(item.price_sale) : formatCurrency(item.price)}
                                                     </span>
                                                 </div>
                                             </div>
@@ -141,10 +145,10 @@ const BestSellerGifts = () => {
                             </Swiper>
                             {!isMobile && (
                                 <>
-                                    <div className="swiper-button-prev best-seller-gifts-prev custom-nav">
+                                    <div className="swiper-button-prev all-best-seller-prev custom-nav">
                                         <MdNavigateBefore/>
                                     </div>
-                                    <div className="swiper-button-next best-seller-gifts-next custom-nav">
+                                    <div className="swiper-button-next all-best-seller-next custom-nav">
                                         <MdNavigateNext/>
                                     </div>
                                 </>
@@ -164,4 +168,4 @@ const BestSellerGifts = () => {
     );
 };
 
-export default BestSellerGifts;
+export default BestSeller;

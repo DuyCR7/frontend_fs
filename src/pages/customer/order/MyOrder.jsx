@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PageHeader from "../components/pageHeader/PageHeader";
 import {cancelOrder, confirmReceivedOrder, getMyOrders} from "../../../services/customer/orderService";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import {formatCurrency} from "../../../utils/formatCurrency";
 import {Card, Table} from "react-bootstrap";
@@ -10,9 +10,12 @@ import "./myOrder.scss";
 import {toast} from "react-toastify";
 import ReactPaginate from "react-paginate";
 import ModalReview from "./ModalReview";
+import {addToCart} from "../../../services/customer/cartService";
+import {updateCartCount} from "../../../redux/customer/slices/customerSlice";
 
 const MyOrder = () => {
 
+    const dispatch = useDispatch();
     const customer = useSelector((state) => state.customer);
     const [loading, setLoading] = useState(false);
     const [orders, setOrders] = useState([]);
@@ -71,6 +74,7 @@ const MyOrder = () => {
     }
 
     const handleCancelOrder = async (orderId) => {
+        setLoading(true);
         try {
             let res = await cancelOrder(orderId);
             if (res && res.EC === 0) {
@@ -81,10 +85,13 @@ const MyOrder = () => {
             }
         } catch (e) {
             console.error(e);
+        } finally {
+            setLoading(false);
         }
     }
 
     const handleConfirmReceived = async (orderId) => {
+        setLoading(true);
         try {
             let res = await confirmReceivedOrder(orderId);
             if (res && res.EC === 0) {
@@ -95,6 +102,8 @@ const MyOrder = () => {
             }
         } catch (e) {
             console.error(e);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -116,7 +125,21 @@ const MyOrder = () => {
     }
 
     const handleRePurchase = async (product) => {
-
+        setLoading(true);
+        try {
+            let res = await addToCart(product.Product.id, product.id, 1);
+            if (res && res.EC === 0) {
+                toast.success(res.EM);
+                dispatch(updateCartCount(res.DT));
+                navigate('/carts');
+            } else {
+                toast.error(res.EM);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
     }
 
     const getOrderStatus = (status) => {
@@ -140,6 +163,7 @@ const MyOrder = () => {
         if (order.status === 1) {
             return (
                 <button
+                    disabled={loading}
                     className="btn btn-sm btn-outline-danger"
                     onClick={() => handleCancelOrder(order.id)}
                 >
@@ -150,6 +174,7 @@ const MyOrder = () => {
             return (
                 <button
                     className="btn btn-sm btn-outline-success"
+                    disabled={loading}
                     onClick={() => handleConfirmReceived(order.id)}
                 >
                     Đã Nhận Được Hàng
@@ -243,14 +268,10 @@ const MyOrder = () => {
                                                                             <div className="action-buttons">
                                                                                 <button
                                                                                     className="btn btn-sm btn-outline-warning me-2"
-                                                                                    onClick={() => handleRePurchase(detail.Product_Detail.Product)}>
+                                                                                    disabled={loading}
+                                                                                    onClick={() => handleRePurchase(detail.Product_Detail)}>
                                                                                     Mua Lại
                                                                                 </button>
-                                                                                {/*<button*/}
-                                                                                {/*    className="btn btn-sm btn-outline-primary"*/}
-                                                                                {/*    onClick={() => handleReview(detail.Product_Detail.Product)}>*/}
-                                                                                {/*    Đánh Giá*/}
-                                                                                {/*</button>*/}
                                                                                 {renderReviewButton(detail)}
                                                                             </div>
                                                                         </td>

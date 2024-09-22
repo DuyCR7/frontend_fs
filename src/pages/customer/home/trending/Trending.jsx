@@ -14,7 +14,7 @@ const title = "Xu hướng";
 
 const Trending = () => {
 
-    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
+    const { loading, wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     const customer = useSelector((state) => state.customer);
 
@@ -128,18 +128,19 @@ const Trending = () => {
 
                                                     {/*product action links*/}
                                                     <div className="product-action-link">
-                                                        <span title='Xem nhanh'
+                                                        <button title='Xem nhanh'
                                                               onClick={() => handleShowModalQuickView(item)}>
-                                                            <IoEyeOutline size={16}/>
-                                                        </span>
-                                                        <span title='Yêu thích'
+                                                            <IoEyeOutline size={24}/>
+                                                        </button>
+                                                        <button title='Yêu thích'
+                                                                disabled={loading}
                                                               onClick={() => handleWishlistAction(item)}>
                                                             {
                                                                 customer.isAuthenticated && isInWishlist(item.id)
-                                                                    ? <IoHeartSharp size={16}/>
-                                                                    : <IoHeartOutline size={16}/>
+                                                                    ? <IoHeartSharp size={24}/>
+                                                                    : <IoHeartOutline size={24}/>
                                                             }
-                                                        </span>
+                                                        </button>
                                                         {/*<span title='Giỏ hàng'*/}
                                                         {/*      onClick={() => handleAddToCart(item)}>*/}
                                                         {/*    <IoCartOutline size={16}/>*/}

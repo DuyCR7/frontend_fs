@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
-import {getAllSellerClothing} from "../../../../services/customer/homeService";
+import {getAllSalesProducts, getAllSellerClothing} from "../../../../services/customer/homeService";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Mousewheel, Navigation, Pagination} from "swiper/modules";
 import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
@@ -11,13 +11,14 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/free-mode';
-import "./bestSellerClothing.scss";
+import "./allSalesProducts.scss";
 import {useSelector} from "react-redux";
 import {useWishlist} from "../../components/wishList/useWishlist";
+import RatingOnlyView from "../../components/rating/RatingOnlyView";
 
-const title = "Quần áo bán chạy nhất";
+const title = "Sản Phẩm Khuyến Mãi";
 
-const BestSellerClothing = () => {
+const AllSalesProducts = () => {
 
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
@@ -40,12 +41,12 @@ const BestSellerClothing = () => {
 
 
     useEffect(() => {
-        fetchAllSellerClothing();
+        fetchAllSalesProducts();
     }, []);
 
-    const fetchAllSellerClothing = async () => {
+    const fetchAllSalesProducts = async () => {
         try {
-            let res = await getAllSellerClothing();
+            let res = await getAllSalesProducts();
             if (res && res.EC === 0) {
                 setProducts(res.DT);
             } else {
@@ -55,9 +56,9 @@ const BestSellerClothing = () => {
             console.error('Error fetching seller clothing', e);
         }
     }
-
+console.log(products);
     return (
-        <div className="best-seller-clothing course-section style-3 padding-tb">
+        <div className="all-sales-products course-section style-3 padding-tb">
             {/*main section*/}
             <div className="container-fluid ps-5 pe-5">
                 {/*section header*/}
@@ -68,14 +69,14 @@ const BestSellerClothing = () => {
                 <div className={`shop-page`}>
                     <div className={`shop-product-wrap row justify-content-center grid`}>
                         {/*<ResponsiveProductSlider products={products}/>*/}
-                        <div className="best-seller-clothing-slider">
+                        <div className="all-sales-products-slider">
                             <Swiper
                                 modules={[Navigation, Pagination, Mousewheel, FreeMode]}
                                 spaceBetween={20}
                                 slidesPerView={'auto'}
                                 navigation={!isMobile ? {
-                                    nextEl: '.best-seller-clothing-next',
-                                    prevEl: '.best-seller-clothing-prev',
+                                    nextEl: '.all-sales-products-next',
+                                    prevEl: '.all-sales-products-prev',
                                 } : false}
                                 pagination={isMobile ? {clickable: true} : false}
                                 // mousewheel={true}
@@ -108,24 +109,26 @@ const BestSellerClothing = () => {
                                                     </div>
                                                 </Link>
                                                 <div className="product-action-link">
-                                                    <span title="Xem nhanh"><IoEyeOutline size={16}/></span>
-                                                    <span title="Yêu thích" onClick={() => handleWishlistAction(item)}>
+                                                    <button title="Xem nhanh"><IoEyeOutline size={16}/></button>
+                                                    <button title="Yêu thích" onClick={() => handleWishlistAction(item)}>
                                                         {
                                                             customer.isAuthenticated && isInWishlist(item.id)
                                                                 ? <IoHeartSharp size={16}/>
                                                                 : <IoHeartOutline size={16}/>
                                                         }
-                                                    </span>
+                                                    </button>
                                                     {/*<span title="Giỏ hàng"><IoCartOutline size={16}/></span>*/}
                                                 </div>
                                             </div>
-                                            <div className="product-content">
-                                <span style={{fontSize: "18px"}}>
-                                    <Link to={`/products/${item.slug}`}>{item.name}</Link>
-                                </span>
-                                                <p className="productRating">
-                                                    <Rating/>
-                                                </p>
+                                            <div className="product-content d-flex flex-column gap-2">
+                                                <span style={{fontSize: "18px"}}>
+                                                    <Link to={`/products/${item.slug}`}>{item.name}</Link>
+                                                </span>
+                                                <div className="productRating">
+                                                    {item.averageRating > 0 && (
+                                                        <RatingOnlyView value={item.averageRating} />
+                                                    )}
+                                                </div>
                                                 <div className={`price-container ${item.isSale ? 'on-sale' : ''}`}>
                                                     {item.isSale && (
                                                         <span
@@ -142,10 +145,10 @@ const BestSellerClothing = () => {
                             </Swiper>
                             {!isMobile && (
                                 <>
-                                    <div className="swiper-button-prev best-seller-clothing-prev custom-nav">
+                                    <div className="swiper-button-prev all-sales-products-prev custom-nav">
                                         <MdNavigateBefore/>
                                     </div>
-                                    <div className="swiper-button-next best-seller-clothing-next custom-nav">
+                                    <div className="swiper-button-next all-sales-products-next custom-nav">
                                         <MdNavigateNext/>
                                     </div>
                                 </>
@@ -165,4 +168,4 @@ const BestSellerClothing = () => {
     );
 };
 
-export default BestSellerClothing;
+export default AllSalesProducts;
