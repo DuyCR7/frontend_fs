@@ -1,0 +1,25 @@
+.rating-only-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .star {
+    color: #e4e5e9;
+    font-size: 1.2rem;
+    transition: color 0.2s ease-in-out;
+
+    &.filled {
+      color: #ffc107;
+    }
+
+    &:not(:last-child) {
+      margin-right: 4px;
+    }
+  }
+
+  .rating-value {
+    margin-left: 8px;
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+}

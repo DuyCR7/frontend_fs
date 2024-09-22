@@ -9,6 +9,7 @@ import {formatCurrency} from "../../../../utils/formatCurrency";
 import {toast} from "react-toastify";
 import {setWishList, updateWishListCount} from "../../../../redux/customer/slices/customerSlice";
 import "./wishList.scss";
+import RatingOnlyView from "../../components/rating/RatingOnlyView";
 
 const WishList = () => {
 
@@ -82,13 +83,15 @@ const WishList = () => {
                                                 </div>
 
                                                 {/*product content*/}
-                                                <div className="product-content">
+                                                <div className="product-content d-flex flex-column gap-2">
                                                 <span style={{fontSize: "18px"}}>
                                                     <Link to={`/products/${item.Product.slug}`}>{item.Product.name}</Link>
                                                 </span>
-                                                    <p className="productRating">
-                                                        <Rating/>
-                                                    </p>
+                                                    <div className="productRating">
+                                                        {parseFloat(item.Product.averageRating) > 0 && (
+                                                            <RatingOnlyView value={parseFloat(item.Product.averageRating)} />
+                                                        )}
+                                                    </div>
                                                     <div className={`price-container ${item.Product.isSale ? 'on-sale' : ''}`}>
                                                         {item.Product.isSale && (
                                                             <span

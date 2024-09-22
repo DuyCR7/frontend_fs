@@ -1,6 +1,10 @@
 .shop-cart {
     .table-cart {
       box-shadow: 0 0 10px rgba(136, 136, 136, .3);
+
+      .detail-name {
+        color: green;
+      }
     }
 
     .related-products {

@@ -243,7 +243,7 @@ const CartPage = () => {
                                                                     />
                                                                 </td>
                                                                 <td>
-                                                                    <Link
+                                                                    <Link className="detail-name"
                                                                         to={`/products/${item.Product_Detail.Product.slug}`}>{item.Product_Detail.Product.name}</Link>
                                                                 </td>
                                                                 <td>

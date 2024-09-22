@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {IoIosChatboxes} from "react-icons/io";
 import {openChatBox} from "../../../../redux/customer/slices/chatSlice";
+import RatingOnlyView from "../../components/rating/RatingOnlyView";
 
 const ProductDisplay = ({productData, setActiveImage}) => {
 
@@ -18,7 +19,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
     const dispatch = useDispatch();
     const customer = useSelector((state) => state.customer);
 
-    const {name, price, price_sale, isSale, team, category, description, details = []} = productData;
+    const {name, averageRating, price, price_sale, isSale, team, category, description, details = []} = productData;
 
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState(null);
@@ -177,14 +178,11 @@ const ProductDisplay = ({productData, setActiveImage}) => {
         <div className="product-display d-flex flex-column gap-3">
             <div>
                 <h3 className="">{name}</h3>
-                <p className="rating">
-                    <i className="icofont-star"></i>
-                    <i className="icofont-star"></i>
-                    <i className="icofont-star"></i>
-                    <i className="icofont-star"></i>
-                    <i className="icofont-star"></i>
-                    {/*<span> {ratingsCount} đánh giá</span>*/}
-                </p>
+                <div className="rating d-flex justify-content-start">
+                    {averageRating > 0 && (
+                        <RatingOnlyView value={averageRating} />
+                    )}
+                </div>
                 <div className={`price-container ${isSale ? 'on-sale' : ''}`}>
                     {isSale && (
                         <span className="original-price">{formatCurrency(price)}</span>

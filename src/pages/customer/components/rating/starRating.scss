@@ -1,0 +1,32 @@
+.star-rating {
+
+  span {
+    font-size: 24px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &.selected {
+      color: #ffc107;
+    }
+
+    &:hover {
+      color: #ffc107;
+    }
+  }
+
+  &.read-only {
+    span {
+      cursor: default;
+
+      &:hover {
+        color: #ddd;
+      }
+
+      &.selected {
+        color: #ffc107;
+      }
+    }
+  }
+
+}

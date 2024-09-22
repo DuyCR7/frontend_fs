@@ -7,6 +7,7 @@ import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-i
 import ModalQuickView from "../../components/modal/ModalQuickView";
 import {useSelector} from "react-redux";
 import {useWishlist} from "../../components/wishList/useWishlist";
+import RatingOnlyView from "../../components/rating/RatingOnlyView";
 
 const ProductCards = ({GridList, products}) => {
 
@@ -66,13 +67,16 @@ const ProductCards = ({GridList, products}) => {
                                     </div>
 
                                     {/*product content*/}
-                                    <div className="product-content">
+                                    <div className="product-content d-flex flex-column gap-2">
                                     <span style={{fontSize: "18px"}}>
                                         <Link to={`/products/${item.slug}`}>{item.name}</Link>
                                     </span>
-                                        <p className="productRating">
-                                            <Rating/>
-                                        </p>
+                                        <div className="productRating">
+                                            {/*<Rating/>*/}
+                                            {item.averageRating > 0 && (
+                                                <RatingOnlyView value={item.averageRating} />
+                                            )}
+                                        </div>
                                         <div className={`price-container ${item.isSale ? 'on-sale' : ''}`}>
                                             {item.isSale && (
                                                 <span className="original-price">{formatCurrency(item.price)}</span>
