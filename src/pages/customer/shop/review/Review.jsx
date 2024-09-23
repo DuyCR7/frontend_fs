@@ -1,42 +1,16 @@
 import React, {useState} from 'react';
 import parse from 'html-react-parser';
-import Rating from "../../components/rating/Rating.jsx";
-
-const reviewtitle = "Thêm đánh giá";
-
-let ReviewList = [{
-    imgUrl: "/admin/assets/img/examples/01.jpg",
-    imgAlt: "Client thumb",
-    name: "Ganelon Boileau",
-    date: "Posted on Jun 10, 2022 at 6:57 am",
-    desc: "Enthusiast build innovativ initiatives before lonterm high-impact awesome theme seo psd porta monetize covalent leadership after without resource.",
-}, {
-    imgUrl: "/admin/assets/img/examples/01.jpg",
-    imgAlt: "Client thumb",
-    name: "Morgana Cailot",
-    date: "Posted on Jun 10, 2022 at 6:57 am",
-    desc: "Enthusiast build innovativ initiatives before lonterm high-impact awesome theme seo psd porta monetize covalent leadership after without resource.",
-}, {
-    imgUrl: "/admin/assets/img/examples/01.jpg",
-    imgAlt: "Client thumb",
-    name: "Telford Bois",
-    date: "Posted on Jun 10, 2022 at 6:57 am",
-    desc: "Enthusiast build innovativ initiatives before lonterm high-impact awesome theme seo psd porta monetize covalent leadership after without resource.",
-}, {
-    imgUrl: "/admin/assets/img/examples/01.jpg",
-    imgAlt: "Client thumb",
-    name: "Cher Daviau",
-    date: "Posted on Jun 10, 2022 at 6:57 am",
-    desc: "Enthusiast build innovativ initiatives before lonterm high-impact awesome theme seo psd porta monetize covalent leadership after without resource.",
-},];
+import {formatDate} from "../../../../utils/formatDate";
+import RatingOnlyView from "../../components/rating/RatingOnlyView";
+import "./review.scss";
 
 const Review = (props) => {
 
     const [reviewShow, setReviewShow] = useState(true);
-    const { description } = props.productData;
-
+    const { reviews, description } = props.productData;
+console.log(reviews);
     return (
-        <>
+        <div className="review-section">
             <ul className={`review-nav lab-ul ${reviewShow ? "RevActive" : "DescActive"}`}>
                 <li className="desc" onClick={() => setReviewShow(!reviewShow)}>Mô tả</li>
                 <li className="rev" onClick={() => setReviewShow(!reviewShow)}>Đánh giá 4</li>
@@ -47,108 +21,46 @@ const Review = (props) => {
                 <div className="review-showing">
                     <ul className="content lab-ul">
                         {
-                            ReviewList.map((item, index) => {
+                            reviews.length > 0 ? reviews.map((item, index) => {
                                 return (
-                                    <li key={index}>
+                                    <li key={item.id} className="item-review">
                                         <div className="post-thumb">
-                                            <img src={item.imgUrl} alt=""/>
+                                            <img src={item.Customer.image.startsWith('https')
+                                                ? item.Customer.image
+                                                : `${process.env.REACT_APP_URL_BACKEND}/${item.Customer.image}`}
+                                                 alt={item.Customer.email} alt=""/>
                                         </div>
                                         <div className="post-content">
                                             <div className="entry-meta">
                                                 <div className="posted-on">
-                                                    <a href="#">{item.name}</a>
-                                                    <p>{item.date}</p>
+                                                    <div className="review-info">
+                                                        <p className="fs-4 fw-bold">{item.Customer.email}</p>
+                                                        <p>{formatDate(item.updatedAt)}</p>
+                                                    </div>
+                                                    <div className="review-rating">
+                                                        <RatingOnlyView value={item.rating}/>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="entry-content">
-                                                <p>{item.desc}</p>
+                                                <p>{item.comment}</p>
                                             </div>
                                         </div>
                                     </li>
                                 )
-                            })
+                            }) : (
+                                <div className="fs-4 fw-bold py-3 text-center">Chưa có đánh giá nào</div>
+                            )
                         }
                     </ul>
-
-                    {/*add review*/}
-                    <div className="client-review">
-                        <div className="review-form">
-                            <div className="review-title">
-                                <h5>{reviewtitle}</h5>
-                            </div>
-
-                            <form action="action" className="row">
-                                <div className="col-md-4 col-12">
-                                    <input type="text" name="name" id="name" placeholder="Họ và tên *"/>
-                                </div>
-                                <div className="col-md-4 col-12">
-                                    <input type="email" name="email" id="email" placeholder="Email *"/>
-                                </div>
-                                <div className="col-md-4 col-12">
-                                    <div className="rating">
-                                        <span className="me-2">Đánh giá</span>
-                                        <Rating />
-                                    </div>
-                                </div>
-                                <div className="col-md-12 col-12">
-                                    <textarea name="message" id="message" rows="8" placeholder="Nội dung"></textarea>
-                                </div>
-
-                                <div className="col-12">
-                                    <button type="submit" className="default-button">
-                                        <span>Đánh giá</span>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 {/*description*/}
                 <div className="description">
-                    {/*<p>Introducing our state-of-the-art wireless earbuds, designed to deliver an unparalleled audio*/}
-                    {/*    experience. These sleek and stylish earbuds feature advanced noise-cancellation technology,*/}
-                    {/*    ensuring crystal-clear sound quality in any environment. With a comfortable, ergonomic design,*/}
-                    {/*    they fit snugly in your ears for hours of listening pleasure. The long-lasting battery life*/}
-                    {/*    provides up to 8 hours of continuous playtime, and the portable charging case adds an additional*/}
-                    {/*    24 hours, making them perfect for on-the-go use. Seamlessly connect to your devices via*/}
-                    {/*    Bluetooth*/}
-                    {/*    5.0 for a stable and efficient connection. Elevate your audio experience with our cutting-edge*/}
-                    {/*    wireless*/}
-                    {/*    earbuds.*/}
-                    {/*</p>*/}
-
-                    {/*<div className="post-item">*/}
-                    {/*    <div className="post-thumb">*/}
-                    {/*        <img src="/admin/assets/img/examples/example1.jpeg" alt=""/>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="post-content">*/}
-                    {/*        <ul className="lab-ul">*/}
-                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
-                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
-                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
-                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
-                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
-                    {/*            <li>Elevate your audio experience with our cutting-edge wireless earbuds.</li>*/}
-                    {/*        </ul>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
-                    {/*<p>Introducing our state-of-the-art wireless earbuds, designed to deliver an unparalleled audio*/}
-                    {/*    experience. These sleek and stylish earbuds feature advanced noise-cancellation technology,*/}
-                    {/*    ensuring crystal-clear sound quality in any environment. With a comfortable, ergonomic design,*/}
-                    {/*    they fit snugly in your ears for hours of listening pleasure. The long-lasting battery life*/}
-                    {/*    provides up to 8 hours of continuous playtime, and the portable charging case adds an additional*/}
-                    {/*    24 hours, making them perfect for on-the-go use. Seamlessly connect to your devices via*/}
-                    {/*    Bluetooth*/}
-                    {/*    5.0 for a stable and efficient connection. Elevate your audio experience with our cutting-edge*/}
-                    {/*    wireless*/}
-                    {/*    earbuds.*/}
-                    {/*</p>*/}
                     {parse(description)}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
