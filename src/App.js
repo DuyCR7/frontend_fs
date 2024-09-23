@@ -34,6 +34,10 @@ import CheckOutPage from "./pages/customer/shop/checkOutPage/CheckOutPage";
 import AdChat from "./pages/admin/chat/AdChat";
 import MyOrder from "./pages/customer/order/MyOrder";
 import AdOrder from "./pages/admin/order/AdOrder";
+import Profile from "./pages/customer/profile/Profile";
+import ChangeEmail from "./pages/customer/profile/ChangeEmail";
+import ChangePhone from "./pages/customer/profile/ChangePhone";
+import VerifyAndResetPassword from "./pages/customer/auth/verifyAndResetPassword/VerifyAndResetPassword";
 
 const App = () => {
     return (
@@ -76,6 +80,9 @@ const App = () => {
                     <Route path="wish-list" element={<WishList />}/>
                     <Route path="contacts" element={<Contact />} />
                     <Route path="orders" element={<MyOrder />}/>
+                    <Route path="account/profiles" element={<Profile />}/>
+                    <Route path="account/email" element={<ChangeEmail />}/>
+                    <Route path="account/phone" element={<ChangePhone />}/>
 
                     <Route path="*" element={<NotFoundPageCus />}/>
                 </Route>
@@ -86,6 +93,7 @@ const App = () => {
                 <Route path="/sign-in-success/:userId/:tokenLoginGoogle" element={<GoogleLoginSuccess />}/>
                 <Route path="/forgot-password" element={<ForgotPassword />}/>
                 <Route path="/password-reset/:id/:token" element={<PasswordReset />}/>
+                <Route path="/verify-and-reset/:id/:token" element={<VerifyAndResetPassword />}/>
 
             </Routes>
           </Router>

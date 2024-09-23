@@ -1,0 +1,55 @@
+.change-email-page {
+  .my-email {
+    padding-left: 5rem;
+    padding-right: 5rem;
+
+    @media (max-width: 768px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .section-wrapper {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+      @media (max-width: 576px) {
+        padding: 1rem;
+      }
+
+      h2 {
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+
+        @media (max-width: 576px) {
+          font-size: 1.5rem;
+        }
+      }
+
+      .form-control {
+        margin-bottom: 1rem;
+      }
+
+      .btn-primary {
+        width: auto;
+        padding: 0.5rem 1rem;
+
+        @media (max-width: 576px) {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      .btn-link {
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+
+        @media (max-width: 576px) {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

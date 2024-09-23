@@ -199,7 +199,7 @@ const NavItems = () => {
                                                     <li>
                                                         <div className="dropdown-divider"></div>
                                                     </li>
-                                                    <li><Link className="dropdown-item" to="/">Thông tin</Link></li>
+                                                    <li><Link className="dropdown-item" to="/account/profiles">Thông tin</Link></li>
                                                     <li>
                                                         <div className="dropdown-divider"></div>
                                                     </li>

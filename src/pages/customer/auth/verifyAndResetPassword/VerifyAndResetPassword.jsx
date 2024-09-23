@@ -1,10 +1,9 @@
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {
-    resetPassword,
-    resetPasswordVerifyLink,
+    resetPasswordVerifyLink, verifyAndResetPassword,
 } from "../../../../services/customer/authService";
-import "./PasswordReset.scss"
+import "./verifyAndResetPassword.scss"
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
 import {Spin} from "antd";
@@ -12,7 +11,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import NotFoundPageCus from "../../../../components/NotFoundPageCus/NotFoundPageCus";
 
-const PasswordReset = (props) => {
+const VerifyAndResetPassword = (props) => {
 
     const navigate = useNavigate();
     const params = useParams();
@@ -51,7 +50,7 @@ const PasswordReset = (props) => {
         if (e.key === "Enter") {
             e.preventDefault();
             if (!loading) {
-                handleResetPassword();
+                handleVerifyAndResetPassword();
             }
         }
     }
@@ -81,12 +80,12 @@ const PasswordReset = (props) => {
         }
     }
 
-    const handleResetPassword = async () => {
+    const handleVerifyAndResetPassword = async () => {
         let check = isValidInputs();
         if(check) {
             setLoading(true);
             try {
-                let res = await resetPassword(password, params.id, params.token);
+                let res = await verifyAndResetPassword(password, params.id, params.token);
                 if (res && res.EC === 0) {
                     setMsg(res.EM);
                     toast.success(res.EM);
@@ -123,7 +122,7 @@ const PasswordReset = (props) => {
                             <Col xs={12} sm={8} md={6} lg={4}>
                                 <Card className="p-4">
                                     <Card.Body>
-                                        <h2 className="text-center mb-3 fw-bold">Mật khẩu mới</h2>
+                                        <h2 className="text-center mb-3 fw-bold">Xác nhận và Đặt lại mật khẩu</h2>
                                         <Form className="mt-3">
                                             <Form.Group className="password-input">
                                                 <Form.Label>Mật khẩu mới</Form.Label>
@@ -143,7 +142,7 @@ const PasswordReset = (props) => {
                                             {msg && <Alert variant="success" className="mt-3" style={{color: "green"}}>{msg}</Alert>}
                                             <Spin spinning={loading}>
                                                 <Button variant="primary" className="w-100 mt-3 mb-3" type="button"
-                                                        onClick={() => handleResetPassword()}
+                                                        onClick={() => handleVerifyAndResetPassword()}
                                                         disabled={loading}>
                                                     Lưu
                                                 </Button>
@@ -162,4 +161,4 @@ const PasswordReset = (props) => {
     )
 }
 
-export default PasswordReset;
+export default VerifyAndResetPassword;

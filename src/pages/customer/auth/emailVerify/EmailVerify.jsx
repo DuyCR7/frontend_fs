@@ -3,6 +3,7 @@ import {Link, useParams} from "react-router-dom";
 import {verifyEmail} from "../../../../services/customer/authService";
 import {toast} from "react-toastify";
 import {Spin} from "antd";
+import NotFoundPageCus from "../../../../components/NotFoundPageCus/NotFoundPageCus";
 
 const EmailVerify = (props) => {
 
@@ -54,7 +55,7 @@ const EmailVerify = (props) => {
                         </div>
                     </div>
                     :
-                    <h1 className="container mt-3 text-center">404 Not Found</h1>
+                    <h1 className="container mt-3 text-center"><NotFoundPageCus /></h1>
             }
         </>
     )

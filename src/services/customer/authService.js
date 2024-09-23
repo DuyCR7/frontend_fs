@@ -46,6 +46,10 @@ const resetPassword = (password, id, token) => {
     return axios.post(`/api/v1/password-reset/${id}/${token}`, {password: password});
 }
 
+const verifyAndResetPassword = (password, id, token) => {
+    return axios.post(`/api/v1/verify-and-reset/${id}/${token}`, {password: password});
+}
+
 export {
     signUpCustomer,
     signInCustomer,
@@ -55,5 +59,6 @@ export {
     verifyEmail,
     resetPasswordSendLink,
     resetPasswordVerifyLink,
+    verifyAndResetPassword,
     resetPassword
 }
