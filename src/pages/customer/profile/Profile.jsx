@@ -58,8 +58,7 @@ const Profile = () => {
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         setLoading(true);
         try {
             let res = await updateProfile(profile.fullname, profile.username, profile.sex, profile.birthdate, imageFile);
@@ -131,7 +130,7 @@ const Profile = () => {
                         <h3>{profile?.email || profile?.fullname}</h3>
                     </Col>
                     <Col md={8}>
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={(e) => e.preventDefault()}>
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
@@ -224,8 +223,8 @@ const Profile = () => {
                                 </Col>
                             </Row>
                             <div className="d-flex justify-content-end mt-3">
-                                <Button variant="primary" type="submit">
-                                    Lưu
+                                <Button variant="primary" disabled={loading} type="button" onClick={() => handleSubmit()}>
+                                    {loading ? 'Đang xử lý...' : 'Lưu'}
                                 </Button>
                             </div>
                         </Form>

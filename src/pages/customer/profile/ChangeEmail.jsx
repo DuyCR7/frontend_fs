@@ -136,6 +136,24 @@ const ChangeEmail = () => {
         }
     };
 
+    const handlePressEnterSendCode = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!loading) {
+                handleSendCode();
+            }
+        }
+    }
+
+    const handlePressEnterSubmit = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!loading) {
+                handleSubmit();
+            }
+        }
+    }
+console.log(email);
 
     return (
         <div className="change-email-page">
@@ -145,22 +163,25 @@ const ChangeEmail = () => {
                 <Row className="section-wrapper mb-5">
                     <Col md={6} className="mx-auto">
                         <h2 className="text-center">Thay đổi địa chỉ Email</h2>
-                        <Form>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Địa chỉ Email mới</Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    placeholder="Email..."
-                                    value={email}
-                                    className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
-                                    onChange={(e) => handleEmailChange(e)}
-                                    required
-                                />
-                            </Form.Group>
+                        <Form onSubmit={(e) => e.preventDefault()}>
                             {!isCodeSent ? (
-                                <Button variant="primary" onClick={handleSendCode}>
-                                    Gửi mã xác nhận
-                                </Button>
+                                <>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Địa chỉ Email mới</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Email..."
+                                            value={email}
+                                            className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
+                                            onChange={(e) => handleEmailChange(e)}
+                                            onKeyPress={(e) => handlePressEnterSendCode(e)}
+                                            required
+                                        />
+                                    </Form.Group>
+                                    <Button variant="primary" disabled={loading} type="button" onClick={() => handleSendCode()}>
+                                        {loading ? 'Đang xử lý...' : 'Gửi mã xác nhận'}
+                                    </Button>
+                                </>
                             ) : (
                                 <>
                                     <Form.Group className="mb-3">
@@ -171,17 +192,18 @@ const ChangeEmail = () => {
                                             value={verificationCode}
                                             className={objValidInput.isVerificationCode? "form-control" : "form-control is-invalid"}
                                             onChange={(e) => handleChangeVerificationCode(e)}
+                                            onKeyPress={(e) => handlePressEnterSubmit(e)}
                                             required
                                         />
                                     </Form.Group>
                                     <div className="d-flex justify-content-between align-items-center mb-3">
-                                        <Button variant="primary" onClick={handleSubmit}>
-                                            Xác thực
+                                        <Button variant="primary" type="button" onClick={handleSubmit}>
+                                            {loading ? 'Đang xử lý...' : 'Xác thực'}
                                         </Button>
                                         <Button
                                             variant="link"
                                             onClick={handleSendCode}
-                                            disabled={timeLeft > 0}
+                                            disabled={loading || timeLeft > 0}
                                         >
                                             {timeLeft > 0 ? `Gửi lại sau ${timeLeft}s` : 'Gửi lại mã'}
                                         </Button>
