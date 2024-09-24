@@ -141,10 +141,6 @@ const Trending = () => {
                                                                     : <IoHeartOutline size={24}/>
                                                             }
                                                         </button>
-                                                        {/*<span title='Giỏ hàng'*/}
-                                                        {/*      onClick={() => handleAddToCart(item)}>*/}
-                                                        {/*    <IoCartOutline size={16}/>*/}
-                                                        {/*</span>*/}
                                                     </div>
                                                 </div>
 
