@@ -61,7 +61,7 @@ const Profile = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            let res = await updateProfile(profile.fullname, profile.username, profile.sex, profile.birthdate, imageFile);
+            let res = await updateProfile(profile.fullname, profile.username, profile.phone, profile.sex, profile.birthdate, imageFile);
             if (res && res.EC === 0) {
                 toast.success(res.EM);
                 await fetchMyProfile();
@@ -100,11 +100,6 @@ const Profile = () => {
         navigate('/account/email', { state: { email: currentEmail } });
     };
 
-    const handleEditPhone = () => {
-        const currentPhone = profile?.phone || '';
-        navigate('/account/phone', { state: { phone: currentPhone } });
-    };
-
     return (
         <div className="profile-page">
             <PageHeader title={"Thông tin tài khoản"} curPage={"Thông tin tài khoản"}/>
@@ -127,7 +122,7 @@ const Profile = () => {
                             style={{ display: 'none' }}
                             accept="image/*"
                         />
-                        <h3>{profile?.email || profile?.fullname}</h3>
+                        <h3>{profile?.username || profile?.email}</h3>
                     </Col>
                     <Col md={8}>
                         <Form onSubmit={(e) => e.preventDefault()}>
@@ -145,7 +140,7 @@ const Profile = () => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Tên đăng nhập</Form.Label>
+                                        <Form.Label>Tên người dùng</Form.Label>
                                         <Form.Control
                                             type="text"
                                             name="username"
@@ -184,11 +179,8 @@ const Profile = () => {
                                                 type="tel"
                                                 name="phone"
                                                 value={profile?.phone || ''}
-                                                disabled
+                                                onChange={handleInputChange}
                                             />
-                                            <Button variant="outline-primary" onClick={handleEditPhone} className="ms-2">
-                                                <FiEdit className="d-flex align-items-center justify-content-center"/>
-                                            </Button>
                                         </div>
                                     </Form.Group>
                                 </Col>

@@ -6,6 +6,7 @@ import {logoutCustomer} from "../../../../services/customer/authService";
 import {resetCustomer, updateCartCount, updateWishListCount} from "../../../../redux/customer/slices/customerSlice";
 import {toast} from "react-toastify";
 import {IoCartOutline, IoCloseOutline, IoHeartOutline, IoSearchOutline} from "react-icons/io5";
+import { AiOutlineUser } from "react-icons/ai";
 import useDebounce from "../../../../utils/useDebounce";
 import {getAllForSearch} from "../../../../services/customer/homeService";
 
@@ -216,9 +217,7 @@ const NavItems = () => {
                                         </>
                                         :
                                         <>
-                                            <Link to={'/sign-in'}
-                                                  style={{fontSize: "16px", color: "rgb(24, 119, 242)"}}>Sign
-                                                In</Link>
+                                            <Link to={'/sign-in'}><AiOutlineUser size={20}/></Link>
                                         </>
                                 }
 

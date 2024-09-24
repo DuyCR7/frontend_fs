@@ -17,10 +17,11 @@ const updateProfileEmail = (email, verificationCode) => {
     });
 }
 
-const updateProfile = (fullname, username, sex, birthdate, image) => {
+const updateProfile = (fullname, username, phone, sex, birthdate, image) => {
     const data = new FormData();
     if (fullname) data.append("fullname", fullname);
     if (username) data.append("username", username);
+    if (phone) data.append("phone", phone);
     if (sex) data.append("sex", sex);
     if (birthdate) data.append("birthdate", birthdate);
     if (image) data.append("image", image);
