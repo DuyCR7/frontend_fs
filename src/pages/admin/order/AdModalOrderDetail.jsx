@@ -100,6 +100,22 @@ const AdModalOrderDetail = (props) => {
                                 </div>
                             </Card.Body>
                         </Card>
+
+                        <Card className="more-info-card">
+                            <Card.Body>
+                                <Card.Title>Thông tin</Card.Title>
+                                <hr/>
+                                <div className="more-info">
+                                    {
+                                        orderDetail?.note && (
+                                            <div className="info-item">
+                                                <strong>Ghi chú:</strong> {orderDetail?.note}
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            </Card.Body>
+                        </Card>
                     </div>
                 </div>
             </Modal.Body>

@@ -1,5 +1,23 @@
 .product-display {
   padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  .btn-wishlist {
+    background: transparent;
+    margin-bottom: 7px;
+    border: none;
+    color: #1178f2;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    overflow: hidden;
+
+    &:hover {
+      color: #0c5db3;
+      transform: translateY(-5px);
+    }
+  }
 
   .price-container {
     display: flex;
@@ -32,6 +50,7 @@
 
     span {
       margin-right: 10px;
+      margin-bottom: 10px;
       display: flex;
       width: 35px;
       height: 35px;
@@ -39,7 +58,9 @@
       align-items: center;
       justify-content: center;
       border: 1px solid #c5c5c5;
-      transition: border-color 0.3s ease;
+      transition: border-color 0.3s ease, color 0.3s ease;
+      font-size: 16px;
+      border-radius: 4px;
 
       &:hover {
         border: 1px solid #1178f2;
@@ -47,7 +68,7 @@
 
       &.active {
         color: #1187f2;
-        border: 1px solid #1187f2;
+        border: 2px solid #1187f2;
       }
 
       &.disabled {
@@ -59,7 +80,6 @@
         }
       }
     }
-
   }
 
   .colors {
@@ -77,13 +97,14 @@
       cursor: pointer;
       border: 1px solid #c5c5c5;
       transition: border-color 0.3s ease;
+      border-radius: 4px;
 
       &:hover {
         border: 1px solid #1178f2;
       }
 
       &.active {
-        border: 1px solid #1178f2;
+        border: 2px solid #1178f2;
       }
 
       &.disabled {
@@ -101,11 +122,12 @@
         background-color: #ffffff;
         margin-right: 5px;
         object-fit: cover;
+        border-radius: 4px;
       }
 
       p {
         margin: 0;
-        font-size: 15px;
+        font-size: 16px;
       }
     }
   }

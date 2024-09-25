@@ -109,7 +109,7 @@ const SingleProduct = () => {
                         </div>
 
                         {/*right sight*/}
-                        <div className="col-lg-4 col-12">
+                        <div className="col-lg-4 col-12 mt-4 mt-lg-0">
                             <aside className="ps-lg-4">
                                 <PopularPost/>
                             </aside>

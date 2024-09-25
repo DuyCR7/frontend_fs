@@ -35,6 +35,12 @@ const CheckOutPage = () => {
 
     const orderPlacedRef = useRef(false);
 
+    const [note, setNote] = useState('');
+
+    const handleChangeNote = (event) => {
+        setNote(event.target.value);
+    };
+
     const fetchCustomerAddress = async () => {
         setLoading(true);
         try {
@@ -216,7 +222,7 @@ const CheckOutPage = () => {
                     : item.Product_Detail.Product.price
             }));
 
-            let res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, orderDetails);
+            let res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, note, orderDetails);
             if (res && res.EC === 0) {
                 handleSuccessfulOrder(res);
             } else {
@@ -264,7 +270,7 @@ const CheckOutPage = () => {
                     : item.Product_Detail.Product.price
             }));
 
-            const res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, orderDetails, data.orderID);
+            const res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, note, orderDetails, data.orderID);
             if (res && res.EC === 0) {
                 handleSuccessfulOrder(res);
             } else {
@@ -393,16 +399,31 @@ const CheckOutPage = () => {
                                                     </button>
                                                 </div>
                                             ) : (
-                                                <button className="btn btn-primary" onClick={() => handleChangeAddress()}>
+                                                <button className="btn btn-primary"
+                                                        onClick={() => handleChangeAddress()}>
                                                     Chọn địa chỉ giao hàng
                                                 </button>
                                             )}
+                                        </div>
+                                        <hr/>
+
+                                        <div className="mb-3">
+                                            <label htmlFor="note" className="form-label" style={{fontWeight: "bold"}}>Lời nhắn</label>
+                                            <textarea
+                                                className="form-control"
+                                                id="note"
+                                                rows="3"
+                                                placeholder="Nhập ghi chú của bạn..."
+                                                value={note}
+                                                onChange={handleChangeNote}
+                                            ></textarea>
                                         </div>
 
                                         <hr/>
                                         <div className="row mb-3">
                                             <div className="col-sm-6 pe-sm-3">
-                                                <label className="form-label" style={{fontWeight: "bold"}}>Phương thức vận
+                                                <label className="form-label" style={{fontWeight: "bold"}}>Phương thức
+                                                    vận
                                                     chuyển</label>
                                                 <div>
                                                     <div className="form-check">
@@ -442,7 +463,8 @@ const CheckOutPage = () => {
                                                 }}></div>
                                                 <div className="d-sm-none mb-3 mt-3"
                                                      style={{height: '1px', backgroundColor: '#dee2e6'}}></div>
-                                                <label className="form-label" style={{fontWeight: "bold"}}>Phương thức thanh
+                                                <label className="form-label" style={{fontWeight: "bold"}}>Phương thức
+                                                    thanh
                                                     toán</label>
                                                 <div>
                                                     <div className="form-check">

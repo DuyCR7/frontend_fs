@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./productDisplay.scss";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import {FaMinus, FaPlus} from "react-icons/fa6";
-import {IoCartOutline} from "react-icons/io5";
+import {IoCartOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import { PiMoney } from "react-icons/pi";
 import {addToCart} from "../../../../services/customer/cartService";
 import {toast} from "react-toastify";
@@ -12,6 +12,7 @@ import {useNavigate} from "react-router-dom";
 import {IoIosChatboxes} from "react-icons/io";
 import {openChatBox} from "../../../../redux/customer/slices/chatSlice";
 import RatingOnlyView from "../../components/rating/RatingOnlyView";
+import {useWishlist} from "../../components/wishList/useWishlist";
 
 const ProductDisplay = ({productData, setActiveImage}) => {
 
@@ -29,7 +30,9 @@ const ProductDisplay = ({productData, setActiveImage}) => {
     const [error, setError] = useState("");
     const [cartItem, setCartItem] = useState(null);
 
-    const [loading, setLoading] = useState(false);
+    const [loadingDisplay, setLoadingDisplay] = useState(false);
+
+    const { loading, wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     useEffect(() => {
         // Chỉ gọi updateAvailableQuantity sau khi productData được cập nhật
@@ -154,7 +157,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                     quantity: quantity,
                 };
 
-                setLoading(true);
+                setLoadingDisplay(true);
                 try {
                     let res = await addToCart(item.productId, productDetail.id, item.quantity);
                     if (res && res.EC === 0) {
@@ -167,7 +170,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                 } catch (e) {
                     toast.error(e);
                 } finally {
-                    setLoading(false);
+                    setLoadingDisplay(false);
                 }
             } else {
                 setError("Vui lòng chọn phân loại hàng!");
@@ -178,17 +181,30 @@ const ProductDisplay = ({productData, setActiveImage}) => {
     const handleChatNow = () => {
         dispatch(openChatBox(productData));
     };
-
+console.log(productData);
     return (
         <div className="product-display d-flex flex-column gap-3">
             <div>
-                <h3 className="">{name}</h3>
-                <div className="rating d-flex justify-content-start">
+                <div className="d-flex align-items-center justify-content-between">
+                    <h3 className="">{name}</h3>
+                    <button type="button" className="btn-wishlist"title='Yêu thích'
+                            disabled={loading}
+                            onClick={() => handleWishlistAction(productData)}>
+                        <i className="heart-icon">
+                            {
+                                customer.isAuthenticated && isInWishlist(productData.id)
+                                    ? <IoHeartSharp size={28}/>
+                                    : <IoHeartOutline size={28}/>
+                            }
+                        </i>
+                    </button>
+                </div>
+                <div className="mt-2 rating d-flex justify-content-start">
                     {averageRating > 0 && (
                         <RatingOnlyView value={averageRating} />
                     )}
                 </div>
-                <div className={`price-container ${isSale ? 'on-sale' : ''}`}>
+                <div className={`mt-2 price-container ${isSale ? 'on-sale' : ''}`}>
                     {isSale && (
                         <span className="original-price">{formatCurrency(price)}</span>
                     )}
@@ -197,12 +213,12 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                     </span>
                 </div>
                 <div className="mt-2 d-flex align-items-center gap-1">
-                    <label className="fw-extrabold">Đội bóng:</label>
-                    <span>{team}</span>
+                    <label className="fs-6 fw-extrabold">Đội bóng:</label>
+                    <span className="fs-6">{team}</span>
                 </div>
                 <div className="mt-2 d-flex align-items-center gap-1">
-                    <label className="fw-extrabold">Danh mục:</label>
-                    <span>{category}</span>
+                    <label className="fs-6 fw-extrabold">Danh mục:</label>
+                    <span className="fs-6">{category}</span>
                 </div>
 
             </div>
@@ -211,7 +227,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
 
             {/*cart components*/}
             <div className="">
-                <label className="fw-extrabold">Chọn size (<span style={{color: "red"}}>*</span>):</label>
+                <label className="fs-6 fw-extrabold">Chọn size (<span style={{color: "red"}}>*</span>):</label>
                 <div className="sizes mt-2">
                     {getUniqueSizes(details).map(size => (
                         <span
@@ -226,7 +242,7 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                 </div>
             </div>
             <div className="">
-                <label className="fw-extrabold">Chọn màu (<span style={{color: "red"}}>*</span>):</label>
+                <label className="fs-6 fw-extrabold">Chọn màu (<span style={{color: "red"}}>*</span>):</label>
                 <div className="colors mt-2">
                     {getUniqueColors(details).map(color => (
                         <div
@@ -244,10 +260,10 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                 </div>
             </div>
             {availableQuantity > 0 ? (
-                <span>{availableQuantity} sản phẩm có sẵn</span>
+                <span className="fs-6 fw-mediumbold">{availableQuantity} sản phẩm có sẵn</span>
             )
             :
-                <span className="text-danger">Hết hàng</span>
+                <span className="fs-6 fw-mediumbold text-danger">Hết hàng</span>
             }
 
             <div className="d-flex">
@@ -273,13 +289,13 @@ const ProductDisplay = ({productData, setActiveImage}) => {
                     <span>Chat ngay</span>
                 </button>
                 <button className="btn btn-outline-primary d-flex align-items-center gap-1"
-                        disabled={loading}
+                        disabled={loadingDisplay}
                         onClick={() => handleAddToCart()}>
                     <IoCartOutline size={22}/>
                     <span>Giỏ hàng</span>
                 </button>
                 <button className="btn btn-outline-success d-flex align-items-center gap-1"
-                        disabled={loading}
+                        disabled={loadingDisplay}
                         onClick={() => handleAddToCart()}>
                     <PiMoney size={22}/>
                     <span>Mua ngay</span>
