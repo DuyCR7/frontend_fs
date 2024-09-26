@@ -32,6 +32,9 @@ const AdSidebar = (props) => {
         } else if (path.includes('/admin/posts')) {
             setActiveItem("posts");
             setActiveGroup(null);
+        } else if (path.includes('/admin/vouchers')) {
+            setActiveItem("vouchers");
+            setActiveGroup(null);
         } else if (path.includes('/admin/orders')) {
             setActiveItem("orders");
             setActiveGroup(null);
@@ -105,6 +108,12 @@ const AdSidebar = (props) => {
                                 <Link to='/admin/posts'>
                                     <i className="icofont-blogger"></i>
                                     <p>Quản lý bài viết</p>
+                                </Link>
+                            </li>
+                            <li className={`nav-item ${activeItem === "vouchers" ? "active" : ""}`}>
+                                <Link to='/admin/vouchers'>
+                                    <i className="icofont-sale-discount"></i>
+                                    <p>Quản lý voucher</p>
                                 </Link>
                             </li>
                             {/*<li className="nav-section">*/}

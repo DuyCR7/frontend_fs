@@ -37,6 +37,8 @@ import AdOrder from "./pages/admin/order/AdOrder";
 import Profile from "./pages/customer/profile/Profile";
 import ChangeEmail from "./pages/customer/profile/ChangeEmail";
 import VerifyAndResetPassword from "./pages/customer/auth/verifyAndResetPassword/VerifyAndResetPassword";
+import AdVoucher from "./pages/admin/voucher/AdVoucher";
+import Voucher from "./pages/customer/voucher/Voucher";
 
 const App = () => {
     return (
@@ -54,6 +56,7 @@ const App = () => {
                     <Route path="banners" element={<AdBanner />}/>
                     <Route path="events" element={<AdEvent />} />
                     <Route path="posts" element={<AdPost />}/>
+                    <Route path="vouchers" element={<AdVoucher />}/>
                     <Route path="categories" element={<AdCategory />}/>
                     <Route path="teams" element={<AdTeam />}/>
                     <Route path="sizes-colors" element={<AdSizeColor />}/>
@@ -78,6 +81,7 @@ const App = () => {
                     <Route path="carts/payment" element={<CheckOutPage />}/>
                     <Route path="wish-list" element={<WishList />}/>
                     <Route path="contacts" element={<Contact />} />
+                    <Route path="vouchers" element={<Voucher />}/>
                     <Route path="orders" element={<MyOrder />}/>
                     <Route path="account/profiles" element={<Profile />}/>
                     <Route path="account/email" element={<ChangeEmail />}/>

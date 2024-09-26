@@ -125,19 +125,25 @@ const NavItems = () => {
                                             setIsSearchOpen(false);
                                             setSearchQuery('');
                                             setSearchResults([]);
-                                        }}>Trang chủ</Link></li>
+                                        }}>TRANG CHỦ</Link></li>
                                         <li><Link to="/shops" onClick={() => {
                                             setMenuToggle(false);
                                             setIsSearchOpen(false);
                                             setSearchQuery('');
                                             setSearchResults([]);
-                                        }}>Cửa hàng</Link></li>
+                                        }}>CỬA HÀNG</Link></li>
+                                        <li><Link to="/vouchers" onClick={() => {
+                                            setMenuToggle(false);
+                                            setIsSearchOpen(false);
+                                            setSearchQuery('');
+                                            setSearchResults([]);
+                                        }}>GIẢM GIÁ</Link></li>
                                         <li><Link to="/contacts" onClick={() => {
                                             setMenuToggle(false);
                                             setIsSearchOpen(false);
                                             setSearchQuery('');
                                             setSearchResults([]);
-                                        }}>Liên hệ</Link>
+                                        }}>LIÊN HỆ</Link>
                                         </li>
                                         <li className="d-flex wish-cart flex-wrap ms-lg-3 ms-0" style={{}}>
                                             <Link title="Yêu thích" to="/wish-list" className={'count-icon'}
