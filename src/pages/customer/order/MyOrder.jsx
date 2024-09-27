@@ -210,6 +210,10 @@ const MyOrder = () => {
         }
     };
 
+    const calculateSubtotal = (order) => {
+        return order?.Order_Details.reduce((total, detail) => total + (detail.price * detail.quantity), 0) || 0;
+    };
+
     console.log(orders);
 
     return (
@@ -220,113 +224,128 @@ const MyOrder = () => {
                 <div className="my-orders mt-5">
                     <div className="container-fluid ps-5 pe-5">
                         <div className="section-wrapper">
-                            {orders.length > 0 ? orders.map((order, index) => (
-                                <React.Fragment key={order.id}>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card className="order-card">
-                                                <Card.Body>
-                                                    <Card.Title className="mb-3">
-                                                        <h5>Đơn hàng #{order.id}</h5>
-                                                        {
-                                                            renderActionButton(order)
-                                                        }
-                                                    </Card.Title>
-                                                    <Table responsive hover>
-                                                        <thead>
-                                                        <tr className="text-center">
-                                                            <th>Sản phẩm</th>
-                                                            <th>Màu sắc</th>
-                                                            <th>Kích thước</th>
-                                                            <th>Số lượng</th>
-                                                            <th>Giá</th>
-                                                            {order.status === 4 && <th>Hành động</th>}
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {order.Order_Details.map((detail) => (
-                                                            <tr key={detail.id} className="text-center">
-                                                                <td>
-                                                                    <Link
-                                                                        to={`/products/${detail.Product_Detail.Product.slug}`}
-                                                                        className="product-info">
-                                                                        <img
-                                                                            src={`${process.env.REACT_APP_URL_BACKEND}/${detail.Product_Detail.image}`}
-                                                                            alt={detail.Product_Detail.Product.name}
-                                                                            width={50} height={50}
-                                                                        />
-                                                                        <span>{detail.Product_Detail.Product.name}</span>
-                                                                    </Link>
-                                                                </td>
-                                                                <td>{detail.Product_Detail.Color.name}</td>
-                                                                <td>{detail.Product_Detail.Size.code}</td>
-                                                                <td>{detail.quantity}</td>
-                                                                <td>{formatCurrency(detail.price)}</td>
+                            {orders.length > 0 ? orders.map((order, index) => {
+                                    const subtotal = calculateSubtotal(order);
+                                    return (
+                                        <React.Fragment key={order.id}>
+                                            <div className="row">
+                                                <div className="col-12">
+                                                    <Card className="order-card">
+                                                        <Card.Body>
+                                                            <Card.Title className="mb-3">
+                                                                <h5>Đơn hàng #{order.id}</h5>
                                                                 {
-                                                                    order.status === 4 && (
-                                                                        <td>
-                                                                            <div className="action-buttons">
-                                                                                <button
-                                                                                    className="btn btn-sm btn-outline-warning me-2"
-                                                                                    disabled={loading}
-                                                                                    onClick={() => handleRePurchase(detail.Product_Detail)}>
-                                                                                    Mua Lại
-                                                                                </button>
-                                                                                {renderReviewButton(detail)}
-                                                                            </div>
-                                                                        </td>
-                                                                    )
+                                                                    renderActionButton(order)
                                                                 }
-                                                            </tr>
-                                                        ))}
-                                                        </tbody>
-                                                    </Table>
-                                                    <div className="row order-info">
-                                                        <div className="info-purchase col-md-6">
-                                                            <div className="info-item"><strong>Ngày đặt
-                                                                hàng:</strong> {formatDate(order.createdAt)}</div>
-                                                            <div className="info-item"><strong>Phí vận
-                                                                chuyển:</strong> {order.shippingMethod === 'standard' ? formatCurrency(20000) : formatCurrency(50000)}
-                                                            </div>
-                                                            <div className="info-item"><strong>Phương thức thanh
-                                                                toán:</strong> {order.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán bằng PayPal'}
-                                                            </div>
-                                                            <div className="info-item"><strong>Tổng
-                                                                tiền:</strong> {formatCurrency(order.totalPrice)}</div>
-                                                            <div className="info-item">
-                                                                <strong>Trạng thái:</strong>
-                                                                <span
-                                                                    className={`order-status ${getOrderStatus(order.status).class}`}>
-                                                                {getOrderStatus(order.status).text}
-                                                            </span>
-                                                            </div>
-                                                        </div>
-                                                        <hr className="d-md-none d-block mt-2"/>
-                                                        <div className="info-address col-md-6">
-                                                            <strong
-                                                                className="d-flex justify-content-center align-items-center mb-2">Địa
-                                                                chỉ nhận hàng</strong>
-                                                            <div className="address-info">
-                                                                <div className="info-item">
-                                                                    <strong>Tên:</strong> {order.addName}</div>
-                                                                <div className="info-item">
-                                                                    <strong>Email:</strong> {order.addEmail}
+                                                            </Card.Title>
+                                                            <Table responsive hover>
+                                                                <thead>
+                                                                <tr className="text-center">
+                                                                    <th>Sản phẩm</th>
+                                                                    <th>Màu sắc</th>
+                                                                    <th>Kích thước</th>
+                                                                    <th>Số lượng</th>
+                                                                    <th>Giá</th>
+                                                                    {order.status === 4 && <th>Hành động</th>}
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {order.Order_Details.map((detail) => (
+                                                                    <tr key={detail.id} className="text-center">
+                                                                        <td>
+                                                                            <Link
+                                                                                to={`/products/${detail.Product_Detail.Product.slug}`}
+                                                                                className="product-info">
+                                                                                <img
+                                                                                    src={`${process.env.REACT_APP_URL_BACKEND}/${detail.Product_Detail.image}`}
+                                                                                    alt={detail.Product_Detail.Product.name}
+                                                                                    width={50} height={50}
+                                                                                />
+                                                                                <span>{detail.Product_Detail.Product.name}</span>
+                                                                            </Link>
+                                                                        </td>
+                                                                        <td>{detail.Product_Detail.Color.name}</td>
+                                                                        <td>{detail.Product_Detail.Size.code}</td>
+                                                                        <td>{detail.quantity}</td>
+                                                                        <td>{formatCurrency(detail.price)}</td>
+                                                                        {
+                                                                            order.status === 4 && (
+                                                                                <td>
+                                                                                    <div className="action-buttons">
+                                                                                        <button
+                                                                                            className="btn btn-sm btn-outline-warning me-2"
+                                                                                            disabled={loading}
+                                                                                            onClick={() => handleRePurchase(detail.Product_Detail)}>
+                                                                                            Mua Lại
+                                                                                        </button>
+                                                                                        {renderReviewButton(detail)}
+                                                                                    </div>
+                                                                                </td>
+                                                                            )
+                                                                        }
+                                                                    </tr>
+                                                                ))}
+                                                                </tbody>
+                                                            </Table>
+                                                            <div className="row order-info">
+                                                                <div className="info-purchase col-md-6">
+                                                                    <div className="info-item"><strong>Ngày đặt
+                                                                        hàng:</strong> {formatDate(order.createdAt)}</div>
+                                                                    <div className="info-item"><strong>Phương thức thanh
+                                                                        toán:</strong> {order.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán bằng PayPal'}
+                                                                    </div>
+                                                                    <div className="info-item">
+                                                                        <strong>Trạng thái:</strong>
+                                                                        <span
+                                                                            className={`order-status ${getOrderStatus(order.status).class}`}>
+                                                                        {getOrderStatus(order.status).text}
+                                                                    </span>
+                                                                        <hr/>
+                                                                    </div>
+                                                                    <div className="info-item-price">
+                                                                        <strong>Tổng tiền hàng:</strong> {formatCurrency(subtotal)}
+                                                                    </div>
+                                                                    <div className="info-item-price">
+                                                                        <strong>Phí vận chuyển:</strong> {order.shippingMethod === 'standard' ? formatCurrency(20000) : formatCurrency(50000)}
+                                                                    </div>
+                                                                    {
+                                                                        order.voucherId && (
+                                                                            <div className="info-item-price">
+                                                                                <strong>Giảm giá:</strong> {formatCurrency(order?.appliedDiscount)}
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                    <div className="info-item-total">
+                                                                        <strong>Tổng tiền:</strong> {formatCurrency(order.totalPrice)}
+                                                                    </div>
                                                                 </div>
-                                                                <div className="info-item"><strong>Số điện
-                                                                    thoại:</strong> {order.addPhone}</div>
-                                                                <div className="info-item"><strong>Địa
-                                                                    chỉ:</strong> {order.addLocation}</div>
+                                                                <hr className="d-md-none d-block mt-2"/>
+                                                                <div className="info-address col-md-6">
+                                                                    <strong
+                                                                        className="d-flex justify-content-center align-items-center mb-2">Địa
+                                                                        chỉ nhận hàng</strong>
+                                                                    <div className="address-info">
+                                                                        <div className="info-item">
+                                                                            <strong>Tên:</strong> {order.addName}</div>
+                                                                        <div className="info-item">
+                                                                            <strong>Email:</strong> {order.addEmail}
+                                                                        </div>
+                                                                        <div className="info-item"><strong>Số điện
+                                                                            thoại:</strong> {order.addPhone}</div>
+                                                                        <div className="info-item"><strong>Địa
+                                                                            chỉ:</strong> {order.addLocation}</div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </Card.Body>
-                                            </Card>
-                                        </div>
-                                    </div>
-                                    {index < orders.length - 1 && <hr className="mb-5"/>}
-                                </React.Fragment>
-                            ))
-                            :
+                                                        </Card.Body>
+                                                    </Card>
+                                                </div>
+                                            </div>
+                                            {index < orders.length - 1 && <hr className="mb-5"/>}
+                                        </React.Fragment>
+                                    )
+                                })
+                                :
                                 (
                                     <div className="text-center">
                                         <h3>Không tìm thấy đơn hàng nào</h3>

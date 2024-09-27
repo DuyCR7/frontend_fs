@@ -18,6 +18,15 @@ const AdModalOrderDetail = (props) => {
             setOrderDetail(null);
         }
     }, [dataOrderDetail]);
+
+    const calculateSubtotal = () => {
+        return orderDetail?.Order_Details.reduce((total, detail) => total + (detail.price * detail.quantity), 0) || 0;
+    };
+
+    const getShippingFee = () => {
+        return orderDetail?.shippingMethod === 'standard' ? 20000 : 50000;
+    };
+
     console.log(orderDetail);
     return (
         <Modal show={props.isShowModalDetailOrder} onHide={() => props.handleCloseModalOrderDetail()} size={"xl"} className="modal-order-detail"
@@ -71,14 +80,22 @@ const AdModalOrderDetail = (props) => {
                                 <div className="order-info">
                                     <div className="info-item"><strong>Ngày đặt
                                         hàng:</strong> {formatDate(orderDetail?.createdAt)}</div>
-                                    <div className="info-item"><strong>Phí vận
-                                        chuyển:</strong> {orderDetail?.shippingMethod === 'standard' ? formatCurrency(20000) : formatCurrency(50000)}
-                                    </div>
+                                    {
+                                        orderDetail?.voucherId && (
+                                            <div className="info-item"><strong>Voucher
+                                                giảm giá:</strong> {orderDetail?.Voucher?.code}</div>
+                                        )
+                                    }
                                     <div className="info-item"><strong>Phương thức thanh
                                         toán:</strong> {orderDetail?.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Thanh toán bằng PayPal'}
                                     </div>
-                                    <div className="info-item"><strong>Tổng
-                                        tiền:</strong> {formatCurrency(orderDetail?.totalPrice)}</div>
+                                    {
+                                        orderDetail?.note && (
+                                            <div className="info-item">
+                                                <strong>Ghi chú:</strong> {orderDetail?.note}
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </Card.Body>
                         </Card>
@@ -106,13 +123,22 @@ const AdModalOrderDetail = (props) => {
                                 <Card.Title>Thông tin</Card.Title>
                                 <hr/>
                                 <div className="more-info">
+                                    <div className="info-item">
+                                        <strong>Tổng tiền hàng:</strong> {formatCurrency(calculateSubtotal())}
+                                    </div>
+                                    <div className="info-item">
+                                        <strong>Phí vận chuyển:</strong> {formatCurrency(getShippingFee())}
+                                    </div>
                                     {
-                                        orderDetail?.note && (
+                                        orderDetail?.voucherId && (
                                             <div className="info-item">
-                                                <strong>Ghi chú:</strong> {orderDetail?.note}
+                                                <strong>Giảm giá:</strong> {formatCurrency(orderDetail?.appliedDiscount)}
                                             </div>
                                         )
                                     }
+                                    <div className="info-item-total">
+                                        <strong>Tổng thanh toán:</strong> {formatCurrency(orderDetail?.totalPrice)}
+                                    </div>
                                 </div>
                             </Card.Body>
                         </Card>

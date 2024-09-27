@@ -7,12 +7,15 @@ import AddressModal from "./AddressModal";
 import EditAddressModal from "./EditAddressModal";
 import {
     createCustomerAddress, createOrder,
-    getCustomerAddress, setDefaultAddress,
+    getCustomerAddress, getMyVoucher, setDefaultAddress,
     updateCustomerAddress
 } from "../../../../services/customer/checkOutService";
 import {toast} from "react-toastify";
+import { FaRegAddressCard } from "react-icons/fa6";
+import { RiCoupon3Line } from "react-icons/ri";
 import {clearSelectedItemsForPayment, updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import VoucherModal from "./VoucherModal";
 
 const CheckOutPage = () => {
 
@@ -32,6 +35,11 @@ const CheckOutPage = () => {
     const [errors, setErrors] = useState({});
 
     const [addresses, setAddresses] = useState([]);
+    const [vouchers, setVouchers] = useState([]);
+
+    const [showVoucherModal, setShowVoucherModal] = useState(false);
+    const [selectedVoucher, setSelectedVoucher] = useState(null);
+    const [appliedDiscount, setAppliedDiscount] = useState(0);
 
     const orderPlacedRef = useRef(false);
 
@@ -63,6 +71,22 @@ const CheckOutPage = () => {
         }
     }
 
+    const fetchMyVouchers = async () => {
+        setLoading(true);
+        try {
+            let res = await getMyVoucher();
+            if (res && res.EC === 0) {
+                setVouchers(res.DT);
+            } else {
+                console.error(res.EM);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         if (orderPlacedRef.current) {
             navigate('/orders');
@@ -75,6 +99,7 @@ const CheckOutPage = () => {
             navigate('/carts');
         } else {
             fetchCustomerAddress();
+            fetchMyVouchers();
         }
     }, [customer, navigate]);
 
@@ -93,8 +118,21 @@ const CheckOutPage = () => {
     };
 
     const calculateTotal = () => {
-        return calculateSubtotal() + calculateShippingCost();
+        return calculateSubtotal() + calculateShippingCost() - appliedDiscount;
     };
+
+    const handleApplyVoucher = (voucher, discount) => {
+        setSelectedVoucher(voucher);
+        setAppliedDiscount(discount);
+        setShowVoucherModal(false);
+        toast.success(`Đã áp dụng mã giảm giá: ${voucher.code}`);
+    }
+
+    const handleRemoveVoucher = () => {
+        setSelectedVoucher(null);
+        setAppliedDiscount(0);
+        toast.info("Đã bỏ áp dụng mã giảm giá");
+    }
 
     const handleChangeAddress = () => {
         setShowAddressModal(true);
@@ -222,7 +260,20 @@ const CheckOutPage = () => {
                     : item.Product_Detail.Product.price
             }));
 
-            let res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, note, orderDetails);
+            let res = await createOrder(
+                paymentMethod,
+                shippingMethod,
+                calculateTotal(),
+                selectedAddress.address,
+                selectedAddress.name,
+                selectedAddress.phone,
+                selectedAddress.email,
+                note,
+                orderDetails,
+                null,
+                selectedVoucher ? selectedVoucher.id : null,
+                appliedDiscount
+            );
             if (res && res.EC === 0) {
                 handleSuccessfulOrder(res);
             } else {
@@ -270,7 +321,20 @@ const CheckOutPage = () => {
                     : item.Product_Detail.Product.price
             }));
 
-            const res = await createOrder(paymentMethod, shippingMethod, calculateTotal(), selectedAddress.address, selectedAddress.name, selectedAddress.phone, selectedAddress.email, note, orderDetails, data.orderID);
+            const res = await createOrder(
+                paymentMethod,
+                shippingMethod,
+                calculateTotal(),
+                selectedAddress.address,
+                selectedAddress.name,
+                selectedAddress.phone,
+                selectedAddress.email,
+                note,
+                orderDetails,
+                data.orderID,
+                selectedVoucher ? selectedVoucher.id : null,
+                appliedDiscount
+            );
             if (res && res.EC === 0) {
                 handleSuccessfulOrder(res);
             } else {
@@ -368,6 +432,12 @@ const CheckOutPage = () => {
                                                     <td colSpan="4" className="text-end">Phí vận chuyển:</td>
                                                     <td className="text-center">{formatCurrency(calculateShippingCost())}</td>
                                                 </tr>
+                                                {appliedDiscount > 0 && (
+                                                    <tr>
+                                                        <td colSpan="4" className="text-end">Giảm giá:</td>
+                                                        <td className="text-center">{formatCurrency(appliedDiscount)}</td>
+                                                    </tr>
+                                                )}
                                                 {/* Tổng cộng */}
                                                 <tr className="fw-bold">
                                                     <td colSpan="4" className="text-end">Tổng cộng:</td>
@@ -377,12 +447,41 @@ const CheckOutPage = () => {
                                             </table>
                                         </div>
                                     </div>
+                                    <div className="card-footer d-flex flex-wrap justify-content-lg-between justify-content-center align-items-center gap-2">
+                                        {selectedVoucher ? (
+                                            <>
+                                                <span>Mã giảm giá: <span
+                                                    className="fw-extrabold">{selectedVoucher.code}</span></span>
+                                                <div className="d-flex flex-wrap align-items-center justify-content-center gap-2">
+                                                    <button
+                                                        className="btn btn-outline-warning d-flex align-items-center justify-content-center gap-2"
+                                                        onClick={() => setShowVoucherModal(true)}
+                                                    >
+                                                        <RiCoupon3Line size={24}/> Thay đổi mã giảm giá
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-outline-danger"
+                                                        onClick={handleRemoveVoucher}
+                                                    >
+                                                        Bỏ áp dụng
+                                                    </button>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <button
+                                                className="btn btn-outline-warning d-flex align-items-center justify-content-center gap-2"
+                                                onClick={() => setShowVoucherModal(true)}
+                                            >
+                                                <RiCoupon3Line size={24}/> Chọn mã giảm giá
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
                             <div className="col-md-6 mb-4">
                                 <div className="card">
-                                    <div className="card-header">
+                                <div className="card-header">
                                         <h5 className="mb-0 mt-1">Thông tin vận chuyển</h5>
                                     </div>
                                     <div className="card-body">
@@ -393,9 +492,10 @@ const CheckOutPage = () => {
                                                     <p><strong>Địa chỉ:</strong> {selectedAddress.address}</p>
                                                     <p><strong>Số điện thoại:</strong> {selectedAddress.phone}</p>
                                                     <p><strong>Email:</strong> {selectedAddress.email}</p>
-                                                    <button className="btn btn-outline-primary"
-                                                            onClick={() => handleChangeAddress()}>
-                                                        Thay đổi địa chỉ
+                                                    <button
+                                                        className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2"
+                                                        onClick={() => handleChangeAddress()}>
+                                                    <FaRegAddressCard size={24}/> Thay đổi địa chỉ
                                                     </button>
                                                 </div>
                                             ) : (
@@ -552,6 +652,14 @@ const CheckOutPage = () => {
                     onChangeInput={handleOnChangeInput}
                     errors={errors}
                     onRenderError={renderError}
+                />
+
+                <VoucherModal
+                    show={showVoucherModal}
+                    onHide={() => setShowVoucherModal(false)}
+                    vouchers={vouchers}
+                    onApplyVoucher={handleApplyVoucher}
+                    subtotal={calculateSubtotal()}
                 />
             </div>
         </PayPalScriptProvider>

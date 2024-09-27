@@ -4,6 +4,10 @@ const getCustomerAddress = () => {
     return axios.get(`/api/v1/checkout/get-address`);
 }
 
+const getMyVoucher = () => {
+    return axios.get(`/api/v1/checkout/get-my-voucher`);
+}
+
 const createCustomerAddress = (name, address, phone, email, isDefault) => {
     return axios.post(`/api/v1/checkout/add-new-address`, {
         name,
@@ -25,7 +29,7 @@ const updateCustomerAddress = (id, name, address, phone, email, isDefault) => {
     });
 }
 
-const createOrder = (paymentMethod, shippingMethod, totalPrice, addLocation, addName, addPhone, addEmail, note = null, orderDetails, paypalOrderId = null) => {
+const createOrder = (paymentMethod, shippingMethod, totalPrice, addLocation, addName, addPhone, addEmail, note = null, orderDetails, paypalOrderId = null, voucherId, appliedDiscount) => {
     return axios.post(`/api/v1/checkout/create-order`, {
         paymentMethod,
         shippingMethod,
@@ -37,11 +41,14 @@ const createOrder = (paymentMethod, shippingMethod, totalPrice, addLocation, add
         note,
         orderDetails,
         paypalOrderId,
+        voucherId,
+        appliedDiscount,
     });
 }
 
 export {
     getCustomerAddress,
+    getMyVoucher,
     createCustomerAddress,
     updateCustomerAddress,
     createOrder,

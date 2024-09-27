@@ -1,0 +1,128 @@
+.checkout-voucher-modal {
+  .modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+
+  .voucher-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 0 10px rgba(136, 136, 136, .3);
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      padding: 1.5rem;
+    }
+
+    .voucher-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem !important;
+
+      svg {
+        color: #1178f2;
+      }
+    }
+
+    .voucher-info {
+      text-align: center;
+      margin-bottom: 1rem;
+
+      h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: red;
+      }
+
+      p {
+        margin: 0;
+        &.code {
+          font-size: 1rem;
+          font-weight: bold;
+          color: #1178f2;
+        }
+      }
+
+      .date {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .usage-bar {
+      height: 6px;
+      background-color: #e9ecef;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+
+      .usage-progress {
+        height: 100%;
+        background-color: #66bb6a;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .usage-text {
+      font-size: 0.8rem;
+      color: #757575;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      flex: 1;
+      max-width: 100%;
+      background-color: #1178f2;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #3b74d6;
+      }
+    }
+  }
+}
+
+
+@media (max-width: 576px) {
+  .checkout-voucher-modal {
+    .modal-dialog {
+      max-width: calc(100% - 50px);
+      margin: 0 auto;
+    }
+  }
+}

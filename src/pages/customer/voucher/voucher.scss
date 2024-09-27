@@ -20,6 +20,7 @@
 
       .voucher-icon {
         display: flex;
+        align-items: center;
         justify-content: center;
         margin-bottom: 1rem !important;
 
@@ -76,17 +77,46 @@
         margin-bottom: 1rem;
       }
 
-      .save-btn {
-        background-color: #1178f2;
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        transition: background-color 0.3s ease;
+      .voucher-btn {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
 
-        &:hover {
-          background-color: #3b74d6;
+        @media (max-width: 576px) {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        button {
+          flex: 1;
+          max-width: 50%;
+          background-color: #1178f2;
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          transition: background-color 0.3s ease;
+
+          @media (max-width: 576px) {
+            max-width: 100%;
+            width: 100%;
+          }
+
+          &:hover {
+            background-color: #3b74d6;
+          }
+
+          &.saved, &.used {
+            background-color: #ccc;
+            cursor: not-allowed;
+          }
+        }
+
+        &:only-child {
+          button {
+            max-width: 100%;
+          }
         }
       }
     }
