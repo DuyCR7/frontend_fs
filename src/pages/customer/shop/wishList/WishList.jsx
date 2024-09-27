@@ -19,29 +19,27 @@ const WishList = () => {
     const wishList = useSelector((state) => state.customer.wishList);
 
     useEffect(() => {
-        if(customer.isAuthenticated) {
+        if (customer.isAuthenticated) {
             fetchWishlist();
         } else {
-            navigate('/sign-in')
+            navigate('/sign-in', {replace: true});
         }
     }, [customer.isAuthenticated, navigate]);
 
     const fetchWishlist = async () => {
-        if (customer && customer.isAuthenticated) {
-            try {
-                let res = await getWishList(customer.id);
-                if (res && res.EC === 0) {
-                    dispatch(setWishList(res.DT));
-                }
-            } catch (e) {
-                console.error(e);
+        try {
+            let res = await getWishList();
+            if (res && res.EC === 0) {
+                dispatch(setWishList(res.DT));
             }
+        } catch (e) {
+            console.error(e);
         }
     }
 
     const handleDeleteWishListItem = async (productId) => {
         if (customer && !customer.isAuthenticated) {
-            navigate('/sign-in');
+            navigate('/sign-in', {replace: true});
         } else {
             try {
                 let res = await deleteWishListItem(productId);
@@ -76,8 +74,9 @@ const WishList = () => {
                                                 <div className="product-thumb">
                                                     <Link to={`/products/${item.Product.slug}`}>
                                                         <div style={{padding: "20px"}}>
-                                                            <img src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product.Product_Images[0].image}`}
-                                                                 alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product.Product_Images[0].image}`}/>
+                                                            <img
+                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product.Product_Images[0].image}`}
+                                                                alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product.Product_Images[0].image}`}/>
                                                         </div>
                                                     </Link>
                                                 </div>
@@ -85,14 +84,17 @@ const WishList = () => {
                                                 {/*product content*/}
                                                 <div className="product-content d-flex flex-column gap-2">
                                                 <span style={{fontSize: "18px"}}>
-                                                    <Link to={`/products/${item.Product.slug}`}>{item.Product.name}</Link>
+                                                    <Link
+                                                        to={`/products/${item.Product.slug}`}>{item.Product.name}</Link>
                                                 </span>
                                                     <div className="productRating">
                                                         {parseFloat(item.Product.averageRating) > 0 && (
-                                                            <RatingOnlyView value={parseFloat(item.Product.averageRating)} />
+                                                            <RatingOnlyView
+                                                                value={parseFloat(item.Product.averageRating)}/>
                                                         )}
                                                     </div>
-                                                    <div className={`price-container ${item.Product.isSale ? 'on-sale' : ''}`}>
+                                                    <div
+                                                        className={`price-container ${item.Product.isSale ? 'on-sale' : ''}`}>
                                                         {item.Product.isSale && (
                                                             <span
                                                                 className="original-price">{formatCurrency(item.Product.price)}</span>
@@ -102,7 +104,8 @@ const WishList = () => {
                                                     </span>
                                                     </div>
                                                     <div>
-                                                    <span title='Yêu thích' style={{cursor: "pointer", color: "#1178f2"}}
+                                                    <span title='Yêu thích'
+                                                          style={{cursor: "pointer", color: "#1178f2"}}
                                                           onClick={() => handleDeleteWishListItem(item.productId)}>
                                                            <IoHeartSharp size={25}/>
                                                         </span>
@@ -112,10 +115,10 @@ const WishList = () => {
                                         </div>
                                     )
                                 })
-                                ) : (
-                                    <div className="col-12 text-center">
-                                        <p>Chưa có sản phẩm nào trong danh sách yêu thích.</p>
-                                    </div>
+                            ) : (
+                                <div className="col-12 text-center">
+                                    <p>Chưa có sản phẩm nào trong danh sách yêu thích.</p>
+                                </div>
 
                             )
                         }

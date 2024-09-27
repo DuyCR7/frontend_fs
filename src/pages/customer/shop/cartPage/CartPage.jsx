@@ -39,9 +39,9 @@ const CartPage = () => {
             fetchCartItems();
             fetchRelatedProducts();
         } else {
-            navigate('/sign-in');
+            navigate('/sign-in', {replace: true});
         }
-    }, [customer]);
+    }, [customer, navigate]);
 
     const fetchCartItems = async () => {
         try {

@@ -123,7 +123,7 @@ const AdSignIn = () => {
     };
 
     useEffect(() => {
-        if (user && user.isAuthenticated) {
+        if (user && user.isAuthenticated && localStorage.getItem('jwt')) {
             navigate('/admin')
         } else {
             setInitialLoading(false);

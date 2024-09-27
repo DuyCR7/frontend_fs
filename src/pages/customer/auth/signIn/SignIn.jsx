@@ -157,7 +157,7 @@ const SignIn = () => {
     }
 
     useEffect(() => {
-        if (customer && customer.isAuthenticated) {
+        if (customer && customer.isAuthenticated && localStorage.getItem('cus_jwt')) {
             navigate('/');
         } else {
             setInitialLoading(false);

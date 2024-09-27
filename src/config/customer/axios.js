@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
+import {store} from "../../redux/store";
 
 import nProgress from "nprogress";
+import {resetCustomer, updateCartCount, updateWishListCount} from "../../redux/customer/slices/customerSlice";
 
 nProgress.configure({
     showSpinner: false,
@@ -55,7 +57,13 @@ const handleDecoded = () => {
     let token = localStorage.getItem("cus_jwt");
     let decoded = {}
     if (token) {
-        decoded = jwtDecode(token);
+        try {
+            decoded = jwtDecode(token);
+        } catch (error) {
+            console.error("Invalid token:", error);
+            // Xóa token không hợp lệ khỏi localStorage để tránh sử dụng lại
+            localStorage.removeItem("cus_jwt");
+        }
     }
     return { decoded };
 }
@@ -104,16 +112,19 @@ instance.interceptors.response.use(function (response) {
     // Do something with response data
     nProgress.done();
     return response.data;
-}, function (error) {
+}, async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     const status = error && error.response && error.response.status || 500;
     switch (status) {
         // authentication (token related issues)
         case 401: {
-            if(window.location.pathname !== '/'
+            await store.dispatch(resetCustomer());
+            await store.dispatch(updateCartCount(0));
+            await store.dispatch(updateWishListCount(0));
+            if (window.location.pathname !== '/'
                 && window.location.pathname !== '/sign-in'
-            && window.location.pathname!== '/sign-up') {
+                && window.location.pathname !== '/sign-up') {
                 window.location.href = "/sign-in";
             }
             nProgress.done();
@@ -135,7 +146,7 @@ instance.interceptors.response.use(function (response) {
                 }, 100);
             }
             nProgress.done();
-            return Promise.resolve({ error: "Forbidden" });
+            return Promise.resolve({error: "Forbidden"});
         }
 
         // bad request
