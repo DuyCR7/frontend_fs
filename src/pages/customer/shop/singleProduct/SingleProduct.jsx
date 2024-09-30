@@ -67,7 +67,7 @@ const SingleProduct = () => {
                             {/*left sight*/}
                             <article>
                                 <div className="product-details">
-                                    <div className="row align-items-center">
+                                    <div className="row">
                                         <div className="col-md-6 col-12">
                                             <div className="product-thumb">
                                                 <img src={`${process.env.REACT_APP_URL_BACKEND}/${activeImage}`} alt=""

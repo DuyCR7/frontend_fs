@@ -155,7 +155,7 @@ const ChatBox = () => {
         const lastMessage = messages[messages.length - 1];
         return {
             text: lastMessage.content,
-            time: moment(lastMessage.createdAt).isSame(new Date(), 'day') ? moment(lastMessage.createdAt).format('HH:mm') : moment(lastMessage.createdAt).format('ddd, HH:mm'),
+            time: moment(lastMessage.createdAt).isSame(new Date(), 'day') ? moment(lastMessage.createdAt).format('HH:mm') : moment(lastMessage.createdAt).format('DD/MM, HH:mm'),
             senderName: getSenderName(lastMessage)
         };
     };
@@ -199,7 +199,7 @@ const ChatBox = () => {
                                 {
                                     moment(message.createdAt).isSame(new Date(), 'day')
                                        ? moment(message.createdAt).format('HH:mm')
-                                        : moment(message.createdAt).format('ddd, HH:mm')
+                                        : moment(message.createdAt).format('DD/MM, HH:mm')
                                 }
                             </p>
                         </div>

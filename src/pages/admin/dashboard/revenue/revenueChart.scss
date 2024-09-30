@@ -1,0 +1,31 @@
+.revenue-chart {
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 0 10px rgba(136, 136, 136, .3);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 12px rgba(174, 174, 174, 0.4);
+  }
+
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+
+    .card-title {
+      font-size: 1.25rem;
+      color: #1178f2;
+    }
+
+    .btn-outline-success {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #28a745;
+        color: #fff;
+      }
+    }
+  }
+}

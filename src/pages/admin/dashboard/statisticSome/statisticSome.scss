@@ -1,0 +1,12 @@
+.statistic-some {
+  .btn-outline-success {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #28a745;
+      color: #fff;
+    }
+  }
+}

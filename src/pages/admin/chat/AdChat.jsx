@@ -280,7 +280,7 @@ const AdChat = () => {
                                  {chat.lastMessageTime
                                      ? moment(chat.lastMessageTime).isSame(new Date(), 'day')
                                          ? moment(chat.lastMessageTime).format('HH:mm')  // Chỉ hiển thị giờ nếu là hôm nay
-                                         : moment(chat.lastMessageTime).format('ddd, HH:mm')  // Hiển thị thứ và giờ nếu không phải hôm nay
+                                         : moment(chat.lastMessageTime).format('DD/MM, HH:mm')  // Hiển thị thứ và giờ nếu không phải hôm nay
                                      : ''}
                             </span>
                             {chat.unreadCount > 0 && (
@@ -314,7 +314,7 @@ const AdChat = () => {
                                         {
                                             moment(message.createdAt).isSame(new Date(), 'day')
                                                ? moment(message.createdAt).format('HH:mm')
-                                                : moment(message.createdAt).format('ddd, HH:mm')
+                                                : moment(message.createdAt).format('DD/MM, HH:mm')
                                         }
                                     </p>
                                 </div>

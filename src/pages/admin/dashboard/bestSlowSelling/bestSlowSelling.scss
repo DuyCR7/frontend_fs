@@ -1,0 +1,130 @@
+.best-slow-selling {
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 0 10px rgba(136, 136, 136, .3);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 12px rgba(174, 174, 174, 0.4);
+  }
+
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+
+    .card-title {
+      font-size: 1.25rem;
+      color: #1178f2;
+    }
+
+    .btn-outline-success {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #28a745;
+        color: #fff;
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1.25rem;
+
+    .form-select,
+    .form-control {
+      font-size: 0.875rem;
+    }
+
+    .period-section {
+      margin-bottom: 2rem;
+
+      .period-title {
+        font-size: 1.1rem;
+        color: #002960;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #e9ecef;
+        padding-bottom: 0.5rem;
+      }
+
+      .best-selling,
+      .slow-selling {
+        height: 100%;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        transition: box-shadow 0.3s ease-in-out;
+
+        &:hover {
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+          font-weight: bold;
+          padding: 0.75rem 1rem;
+        }
+
+        .card-body {
+          padding: 1rem;
+        }
+
+        .list-group {
+          .list-group-item {
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-bottom: 1px solid #e9ecef;
+
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+
+      .best-selling .card-header {
+        background-color: #28a745;
+      }
+
+      .slow-selling .card-header {
+        background-color: #dc3545;
+      }
+    }
+  }
+
+  .alert-info {
+    background-color: #e1f5fe;
+    border-color: #b3e5fc;
+    color: #0288d1;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .best-slow-selling {
+    .card-body {
+      padding: 1rem;
+    }
+
+    .period-section {
+      .best-selling,
+      .slow-selling {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .best-slow-selling {
+    .period-section {
+      .row {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+
+        > div {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+      }
+    }
+  }
+}
