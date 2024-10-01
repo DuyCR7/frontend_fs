@@ -19,7 +19,7 @@ const AdVoucher = () => {
     const [listVoucher, setListVoucher] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
-    const [numRows, setNumRows] = useState(5);
+    const [numRows, setNumRows] = useState(10);
 
     const [searchKeyword, setSearchKeyword] = useState("");
     const debouncedSearchInput = useDebounce(searchKeyword, 500);
@@ -304,12 +304,12 @@ const AdVoucher = () => {
                         <div className="col d-flex justify-content-sm-end justify-content-center align-items-center">
                             <div className="me-3">
                                 <ReactPaginate
-                                    nextLabel="Next"
+                                    nextLabel="Sau"
                                     onPageChange={handlePageClick}
                                     pageRangeDisplayed={3}
                                     marginPagesDisplayed={2}
                                     pageCount={totalPage}
-                                    previousLabel="Prev"
+                                    previousLabel="Trước"
                                     pageClassName="page-item"
                                     pageLinkClassName="page-link"
                                     previousClassName="page-item"
@@ -329,9 +329,10 @@ const AdVoucher = () => {
                                 <select className="form-select" aria-label="Default select example"
                                         onChange={(e) => handleShowRows(e.target.value)}
                                         value={numRows}>
-                                    <option value={5}>Show 5</option>
-                                    <option value={10}>Show 10</option>
-                                    <option value={15}>Show 15</option>
+                                    <option value={10}>Hiển thị 10</option>
+                                    <option value={20}>Hiển thị 20</option>
+                                    <option value={50}>Hiển thị 50</option>
+                                    <option value={100}>Hiển thị 100</option>
                                 </select>
                             </div>
                         </div>

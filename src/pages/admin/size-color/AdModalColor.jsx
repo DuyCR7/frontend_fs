@@ -79,9 +79,9 @@ const AdModalColor = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalColor === "CREATE" ?
-                    await createColor(colorData.name, colorData.code, colorData.description)
+                    await createColor(colorData.name.trim(), colorData.code.trim(), colorData.description)
                     :
-                    await updateColor(colorData.id, colorData.name, colorData.code, colorData.description);
+                    await updateColor(colorData.id, colorData.name.trim(), colorData.code.trim(), colorData.description);
                 if (res && res.EC === 0) {
                     toast.success(res.EM);
                     props.handleCloseModalColor();

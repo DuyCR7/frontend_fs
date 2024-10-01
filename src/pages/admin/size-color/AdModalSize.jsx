@@ -78,9 +78,9 @@ const AdModalSize = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalSize === "CREATE" ?
-                    await createSize(sizeData.name, sizeData.code, sizeData.description)
+                    await createSize(sizeData.name.trim(), sizeData.code.trim(), sizeData.description)
                     :
-                    await updateSize(sizeData.id, sizeData.name, sizeData.code, sizeData.description);
+                    await updateSize(sizeData.id, sizeData.name.trim(), sizeData.code.trim(), sizeData.description);
                 if(res && res.EC === 0) {
                     toast.success(res.EM);
                     props.handleCloseModalSize();

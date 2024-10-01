@@ -121,9 +121,9 @@ const AdModalCategory = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalCategory === "CREATE" ?
-                    await createCategory(categoryData.name, categoryData.parent_id, categoryData.description, image)
+                    await createCategory(categoryData.name.trim(), categoryData.parent_id, categoryData.description, image)
                     :
-                    await updateCategory(categoryData.id, categoryData.name, categoryData.parent_id, categoryData.description, image);
+                    await updateCategory(categoryData.id, categoryData.name.trim(), categoryData.parent_id, categoryData.description, image);
                 if(res && res.EC === 0) {
                     await props.fetchAllParentCategory();
                     toast.success(res.EM);

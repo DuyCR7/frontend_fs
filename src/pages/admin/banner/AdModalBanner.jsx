@@ -154,9 +154,9 @@ const AdModalBanner = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalBanner === "CREATE" ?
-                    await createBanner(bannerData.name, imageDesktop, imageMobile, bannerData.url)
+                    await createBanner(bannerData.name.trim(), imageDesktop, imageMobile, bannerData.url)
                     :
-                    await updateBanner(bannerData.id, bannerData.name, imageDesktop, imageMobile, bannerData.url);
+                    await updateBanner(bannerData.id, bannerData.name.trim(), imageDesktop, imageMobile, bannerData.url);
                 if(res && res.EC === 0) {
                     toast.success(res.EM);
                     handleClickCloseModal();

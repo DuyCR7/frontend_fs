@@ -466,10 +466,10 @@ const AdModalProduct = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalProduct === "CREATE" ?
-                    await createProduct(productData.name, productData.description, productData.price, productData.price_sale,
+                    await createProduct(productData.name.trim(), productData.description, productData.price, productData.price_sale,
                     productData.categoryId, productData.teamId, images, productDetails)
                     :
-                    await updateProduct(productData.id, productData.name, productData.description, productData.price, productData.price_sale,
+                    await updateProduct(productData.id, productData.name.trim(), productData.description, productData.price, productData.price_sale,
                         productData.categoryId, productData.teamId, images, productDetails);
                 if (res && res.EC === 0) {
                     toast.success(res.EM);

@@ -159,7 +159,7 @@ const AdModalVoucher = (props) => {
             try {
                 let res = props.actionModalVoucher === "CREATE" ?
                     await createVoucher(
-                        voucherData.code,
+                        voucherData.code.trim(),
                         voucherData.discountType,
                         voucherData.discountValue,
                         voucherData.maxDiscountAmount,
@@ -171,7 +171,7 @@ const AdModalVoucher = (props) => {
                     :
                     await updateVoucher(
                         voucherData.id,
-                        voucherData.code,
+                        voucherData.code.trim(),
                         voucherData.discountType,
                         voucherData.discountValue,
                         voucherData.maxDiscountAmount,

@@ -149,9 +149,9 @@ const AdModalPost = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalPost === "CREATE" ?
-                    await createPost(postData.title, image, postData.content, user?.id)
+                    await createPost(postData.title.trim(), image, postData.content, user?.id)
                     :
-                    await updatePost(postData.id, postData.title, image, postData.content, user?.id);
+                    await updatePost(postData.id, postData.title.trim(), image, postData.content, user?.id);
                 if(res && res.EC === 0) {
                     toast.success(res.EM);
                     handleClickCloseModal();

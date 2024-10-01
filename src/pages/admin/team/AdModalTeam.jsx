@@ -117,9 +117,9 @@ const AdModalTeam = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalTeam === "CREATE" ?
-                    await createTeam(teamData.name, teamData.type, image)
+                    await createTeam(teamData.name.trim(), teamData.type, image)
                     :
-                    await updateTeam(teamData.id, teamData.name, teamData.type, image);
+                    await updateTeam(teamData.id, teamData.name.trim(), teamData.type, image);
 
                 if(res && res.EC === 0) {
                     toast.success(res.EM);

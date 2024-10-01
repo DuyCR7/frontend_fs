@@ -143,9 +143,9 @@ const AdModalEvent = (props) => {
             setLoading(true);
             try {
                 let res = props.actionModalEvent === "CREATE" ?
-                    await createEvent(eventData.name, eventData.description, eventData.url, eventData.eventDate, imageDesktop, imageMobile)
+                    await createEvent(eventData.name.trim(), eventData.description, eventData.url, eventData.eventDate, imageDesktop, imageMobile)
                     :
-                    await updateEvent(eventData.id, eventData.name, eventData.description, eventData.url, eventData.eventDate, imageDesktop, imageMobile);
+                    await updateEvent(eventData.id, eventData.name.trim(), eventData.description, eventData.url, eventData.eventDate, imageDesktop, imageMobile);
                 if(res && res.EC === 0) {
                     await props.fetchAllEvents();
                     toast.success(res.EM);
