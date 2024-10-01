@@ -41,7 +41,7 @@ const TeamCategory = () => {
 
                 {/*section card*/}
                 <div className="section-wrapper">
-                    <div className="row g-4 justify-content-center row-cols-lg-6 row-cols-md-5 row-cols-sm-3 row-cols-1">
+                    <div className="row g-4 justify-content-center row-cols-lg-6 row-cols-md-5 row-cols-sm-3 row-cols-2">
                         {
                             listTeam.length > 0 && (
                                 listTeam.map((item, index) => {

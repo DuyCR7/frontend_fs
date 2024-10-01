@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import Rating from "../../components/rating/Rating";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import RatingOnlyView from "../../components/rating/RatingOnlyView";
 

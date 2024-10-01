@@ -46,14 +46,16 @@ const SingleProduct = () => {
 
     if (loading) {
         return (
-            <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75" style={{zIndex: 9999}}>
-                <Spin size="large" />
+            <div
+                className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75"
+                style={{zIndex: 9999}}>
+                <Spin size="large"/>
             </div>
         );
     }
 
     if (Object.keys(productData).length === 0 && error === 'not-found') {
-        return <NotFoundPageCus />
+        return <NotFoundPageCus/>
     }
 
     return (
@@ -63,12 +65,13 @@ const SingleProduct = () => {
             <div className="shop-single padding-tb aside-bg">
                 <div className="container-fluid ps-5 pe-5">
                     <div className="row justify-content-center">
-                        <div className="col-lg-8 col-12">
+                        <div className="col-xxl-8 col-12">
                             {/*left sight*/}
                             <article>
                                 <div className="product-details">
                                     <div className="row">
-                                        <div className="col-md-6 col-12">
+                                        <div
+                                            className="col-lg-5 col-12 d-flex flex-column align-items-center justify-content-center">
                                             <div className="product-thumb">
                                                 <img src={`${process.env.REACT_APP_URL_BACKEND}/${activeImage}`} alt=""
                                                      className="mb-3 main-image"/>
@@ -89,13 +92,11 @@ const SingleProduct = () => {
                                             </div>
                                         </div>
 
-                                        <div className="col-md-6 col-12">
-                                            <div className="post-content">
-                                                <div>
-                                                    <ProductDisplay
-                                                        productData={productData}
-                                                        setActiveImage={setActiveImage}/>
-                                                </div>
+                                        <div className="col-lg-7 col-12 mt-lg-0 mt-4">
+                                            <div className="post-content h-100">
+                                                <ProductDisplay
+                                                    productData={productData}
+                                                    setActiveImage={setActiveImage}/>
                                             </div>
                                         </div>
                                     </div>
@@ -109,8 +110,8 @@ const SingleProduct = () => {
                         </div>
 
                         {/*right sight*/}
-                        <div className="col-lg-4 col-12 mt-4 mt-lg-0">
-                            <aside className="ps-lg-4">
+                        <div className="col-xxl-4 col-12 mt-4 mt-xxl-0">
+                            <aside className="ps-xxl-4">
                                 <PopularPost/>
                             </aside>
                         </div>

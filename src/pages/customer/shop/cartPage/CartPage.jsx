@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PageHeader from "../../components/pageHeader/PageHeader.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import CheckOutPage from "../checkOutPage/CheckOutPage.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    deleteCartItem,
     getCart,
     getRelatedProducts,
     updateCartItemQuantity

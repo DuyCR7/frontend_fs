@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import PageHeader from "../../components/pageHeader/PageHeader";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
-import {addToWishList, deleteWishListItem, getWishList} from "../../../../services/customer/wishListService";
-import {IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
-import Rating from "../../components/rating/Rating";
+import {deleteWishListItem, getWishList} from "../../../../services/customer/wishListService";
+import {IoHeartSharp} from "react-icons/io5";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import {toast} from "react-toastify";
 import {setWishList, updateWishListCount} from "../../../../redux/customer/slices/customerSlice";
@@ -68,7 +67,7 @@ const WishList = () => {
                             wishList && wishList.length > 0 ? (
                                 wishList.map((item, index) => {
                                     return (
-                                        <div key={`${index}-${item.id}`} className="col-lg-3 col-md-4 col-sm-6 col-12">
+                                        <div key={`${index}-${item.id}`} className="col-lg-3 col-md-4 col-sm-6 col-6">
                                             <div className="product-item">
                                                 {/*product images*/}
                                                 <div className="product-thumb">

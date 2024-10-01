@@ -35,7 +35,7 @@ const ProductCards = ({GridList, products}) => {
                     products.map((item, index) => {
 
                         return (
-                            <div key={item.id} className="col-lg-3 col-md-4 col-sm-6 col-12">
+                            <div key={item.id} className={`product-wrapper ${GridList ? "col-6 col-sm-6 col-md-4 col-lg-3" : "col-12"}`}>
                                 <div className="product-item">
                                     {/*product images*/}
                                     <div className="product-thumb">
