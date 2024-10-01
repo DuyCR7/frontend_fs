@@ -4,7 +4,6 @@ const signInUser = (email, password) => {
     return axios.post('/api/v1/admin/sign-in', {
         email,
         password,
-        delay: 1500
     });
 }
 

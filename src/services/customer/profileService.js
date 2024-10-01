@@ -29,9 +29,18 @@ const updateProfile = (fullname, username, phone, sex, birthdate, image) => {
     return axios.put(`/api/v1/profile/update-profile`, data);
 }
 
+const changePassword = (oldPassword, newPassword, confirmPassword) => {
+    return axios.put(`/api/v1/profile/change-password`, {
+        oldPassword,
+        newPassword,
+        confirmPassword,
+    });
+}
+
 export {
     getProfile,
     sendVerificationCode,
     updateProfileEmail,
     updateProfile,
+    changePassword,
 }

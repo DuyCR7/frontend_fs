@@ -118,7 +118,7 @@ const PasswordReset = (props) => {
         <>
             {
                 validUrl ?
-                    <Container fluid className="my-5">
+                    <Container fluid className="password-reset my-5">
                         <Row className="justify-content-center">
                             <Col xs={12} sm={8} md={6} lg={4}>
                                 <Card className="p-4">
@@ -130,11 +130,10 @@ const PasswordReset = (props) => {
                                                 <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Mật khẩu mới"
                                                               value={password}
                                                               onChange={(e) => handlePasswordChange(e)}
-                                                              className={objValidInput.isPassword ? "form-control" : "form-control is-invalid"}
+                                                              className={objValidInput.isPassword ? "form-control" : "form-control custom-is-invalid"}
                                                               onKeyPress={(e) => handlePressEnter(e)}/>
                                                 <div className="password-toggle" onClick={togglePasswordVisibility}>
-                                                    {objValidInput.isPassword && (showPassword ? <FaEyeSlash/> :
-                                                        <FaEye/>)}
+                                                    {showPassword ? <FaEyeSlash/> : <FaEye/>}
                                                 </div>
                                             </Form.Group>
 

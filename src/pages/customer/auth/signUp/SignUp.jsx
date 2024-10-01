@@ -1,84 +1,86 @@
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import { FaEye, FaEyeSlash} from 'react-icons/fa';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import "./SignUp.scss";
 import { Spin } from 'antd';
 import {Link, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {validateEmail} from "../../../../utils/validateEmail";
 import {signUpCustomer} from "../../../../services/customer/authService";
+import _ from "lodash";
 
 const SignUp = () => {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [cfPassword, setCfPassword] = useState("");
+    const defaultSignUpData = {
+        email: "",
+        password: "",
+        cfPassword: ""
+    }
+
+    const [signUpData, setSignUpData] = useState(defaultSignUpData);
+
+    const [errors, setErrors] = useState({});
+
+    const handleOnChangeInput = (value, name) => {
+        let _signUpData = _.cloneDeep(signUpData);
+        _signUpData[name] = value;
+        setSignUpData(_signUpData);
+
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [name]: undefined
+        }));
+    }
+
     const [loading, setLoading] = useState(false);
-    const [msg, setMsg] = useState("");
-    const [error, setError] = useState("");
 
     const [showPassword, setShowPassword] = useState(false);
     const [showCfPassword, setShowCfPassword] = useState(false);
 
-    const defaultValidInput = {
-        isEmail: true,
-        isPassword: true,
-        isCfPassword: true
+    const validateForm = () => {
+        let newErrors = {};
+        let isValid = true;
+
+        if (!signUpData.email) {
+            newErrors.email = 'Vui lòng nhập email!';
+            isValid = false;
+        }
+
+        if (!signUpData.password) {
+            newErrors.password = 'Vui lòng nhập mật khẩu!';
+            isValid = false;
+        }
+
+        if (signUpData.password.includes(' ')) {
+            newErrors.password = 'Mật khẩu không được chứa khoảng trắng!';
+            isValid = false;
+        }
+
+        if (!signUpData.cfPassword) {
+            newErrors.cfPassword = 'Vui lòng xác nhận lại mật khẩu!';
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
     }
 
-    const [objValidInput, setObjValidInput] = useState(defaultValidInput);
-
-    const isValidInputs = () => {
-        setObjValidInput(defaultValidInput);
-        if(!email){
-            setObjValidInput({...defaultValidInput, isEmail: false});
-            toast.error("Vui lòng nhập email!")
-            return false;
+    const handleBackendValidationErrors = (errorField, message) => {
+        let newErrors = {};
+        if (errorField && message) {
+            newErrors[errorField] = message;
         }
-
-        if (!validateEmail(email)){
-            setObjValidInput({...defaultValidInput, isEmail: false});
-            toast.error("Vui lòng nhập đúng định dạng email!");
-            return false;
-        }
-
-        if(!password){
-            setObjValidInput({...defaultValidInput, isPassword: false});
-            toast.error("Vui lòng nhập mật khẩu!");
-            return false;
-        }
-
-        if(password !== cfPassword){
-            setObjValidInput({...defaultValidInput, isCfPassword: false});
-            toast.error("Xác nhận lại mật khẩu!");
-            return false;
-        }
-
-        return true;
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            ...newErrors
+        }));
     }
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-        if (!objValidInput.isEmail) {
-            setObjValidInput({ ...objValidInput, isEmail: true });
-        }
-    };
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-        if (!objValidInput.isPassword) {
-            setObjValidInput({ ...objValidInput, isPassword: true });
-        }
-    };
-
-    const handleCfPasswordChange = (e) => {
-        setCfPassword(e.target.value);
-        if (!objValidInput.isCfPassword) {
-            setObjValidInput({ ...objValidInput, isCfPassword: true });
-        }
+    const renderError = (error) => {
+        return error ? <div className="text-danger mt-1">{error}</div> : null;
     };
 
     const togglePasswordVisibility = () => {
@@ -90,20 +92,20 @@ const SignUp = () => {
     };
 
     const handelSignUp = async () => {
-        let check = isValidInputs();
+        let check = validateForm();
         if (check) {
             setLoading(true);
             try {
-                let res = await signUpCustomer(email, password);
+                let res = await signUpCustomer(signUpData.email, signUpData.password, signUpData.cfPassword);
                 // console.log("Check res: ", res);
 
                 if(res.EC === 0){
-                    setMsg(res.EM);
-                    setError("");
+                    toast.success(res.EM);
                     // navigate('/sign-in');
+                } else if (res.EC === 1) {
+                    handleBackendValidationErrors(res.DT, res.EM);
                 } else {
-                    setMsg("");
-                    setError(res.EM);
+                    toast.error(res.EM);
                 }
             } catch (error) {
                 console.log("Error: ", error);
@@ -123,7 +125,7 @@ const SignUp = () => {
     }
 
     return (
-        <Container fluid className="my-5">
+        <Container fluid className="page-sign-up my-5">
             <Row className="justify-content-center">
                 <Col xs={12} sm={8} md={6} lg={4}>
                     <Card className="p-4">
@@ -140,36 +142,39 @@ const SignUp = () => {
                                 <Form.Group>
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control type="email" placeholder="Email"
-                                                  value={email}
-                                                  onChange={(e) => handleEmailChange(e)}
-                                                  className={objValidInput.isEmail ? "form-control" : "form-control is-invalid"}
+                                                  value={signUpData.email}
+                                                  onChange={(e) => handleOnChangeInput(e.target.value, "email")}
+                                                  className={errors.email ? "form-control custom-is-invalid" : "form-control"}
                                                   onKeyPress={(e) => handlePressEnter(e)}/>
+                                    {renderError(errors.email)}
                                 </Form.Group>
 
                                 <Form.Group className="password-input mt-3">
                                     <Form.Label>Mật khẩu</Form.Label>
                                     <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Mật khẩu"
-                                                  value={password}
-                                                  onChange={(e) => handlePasswordChange(e)}
-                                                  className={objValidInput.isPassword ? "form-control" : "form-control is-invalid"}
+                                                  value={signUpData.password}
+                                                  onChange={(e) => handleOnChangeInput(e.target.value, "password")}
+                                                  className={errors.password ? "form-control custom-is-invalid" : "form-control"}
                                                   onKeyPress={(e) => handlePressEnter(e)}/>
                                     <div className="password-toggle" onClick={togglePasswordVisibility}>
-                                        {objValidInput.isPassword && (showPassword ? <FaEyeSlash/> : <FaEye/>)}
+                                        {showPassword ? <FaEyeSlash/> : <FaEye/>}
                                     </div>
                                 </Form.Group>
+                                {renderError(errors.password)}
 
                                 <Form.Group className="password-input mt-3">
                                     <Form.Label>Nhập lại mật khẩu</Form.Label>
                                     <Form.Control type={showCfPassword ? 'text' : 'password'}
                                                   placeholder="Nhập lại mật khẩu"
-                                                  value={cfPassword}
-                                                  onChange={(e) => handleCfPasswordChange(e)}
-                                                  className={objValidInput.isCfPassword ? "form-control" : "form-control is-invalid"}
+                                                  value={signUpData.cfPassword}
+                                                  onChange={(e) => handleOnChangeInput(e.target.value, "cfPassword")}
+                                                  className={errors.cfPassword ? "form-control custom-is-invalid" : "form-control"}
                                                   onKeyPress={(e) => handlePressEnter(e)}/>
                                     <div className="password-toggle" onClick={toggleCfPasswordVisibility}>
-                                        {objValidInput.isCfPassword && (showCfPassword ? <FaEyeSlash/> : <FaEye/>)}
+                                        {showCfPassword ? <FaEyeSlash/> : <FaEye/>}
                                     </div>
                                 </Form.Group>
+                                {renderError(errors.cfPassword)}
 
                                 <div className="text-center mt-3">
                             <span>Tôi đồng ý với <a
@@ -177,8 +182,6 @@ const SignUp = () => {
                                 style={{color: "#007bff", cursor: "pointer"}}>Chính sách bảo mật</a></span>
                                 </div>
 
-                                {msg && <Alert variant="success" className="mt-3" style={{color: "green"}}>{msg}</Alert>}
-                                {error && <Alert variant="danger" className="mt-3" style={{color: "red"}}>{error}</Alert>}
                                 <Spin spinning={loading}>
                                     <Button variant="primary" className="w-100 mt-3" type="button"
                                             onClick={() => handelSignUp()}

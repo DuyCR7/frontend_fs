@@ -113,8 +113,8 @@ const ForgotPassword = (props) => {
                                 </div>
 
                                 <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
-                                    <button className="custom-button" type="button" onClick={() => navigate('/sign-in') }>
-                                        <span style={{color: "#007bff"}}>Quay lại đăng nhập</span>
+                                    <button className="btn btn-outline-primary" type="button" onClick={() => navigate('/sign-in') }>
+                                        Quay lại đăng nhập
                                     </button>
                                 </div>
 

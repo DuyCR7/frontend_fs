@@ -1,9 +1,10 @@
 import axios from "../../config/customer/axios";
 
-const signUpCustomer = (email, password) => {
+const signUpCustomer = (email, password, confirmPassword) => {
     return axios.post('/api/v1/sign-up', {
         email,
         password,
+        confirmPassword,
     });
 }
 
@@ -11,7 +12,6 @@ const signInCustomer = (email, password) => {
     return axios.post('/api/v1/sign-in', {
         email,
         password,
-        delay: 1500
     });
 }
 
