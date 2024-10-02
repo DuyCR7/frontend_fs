@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import Rating from "../../components/rating/Rating.jsx";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {getAllTrending} from "../../../../services/customer/homeService";
 import {formatCurrency} from "../../../../utils/formatCurrency";
-import {IoEyeOutline, IoHeartOutline, IoHeartSharp, IoCartOutline} from "react-icons/io5";
+import {IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import "./trending.scss";
 import ModalQuickView from "../../components/modal/ModalQuickView";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {useWishlist} from "../../components/wishList/useWishlist";
 import RatingOnlyView from "../../components/rating/RatingOnlyView";
 

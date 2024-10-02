@@ -3,14 +3,11 @@ import {Link} from "react-router-dom";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import RatingOnlyView from "../../components/rating/RatingOnlyView";
 import {IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
-import {useWishlist} from "../../components/wishList/useWishlist";
 import ModalQuickView from "../../components/modal/ModalQuickView";
 import {useSelector} from "react-redux";
 
-const RelatedProductCard = ({product}) => {
-    console.log(product)
+const RelatedProductCard = ({product, loading, isInWishlist, handleWishlistAction}) => {
     const customer = useSelector((state) => state.customer);
-    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     const [isShowModalQuickView, setIsShowModalQuickView] = useState(false);
     const [dataQuickView, setDataQuickView] = useState({});
@@ -42,7 +39,7 @@ const RelatedProductCard = ({product}) => {
                         <button title="Xem nhanh"
                                 onClick={() => handleShowModalQuickView(product)}>
                             <IoEyeOutline size={16}/></button>
-                        <button title="Yêu thích"
+                        <button title="Yêu thích" disabled={loading}
                                 onClick={() => handleWishlistAction(product)}>
                             {
                                 customer.isAuthenticated && isInWishlist(product.id)

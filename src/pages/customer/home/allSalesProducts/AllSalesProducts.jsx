@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
-import {getAllSalesProducts, getAllSellerClothing} from "../../../../services/customer/homeService";
+import {getAllSalesProducts} from "../../../../services/customer/homeService";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Mousewheel, Navigation, Pagination} from "swiper/modules";
-import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
-import Rating from "../../components/rating/Rating";
+import {IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import 'swiper/css';
@@ -25,7 +24,7 @@ const AllSalesProducts = () => {
     const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
+    const { loading, wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     const customer = useSelector((state) => state.customer);
 
@@ -127,7 +126,7 @@ const AllSalesProducts = () => {
                                                         <button title="Xem nhanh"
                                                                 onClick={() => handleShowModalQuickView(item)}
                                                         ><IoEyeOutline size={16}/></button>
-                                                        <button title="Yêu thích"
+                                                        <button title="Yêu thích" disabled={loading}
                                                                 onClick={() => handleWishlistAction(item)}>
                                                             {
                                                                 customer.isAuthenticated && isInWishlist(item.id)

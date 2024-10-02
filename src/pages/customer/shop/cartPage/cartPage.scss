@@ -5,6 +5,26 @@
       .detail-name {
         color: green;
       }
+
+      .cart-plus-minus {
+
+        .qtybutton {
+
+          &.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+          }
+        }
+
+        .cart-plus-minus-box {
+
+          &:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+          }
+        }
+      }
     }
 
     .related-products {

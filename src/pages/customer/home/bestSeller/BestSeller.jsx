@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {getAllBestSeller} from "../../../../services/customer/homeService";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {FreeMode, Mousewheel, Navigation, Pagination} from "swiper/modules";
-import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
+import { IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import 'swiper/css';
@@ -26,7 +26,7 @@ const BestSeller = () => {
 
     const customer = useSelector((state) => state.customer);
 
-    const { wishList, isInWishlist, handleWishlistAction } = useWishlist();
+    const { loading, wishList, isInWishlist, handleWishlistAction } = useWishlist();
 
     const [isShowModalQuickView, setIsShowModalQuickView] = useState(false);
     const [dataQuickView, setDataQuickView] = useState({});
@@ -125,7 +125,7 @@ console.log(products);
                                                         <button title="Xem nhanh"
                                                                 onClick={() => handleShowModalQuickView(item)}>
                                                             <IoEyeOutline size={16}/></button>
-                                                        <button title="Yêu thích"
+                                                        <button title="Yêu thích" disabled={loading}
                                                                 onClick={() => handleWishlistAction(item)}>
                                                             {
                                                                 customer.isAuthenticated && isInWishlist(item.id)

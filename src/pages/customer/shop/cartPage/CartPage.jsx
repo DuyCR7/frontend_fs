@@ -15,6 +15,8 @@ import {setSelectedItemsForPayment, updateCartCount} from "../../../../redux/cus
 import ModalDeleteCartItem from "./ModalDeleteCartItem";
 import "./cartPage.scss";
 import RelatedProductCard from "./RelatedProductCard";
+import {useWishlist} from "../../components/wishList/useWishlist";
+import {Spin} from "antd";
 
 const CartPage = () => {
 
@@ -32,6 +34,12 @@ const CartPage = () => {
     const [isShowModalConfirm, setIsShowModalConfirm] = useState(false);
     const [selectedItemForDelete, setSelectedItemForDelete] = useState(null);
 
+    const { loading, wishList, isInWishlist, handleWishlistAction } = useWishlist();
+
+    const [isLoadingCart, setIsLoadingCart] = useState(false);
+    const [isLoadingRelated, setIsLoadingRelated] = useState(false);
+    const [isUpdating, setIsUpdating] = useState({});
+
     useEffect(() => {
         if(customer && customer.isAuthenticated) {
             fetchCartItems();
@@ -39,9 +47,10 @@ const CartPage = () => {
         } else {
             navigate('/sign-in', {replace: true});
         }
-    }, [customer, navigate]);
+    }, [customer.isAuthenticated, navigate]);
 
     const fetchCartItems = async () => {
+        setIsLoadingCart(true);
         try {
             let res = await getCart();
             if (res && res.EC === 0) {
@@ -60,11 +69,14 @@ const CartPage = () => {
             }
         } catch (e) {
             console.log('Error:', e);
+        } finally {
+            setIsLoadingCart(false);
         }
     }
     console.log(cartItems);
 
     const fetchRelatedProducts = async () => {
+        setIsLoadingRelated(true);
         try {
             const res = await getRelatedProducts();
             if (res && res.EC === 0) {
@@ -74,10 +86,13 @@ const CartPage = () => {
             }
         } catch (e) {
             console.log('Error:', e);
+        } finally {
+            setIsLoadingRelated(false);
         }
     }
 
     const handleQuantityChange = async (cartDetailId, newQuantity) => {
+        setIsUpdating(prev => ({ ...prev, [cartDetailId]: true }));
         try {
             if(newQuantity === 0) {
                 const itemToDelete = cartItems.find(item => item.id === cartDetailId);
@@ -113,6 +128,8 @@ const CartPage = () => {
             }
         } catch (e) {
             console.log('Error:', e);
+        } finally {
+            setIsUpdating(prev => ({ ...prev, [cartDetailId]: false }));
         }
     };
 
@@ -205,117 +222,130 @@ const CartPage = () => {
                     <div className="container-fluid ps-5 pe-5">
                         <div className="section-wrapper">
                             {/*cart top*/}
-                            <div className="show-table table-responsive mb-5">
-                                <table className="table table-hover table-cart">
-                                    <thead className="on-top">
-                                    <tr className="text-center table-active">
-                                        <th scope="col">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectAll}
-                                                onChange={toggleSelectAll}
-                                            />
-                                        </th>
-                                        <th scope="col">Tên sản phẩm</th>
-                                        <th scope="col">Phân loại</th>
-                                        <th scope="col">Ảnh</th>
-                                        <th scope="col">Giá</th>
-                                        <th scope="col">Số lượng</th>
-                                        <th scope="col">Thành tiền</th>
-                                        <th scope="col">Hành động</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {
-                                        cartItems && cartItems.length > 0 ?
-                                            <>
-                                                {
-                                                    cartItems.map((item, index) => {
-                                                        return (
-                                                            <tr className="text-center" key={item.id}>
-                                                                <td>
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        checked={selectedIds.includes(item.id)}
-                                                                        onChange={() => toggleCheckbox(item.id)}
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    <Link className="detail-name"
-                                                                        to={`/products/${item.Product_Detail.Product.slug}`}>{item.Product_Detail.Product.name}</Link>
-                                                                </td>
-                                                                <td>
-                                                                    {item.Product_Detail.Color.name} - {item.Product_Detail.Size.code}
-                                                                </td>
-                                                                <td>
-                                                                    <Link to="/shop">
-                                                                        <img
-                                                                            src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Detail.image}`}
-                                                                            width={50} height={50} alt=""/>
-                                                                    </Link>
-                                                                </td>
-                                                                <td>
-                                                                    {
-                                                                        item.Product_Detail.Product.isSale ?
-                                                                            formatCurrency(item.Product_Detail.Product.price_sale)
-                                                                            :
-                                                                            formatCurrency(item.Product_Detail.Product.price)
-                                                                    }
-                                                                </td>
-                                                                <td className="cat-quantity">
-                                                                    <div className="cart-plus-minus">
-                                                                        <div className="dec qtybutton"
-                                                                             onClick={() => handleQuantityChange(item.id, item.quantity - 1)}>
-                                                                            <FaMinus/></div>
-                                                                        <input className="cart-plus-minus-box"
-                                                                               type="text"
-                                                                               name="qtybutton"
-                                                                               value={localQuantities[item.id] !== undefined ? localQuantities[item.id] : item.quantity}
-                                                                               onChange={(e) => handleInputChange(e, item.id)}
-                                                                               onBlur={() => handleBlur(item.id, item.Product_Detail.quantity)}
-                                                                               min={1}
-                                                                               max={item.Product_Detail.quantity}
+                            <Spin spinning={isLoadingCart}>
+                                <div className="show-table table-responsive mb-5">
+                                    <table className="table table-hover table-cart">
+                                        <thead className="on-top">
+                                        <tr className="text-center table-active">
+                                            <th scope="col">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectAll}
+                                                    onChange={toggleSelectAll}
+                                                />
+                                            </th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">Phân loại</th>
+                                            <th scope="col">Ảnh</th>
+                                            <th scope="col">Giá</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Thành tiền</th>
+                                            <th scope="col">Hành động</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {
+                                            cartItems && cartItems.length > 0 ?
+                                                <>
+                                                    {
+                                                        cartItems.map((item, index) => {
+                                                            return (
+                                                                <tr className="text-center" key={item.id}>
+                                                                    <td>
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            checked={selectedIds.includes(item.id)}
+                                                                            onChange={() => toggleCheckbox(item.id)}
                                                                         />
-                                                                        <div className="inc qtybutton"
-                                                                             onClick={() => handleQuantityChange(item.id, item.quantity + 1)}>
-                                                                            <FaPlus/></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    {
-                                                                        item.Product_Detail.Product.isSale ?
-                                                                            formatCurrency(item.Product_Detail.Product.price_sale * item.quantity)
-                                                                            :
-                                                                            formatCurrency(item.Product_Detail.Product.price * item.quantity)
-                                                                    }
-                                                                </td>
-                                                                <td>
-                                                                    <MdDelete size={25} title={"Xóa"}
-                                                                              style={{color: "red", cursor: "pointer"}}
-                                                                              onClick={() => handleRemoveItem(item)}
-                                                                    />
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
-                                            </>
-                                            :
-                                            <>
-                                                <tr>
-                                                    <td colSpan={8}>Giỏ hàng trống! <Link to={'/shops'}
-                                                                                          style={{color: "#1178f2"}}>Cửa hàng</Link></td>
-                                                </tr>
-                                            </>
-                                    }
-                                    </tbody>
-                                </table>
-                            </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <Link className="detail-name"
+                                                                              to={`/products/${item.Product_Detail.Product.slug}`}>{item.Product_Detail.Product.name}</Link>
+                                                                    </td>
+                                                                    <td>
+                                                                        {item.Product_Detail.Color.name} - {item.Product_Detail.Size.code}
+                                                                    </td>
+                                                                    <td>
+                                                                        <Link
+                                                                            to={`/products/${item.Product_Detail.Product.slug}`}>
+                                                                            <img
+                                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product_Detail.image}`}
+                                                                                width={50} height={50} alt=""/>
+                                                                        </Link>
+                                                                    </td>
+                                                                    <td>
+                                                                        {
+                                                                            item.Product_Detail.Product.isSale ?
+                                                                                formatCurrency(item.Product_Detail.Product.price_sale)
+                                                                                :
+                                                                                formatCurrency(item.Product_Detail.Product.price)
+                                                                        }
+                                                                    </td>
+                                                                    <td className="cat-quantity">
+                                                                        <div className="cart-plus-minus">
+                                                                            <div
+                                                                                className={`dec qtybutton ${isUpdating[item.id] ? 'disabled' : ''}`}
+                                                                                onClick={() => !isUpdating[item.id] && handleQuantityChange(item.id, item.quantity - 1)}>
+                                                                                <FaMinus/>
+                                                                            </div>
+                                                                            <input className="cart-plus-minus-box"
+                                                                                   type="text"
+                                                                                   name="qtybutton"
+                                                                                   value={localQuantities[item.id] !== undefined ? localQuantities[item.id] : item.quantity}
+                                                                                   onChange={(e) => handleInputChange(e, item.id)}
+                                                                                   onBlur={() => handleBlur(item.id, item.Product_Detail.quantity)}
+                                                                                   min={1}
+                                                                                   max={item.Product_Detail.quantity}
+                                                                                   disabled={isUpdating[item.id]}
+                                                                            />
+                                                                            <div
+                                                                                className={`inc qtybutton ${isUpdating[item.id] ? 'disabled' : ''}`}
+                                                                                onClick={() => !isUpdating[item.id] && handleQuantityChange(item.id, item.quantity + 1)}>
+                                                                                <FaPlus/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        {
+                                                                            item.Product_Detail.Product.isSale ?
+                                                                                formatCurrency(item.Product_Detail.Product.price_sale * item.quantity)
+                                                                                :
+                                                                                formatCurrency(item.Product_Detail.Product.price * item.quantity)
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        <MdDelete size={25} title={"Xóa"}
+                                                                                  style={{
+                                                                                      color: "red",
+                                                                                      cursor: "pointer"
+                                                                                  }}
+                                                                                  onClick={() => handleRemoveItem(item)}
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
+                                                </>
+                                                :
+                                                <>
+                                                    <tr>
+                                                        <td colSpan={8}>Giỏ hàng trống! <Link to={'/shops'}
+                                                                                              style={{color: "#1178f2"}}>Cửa
+                                                            hàng</Link></td>
+                                                    </tr>
+                                                </>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Spin>
 
                             {/*cart bottom*/}
                             <div className="cart-bottom p-3">
                                 <div className="d-flex row align-items-center justify-content-between">
-                                    <div className="d-flex align-items-center justify-content-sm-start justify-content-center col-sm-6 col-12">
+                                    <div
+                                        className="d-flex align-items-center justify-content-sm-start justify-content-center col-sm-6 col-12">
                                         <input
                                             type="checkbox"
                                             id="selectAllCart"
@@ -323,14 +353,17 @@ const CartPage = () => {
                                             onChange={toggleSelectAll}
                                             className="form-check-input me-2"
                                         />
-                                        <label className="me-3" htmlFor="selectAllCart">Chọn tất cả ({cartItems.length})</label>
+                                        <label className="me-3" htmlFor="selectAllCart">Chọn tất cả
+                                            ({cartItems.length})</label>
                                         <button className="btn btn-outline-danger"
-                                        onClick={() => handleRemoveManyItems()}>
+                                                onClick={() => handleRemoveManyItems()}>
                                             Xóa
                                         </button>
                                     </div>
-                                    <div className="d-flex mt-3 mt-sm-0 justify-content-sm-end justify-content-center align-items-center col-sm-6 col-12">
-                                        <span className="me-3">Tổng thanh toán ({selectedIds.length} sản phẩm): {formatCurrency(calculateTotal())}</span>
+                                    <div
+                                        className="d-flex mt-3 mt-sm-0 justify-content-sm-end justify-content-center align-items-center col-sm-6 col-12">
+                                        <span
+                                            className="me-3">Tổng thanh toán ({selectedIds.length} sản phẩm): {formatCurrency(calculateTotal())}</span>
                                         <button className="btn btn-primary" onClick={() => handlePurchase()}>
                                             Mua hàng
                                         </button>
@@ -338,23 +371,30 @@ const CartPage = () => {
                                 </div>
                             </div>
 
-                            <div className="related-products mt-5">
-                                <span className="text-uppercase fs-4">Sản phẩm liên quan</span>
-                                <div className="shop-page mt-3">
-                                    <div className="shop-product-wrap row justify-content-center grid">
-                                        {relatedProducts.length > 0 ? relatedProducts.map((product) => (
-                                            <div className="col-lg-3 col-md-4 col-6" key={product.id}>
-                                                <RelatedProductCard product={product}/>
-                                            </div>
-                                        ))
-                                        :
-                                            <div className="col-lg-12 col-md-12 col-12 text-center">
-                                                <p>Không có sản phẩm nào để hiển thị.</p>
-                                            </div>
-                                        }
+                            <Spin spinning={isLoadingRelated}>
+                                <div className="related-products mt-5">
+                                    <span className="text-uppercase fs-4">Sản phẩm liên quan</span>
+                                    <div className="shop-page mt-3">
+                                        <div className="shop-product-wrap row justify-content-center grid">
+                                            {relatedProducts.length > 0 ? relatedProducts.map((product) => (
+                                                    <div className="col-lg-3 col-md-4 col-6" key={product.id}>
+                                                        <RelatedProductCard
+                                                            product={product}
+                                                            loading={loading}
+                                                            handleWishlistAction={handleWishlistAction}
+                                                            isInWishlist={isInWishlist}
+                                                        />
+                                                    </div>
+                                                ))
+                                                :
+                                                <div className="col-lg-12 col-md-12 col-12 text-center">
+                                                    <p>Không có sản phẩm nào để hiển thị.</p>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Spin>
                         </div>
                     </div>
                 </div>
