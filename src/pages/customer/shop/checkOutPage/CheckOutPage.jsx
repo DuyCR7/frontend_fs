@@ -6,7 +6,7 @@ import _ from "lodash";
 import AddressModal from "./AddressModal";
 import EditAddressModal from "./EditAddressModal";
 import {
-    createCustomerAddress, createOrder,
+    createCustomerAddress, createOrder, deleteCustomerAddress,
     getCustomerAddress, getMyVoucher, setDefaultAddress,
     updateCustomerAddress
 } from "../../../../services/customer/checkOutService";
@@ -16,6 +16,7 @@ import { RiCoupon3Line } from "react-icons/ri";
 import {clearSelectedItemsForPayment, updateCartCount} from "../../../../redux/customer/slices/customerSlice";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import VoucherModal from "./VoucherModal";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const CheckOutPage = () => {
 
@@ -29,6 +30,10 @@ const CheckOutPage = () => {
     const [actionModalAddress, setActionModalAddress] = useState("CREATE");
     const [showAddressModal, setShowAddressModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [addressToDelete, setAddressToDelete] = useState(null);
+
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [editingAddress, setEditingAddress] = useState(null);
     const [originalIsDefault, setOriginalIsDefault] = useState(false);
@@ -164,6 +169,11 @@ const CheckOutPage = () => {
         setShowAddressModal(false);
     };
 
+    const handleClickDeleteAddress = (address) => {
+        setShowDeleteModal(true);
+        setAddressToDelete(address);
+    }
+
     const handleOnChangeInput = (value, name) => {
         let _editingAddress = _.cloneDeep(editingAddress);
         _editingAddress[name] = value;
@@ -229,6 +239,27 @@ const CheckOutPage = () => {
             }
         }
     };
+
+    const handleConfirmDeleteAddress = async (id) => {
+        setLoading(true);
+        try {
+            let res = await deleteCustomerAddress(id);
+            if (res && res.EC === 0) {
+                toast.success(res.EM);
+                await fetchCustomerAddress();
+                setShowDeleteModal(false);
+                setAddressToDelete(null);
+            } else if (res && res.EC === 1) {
+                toast.warn(res.EM);
+            } else {
+                console.error(res.EM);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const renderError = (error) => {
         return error ? <div className="text-danger mt-1">{error}</div> : null;
@@ -634,6 +665,8 @@ const CheckOutPage = () => {
                     onSelectAddress={handleSelectAddress}
                     onEditAddress={handleEditAddress}
                     onAddAddress={handleAddAddress}
+                    onClickDeleteAddress={handleClickDeleteAddress}
+                    showDeleteModal={showDeleteModal}
                 />
 
                 <EditAddressModal
@@ -648,10 +681,22 @@ const CheckOutPage = () => {
                     onActionModalAddress={actionModalAddress}
                     editingAddress={editingAddress}
                     originalIsDefault={originalIsDefault}
+                    loading={loading}
                     onUpdateAddress={handleUpdateAddress}
                     onChangeInput={handleOnChangeInput}
                     errors={errors}
                     onRenderError={renderError}
+                />
+
+                <DeleteConfirmationModal
+                    show={showDeleteModal}
+                    onHide={() => {
+                        setShowDeleteModal(false);
+                        setAddressToDelete(null);
+                    }}
+                    addressToDelete={addressToDelete}
+                    onConfirmDeleteAddress={handleConfirmDeleteAddress}
+                    loading={loading}
                 />
 
                 <VoucherModal

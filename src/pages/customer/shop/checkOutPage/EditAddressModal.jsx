@@ -9,6 +9,7 @@ const EditAddressModal = ({
                               editingAddress,
                               originalIsDefault,
                               onUpdateAddress,
+                              loading,
                               onChangeInput,
                               errors,
                               onRenderError,
@@ -97,10 +98,10 @@ const EditAddressModal = ({
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="outline-success" onClick={onHide}>
+                <Button variant="outline-success" disabled={loading} onClick={onHide}>
                     Trở lại
                 </Button>
-                <Button variant="outline-primary" onClick={onUpdateAddress}>
+                <Button variant="outline-primary" disabled={loading} onClick={onUpdateAddress}>
                     {onActionModalAddress === "CREATE" ? "Thêm" : "Cập nhật"}
                 </Button>
             </Modal.Footer>

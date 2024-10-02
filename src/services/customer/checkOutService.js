@@ -29,6 +29,14 @@ const updateCustomerAddress = (id, name, address, phone, email, isDefault) => {
     });
 }
 
+const deleteCustomerAddress = (id) => {
+    return axios.delete(`/api/v1/checkout/delete-address`, {
+        data: {
+            addressId: id
+        }
+    });
+}
+
 const createOrder = (paymentMethod, shippingMethod, totalPrice, addLocation, addName, addPhone, addEmail, note = null, orderDetails, paypalOrderId = null, voucherId, appliedDiscount) => {
     return axios.post(`/api/v1/checkout/create-order`, {
         paymentMethod,
@@ -51,5 +59,6 @@ export {
     getMyVoucher,
     createCustomerAddress,
     updateCustomerAddress,
+    deleteCustomerAddress,
     createOrder,
 }

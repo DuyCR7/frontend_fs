@@ -8,7 +8,9 @@ const AddressModal = ({
                           addresses,
                           onSelectAddress,
                           onEditAddress,
-                          onAddAddress
+                          onAddAddress,
+                          onClickDeleteAddress,
+                          showDeleteModal
                       }) => {
     return (
         <Modal
@@ -17,7 +19,7 @@ const AddressModal = ({
             centered
             backdrop="static"
             keyboard={false}
-            className="address-modal"
+            className={`address-modal`}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Chọn địa chỉ giao hàng</Modal.Title>
@@ -31,7 +33,7 @@ const AddressModal = ({
                                     <p>{address.address}</p>
                                     <p>SĐT: {address.phone}</p>
                                     <p>Email: {address.email}</p>
-                                    <div className="d-flex align-items-center justify-content-between">
+                                    <div className="d-flex flex-column flex-sm-row align-items-center justify-content-sm-between justify-content-center">
                                         <div>
                                             {
                                                 address.isDefault && (
@@ -39,11 +41,10 @@ const AddressModal = ({
                                                 )
                                             }
                                         </div>
-                                        <div className="">
+                                        <div className="d-flex flex-wrap mt-3 mt-sm-0 align-items-center justify-content-center gap-2">
                                             <Button
                                                 variant="outline-success"
                                                 onClick={() => onSelectAddress(address)}
-                                                className="me-2"
                                             >
                                                 Chọn địa chỉ này
                                             </Button>
@@ -52,6 +53,12 @@ const AddressModal = ({
                                                 onClick={() => onEditAddress(address)}
                                             >
                                                 Sửa
+                                            </Button>
+                                            <Button
+                                                variant="outline-danger"
+                                                onClick={() => onClickDeleteAddress(address)}
+                                            >
+                                                Xóa
                                             </Button>
                                         </div>
                                     </div>
@@ -70,6 +77,7 @@ const AddressModal = ({
                     </Button>
                 </div>
             </Modal.Body>
+            {showDeleteModal && <div className="modal-overlay"></div>}
         </Modal>
     );
 };
