@@ -166,57 +166,6 @@ const AdSidebar = (props) => {
                                     <p>Chăm sóc khách hàng</p>
                                 </Link>
                             </li>
-                            <li className="nav-item">
-                                <a data-bs-toggle="collapse" href="#submenu">
-                                    <i className="fas fa-bars"></i>
-                                    <p>Menu Levels</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className="collapse" id="submenu">
-                                    <ul className="nav nav-collapse">
-                                        <li>
-                                            <a data-bs-toggle="collapse" href="#subnav1">
-                                                <span className="sub-item">Level 1</span>
-                                                <span className="caret"></span>
-                                            </a>
-                                            <div className="collapse" id="subnav1">
-                                                <ul className="nav nav-collapse subnav">
-                                                    <li>
-                                                        <a href="#">
-                                                            <span className="sub-item">Level 2</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <span className="sub-item">Level 2</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a data-bs-toggle="collapse" href="#subnav2">
-                                                <span className="sub-item">Level 1</span>
-                                                <span className="caret"></span>
-                                            </a>
-                                            <div className="collapse" id="subnav2">
-                                                <ul className="nav nav-collapse subnav">
-                                                    <li>
-                                                        <a href="#">
-                                                            <span className="sub-item">Level 2</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <span className="sub-item">Level 1</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                 </div>

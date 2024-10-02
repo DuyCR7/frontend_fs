@@ -3,12 +3,13 @@ import PageHeader from "../../components/pageHeader/PageHeader";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import {deleteWishListItem, getWishList} from "../../../../services/customer/wishListService";
-import {IoHeartSharp} from "react-icons/io5";
+import {IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import {toast} from "react-toastify";
 import {setWishList, updateWishListCount} from "../../../../redux/customer/slices/customerSlice";
 import "./wishList.scss";
 import RatingOnlyView from "../../components/rating/RatingOnlyView";
+import ModalQuickView from "../../components/modal/ModalQuickView";
 
 const WishList = () => {
 
@@ -16,6 +17,19 @@ const WishList = () => {
     const dispatch = useDispatch();
     const customer = useSelector((state) => state.customer);
     const wishList = useSelector((state) => state.customer.wishList);
+
+    const [isShowModalQuickView, setIsShowModalQuickView] = useState(false);
+    const [dataQuickView, setDataQuickView] = useState({});
+
+    const handleCloseModalQuickView = () => {
+        setIsShowModalQuickView(false);
+        setDataQuickView({});
+    }
+
+    const handleShowModalQuickView = (product) => {
+        setIsShowModalQuickView(true);
+        setDataQuickView(product);
+    }
 
     useEffect(() => {
         if (customer.isAuthenticated) {
@@ -57,6 +71,7 @@ const WishList = () => {
     }
     console.log(wishList);
     return (
+        <>
         <div>
             <PageHeader title={"Danh sách yêu thích"} curPage={"Danh sách yêu thích"}/>
 
@@ -71,41 +86,48 @@ const WishList = () => {
                                             <div className="product-item">
                                                 {/*product images*/}
                                                 <div className="product-thumb">
-                                                    <Link to={`/products/${item.Product.slug}`}>
-                                                        <div style={{padding: "20px"}}>
+                                                    <Link to={`/products/${item.slug}`}>
+                                                        <div className="pro-thumb">
                                                             <img
-                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.Product.Product_Images[0].image}`}
-                                                                alt={`${process.env.REACT_APP_URL_BACKEND}/${item.Product.Product_Images[0].image}`}/>
+                                                                src={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}
+                                                                alt={`${process.env.REACT_APP_URL_BACKEND}/${item.image}`}/>
                                                         </div>
                                                     </Link>
+
+                                                    <div className="product-action-link">
+                                                        <button title='Xem nhanh'
+                                                                onClick={() => handleShowModalQuickView(item)}>
+                                                            <IoEyeOutline size={24}/>
+                                                        </button>
+                                                    </div>
                                                 </div>
 
                                                 {/*product content*/}
                                                 <div className="product-content d-flex flex-column gap-2">
                                                 <span style={{fontSize: "18px"}}>
                                                     <Link
-                                                        to={`/products/${item.Product.slug}`}>{item.Product.name}</Link>
+                                                        to={`/products/${item.slug}`}>{item.name}</Link>
                                                 </span>
                                                     <div className="productRating">
-                                                        {parseFloat(item.Product.averageRating) > 0 && (
+                                                        {parseFloat(item.averageRating) > 0 && (
                                                             <RatingOnlyView
-                                                                value={parseFloat(item.Product.averageRating)}/>
+                                                                value={parseFloat(item.averageRating)}/>
                                                         )}
                                                     </div>
                                                     <div
-                                                        className={`price-container ${item.Product.isSale ? 'on-sale' : ''}`}>
-                                                        {item.Product.isSale && (
+                                                        className={`price-container ${item.isSale ? 'on-sale' : ''}`}>
+                                                        {item.isSale && (
                                                             <span
-                                                                className="original-price">{formatCurrency(item.Product.price)}</span>
+                                                                className="original-price">{formatCurrency(item.price)}</span>
                                                         )}
-                                                        <span className={item.Product.isSale ? 'sale-price' : ''}>
-                                                      {item.Product.isSale ? formatCurrency(item.Product.price_sale) : formatCurrency(item.Product.price)}
+                                                        <span className={item.isSale ? 'sale-price' : ''}>
+                                                      {item.isSale ? formatCurrency(item.price_sale) : formatCurrency(item.price)}
                                                     </span>
                                                     </div>
                                                     <div>
                                                     <span title='Yêu thích'
                                                           style={{cursor: "pointer", color: "#1178f2"}}
-                                                          onClick={() => handleDeleteWishListItem(item.productId)}>
+                                                          onClick={() => handleDeleteWishListItem(item.id)}>
                                                            <IoHeartSharp size={25}/>
                                                         </span>
                                                     </div>
@@ -125,6 +147,13 @@ const WishList = () => {
                 </div>
             </div>
         </div>
+
+        <ModalQuickView
+            isShowModalQuickView={isShowModalQuickView}
+            handleCloseModalQuickView={handleCloseModalQuickView}
+            dataQuickView={dataQuickView}
+        />
+    </>
     );
 };
 

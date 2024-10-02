@@ -383,7 +383,7 @@ const CheckOutPage = () => {
                 <div className="mt-5">
                     <div className="container-fluid ps-5 pe-5">
                         <div className="row">
-                            <div className="col-md-6 mb-4">
+                            <div className="col-xl-6 mb-4">
                                 <div className="card">
                                     <div className="card-header">
                                         <h5 className="mb-0 mt-1">Thông tin đơn hàng</h5>
@@ -479,7 +479,7 @@ const CheckOutPage = () => {
                                 </div>
                             </div>
 
-                            <div className="col-md-6 mb-4">
+                            <div className="col-xl-6 mb-4">
                                 <div className="card">
                                 <div className="card-header">
                                         <h5 className="mb-0 mt-1">Thông tin vận chuyển</h5>

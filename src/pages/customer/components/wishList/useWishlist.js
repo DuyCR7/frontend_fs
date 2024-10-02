@@ -38,7 +38,7 @@ export const useWishlist = () => {
     }, [customer.isAuthenticated, dispatch]);
 
     const isInWishlist = (productId) => {
-        return wishList.some(item => item.productId === productId);
+        return wishList.some(item => item.id === productId);
     };
 
     const handleWishlistAction = async (product) => {

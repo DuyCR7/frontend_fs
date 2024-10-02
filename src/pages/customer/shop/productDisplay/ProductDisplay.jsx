@@ -294,12 +294,6 @@ console.log(productData);
                     <IoCartOutline size={22}/>
                     <span>Giỏ hàng</span>
                 </button>
-                <button className="btn btn-outline-success d-flex align-items-center gap-1"
-                        disabled={loadingDisplay}
-                        onClick={() => handleAddToCart()}>
-                    <PiMoney size={22}/>
-                    <span>Mua ngay</span>
-                </button>
             </div>
         </div>
     );

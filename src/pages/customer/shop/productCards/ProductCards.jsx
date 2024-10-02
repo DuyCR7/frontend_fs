@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
-import Rating from "../../components/rating/Rating.jsx";
+import React, { useState} from 'react';
+import {Link} from "react-router-dom";
 import {formatCurrency} from "../../../../utils/formatCurrency";
 import "./productCards.scss";
-import {IoCartOutline, IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
+import {IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import ModalQuickView from "../../components/modal/ModalQuickView";
 import {useSelector} from "react-redux";
 import {useWishlist} from "../../components/wishList/useWishlist";

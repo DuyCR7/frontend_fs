@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import "./adChat.scss";
 import InputEmoji from "react-input-emoji";
 import { IoClose } from "react-icons/io5";
-import { FaUser } from "react-icons/fa";
 import {
     getAdminChats,
     getMessages,
@@ -248,7 +247,7 @@ const AdChat = () => {
     console.log(selectedChat);
     return (
         <div className="page-inner admin-chatbox">
-            <div className="chat-list">
+            <div className="chat-list mb-4 mb-md-0">
                 <h2>Danh sách chat</h2>
                 {chats.map((chat) => {
                     return (
