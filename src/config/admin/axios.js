@@ -6,6 +6,7 @@ import {store} from "../../redux/store";
 import nProgress from "nprogress";
 import {resetUser} from "../../redux/admin/slices/userSlice";
 import {logoutUser} from "../../services/admin/authService";
+import {disconnectSocket} from "../../services/socket/socket";
 
 nProgress.configure({
     showSpinner: false,
@@ -121,12 +122,15 @@ instance.interceptors.response.use(function (response) {
     switch (status) {
         // authentication (token related issues)
         case 401: {
+            console.log(hasAuthError);
             if (!hasAuthError) {
                 hasAuthError = true;
                 const res = await logoutUser();
                 if (res && res.EC === 0) {
+                    disconnectSocket();
                     localStorage.removeItem("jwt");
                     await store.dispatch(resetUser());
+                    hasAuthError = false;
 
                     if (window.location.pathname !== '/admin'
                         && window.location.pathname !== '/admin/sign-in') {

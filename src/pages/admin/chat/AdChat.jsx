@@ -13,9 +13,8 @@ import {useSelector} from "react-redux";
 import {formatCurrency} from "../../../utils/formatCurrency";
 import moment from "moment";
 import 'moment/locale/vi';
-import { io } from "socket.io-client";
 import {debounce} from "lodash";
-import {connectSocket, disconnectSocket, emitSocket, onSocket} from "../../../services/socket/socket";
+import {connectSocket, emitSocket, offSocket, onSocket} from "../../../services/socket/socket";
 
 const AdChat = () => {
 
@@ -27,18 +26,23 @@ const AdChat = () => {
     const user = useSelector(state => state.user);
     const scroll = useRef();
 
-    // const [socket, setSocket] = useState(null);
+    const [onlineCustomers, setOnlineCustomers] = useState([]);
 
     const debouncedMarkMessagesAsRead = useCallback(
         debounce((chatId, userId) => {
             markMessagesAsRead(chatId, userId, 'user');
         }, 500), []
     );
-
+console.log(onlineCustomers);
     useEffect(() => {
-        // const newSocket = io(process.env.REACT_APP_URL_SOCKET);
-        // setSocket(newSocket);
+
         connectSocket();
+
+        emitSocket("getOnlineCustomers");
+
+        onSocket("updateOnlineCustomers", (res) => {
+            setOnlineCustomers(res);
+        })
 
         onSocket("receiveMessage", async (message) => {
             setChats(prevChats => {
@@ -73,8 +77,8 @@ const AdChat = () => {
         });
 
         return () => {
-            // newSocket.disconnect();
-            disconnectSocket();
+            offSocket("updateOnlineCustomers");
+            offSocket("receiveMessage");
         }
     }, [selectedChat, debouncedMarkMessagesAsRead]);
 
@@ -260,11 +264,16 @@ const AdChat = () => {
                             className={`chat-item ${selectedChat?.id === chat.id ? 'selected' : ''}`}
                             onClick={() => handleChatSelect(chat)}
                         >
-                            <img src={chat.Customer.image.startsWith('https')
-                                ? chat.Customer.image
-                                : `${process.env.REACT_APP_URL_BACKEND}/${chat.Customer.image}`}
-                                 alt={chat.Customer.email}
-                                 className="chat-avatar"/>
+                            <div className="avatar-container">
+                                <img src={chat.Customer.image.startsWith('https')
+                                    ? chat.Customer.image
+                                    : `${process.env.REACT_APP_URL_BACKEND}/${chat.Customer.image}`}
+                                     alt={chat.Customer.email}
+                                     className="chat-avatar"/>
+                                {onlineCustomers?.some((cus) => cus?.cusId === chat.Customer.id) && (
+                                    <span className="online-status"></span>
+                                )}
+                            </div>
                             <div className="chat-info">
                                 <h3>{chat.Customer.email}</h3>
                                 <p> {

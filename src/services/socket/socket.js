@@ -28,3 +28,9 @@ export const emitSocket = (event, data) => {
     }
     socket.emit(event, data);
 };
+
+export const offSocket = (event) => {
+    if (socket) {
+        socket.off(event);
+    }
+}

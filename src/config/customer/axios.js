@@ -7,6 +7,7 @@ import nProgress from "nprogress";
 import {resetCustomer, updateCartCount, updateWishListCount} from "../../redux/customer/slices/customerSlice";
 import {setUnreadCount} from "../../redux/customer/slices/chatSlice";
 import {logoutCustomer} from "../../services/customer/authService";
+import {disconnectSocket} from "../../services/socket/socket";
 
 nProgress.configure({
     showSpinner: false,
@@ -126,10 +127,12 @@ instance.interceptors.response.use(function (response) {
                 hasAuthError = true;
                 const res = await logoutCustomer();
                 if (res && res.EC === 0) {
+                    disconnectSocket();
                     localStorage.removeItem("cus_jwt");
                     await store.dispatch(resetCustomer());
                     await store.dispatch(updateCartCount(0));
                     await store.dispatch(updateWishListCount(0));
+                    hasAuthError = false;
 
                     if (window.location.pathname !== '/'
                         && window.location.pathname !== '/sign-in'

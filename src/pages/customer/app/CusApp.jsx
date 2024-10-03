@@ -12,7 +12,7 @@ import ChatBox from "../components/chatBox/ChatBox";
 import {useDispatch, useSelector} from "react-redux";
 import {closeChatBox, openChatBox, setUnreadCount} from "../../../redux/customer/slices/chatSlice";
 import {getUnreadMessageCount} from "../../../services/chatService";
-import {connectSocket, disconnectSocket, onSocket} from "../../../services/socket/socket";
+import {connectSocket, disconnectSocket, emitSocket, offSocket, onSocket} from "../../../services/socket/socket";
 import {toast} from "react-toastify";
 import {logoutCustomer} from "../../../services/customer/authService";
 import {resetCustomer, updateCartCount, updateWishListCount} from "../../../redux/customer/slices/customerSlice";
@@ -33,6 +33,8 @@ const CusApp = () => {
     useEffect(() => {
         connectSocket();
 
+        emitSocket("addNewCustomer", customer.id);
+
         onSocket("receiveMessage", async (message) => {
             if (message.senderType === 'user' && !isOpenChatBox) {
                 const response = await getUnreadMessageCount(customer.id, 'customer');
@@ -48,6 +50,7 @@ const CusApp = () => {
                 setShowLockModal(true);
                 let data = await logoutCustomer(); // clear cookie
                 if (data && data.EC === 0) {
+                    disconnectSocket();
                     localStorage.removeItem("cus_jwt"); // clear local storage
                     dispatch(resetCustomer());
                     dispatch(updateCartCount(0));
@@ -60,7 +63,8 @@ const CusApp = () => {
         })
 
         return () => {
-            disconnectSocket();
+            offSocket("receiveMessage");
+            offSocket("lockCustomer");
         };
     }, [isOpenChatBox, unreadCount, dispatch]);
 

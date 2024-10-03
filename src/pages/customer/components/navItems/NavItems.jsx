@@ -9,6 +9,7 @@ import {IoCartOutline, IoCloseOutline, IoHeartOutline, IoSearchOutline} from "re
 import { AiOutlineUser } from "react-icons/ai";
 import useDebounce from "../../../../utils/useDebounce";
 import {getAllForSearch} from "../../../../services/customer/homeService";
+import {disconnectSocket} from "../../../../services/socket/socket";
 
 const NavItems = () => {
 
@@ -20,6 +21,7 @@ const NavItems = () => {
         try {
             let data = await logoutCustomer(); // clear cookie
             if (data && data.EC === 0) {
+                disconnectSocket();
                 localStorage.removeItem("cus_jwt"); // clear local storage
                 dispatch(resetCustomer());
                 dispatch(updateCartCount(0));

@@ -9,8 +9,7 @@ import {createOrUpdateChat, getMessages, markMessagesAsRead, sendMessage} from "
 import moment from "moment";
 import 'moment/locale/vi';
 import {Link} from "react-router-dom";
-import {io} from "socket.io-client";
-import {connectSocket, disconnectSocket, emitSocket, onSocket} from "../../../../services/socket/socket";
+import {connectSocket, emitSocket, offSocket, onSocket} from "../../../../services/socket/socket";
 
 const ChatBox = () => {
 
@@ -24,11 +23,8 @@ const ChatBox = () => {
     const [messages, setMessages] = useState([]);
 
     const scroll = useRef();
-    // const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        // const newSocket = io(process.env.REACT_APP_URL_SOCKET);
-        // setSocket(newSocket);
         connectSocket();
 
         onSocket("receiveMessage", async (message) => {
@@ -40,8 +36,7 @@ const ChatBox = () => {
         });
 
         return () => {
-            // newSocket.disconnect();
-            disconnectSocket();
+            offSocket("receiveMessage");
         };
     }, [chat]);
 

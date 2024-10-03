@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import { Spin } from 'antd';
 import {resetUser} from "../../../redux/admin/slices/userSlice";
 import {useState} from "react";
+import {disconnectSocket} from "../../../services/socket/socket";
 
 const AdNavbarHeader = (props) => {
 
@@ -19,6 +20,7 @@ const AdNavbarHeader = (props) => {
             let data = await logoutUser(); // clear cookie
             // logoutContext(); // clear user in context
             if (data && data.EC === 0) {
+                disconnectSocket();
                 localStorage.removeItem("jwt"); // clear local storage
                 dispatch(resetUser());
 
