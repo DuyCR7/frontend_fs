@@ -10,6 +10,7 @@ import moment from "moment";
 import 'moment/locale/vi';
 import {Link} from "react-router-dom";
 import {io} from "socket.io-client";
+import {connectSocket, disconnectSocket, emitSocket, onSocket} from "../../../../services/socket/socket";
 
 const ChatBox = () => {
 
@@ -23,13 +24,14 @@ const ChatBox = () => {
     const [messages, setMessages] = useState([]);
 
     const scroll = useRef();
-    const [socket, setSocket] = useState(null);
+    // const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io(process.env.REACT_APP_URL_SOCKET);
-        setSocket(newSocket);
+        // const newSocket = io(process.env.REACT_APP_URL_SOCKET);
+        // setSocket(newSocket);
+        connectSocket();
 
-        newSocket.on("receiveMessage", async (message) => {
+        onSocket("receiveMessage", async (message) => {
             if (message.chatId === chat?.id) {
                 setMessages(prevMessages => [...prevMessages, message]);
 
@@ -38,7 +40,8 @@ const ChatBox = () => {
         });
 
         return () => {
-            newSocket.disconnect();
+            // newSocket.disconnect();
+            disconnectSocket();
         };
     }, [chat]);
 
@@ -52,7 +55,8 @@ const ChatBox = () => {
                 setMessages(prevMessages => [...prevMessages, newMessage]);
 
                 // Emit new message to server
-                socket.emit("sendMessage", newMessage);
+                // socket.emit("sendMessage", newMessage);
+                emitSocket("sendMessage", newMessage);
                 dispatch(setCurrentProduct());
                 setTextMessage("");
             } else {

@@ -1,4 +1,3 @@
-// import './App.scss';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdApp from "./pages/admin/app/AdApp";
 import AdSignIn from "./pages/admin/auth/AdSignIn";
@@ -39,6 +38,7 @@ import ChangeEmail from "./pages/customer/profile/ChangeEmail";
 import VerifyAndResetPassword from "./pages/customer/auth/verifyAndResetPassword/VerifyAndResetPassword";
 import AdVoucher from "./pages/admin/voucher/AdVoucher";
 import Voucher from "./pages/customer/voucher/Voucher";
+import AdManageCustomer from "./pages/admin/manage-customer/AdManageCustomer";
 
 const App = () => {
     return (
@@ -62,6 +62,7 @@ const App = () => {
                     <Route path="sizes-colors" element={<AdSizeColor />}/>
                     <Route path="products" element={<AdProduct />}/>
                     <Route path="orders" element={<AdOrder />}/>
+                    <Route path="manage-customers" element={<AdManageCustomer />}/>
                     <Route path="chats" element={<AdChat />}/>
 
                     <Route path="*" element={<NotFoundPageAd />}/>

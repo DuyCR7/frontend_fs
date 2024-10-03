@@ -15,6 +15,7 @@ import moment from "moment";
 import 'moment/locale/vi';
 import { io } from "socket.io-client";
 import {debounce} from "lodash";
+import {connectSocket, disconnectSocket, emitSocket, onSocket} from "../../../services/socket/socket";
 
 const AdChat = () => {
 
@@ -26,7 +27,7 @@ const AdChat = () => {
     const user = useSelector(state => state.user);
     const scroll = useRef();
 
-    const [socket, setSocket] = useState(null);
+    // const [socket, setSocket] = useState(null);
 
     const debouncedMarkMessagesAsRead = useCallback(
         debounce((chatId, userId) => {
@@ -35,10 +36,11 @@ const AdChat = () => {
     );
 
     useEffect(() => {
-        const newSocket = io(process.env.REACT_APP_URL_SOCKET);
-        setSocket(newSocket);
+        // const newSocket = io(process.env.REACT_APP_URL_SOCKET);
+        // setSocket(newSocket);
+        connectSocket();
 
-        newSocket.on("receiveMessage", async (message) => {
+        onSocket("receiveMessage", async (message) => {
             setChats(prevChats => {
                 const existingChat = prevChats.find(chat => chat.id === message.chatId);
                 if (existingChat) {
@@ -71,7 +73,8 @@ const AdChat = () => {
         });
 
         return () => {
-            newSocket.disconnect();
+            // newSocket.disconnect();
+            disconnectSocket();
         }
     }, [selectedChat, debouncedMarkMessagesAsRead]);
 
@@ -156,7 +159,8 @@ const AdChat = () => {
                 const newMessage = res.DT;
                 setMessages(prevMessages => [...prevMessages, newMessage]);
                 setTextMessage("");
-                socket.emit("sendMessage", newMessage);
+                // socket.emit("sendMessage", newMessage);
+                emitSocket("sendMessage", newMessage);
 
                 setChats(prevChats => {
                     const updatedChats = prevChats.map(chat =>
