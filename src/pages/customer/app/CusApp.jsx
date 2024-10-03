@@ -11,8 +11,13 @@ import "../../../assets/css/style.min.css";
 import ChatBox from "../components/chatBox/ChatBox";
 import {useDispatch, useSelector} from "react-redux";
 import {closeChatBox, openChatBox, setUnreadCount} from "../../../redux/customer/slices/chatSlice";
-import {io} from "socket.io-client";
 import {getUnreadMessageCount} from "../../../services/chatService";
+import {connectSocket, disconnectSocket, onSocket} from "../../../services/socket/socket";
+import {toast} from "react-toastify";
+import {logoutCustomer} from "../../../services/customer/authService";
+import {resetCustomer, updateCartCount, updateWishListCount} from "../../../redux/customer/slices/customerSlice";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 const CusApp = () => {
 
@@ -22,19 +27,13 @@ const CusApp = () => {
     const [showScrollTopButton, setShowScrollTopButton] = useState(false);
     const { isOpenChatBox, unreadCount } = useSelector(state => state.chat);
     const customer = useSelector((state) => state.customer);
-    const [socket, setSocket] = useState(null);
+
+    const [showLockModal, setShowLockModal] = useState(false);
 
     useEffect(() => {
-        const newSocket = io(process.env.REACT_APP_URL_SOCKET);
-        setSocket(newSocket);
+        connectSocket();
 
-        return () => newSocket.disconnect();
-    }, []);
-
-    useEffect(() => {
-        if (socket === null) return;
-
-        socket.on("receiveMessage", async (message) => {
+        onSocket("receiveMessage", async (message) => {
             if (message.senderType === 'user' && !isOpenChatBox) {
                 const response = await getUnreadMessageCount(customer.id, 'customer');
                 if (response.EC === 0) {
@@ -43,10 +42,27 @@ const CusApp = () => {
             }
         });
 
+        onSocket("lockCustomer", async (data) => {
+            console.log(data);
+            if (data.cusId === customer.id) {
+                setShowLockModal(true);
+                let data = await logoutCustomer(); // clear cookie
+                if (data && data.EC === 0) {
+                    localStorage.removeItem("cus_jwt"); // clear local storage
+                    dispatch(resetCustomer());
+                    dispatch(updateCartCount(0));
+                    dispatch(updateWishListCount(0));
+
+                } else {
+                    toast.error(data.EM);
+                }
+            }
+        })
+
         return () => {
-            socket.off("receiveMessage");
+            disconnectSocket();
         };
-    }, [socket, isOpenChatBox, unreadCount, dispatch]);
+    }, [isOpenChatBox, unreadCount, dispatch]);
 
     useEffect(() => {
         const fetchUnreadCount = async () => {
@@ -88,8 +104,13 @@ const CusApp = () => {
     };
 
     useEffect(() => {
-        if (!customer.isAuthenticated && isOpenChatBox) {
-            dispatch(closeChatBox());
+        if (!customer.isAuthenticated) {
+            if (isOpenChatBox) {
+                dispatch(closeChatBox());
+            }
+            else {
+                dispatch(setUnreadCount(0));
+            }
         }
     }, [customer.isAuthenticated, isOpenChatBox, dispatch]);
 
@@ -128,6 +149,20 @@ const CusApp = () => {
             )}
 
             {isOpenChatBox && <ChatBox />}
+
+            <Modal show={showLockModal} onHide={() => setShowLockModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Tài khoản bị khóa</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Tài khoản của bạn đã bị khóa vì vi phạm chính sách. Vui lòng liên hệ chúng tôi để được hỗ trợ.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={() => setShowLockModal(false)}>
+                        OK
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };

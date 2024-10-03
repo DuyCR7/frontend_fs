@@ -5,6 +5,8 @@ import {store} from "../../redux/store";
 
 import nProgress from "nprogress";
 import {resetCustomer, updateCartCount, updateWishListCount} from "../../redux/customer/slices/customerSlice";
+import {setUnreadCount} from "../../redux/customer/slices/chatSlice";
+import {logoutCustomer} from "../../services/customer/authService";
 
 nProgress.configure({
     showSpinner: false,
@@ -25,6 +27,7 @@ instance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getIt
 let hasShown403Error = false;
 let isRefreshing = false;
 let refreshSubscribers = [];
+let hasAuthError = false;
 
 // Hàm để đăng ký các yêu cầu cần được làm mới token
 const subscribeTokenRefresh = (cb) => {
@@ -119,14 +122,25 @@ instance.interceptors.response.use(function (response) {
     switch (status) {
         // authentication (token related issues)
         case 401: {
-            await store.dispatch(resetCustomer());
-            await store.dispatch(updateCartCount(0));
-            await store.dispatch(updateWishListCount(0));
-            if (window.location.pathname !== '/'
-                && window.location.pathname !== '/sign-in'
-                && window.location.pathname !== '/sign-up') {
-                window.location.href = "/sign-in";
+            if (!hasAuthError) {
+                hasAuthError = true;
+                const res = await logoutCustomer();
+                if (res && res.EC === 0) {
+                    localStorage.removeItem("cus_jwt");
+                    await store.dispatch(resetCustomer());
+                    await store.dispatch(updateCartCount(0));
+                    await store.dispatch(updateWishListCount(0));
+
+                    if (window.location.pathname !== '/'
+                        && window.location.pathname !== '/sign-in'
+                        && window.location.pathname !== '/sign-up') {
+                        window.location.href = "/sign-in";
+                    }
+                } else {
+                    toast.error(res.EM);
+                }
             }
+
             nProgress.done();
             // toast.error(error.response.data.EM);
             return error.response.data;

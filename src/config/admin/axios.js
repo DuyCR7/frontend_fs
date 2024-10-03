@@ -5,6 +5,7 @@ import {store} from "../../redux/store";
 
 import nProgress from "nprogress";
 import {resetUser} from "../../redux/admin/slices/userSlice";
+import {logoutUser} from "../../services/admin/authService";
 
 nProgress.configure({
     showSpinner: false,
@@ -25,6 +26,7 @@ instance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getIt
 let hasShown403Error = false;
 let isRefreshing = false;
 let refreshSubscribers = [];
+let hasAuthError = false;
 
 // Hàm để đăng ký các yêu cầu cần được làm mới token
 const subscribeTokenRefresh = (cb) => {
@@ -119,11 +121,22 @@ instance.interceptors.response.use(function (response) {
     switch (status) {
         // authentication (token related issues)
         case 401: {
-            await store.dispatch(resetUser());
-            if (window.location.pathname !== '/admin'
-                && window.location.pathname !== '/admin/sign-in') {
-                window.location.href = "/admin/sign-in";
+            if (!hasAuthError) {
+                hasAuthError = true;
+                const res = await logoutUser();
+                if (res && res.EC === 0) {
+                    localStorage.removeItem("jwt");
+                    await store.dispatch(resetUser());
+
+                    if (window.location.pathname !== '/admin'
+                        && window.location.pathname !== '/admin/sign-in') {
+                        window.location.href = "/admin/sign-in";
+                    }
+                } else {
+                    toast.error(res.EM);
+                }
             }
+
             nProgress.done();
             return error.response.data;
         }

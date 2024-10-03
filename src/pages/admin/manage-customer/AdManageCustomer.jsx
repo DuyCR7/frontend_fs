@@ -23,6 +23,7 @@ const AdManageCustomer = () => {
 
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'DESC' });
 
+    const [actionModalLockCustomer, setActionModalLockCustomer] = useState("LOCK");
     const [isShowModalLockCustomer, setIsShowModalLockCustomer] = useState(false);
     const [customerToLock, setCustomerToLock] = useState({});
 
@@ -77,6 +78,13 @@ const AdManageCustomer = () => {
     }
 
     const handleLockCustomer = (customer) => {
+        setActionModalLockCustomer("LOCK");
+        setIsShowModalLockCustomer(true);
+        setCustomerToLock(customer);
+    }
+
+    const handleUnLockCustomer = (customer) => {
+        setActionModalLockCustomer("UNLOCK");
         setIsShowModalLockCustomer(true);
         setCustomerToLock(customer);
     }
@@ -162,7 +170,7 @@ const AdManageCustomer = () => {
                                                                                         color: "red",
                                                                                         cursor: "pointer"
                                                                                     }}
-                                                                                    onClick={() => handleLockCustomer(item)}
+                                                                                    onClick={() => handleUnLockCustomer(item)}
                                                                 />
                                                             }
                                                         </td>
@@ -240,6 +248,7 @@ const AdManageCustomer = () => {
                 numRows={numRows}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
+                actionModalLockCustomer={actionModalLockCustomer}
             />
         </>
     );

@@ -73,6 +73,7 @@ const GoogleLoginSuccess = (props) => {
                 toast.success(res.EM);
                 navigate('/');
             } else {
+                toast.error(res.EM);
                 navigate('/sign-in')
             }
         } catch (e) {

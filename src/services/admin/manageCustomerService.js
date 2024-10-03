@@ -15,6 +15,20 @@ const getAllCustomers = (page, limit, search = "", sort = {}) => {
     return axios.get(query);
 }
 
+const lockCustomer = (cusId) => {
+    return axios.put(`/api/v1/admin/customer/lock`, {
+        cusId: cusId,
+    });
+}
+
+const unlockCustomer = (cusId) => {
+    return axios.put(`/api/v1/admin/customer/unlock`, {
+        cusId: cusId,
+    });
+}
+
 export {
     getAllCustomers,
+    lockCustomer,
+    unlockCustomer,
 }
