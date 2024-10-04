@@ -35,8 +35,15 @@ const getOrderStatus = (type, value) => {
     })
 }
 
-const getAvailableProduct = (page, limit) => {
-    return axios.get(`/api/v1/admin/statistic/get-available-product?page=${page}&limit=${limit}`);
+const getAvailableProduct = (page, limit, sortField, sortOrder) => {
+    return axios.get(`/api/v1/admin/statistic/get-available-product`, {
+        params: {
+            page,
+            limit,
+            sortField,
+            sortOrder
+        }
+    });
 }
 
 export {

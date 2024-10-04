@@ -4,6 +4,7 @@ import {getAvailableProduct} from "../../../../services/admin/statisticService";
 import {Spin} from "antd";
 import ReactPaginate from "react-paginate";
 import "./availableProduct.scss";
+import {FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa";
 
 const AvailableProduct = () => {
 
@@ -14,14 +15,17 @@ const AvailableProduct = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [numRows, setNumRows] = useState(10);
 
-    useEffect(() => {
-        fetchData(currentPage, numRows);
-    }, [currentPage, numRows]);
+    const [sortField, setSortField] = useState('');
+    const [sortOrder, setSortOrder] = useState('asc');
 
-    const fetchData = async (page, limit) => {
+    useEffect(() => {
+        fetchData(currentPage, numRows, sortField, sortOrder);
+    }, [currentPage, numRows, sortField, sortOrder]);
+
+    const fetchData = async (page, limit, sortField, sortOrder) => {
         setLoading(true);
         try {
-            let res = await getAvailableProduct(page, limit);
+            let res = await getAvailableProduct(page, limit, sortField, sortOrder);
             if (res && res.EC === 0) {
                 setData(res.DT.products);
                 setTotalPages(res.DT.totalPages);
@@ -48,7 +52,26 @@ const AvailableProduct = () => {
     const handleRefresh = () => {
         setCurrentPage(1);
         setNumRows(10);
+        setSortField('');
+        setSortOrder('asc');
     }
+
+    const handleSort = (field) => {
+        if (sortField === field) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortField(field);
+            setSortOrder('asc');
+        }
+    }
+
+    const getSortIcon = (field) => {
+        if (sortField === field) {
+            return sortOrder === 'asc' ? <FaLongArrowAltUp /> : <FaLongArrowAltDown />
+        }
+        return null;
+    }
+
     console.log(data);
     return (
         <div className="card available-product">
@@ -67,8 +90,12 @@ const AvailableProduct = () => {
                                 <th scope="col">STT</th>
                                 <th scope="col">Mã</th>
                                 <th scope="col">Sản phẩm</th>
-                                <th scope="col">Số lượng còn lại</th>
-                                <th scope="col">Số lượng đã bán</th>
+                                <th scope="col" onClick={() => handleSort('quantity')} style={{cursor: 'pointer'}}>
+                                    Số lượng còn lại {getSortIcon('quantity')}
+                                </th>
+                                <th scope="col" onClick={() => handleSort('soldQuantity')} style={{cursor: 'pointer'}}>
+                                    Số lượng đã bán {getSortIcon('soldQuantity')}
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
