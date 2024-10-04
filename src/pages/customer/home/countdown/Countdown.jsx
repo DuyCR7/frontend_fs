@@ -19,7 +19,7 @@ const Countdown = () => {
             if(res && res.EC === 0) {
                 setEventFootball(res.DT);
             } else {
-                toast.error(res.EM);
+                console.error(res.EM);
             }
         } catch (e) {
             console.error(e);

@@ -39,6 +39,7 @@ import VerifyAndResetPassword from "./pages/customer/auth/verifyAndResetPassword
 import AdVoucher from "./pages/admin/voucher/AdVoucher";
 import Voucher from "./pages/customer/voucher/Voucher";
 import AdManageCustomer from "./pages/admin/manage-customer/AdManageCustomer";
+import AdProfile from "./pages/admin/profile/AdProfile";
 
 const App = () => {
     return (
@@ -64,6 +65,7 @@ const App = () => {
                     <Route path="orders" element={<AdOrder />}/>
                     <Route path="manage-customers" element={<AdManageCustomer />}/>
                     <Route path="chats" element={<AdChat />}/>
+                    <Route path="profiles" element={<AdProfile />}/>
 
                     <Route path="*" element={<NotFoundPageAd />}/>
                 </Route>

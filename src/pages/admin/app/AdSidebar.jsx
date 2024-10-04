@@ -9,7 +9,6 @@ const AdSidebar = (props) => {
     const [activeGroup, setActiveGroup] = useState(null);
 
     useEffect(() => {
-        console.log(location.pathname);
         const path = location.pathname;
         if (path.includes("/admin/categories")) {
             setActiveItem("categories");
@@ -44,6 +43,9 @@ const AdSidebar = (props) => {
         } else if (path.includes('/admin/chats')) {
             setActiveItem("chats");
             setActiveGroup(null);
+        } else if (path.includes('/admin/profiles')) {
+            setActiveItem("profiles");
+            setActiveGroup(null);
         } else if (path.includes("/admin")) {
             setActiveItem("dashboard");
             setActiveGroup(null);
@@ -52,7 +54,8 @@ const AdSidebar = (props) => {
             setActiveGroup(null);
         }
     }, [location]);
-
+    console.log(location.pathname);
+console.log(activeItem);
     return (
         <>
             {/*AdSidebar*/}

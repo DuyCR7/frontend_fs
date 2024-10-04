@@ -22,6 +22,8 @@ const Profile = () => {
     const fileInputRef = useRef(null);
     const [loading, setLoading] = useState(false);
 
+    const [imageChanged, setImageChanged] = useState(false);
+
     const [isShowModalChangePassword, setIsShowModalChangePassword] = useState(false);
 
     useEffect(() => {
@@ -30,7 +32,7 @@ const Profile = () => {
         } else {
             fetchMyProfile();
         }
-    }, [customer, navigate]);
+    }, [customer.isAuthenticated, navigate]);
 
     useEffect(() => {
         return () => {
@@ -64,7 +66,7 @@ const Profile = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            let res = await updateProfile(profile.fullname, profile.username, profile.phone, profile.sex, profile.birthdate, imageFile);
+            let res = await updateProfile(profile.fullname, profile.username, profile.phone, profile.sex, profile.birthdate, imageChanged ? imageFile : null);
             if (res && res.EC === 0) {
                 toast.success(res.EM);
                 await fetchMyProfile();
@@ -76,6 +78,9 @@ const Profile = () => {
                         image: imageUrl
                     }));
                 }
+
+                setImageChanged(false);
+
             } else {
                 toast.warn(res.EM);
             }
@@ -95,6 +100,7 @@ const Profile = () => {
             const file = e.target.files[0];
             setImageFile(file);
             setImagePreview(URL.createObjectURL(file));
+            setImageChanged(true);
         }
     };
 

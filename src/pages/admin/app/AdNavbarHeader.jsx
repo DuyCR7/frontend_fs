@@ -1,11 +1,12 @@
 import {useDispatch, useSelector} from "react-redux";
 import {logoutUser} from "../../../services/admin/authService";
 import {toast} from "react-toastify";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { Spin } from 'antd';
 import {resetUser} from "../../../redux/admin/slices/userSlice";
 import {useState} from "react";
 import {disconnectSocket} from "../../../services/socket/socket";
+import {CgLogOut, CgProfile} from "react-icons/cg";
 
 const AdNavbarHeader = (props) => {
 
@@ -18,7 +19,6 @@ const AdNavbarHeader = (props) => {
         setLoading(true);
         try {
             let data = await logoutUser(); // clear cookie
-            // logoutContext(); // clear user in context
             if (data && data.EC === 0) {
                 disconnectSocket();
                 localStorage.removeItem("jwt"); // clear local storage
@@ -118,7 +118,7 @@ const AdNavbarHeader = (props) => {
                                                 <div className="notif-img">
                                                     <img
                                                         src="/admin/assets/img/jm_denis.jpg"
-                                                        alt="Img Profile"
+                                                        alt="Img AdProfile"
                                                     />
                                                 </div>
                                                 <div className="notif-content">
@@ -131,7 +131,7 @@ const AdNavbarHeader = (props) => {
                                                 <div className="notif-img">
                                                     <img
                                                         src="/admin/assets/img/chadengle.jpg"
-                                                        alt="Img Profile"
+                                                        alt="Img AdProfile"
                                                     />
                                                 </div>
                                                 <div className="notif-content">
@@ -144,7 +144,7 @@ const AdNavbarHeader = (props) => {
                                                 <div className="notif-img">
                                                     <img
                                                         src="/admin/assets/img/mlane.jpg"
-                                                        alt="Img Profile"
+                                                        alt="Img AdProfile"
                                                     />
                                                 </div>
                                                 <div className="notif-content">
@@ -159,7 +159,7 @@ const AdNavbarHeader = (props) => {
                                                 <div className="notif-img">
                                                     <img
                                                         src="/admin/assets/img/talha.jpg"
-                                                        alt="Img Profile"
+                                                        alt="Img AdProfile"
                                                     />
                                                 </div>
                                                 <div className="notif-content">
@@ -227,7 +227,7 @@ const AdNavbarHeader = (props) => {
                                                 <div className="notif-img">
                                                     <img
                                                         src="/admin/assets/img/profile2.jpg"
-                                                        alt="Img Profile"
+                                                        alt="Img AdProfile"
                                                     />
                                                 </div>
                                                 <div className="notif-content">
@@ -336,15 +336,15 @@ const AdNavbarHeader = (props) => {
                         </li>
                         <li className="nav-item topbar-user dropdown hidden-caret">
 
-                            <a
+                            <div
                                 className="dropdown-toggle profile-pic"
                                 data-bs-toggle="dropdown"
-                                href="#"
                                 aria-expanded="false"
+                                style={{cursor: "pointer"}}
                             >
                                 <div className="avatar-sm">
                                     <img
-                                        src={user?.image ? `${process.env.REACT_APP_URL_BACKEND}/${user?.image}` : ""}
+                                        src={user?.image ? user?.image : ""}
                                         alt="avatar"
                                         className="avatar-img rounded-circle"
                                     />
@@ -353,14 +353,14 @@ const AdNavbarHeader = (props) => {
                                   <span className="op-7">Xin chào, </span>
                                   <span className="fw-bold">{user?.username ? user?.username : "User"}</span>
                                 </span>
-                            </a>
+                            </div>
                             <ul className="dropdown-menu dropdown-user animated fadeIn">
                                 <div className="dropdown-user-scroll scrollbar-outer">
                                     <li>
                                         <div className="user-box">
                                             <div className="avatar-lg">
                                                 <img
-                                                    src={user?.image ? `${process.env.REACT_APP_URL_BACKEND}/${user?.image}` : ""}
+                                                    src={user?.image ? user?.image : ""}
                                                     alt="image profile"
                                                     className="avatar-img rounded"
                                                 />
@@ -368,21 +368,15 @@ const AdNavbarHeader = (props) => {
                                             <div className="u-text">
                                                 <h4>{user?.username ? user?.username : "User"}</h4>
                                                 <p className="text-muted">{user?.email ? user?.email : "Email"}</p>
-                                                <a
-                                                    href="profile.html"
-                                                    className="btn btn-xs btn-secondary btn-sm"
-                                                >Thông tin</a
-                                                >
                                             </div>
                                         </div>
                                     </li>
                                     <li>
                                         <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">My Profile</a>
-                                        <a className="dropdown-item" href="#">My Balance</a>
-                                        <a className="dropdown-item" href="#">Inbox</a>
-                                        <div className="dropdown-divider"></div>
-                                        <a className="dropdown-item" href="#">Account Setting</a>
+                                        <Link
+                                            to={`/admin/profiles`}
+                                            className="dropdown-item"
+                                        ><CgProfile size={20}/> Thông tin</Link>
                                         <div className="dropdown-divider"></div>
                                         <Spin spinning={loading}>
                                             <button
@@ -390,7 +384,7 @@ const AdNavbarHeader = (props) => {
                                                 className="dropdown-item"
                                                 onClick={() => handleLogout()}
                                                 disabled={loading}
-                                            >Logout
+                                            ><CgLogOut size={20}/> Đăng xuất
                                             </button>
                                         </Spin>
                                     </li>

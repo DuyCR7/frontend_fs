@@ -41,7 +41,7 @@ const Shop = () => {
     const priceRangeRef = useRef(priceRange);
 
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(8);  // Số sản phẩm trên mỗi trang
+    const [limit, setLimit] = useState(20);  // Số sản phẩm trên mỗi trang
     const [totalPages, setTotalPages] = useState(1);
     const [totalRows, setTotalRows] = useState(1);
 

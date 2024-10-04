@@ -1,0 +1,98 @@
+.ad-profile-page {
+  .ad-my-profiles {
+
+    .section-wrapper {
+      background-color: #fbfbfb;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+      .image-container {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+
+        .profile-image {
+          width: 150px;
+          height: 150px;
+          object-fit: cover;
+          border: 3px solid #fff;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          transition: filter 0.3s ease;
+        }
+
+        .image-overlay {
+          position: absolute;
+          width: 150px;
+          height: 150px;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          border-radius: 50%;
+        }
+
+        &:hover {
+          .profile-image {
+            filter: brightness(80%);
+          }
+
+          .image-overlay {
+            opacity: 1;
+          }
+        }
+
+        .image-overlay span {
+          color: #fff;
+          text-align: center;
+        }
+      }
+
+      h3 {
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+
+      .form-control, .form-select {
+        &:disabled {
+          background-color: #e9ecef;
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 767px) {
+        padding: 1rem;
+
+        .profile-image {
+          width: 100px;
+          height: 100px;
+        }
+
+        h3 {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+
+  .ad-profile-page {
+
+    .form-group {
+      margin-bottom: 1rem !important;
+    }
+
+    .btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
