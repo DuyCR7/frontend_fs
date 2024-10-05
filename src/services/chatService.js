@@ -20,6 +20,10 @@ const getMessages = (chatId) => {
     return axios.get(`/api/v1/chat/get-messages/${chatId}`);
 }
 
+const getLastMessage = (chatId) => {
+    return axios.get(`/api/v1/chat/get-last-message/${chatId}`);
+}
+
 const getAdminChats = (userId) => {
     return axios.get(`/api/v1/chat/get-admin-chats/${userId}`);
 }
@@ -53,6 +57,7 @@ export {
     createOrUpdateChat,
     sendMessage,
     getMessages,
+    getLastMessage,
     getAdminChats,
     getUnreadMessageCount,
     markMessagesAsRead,

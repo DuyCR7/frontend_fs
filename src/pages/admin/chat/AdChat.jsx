@@ -3,7 +3,7 @@ import "./adChat.scss";
 import InputEmoji from "react-input-emoji";
 import { IoClose } from "react-icons/io5";
 import {
-    getAdminChats,
+    getAdminChats, getLastMessage,
     getMessages,
     getUnreadMessageCount,
     markMessagesAsRead,
@@ -87,11 +87,11 @@ console.log(onlineCustomers);
             let res = await getAdminChats(user.id);
             if (res && res.EC === 0) {
                 const chatsWithLastMessage = await Promise.all(res.DT.map(async (chat) => {
-                    const messagesRes = await getMessages(chat.id);
+                    const lastMessageRes = await getLastMessage(chat.id);
                     const unreadCountRes = await getUnreadMessageCount(user.id, 'user', chat.id);
 
-                    if (messagesRes && messagesRes.EC === 0 && messagesRes.DT.length > 0) {
-                        const lastMessage = messagesRes.DT[messagesRes.DT.length - 1];
+                    if (lastMessageRes && lastMessageRes.EC === 0 && Object.keys(lastMessageRes.DT).length > 0) {
+                        const lastMessage = lastMessageRes.DT;
                         return {
                             ...chat,
                             lastMessage: lastMessage.content,
