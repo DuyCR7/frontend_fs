@@ -12,6 +12,7 @@ import ReactPaginate from "react-paginate";
 import ModalReview from "./ModalReview";
 import {addToCart} from "../../../services/customer/cartService";
 import {updateCartCount} from "../../../redux/customer/slices/customerSlice";
+import ModalCancel from "./ModalCancel";
 
 const MyOrder = () => {
 
@@ -26,6 +27,10 @@ const MyOrder = () => {
     const [isShowModalReview, setIsShowModalReview] = useState(false);
     const [dataReview, setDataReview] = useState(null);
     const [actionModalReview, setActionModalReview] = useState('CREATE');
+
+    const [isShowModalCancel, setIsShowModalCancel] = useState(false);
+    const [cancelReason, setCancelReason] = useState('');
+    const [orderToCancel, setOrderToCancel] = useState(null);
 
     const navigate = useNavigate();
 
@@ -73,13 +78,29 @@ const MyOrder = () => {
         scrollToTop();
     }
 
-    const handleCancelOrder = async (orderId) => {
+    const handleShowModalCancel = (orderId) => {
+        setOrderToCancel(orderId);
+        setIsShowModalCancel(true);
+    }
+
+    const handleCloseModalCancel = () => {
+        setOrderToCancel(null);
+        setIsShowModalCancel(false);
+        setCancelReason('');
+    }
+
+    const handleCancelOrder = async () => {
+        if (!cancelReason) {
+            toast.error('Vui lòng chọn lý do hủy đơn hàng');
+            return;
+        }
         setLoading(true);
         try {
-            let res = await cancelOrder(orderId);
+            let res = await cancelOrder(orderToCancel, cancelReason);
             if (res && res.EC === 0) {
                 toast.success(res.EM);
                 await fetchMyOrders(currentPage, numRows);
+                setIsShowModalCancel(false);
             } else {
                 toast.warn(res.EM);
             }
@@ -165,7 +186,7 @@ const MyOrder = () => {
                 <button
                     disabled={loading}
                     className="btn btn-sm btn-outline-danger"
-                    onClick={() => handleCancelOrder(order.id)}
+                    onClick={() => handleShowModalCancel(order.id)}
                 >
                     Hủy Đơn Hàng
                 </button>
@@ -183,6 +204,18 @@ const MyOrder = () => {
         }
         return null;
     };
+
+    const getCancelReasonText = (reason) => {
+        const reasonMap = {
+            "wrong_product": "Tôi đặt nhầm sản phẩm",
+            "update_address_phone": "Tôi muốn cập nhật địa chỉ/sđt nhận hàng",
+            "change_discount_code": "Tôi muốn thay đổi mã giảm giá",
+            "change_product": "Tôi muốn thay đổi sản phẩm (Kích thước, màu sắc, số lượng)",
+            "no_longer_want_to_buy": "Tôi không có nhu cầu mua nữa",
+            "no_reason_fits": "Tôi không tìm thấy lý do phù hợp"
+        };
+        return reasonMap[reason] || reasonMap;
+    }
 
     const renderReviewButton = (detail) => {
         const hasReviewed = detail.Product_Detail.Product.Reviews;
@@ -214,7 +247,7 @@ const MyOrder = () => {
         return order?.Order_Details.reduce((total, detail) => total + (detail.price * detail.quantity), 0) || 0;
     };
 
-    console.log(orders);
+    console.log(orderToCancel);
 
     return (
         <>
@@ -298,10 +331,28 @@ const MyOrder = () => {
                                                                         <strong>Trạng thái:</strong>
                                                                         <span
                                                                             className={`order-status ${getOrderStatus(order.status).class}`}>
-                                                                        {getOrderStatus(order.status).text}
-                                                                    </span>
-                                                                        <hr/>
+                                                                            {getOrderStatus(order.status).text}
+                                                                        </span>
+                                                                        {
+                                                                            order.status !== 1 && (
+                                                                                <span
+                                                                                    className="ms-3">({formatDate(order.updatedAt)})</span>
+                                                                            )
+                                                                        }
                                                                     </div>
+                                                                    {
+                                                                        order.note && (
+                                                                            <div className="info-item">
+                                                                                <strong>Ghi chú:</strong> {order.note}
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                    {order.status === 0 && order.cancelReason && (
+                                                                        <div className="info-item">
+                                                                            <strong>Lý do hủy:</strong> {getCancelReasonText(order.cancelReason)}
+                                                                        </div>
+                                                                    )}
+                                                                    <hr/>
                                                                     <div className="info-item-price">
                                                                         <strong>Tổng tiền hàng:</strong> {formatCurrency(subtotal)}
                                                                     </div>
@@ -395,6 +446,15 @@ const MyOrder = () => {
                     </div>
                 }
             </div>
+
+            <ModalCancel
+                isShowModalCancel={isShowModalCancel}
+                handleCloseModalCancel={handleCloseModalCancel}
+                cancelReason={cancelReason}
+                setCancelReason={setCancelReason}
+                handleCancelOrder={handleCancelOrder}
+                loading={loading}
+            />
 
             <ModalReview
                 actionModalReview={actionModalReview}

@@ -19,6 +19,35 @@ const AdModalOrderDetail = (props) => {
         }
     }, [dataOrderDetail]);
 
+    const getOrderStatus = (status) => {
+        switch (status) {
+            case 0:
+                return {text: 'Đã huỷ', class: 'canceled'}
+            case 1:
+                return {text: 'Chờ xác nhận', class: 'pending'};
+            case 2:
+                return {text: 'Đã xác nhận', class: 'confirmed'};
+            case 3:
+                return {text: 'Đang vận chuyển đến bạn', class: 'shipping'};
+            case 4:
+                return {text: 'Đã nhận được hàng', class: 'received'};
+            default:
+                return {text: 'Không xác định', class: ''};
+        }
+    };
+
+    const getCancelReasonText = (reason) => {
+        const reasonMap = {
+            "wrong_product": "Tôi đặt nhầm sản phẩm",
+            "update_address_phone": "Tôi muốn cập nhật địa chỉ/sđt nhận hàng",
+            "change_discount_code": "Tôi muốn thay đổi mã giảm giá",
+            "change_product": "Tôi muốn thay đổi sản phẩm (Kích thước, màu sắc, số lượng)",
+            "no_longer_want_to_buy": "Tôi không có nhu cầu mua nữa",
+            "no_reason_fits": "Tôi không tìm thấy lý do phù hợp"
+        };
+        return reasonMap[reason] || reasonMap;
+    }
+
     const calculateSubtotal = () => {
         return orderDetail?.Order_Details.reduce((total, detail) => total + (detail.price * detail.quantity), 0) || 0;
     };
@@ -96,6 +125,24 @@ const AdModalOrderDetail = (props) => {
                                             </div>
                                         )
                                     }
+                                    <div className="info-item">
+                                        <strong>Trạng thái:</strong>
+                                        <span
+                                            className={`order-status ${getOrderStatus(orderDetail?.status).class}`}>
+                                                                            {getOrderStatus(orderDetail?.status).text}
+                                                                        </span>
+                                        {
+                                            orderDetail?.status !== 1 && (
+                                                <span
+                                                    className="ms-3">({formatDate(orderDetail?.updatedAt)})</span>
+                                            )
+                                        }
+                                    </div>
+                                    {orderDetail?.status === 0 && orderDetail?.cancelReason && (
+                                        <div className="info-item">
+                                            <strong>Lý do hủy:</strong> {getCancelReasonText(orderDetail?.cancelReason)}
+                                        </div>
+                                    )}
                                 </div>
                             </Card.Body>
                         </Card>

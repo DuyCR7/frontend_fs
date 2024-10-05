@@ -5,6 +5,7 @@ import {Form} from "react-bootstrap";
 import StarRating from "../components/rating/StarRating";
 import {toast} from "react-toastify";
 import {submitReview, updateReview} from "../../../services/customer/orderService";
+import "./modalReview.scss";
 
 const ModalReview = (props) => {
 
