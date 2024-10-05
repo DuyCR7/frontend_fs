@@ -35,7 +35,7 @@ const AdModalDeleteTeam = (props) => {
                     <Modal.Header closeButton>
                         <Modal.Title>Xác nhận xóa</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Bạn có chắc muốn xóa đội bóng: <b>{props.dataDelete.name}</b>?</Modal.Body>
+                    <Modal.Body>Bạn có chắc muốn xóa đội bóng: <b>{props.dataDelete.name}</b>? (Bao gồm <b style={{color: "red"}}>tất cả</b> các sản phẩm liên quan)</Modal.Body>
                     <Modal.Footer>
                         <Button variant="dark" disabled={loading} onClick={props.handleCloseModalDelete}>
                             Đóng

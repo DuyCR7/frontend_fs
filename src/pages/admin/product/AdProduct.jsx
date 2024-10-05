@@ -196,9 +196,31 @@ console.log(listProduct);
                                         <FaLongArrowAltUp/>
                                     }
                                 </th>
-                                <th scope="col">Giá</th>
-                                <th scope="col">Giá sale</th>
+                                <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('price')}>
+                                    Giá
+                                    {
+                                        sortConfig && sortConfig.key === 'price' && sortConfig.direction === 'ASC' &&
+                                        <FaLongArrowAltDown/>
+                                    }
+                                    {
+                                        sortConfig && sortConfig.key === 'price' && sortConfig.direction === 'DESC' &&
+                                        <FaLongArrowAltUp/>
+                                    }
+                                </th>
+                                <th scope="col" style={{cursor: "pointer"}} onClick={() => handleSort('price_sale')}>
+                                    Giá sale
+                                    {
+                                        sortConfig && sortConfig.key === 'price_sale' && sortConfig.direction === 'ASC' &&
+                                        <FaLongArrowAltDown/>
+                                    }
+                                    {
+                                        sortConfig && sortConfig.key === 'price_sale' && sortConfig.direction === 'DESC' &&
+                                        <FaLongArrowAltUp/>
+                                    }
+                                </th>
                                 <th scope="col">Ảnh</th>
+                                <th scope="col">Danh mục</th>
+                                <th scope="col">Đội bóng</th>
                                 <th scope="col">Sale</th>
                                 <th scope="col">Trending</th>
                                 <th scope="col">Trạng thái</th>
@@ -224,6 +246,12 @@ console.log(listProduct);
                                                             <img
                                                                 src={`${process.env.REACT_APP_URL_BACKEND}/${mainImage.image}`}
                                                                 width={50} height={50} alt={item.image}/>
+                                                        </td>
+                                                        <td>
+                                                            {item.Category.name}
+                                                        </td>
+                                                        <td>
+                                                            {item.Team.name}
                                                         </td>
                                                         <td>
                                                             {item.isSale ?

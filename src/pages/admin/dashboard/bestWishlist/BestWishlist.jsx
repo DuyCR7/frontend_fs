@@ -60,7 +60,9 @@ const BestWishlist = () => {
                                     </li>
                                 );
                             }) : (
-                                <div className="text-center">Chưa có dữ liệu thống kê</div>
+                                <div className="alert alert-info mt-3" role="alert">
+                                    Chưa có dữ liệu thống kê
+                                </div>
                             )
                         }
                     </ul>

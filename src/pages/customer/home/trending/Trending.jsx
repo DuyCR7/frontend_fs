@@ -71,7 +71,7 @@ const Trending = () => {
 
         setActiveCategory(cateItem);
     }
-
+console.log(filteredTrending);
     return (
         <>
             <div className="trending course-section style-3 padding-tb">

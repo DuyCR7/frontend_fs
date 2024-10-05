@@ -237,7 +237,9 @@ const OrderChart = () => {
                                 </ResponsiveContainer>
                             </>
                         ) : (
-                            <div className="text-center">Chưa có dữ liệu thống kê</div>
+                            <div className="alert alert-info mt-3" role="alert">
+                                Không có dữ liệu cho khoảng thời gian này.
+                            </div>
                         )
                     }
                 </Spin>

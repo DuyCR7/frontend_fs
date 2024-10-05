@@ -196,7 +196,7 @@ const AdSize = () => {
                                     <FaLongArrowAltUp />
                                 }
                             </th>
-                            <th scope="col">Trạng thái</th>
+                            {/*<th scope="col">Trạng thái</th>*/}
                             <th scope="col">Hành động</th>
                         </tr>
                         </thead>
@@ -212,15 +212,15 @@ const AdSize = () => {
                                                     <td>{item.id}</td>
                                                     <td>{item.name}</td>
                                                     <td>{item.code}</td>
-                                                    <td>
-                                                        {item.isActive ?
-                                                            <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
-                                                                          onClick={() => toggleSizeStatus(item.id)}/>
-                                                            :
-                                                            <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
-                                                                                onClick={() => toggleSizeStatus(item.id)}/>
-                                                        }
-                                                    </td>
+                                                    {/*<td>*/}
+                                                    {/*    {item.isActive ?*/}
+                                                    {/*        <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}*/}
+                                                    {/*                      onClick={() => toggleSizeStatus(item.id)}/>*/}
+                                                    {/*        :*/}
+                                                    {/*        <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}*/}
+                                                    {/*                            onClick={() => toggleSizeStatus(item.id)}/>*/}
+                                                    {/*    }*/}
+                                                    {/*</td>*/}
                                                     <td>
                                                         <div className="d-flex justify-content-center gap-2">
                                                             <MdEdit size={25} title={"Chỉnh sửa"} style={{color: "orange", cursor: "pointer"}}
