@@ -6,7 +6,7 @@ import {IoEyeOutline, IoHeartOutline, IoHeartSharp} from "react-icons/io5";
 import ModalQuickView from "../../components/modal/ModalQuickView";
 import {useSelector} from "react-redux";
 
-const RelatedProductCard = ({product, loading, isInWishlist, handleWishlistAction}) => {
+const RelatedProductCard = ({product, fetchCartItems, fetchRelatedProducts, loading, isInWishlist, handleWishlistAction}) => {
     const customer = useSelector((state) => state.customer);
 
     const [isShowModalQuickView, setIsShowModalQuickView] = useState(false);
@@ -80,6 +80,8 @@ const RelatedProductCard = ({product, loading, isInWishlist, handleWishlistActio
                 isShowModalQuickView={isShowModalQuickView}
                 handleCloseModalQuickView={handleCloseModalQuickView}
                 dataQuickView={dataQuickView}
+                fetchCartItems={fetchCartItems}
+                fetchRelatedProducts={fetchRelatedProducts}
             />
         </>
     );

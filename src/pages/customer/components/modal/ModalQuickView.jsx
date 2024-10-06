@@ -182,6 +182,10 @@ const ModalQuickView = (props) => {
                         toast.success(res.EM);
                         dispatch(updateCartCount(res.DT));
                         setError("");
+                        if (props.fetchCartItems && props.fetchRelatedProducts) {
+                            await props.fetchCartItems();
+                            await props.fetchRelatedProducts();
+                        }
                     } else {
                         setError(res.EM);
                     }

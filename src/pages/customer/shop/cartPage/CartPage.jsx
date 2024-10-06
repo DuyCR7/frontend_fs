@@ -54,10 +54,11 @@ const CartPage = () => {
         try {
             let res = await getCart();
             if (res && res.EC === 0) {
-                setCartItems(res.DT);
+                setCartItems(res.DT.cartDetails);
+                dispatch(updateCartCount(res.DT.totalItems));
 
                 const initialQuantities = {};
-                res.DT.forEach(item => {
+                res.DT.cartDetails.forEach(item => {
                     initialQuantities[item.id] = item.quantity;
                 });
                 setLocalQuantities(initialQuantities);
@@ -110,13 +111,13 @@ const CartPage = () => {
                     if (EC === 0 || EC === 2 || EC === 3) {
                         await fetchCartItems();
                         await fetchRelatedProducts();
-                        if (EC === 2) {
+                        if (EC === 2 || EC === 3) {
                             toast.warn(EM);
-                            dispatch(updateCartCount(0))
+                            // dispatch(updateCartCount(0))
                         }
-                        if (EC === 3) {
-                            toast.warn(EM);
-                        }
+                        // if (EC === 3) {
+                        //     toast.warn(EM);
+                        // }
                     } else if (EC === 1) {
                         toast.warn(EM);
                     } else {
@@ -383,6 +384,8 @@ const CartPage = () => {
                                                             loading={loading}
                                                             handleWishlistAction={handleWishlistAction}
                                                             isInWishlist={isInWishlist}
+                                                            fetchCartItems={fetchCartItems}
+                                                            fetchRelatedProducts={fetchRelatedProducts}
                                                         />
                                                     </div>
                                                 ))
