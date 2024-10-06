@@ -63,7 +63,7 @@ const TeamCategory = () => {
                     </div>
 
                     <div className="text-center mt-5">
-                        <button onClick={() => navigate('/shop')} className="btn btn-outline-primary">
+                        <button onClick={() => navigate('/shops')} className="btn btn-outline-primary">
                             {btnText}
                         </button>
                     </div>

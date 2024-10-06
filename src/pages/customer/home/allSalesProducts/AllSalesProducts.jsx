@@ -173,8 +173,8 @@ const AllSalesProducts = () => {
                         </div>
 
                         <div className="text-center">
-                            <button onClick={() => navigate('/shop/seller')} className="btn btn-outline-primary">
-                                Xem toàn bộ sản phẩm khuyến mãi
+                            <button onClick={() => navigate('/shops')} className="btn btn-outline-primary">
+                                Mua ngay
                             </button>
                         </div>
 

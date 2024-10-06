@@ -174,8 +174,8 @@ console.log(products);
                         </div>
 
                         <div className="text-center">
-                            <button onClick={() => navigate('/shop/seller')} className="btn btn-outline-primary">
-                                Xem toàn bộ sản phẩm bán chạy
+                            <button onClick={() => navigate('/shops')} className="btn btn-outline-primary">
+                                Mua ngay
                             </button>
                         </div>
                     </div>
