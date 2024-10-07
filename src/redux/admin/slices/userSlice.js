@@ -7,6 +7,7 @@ const initialState = {
     username: '',
     image: '',
     access_token: '',
+    rolesAndPermissions: [],
 }
 
 export const userSlice = createSlice({
@@ -14,7 +15,7 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         loginUser: (state, action) => {
-            const { isAuthenticated, id, email, username, image, access_token } = action.payload;
+            const { isAuthenticated, id, email, username, image, access_token, rolesAndPermissions } = action.payload;
 
             state.isAuthenticated = isAuthenticated;
             state.id = id;
@@ -22,6 +23,7 @@ export const userSlice = createSlice({
             state.username = username;
             state.image = image;
             state.access_token = access_token;
+            state.rolesAndPermissions = rolesAndPermissions;
         },
         resetUser: (state) => {
             state.isAuthenticated = false;
@@ -30,6 +32,7 @@ export const userSlice = createSlice({
             state.username = "";
             state.image = "";
             state.access_token = "";
+            state.rolesAndPermissions = [];
         }
     },
 })

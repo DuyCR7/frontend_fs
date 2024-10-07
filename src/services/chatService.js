@@ -1,6 +1,6 @@
 import axios from "../config/customer/axios";
 
-const createOrUpdateChat = (cusId) => {
+const createOrGetChat = (cusId) => {
     return axios.post(`/api/v1/chat`, {
         cusId: cusId,
     });
@@ -54,7 +54,7 @@ const getCurrentChat = (cusId) => {
 }
 
 export {
-    createOrUpdateChat,
+    createOrGetChat,
     sendMessage,
     getMessages,
     getLastMessage,

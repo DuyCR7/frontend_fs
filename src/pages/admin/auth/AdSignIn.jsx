@@ -87,7 +87,7 @@ const AdSignIn = () => {
             try {
                 let res = await signInUser(signInData.email, signInData.password);
                 if (res && res.EC === 0) {
-                    // let groupWithRoles = res.DT.groupWithRoles;
+                    let rolesAndPermissions = res.DT.rolesAndPermissions;
                     let id = res.DT.id;
                     let email = res.DT.email;
                     let username = res.DT.username;
@@ -97,7 +97,7 @@ const AdSignIn = () => {
                     let data = {
                         isAuthenticated: true,
                         access_token,
-                        // groupWithRoles,
+                        rolesAndPermissions,
                         id,
                         email,
                         username,
@@ -108,7 +108,6 @@ const AdSignIn = () => {
 
                     localStorage.setItem("jwt", access_token);
                     toast.success(res.EM);
-                    // loginContext(data);
                     navigate('/admin');
 
                 }

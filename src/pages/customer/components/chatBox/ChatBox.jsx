@@ -5,7 +5,7 @@ import "./chatBox.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {closeChatBox, setCurrentProduct} from "../../../../redux/customer/slices/chatSlice";
 import {formatCurrency} from "../../../../utils/formatCurrency";
-import {createOrUpdateChat, getMessages, markMessagesAsRead, sendMessage} from "../../../../services/chatService";
+import {createOrGetChat, getMessages, markMessagesAsRead, sendMessage} from "../../../../services/chatService";
 import moment from "moment";
 import 'moment/locale/vi';
 import {Link} from "react-router-dom";
@@ -64,9 +64,9 @@ const ChatBox = () => {
         }
     }
 
-    const handleCreateOrUpdateChat = async () => {
+    const handleCreateOrGetChat = async () => {
         try {
-            let res = await createOrUpdateChat(customer.id);
+            let res = await createOrGetChat(customer.id);
             if (res && res.EC === 0) {
                 setChat(res.DT);
             } else {
@@ -91,7 +91,7 @@ const ChatBox = () => {
     }
 
     useEffect(() => {
-        handleCreateOrUpdateChat();
+        handleCreateOrGetChat();
     }, []);
 
     useEffect(() => {

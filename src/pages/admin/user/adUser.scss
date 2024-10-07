@@ -1,0 +1,36 @@
+.table-user {
+  max-height: 68vh;
+  overflow-y: auto;
+
+  .on-top {
+    position: sticky;
+    top: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .modal-user {
+    .modal-dialog {
+      max-width: calc(100% - 50px);
+      margin: 0 auto;
+    }
+  }
+}
+
+.modal-user {
+  .custom-is-invalid {
+    border: 1px solid red;
+  }
+
+  .password-input {
+    position: relative; // Để có thể định vị icon eye trong ô input
+
+    .password-toggle {
+      position: absolute;
+      right: 10px; // Điều chỉnh khoảng cách từ biên phải của input
+      top: 45%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+}

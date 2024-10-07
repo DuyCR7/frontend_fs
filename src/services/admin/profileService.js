@@ -16,7 +16,16 @@ const updateProfile = (address, username, phone, sex, birthdate, image) => {
     return axios.put(`/api/v1/admin/profile/update-profile`, data);
 }
 
+const changePassword = (oldPassword, newPassword, confirmPassword) => {
+    return axios.put(`/api/v1/admin/profile/change-password`, {
+        oldPassword,
+        newPassword,
+        confirmPassword,
+    });
+}
+
 export {
     getProfile,
     updateProfile,
+    changePassword,
 }

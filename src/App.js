@@ -40,6 +40,7 @@ import AdVoucher from "./pages/admin/voucher/AdVoucher";
 import Voucher from "./pages/customer/voucher/Voucher";
 import AdManageCustomer from "./pages/admin/manage-customer/AdManageCustomer";
 import AdProfile from "./pages/admin/profile/AdProfile";
+import AdUser from "./pages/admin/user/AdUser";
 
 const App = () => {
     return (
@@ -54,6 +55,7 @@ const App = () => {
                     </PrivateRoute>
                 }>
                     <Route index element={<AdDashboard />}/>
+                    <Route path="users" element={<AdUser />}/>
                     <Route path="banners" element={<AdBanner />}/>
                     <Route path="events" element={<AdEvent />} />
                     <Route path="posts" element={<AdPost />}/>

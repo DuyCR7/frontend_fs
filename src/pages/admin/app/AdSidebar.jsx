@@ -22,6 +22,9 @@ const AdSidebar = (props) => {
         } else if (path.includes("/admin/products")) {
             setActiveItem("products");
             setActiveGroup("manageProducts");
+        }   else if (path.includes('/admin/users')) {
+            setActiveItem("users");
+            setActiveGroup(null);
         } else if (path.includes('/admin/banners')) {
             setActiveItem("banners");
             setActiveGroup(null);
@@ -98,6 +101,12 @@ console.log(activeItem);
                                     <p>Trang chủ</p>
                                 </Link>
                             </li>
+                            <li className={`nav-item ${activeItem === "users" ? "active" : ""}`}>
+                                <Link to='/admin/users'>
+                                    <i className="icofont-users"></i>
+                                    <p>Quản lý nhân viên</p>
+                                </Link>
+                            </li>
                             <li className={`nav-item ${activeItem === "banners" ? "active" : ""}`}>
                                 <Link to='/admin/banners'>
                                     <i className="icofont-navigation-menu"></i>
@@ -168,7 +177,7 @@ console.log(activeItem);
                             </li>
                             <li className={`nav-item ${activeItem === "manage-customers" ? "active" : ""}`}>
                                 <Link to='/admin/manage-customers'>
-                                    <i className="icofont-users"></i>
+                                    <i className="icofont-users-social"></i>
                                     <p>Quản lý khách hàng</p>
                                 </Link>
                             </li>
