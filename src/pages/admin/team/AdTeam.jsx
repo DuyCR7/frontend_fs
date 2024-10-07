@@ -12,6 +12,7 @@ import "./adTeam.scss"
 import AdModalDeleteTeam from "./AdModalDeleteTeam";
 import {toast} from "react-toastify";
 import useDebounce from "../../../utils/useDebounce";
+import AdModalConfirmStatus from "./AdModalConfirmStatus";
 
 const AdTeam = () => {
 
@@ -101,6 +102,9 @@ const AdTeam = () => {
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
     const [dataDelete, setDataDelete] = useState({});
 
+    const [isShowModalConfirmStatus, setIsShowModalConfirmStatus] = useState(false);
+    const [dataConfirmStatus, setDataConfirmStatus] = useState({});
+
     const handleCloseModalTeam = () => {
         setIsShowModalTeam(false);
         setDataUpdate({});
@@ -120,6 +124,23 @@ const AdTeam = () => {
     const handleDeleteTeam = async (team) => {
         setIsShowModalDelete(true);
         setDataDelete(team);
+    }
+
+    const handleToggleTeamStatus = async (team) => {
+        setIsShowModalConfirmStatus(true);
+        setDataConfirmStatus(team);
+    }
+
+    const handleCloseModalConfirmStatus = () => {
+        setIsShowModalConfirmStatus(false);
+        setDataConfirmStatus({});
+    }
+
+    const handleConfirmToggleTeamStatus = async () => {
+        if (dataConfirmStatus) {
+            await toggleTeamStatus(dataConfirmStatus.id);
+            handleCloseModalConfirmStatus();
+        }
     }
 
     const handleRefresh = () => {
@@ -213,10 +234,10 @@ const AdTeam = () => {
                                                     <td>
                                                         {item.isActive ?
                                                             <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
-                                                                          onClick={() => toggleTeamStatus(item.id)}/>
+                                                                          onClick={() => handleToggleTeamStatus(item)}/>
                                                             :
                                                             <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
-                                                                                onClick={() => toggleTeamStatus(item.id)}/>
+                                                                                onClick={() => handleToggleTeamStatus(item)}/>
                                                         }
                                                     </td>
                                                     <td>
@@ -307,6 +328,14 @@ const AdTeam = () => {
                 numRows={numRows}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
+            />
+
+            <AdModalConfirmStatus
+                loading={loading}
+                isShowModalConfirmStatus={isShowModalConfirmStatus}
+                handleCloseModalConfirmStatus={handleCloseModalConfirmStatus}
+                handleConfirmToggleTeamStatus={handleConfirmToggleTeamStatus}
+                dataConfirmStatus={dataConfirmStatus}
             />
         </>
     );

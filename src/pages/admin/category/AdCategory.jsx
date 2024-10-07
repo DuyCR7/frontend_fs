@@ -16,6 +16,7 @@ import {MdDelete, MdEdit, MdOutlineDangerous} from "react-icons/md";
 import {toast} from "react-toastify";
 import AdModalDeleteCategory from "./AdModalDeleteCategory";
 import {formatDate} from "../../../utils/formatDate";
+import AdModalConfirmStatus from "./AdModalConfirmStatus";
 
 const AdCategory = () => {
 
@@ -154,6 +155,9 @@ const AdCategory = () => {
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
     const [dataDelete, setDataDelete] = useState({});
 
+    const [isShowModalConfirmStatus, setIsShowModalConfirmStatus] = useState(false);
+    const [dataConfirmStatus, setDataConfirmStatus] = useState({});
+
     const handleCloseModalCategory = () => {
         setIsShowModalCategory(false);
         setDataUpdate({});
@@ -168,6 +172,23 @@ const AdCategory = () => {
         setIsShowModalCategory(true);
         setActionModalCategory("EDIT");
         setDataUpdate(category);
+    }
+
+    const handleToggleCategoryStatus = async (category) => {
+        setIsShowModalConfirmStatus(true);
+        setDataConfirmStatus(category);
+    }
+
+    const handleCloseModalConfirmStatus = () => {
+        setIsShowModalConfirmStatus(false);
+        setDataConfirmStatus({});
+    }
+
+    const handleConfirmToggleCategoryStatus = async () => {
+        if (dataConfirmStatus) {
+            await toggleCategoryStatus(dataConfirmStatus.id);
+            handleCloseModalConfirmStatus();
+        }
     }
 
     const handleDeleteCategory = async (category) => {
@@ -213,12 +234,12 @@ const AdCategory = () => {
                         {category.isActive ?
                             <GrStatusGood size={25} title={"Trạng thái"}
                                           style={{color: "green", cursor: "pointer"}}
-                                          onClick={() => toggleCategoryStatus(category.id)}
+                                          onClick={() => handleToggleCategoryStatus(category)}
                             />
                             :
                             <MdOutlineDangerous size={25} title={"Trạng thái"}
                                                 style={{color: "red", cursor: "pointer"}}
-                                                onClick={() => toggleCategoryStatus(category.id)}
+                                                onClick={() => handleToggleCategoryStatus(category)}
                             />
                         }
                     </td>
@@ -329,6 +350,14 @@ const AdCategory = () => {
                 dataDelete={dataDelete}
                 handelFetchAllCategory={handelFetchAllCategory}
                 fetchAllParentCategory={fetchAllParentCategory}
+            />
+
+            <AdModalConfirmStatus
+                loading={loading}
+                isShowModalConfirmStatus={isShowModalConfirmStatus}
+                handleCloseModalConfirmStatus={handleCloseModalConfirmStatus}
+                handleConfirmToggleCategoryStatus={handleConfirmToggleCategoryStatus}
+                dataConfirmStatus={dataConfirmStatus}
             />
         </>
     );
