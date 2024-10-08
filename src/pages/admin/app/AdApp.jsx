@@ -25,6 +25,14 @@ const AdApp = (props) => {
             console.log(data);
             if (data.id === user.id) {
                 setShowLockModal(true);
+                let res = await logoutUser();
+                if (res && res.EC === 0) {
+                    disconnectSocket();
+                    localStorage.removeItem("jwt");
+                    dispatch(resetUser());
+                } else {
+                    toast.error(res.EM);
+                }
             }
         })
         
@@ -32,22 +40,6 @@ const AdApp = (props) => {
             offSocket('lockUser');
         }
     }, []);
-
-    const handleLogout = async () => {
-        let res = await logoutUser();
-        if (res && res.EC === 0) {
-            disconnectSocket();
-            localStorage.removeItem("jwt");
-            dispatch(resetUser());
-        } else {
-            toast.error(res.EM);
-        }
-    };
-
-    const handleModalClose = async () => {
-        setShowLockModal(false);
-        await handleLogout();
-    };
     
     return (
         <>
@@ -69,7 +61,7 @@ const AdApp = (props) => {
                 </div>
             </div>
 
-            <Modal show={showLockModal} onHide={handleModalClose} centered>
+            <Modal show={showLockModal} onHide={() => setShowLockModal(false)} centered backdrop={"static"} keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Tài khoản bị khóa</Modal.Title>
                 </Modal.Header>
@@ -77,7 +69,7 @@ const AdApp = (props) => {
                     <p>Tài khoản của bạn đã bị khóa!</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleModalClose}>
+                    <Button variant="primary" onClick={() => setShowLockModal(false)}>
                         OK
                     </Button>
                 </Modal.Footer>

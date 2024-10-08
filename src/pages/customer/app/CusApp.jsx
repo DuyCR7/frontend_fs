@@ -154,7 +154,7 @@ const CusApp = () => {
 
             {isOpenChatBox && <ChatBox />}
 
-            <Modal show={showLockModal} onHide={() => setShowLockModal(false)} centered>
+            <Modal show={showLockModal} onHide={() => setShowLockModal(false)} centered backdrop={"static"} keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Tài khoản bị khóa</Modal.Title>
                 </Modal.Header>
