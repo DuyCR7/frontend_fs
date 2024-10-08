@@ -1,4 +1,4 @@
-import axios from "../config/customer/axios";
+import axios from "../../config/customer/axios";
 
 const createOrGetChat = (cusId) => {
     return axios.post(`/api/v1/chat`, {
@@ -18,14 +18,6 @@ const sendMessage = (chatId, senderId, senderType, content, productId = null) =>
 
 const getMessages = (chatId) => {
     return axios.get(`/api/v1/chat/get-messages/${chatId}`);
-}
-
-const getLastMessage = (chatId) => {
-    return axios.get(`/api/v1/chat/get-last-message/${chatId}`);
-}
-
-const getAdminChats = (userId) => {
-    return axios.get(`/api/v1/chat/get-admin-chats/${userId}`);
 }
 
 const getUnreadMessageCount = (userId, userType, chatId = null) => {
@@ -49,17 +41,10 @@ const markMessagesAsRead = (chatId, userId, userType) => {
     });
 }
 
-const getCurrentChat = (cusId) => {
-    return axios.get(`/api/v1/chat/get-current-chat/${cusId}`);
-}
-
 export {
     createOrGetChat,
     sendMessage,
     getMessages,
-    getLastMessage,
-    getAdminChats,
     getUnreadMessageCount,
     markMessagesAsRead,
-    getCurrentChat,
 }

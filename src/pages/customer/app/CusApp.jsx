@@ -11,7 +11,7 @@ import "../../../assets/css/style.min.css";
 import ChatBox from "../components/chatBox/ChatBox";
 import {useDispatch, useSelector} from "react-redux";
 import {closeChatBox, openChatBox, setUnreadCount} from "../../../redux/customer/slices/chatSlice";
-import {getUnreadMessageCount} from "../../../services/chatService";
+import {getUnreadMessageCount} from "../../../services/customer/chatService";
 import {connectSocket, disconnectSocket, emitSocket, offSocket, onSocket} from "../../../services/socket/socket";
 import {toast} from "react-toastify";
 import {logoutCustomer} from "../../../services/customer/authService";

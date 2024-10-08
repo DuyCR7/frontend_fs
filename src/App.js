@@ -89,7 +89,7 @@ const App = () => {
                     {/*Quản lý khách hàng*/}
                     <Route path="manage-customers" element={<PermissionRoute element={<AdManageCustomer />} requiredPermission="/customer/read" />} />
                     {/*Chăm sóc khách hàng*/}
-                    <Route path="chats" element={<PermissionRoute element={<AdChat />} requiredPermission="/chat" />} />
+                    <Route path="chats" element={<PermissionRoute element={<AdChat />} requiredPermission="/chat/get-admin-chat" />} />
                     <Route path="profiles" element={<AdProfile />}/>
 
                     <Route path="*" element={<NotFoundPageAd />}/>

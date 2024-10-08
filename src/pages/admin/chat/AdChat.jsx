@@ -3,12 +3,12 @@ import "./adChat.scss";
 import InputEmoji from "react-input-emoji";
 import { IoClose } from "react-icons/io5";
 import {
-    getAdminChats, getLastMessage,
-    getMessages,
-    getUnreadMessageCount,
-    markMessagesAsRead,
-    sendMessage
-} from "../../../services/chatService";
+    adGetAdminChats, adGetLastMessage,
+    adGetMessages,
+    adGetUnreadMessageCount,
+    adMarkMessagesAsRead,
+    adSendMessage
+} from "../../../services/admin/chatService";
 import {useSelector} from "react-redux";
 import {formatCurrency} from "../../../utils/formatCurrency";
 import moment from "moment";
@@ -30,7 +30,7 @@ const AdChat = () => {
 
     const debouncedMarkMessagesAsRead = useCallback(
         debounce((chatId, userId) => {
-            markMessagesAsRead(chatId, userId, 'user');
+            adMarkMessagesAsRead(chatId, userId, 'user');
         }, 500), []
     );
 console.log(onlineCustomers);
@@ -84,11 +84,11 @@ console.log(onlineCustomers);
 
     const handleGetAdminChats = useCallback(async () => {
         try {
-            let res = await getAdminChats(user.id);
+            let res = await adGetAdminChats();
             if (res && res.EC === 0) {
                 const chatsWithLastMessage = await Promise.all(res.DT.map(async (chat) => {
-                    const lastMessageRes = await getLastMessage(chat.id);
-                    const unreadCountRes = await getUnreadMessageCount(user.id, 'user', chat.id);
+                    const lastMessageRes = await adGetLastMessage(chat.id);
+                    const unreadCountRes = await adGetUnreadMessageCount(user.id, 'user', chat.id);
 
                     if (lastMessageRes && lastMessageRes.EC === 0 && Object.keys(lastMessageRes.DT).length > 0) {
                         const lastMessage = lastMessageRes.DT;
@@ -121,7 +121,7 @@ console.log(onlineCustomers);
 
     const handleGetMessages = async (chatId) => {
         try {
-            let res = await getMessages(chatId);
+            let res = await adGetMessages(chatId);
             if (res && res.EC === 0) {
                 setMessages(res.DT);
             } else {
@@ -139,7 +139,7 @@ console.log(onlineCustomers);
     useEffect(() => {
         if (selectedChat) {
             handleGetMessages(selectedChat.id);
-            markMessagesAsRead(selectedChat.id, user.id, 'user');
+            adMarkMessagesAsRead(selectedChat.id, user.id, 'user');
             setChats(prevChats => prevChats.map(chat =>
                 chat.id === selectedChat.id ? { ...chat, unreadCount: 0 } : chat
             ));
@@ -158,7 +158,7 @@ console.log(onlineCustomers);
         if (!textMessage.trim() || !selectedChat) return;
         setLoading(true);
         try {
-            let res = await sendMessage(selectedChat.id, user.id, 'user', textMessage);
+            let res = await adSendMessage(selectedChat.id, user.id, 'user', textMessage);
             if (res && res.EC === 0) {
                 const newMessage = res.DT;
                 setMessages(prevMessages => [...prevMessages, newMessage]);
@@ -182,7 +182,7 @@ console.log(onlineCustomers);
                     return updatedChats.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
                 });
 
-                await markMessagesAsRead(selectedChat.id, user.id, 'user');
+                await adMarkMessagesAsRead(selectedChat.id, user.id, 'user');
             } else {
                 console.error(res.EM);
             }

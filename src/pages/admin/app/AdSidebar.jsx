@@ -221,7 +221,7 @@ const AdSidebar = (props) => {
                                     </Link>
                                 </li>
                             )}
-                            {hasPermission("/chat") && (
+                            {hasPermission("/chat/get-admin-chat") && (
                                 <li className={`nav-item ${activeItem === "chats" ? "active" : ""}`}>
                                     <Link to='/admin/chats'>
                                         <i className="icofont-chat"></i>
