@@ -151,9 +151,9 @@ instance.interceptors.response.use(function (response) {
             // return error.response.data;
 
             if (!hasShown403Error) {
-                toast.error("You don't have permission to access!");
+                toast.error("Bạn không có quyền thực hiện chức năng này!");
                 hasShown403Error = true;
-                // Reset the flag after some time (e.g., 5 seconds)
+
                 setTimeout(() => {
                     hasShown403Error = false;
                 }, 100);

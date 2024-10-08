@@ -264,7 +264,7 @@ const AdPost = () => {
                                     :
                                     <>
                                         <tr>
-                                            <td colSpan={7}>Không tìm thấy dữ liệu</td>
+                                            <td colSpan={8}>Không tìm thấy dữ liệu</td>
                                         </tr>
                                     </>
                             }

@@ -1,12 +1,18 @@
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Helmet} from "react-helmet";
+import {useSelector} from "react-redux";
 
 const AdSidebar = (props) => {
 
     const location = useLocation();
     const [activeItem, setActiveItem] = useState(null);
     const [activeGroup, setActiveGroup] = useState(null);
+
+    const rolesAndPermissions = useSelector(state => state.user.rolesAndPermissions);
+    const permissons = rolesAndPermissions.flatMap(item => item.permissions);
+
+    const hasPermission = (permission) => permissons.includes(permission);
 
     useEffect(() => {
         const path = location.pathname;
@@ -57,8 +63,7 @@ const AdSidebar = (props) => {
             setActiveGroup(null);
         }
     }, [location]);
-    console.log(location.pathname);
-console.log(activeItem);
+
     return (
         <>
             {/*AdSidebar*/}
@@ -101,92 +106,129 @@ console.log(activeItem);
                                     <p>Trang chủ</p>
                                 </Link>
                             </li>
-                            <li className={`nav-item ${activeItem === "users" ? "active" : ""}`}>
-                                <Link to='/admin/users'>
-                                    <i className="icofont-users"></i>
-                                    <p>Quản lý nhân viên</p>
-                                </Link>
-                            </li>
-                            <li className={`nav-item ${activeItem === "banners" ? "active" : ""}`}>
-                                <Link to='/admin/banners'>
-                                    <i className="icofont-navigation-menu"></i>
-                                    <p>Quản lý banner</p>
-                                </Link>
-                            </li>
-                            <li className={`nav-item ${activeItem === "events" ? "active" : ""}`}>
-                                <Link to='/admin/events'>
-                                    <i className="icofont-calendar"></i>
-                                    <p>Quản lý sự kiện</p>
-                                </Link>
-                            </li>
-                            <li className={`nav-item ${activeItem === "posts" ? "active" : ""}`}>
-                                <Link to='/admin/posts'>
-                                    <i className="icofont-blogger"></i>
-                                    <p>Quản lý bài viết</p>
-                                </Link>
-                            </li>
-                            <li className={`nav-item ${activeItem === "vouchers" ? "active" : ""}`}>
-                                <Link to='/admin/vouchers'>
-                                    <i className="icofont-sale-discount"></i>
-                                    <p>Quản lý voucher</p>
-                                </Link>
-                            </li>
+                            {
+                                hasPermission("/user/create") && (
+                                    <li className={`nav-item ${activeItem === "users" ? "active" : ""}`}>
+                                        <Link to='/admin/users'>
+                                            <i className="icofont-users"></i>
+                                            <p>Quản lý nhân viên</p>
+                                        </Link>
+                                    </li>
+                                )
+                            }
+                            {
+                                hasPermission("/banner/create") && (
+                                    <li className={`nav-item ${activeItem === "banners" ? "active" : ""}`}>
+                                        <Link to='/admin/banners'>
+                                            <i className="icofont-navigation-menu"></i>
+                                            <p>Quản lý banner</p>
+                                        </Link>
+                                    </li>
+                                )
+                            }
+                            {
+                                hasPermission("/event/create") && (
+                                    <li className={`nav-item ${activeItem === "events" ? "active" : ""}`}>
+                                        <Link to='/admin/events'>
+                                            <i className="icofont-calendar"></i>
+                                            <p>Quản lý sự kiện</p>
+                                        </Link>
+                                    </li>
+                                )
+                            }
+                            {
+                                hasPermission("/post/create") && (
+                                    <li className={`nav-item ${activeItem === "posts" ? "active" : ""}`}>
+                                        <Link to='/admin/posts'>
+                                            <i className="icofont-blogger"></i>
+                                            <p>Quản lý bài viết</p>
+                                        </Link>
+                                    </li>
+                                )
+                            }
+                            {
+                                hasPermission("/voucher/create") && (
+                                    <li className={`nav-item ${activeItem === "vouchers" ? "active" : ""}`}>
+                                        <Link to='/admin/vouchers'>
+                                            <i className="icofont-sale-discount"></i>
+                                            <p>Quản lý voucher</p>
+                                        </Link>
+                                    </li>
+                                )
+                            }
                             {/*<li className="nav-section">*/}
                             {/*    <span className="sidebar-mini-icon">*/}
                             {/*      <i className="fa fa-ellipsis-h"></i>*/}
                             {/*    </span>*/}
                             {/*    <h4 className="text-section">Components</h4>*/}
                             {/*</li>*/}
-                            <li className={`nav-item ${activeGroup === "manageProducts" ? "active" : ""}`}>
-                                <a data-bs-toggle="collapse" href="#manageProducts">
-                                    <i className="icofont-italic"></i>
-                                    <p>Quản lý sản phẩm</p>
-                                    <span className="caret"></span>
-                                </a>
-                                <div className={`collapse ${activeGroup === "manageProducts" ? "show" : ""}`}
-                                     id="manageProducts">
-                                    <ul className="nav nav-collapse">
-                                        <li className={`${activeItem === "categories" ? "active" : ""}`}>
-                                            <Link to="/admin/categories">
-                                                <span className="sub-item">Danh mục</span>
-                                            </Link>
-                                        </li>
-                                        <li className={`${activeItem === "teams" ? "active" : ""}`}>
-                                            <Link to="/admin/teams">
-                                                <span className="sub-item">Đội bóng</span>
-                                            </Link>
-                                        </li>
-                                        <li className={`${activeItem === "sizes-colors" ? "active" : ""}`}>
-                                            <Link to="/admin/sizes-colors">
-                                                <span className="sub-item">Màu sắc - Size</span>
-                                            </Link>
-                                        </li>
-                                        <li className={`${activeItem === "products" ? "active" : ""}`}>
-                                            <Link to="/admin/products">
-                                                <span className="sub-item">Sản phẩm</span>
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li className={`nav-item ${activeItem === "orders" ? "active" : ""}`}>
-                                <Link to='/admin/orders'>
-                                    <i className="icofont-briefcase-2"></i>
-                                    <p>Quản lý đơn hàng</p>
-                                </Link>
-                            </li>
-                            <li className={`nav-item ${activeItem === "manage-customers" ? "active" : ""}`}>
-                                <Link to='/admin/manage-customers'>
-                                    <i className="icofont-users-social"></i>
-                                    <p>Quản lý khách hàng</p>
-                                </Link>
-                            </li>
-                            <li className={`nav-item ${activeItem === "chats" ? "active" : ""}`}>
-                                <Link to='/admin/chats'>
-                                    <i className="icofont-chat"></i>
-                                    <p>Chăm sóc khách hàng</p>
-                                </Link>
-                            </li>
+                            {(hasPermission("/category/create") || hasPermission("/team/create") ||
+                                hasPermission("/size/create") || hasPermission("/product/create")) && (
+                                <li className={`nav-item ${activeGroup === "manageProducts" ? "active" : ""}`}>
+                                    <a data-bs-toggle="collapse" href="#manageProducts">
+                                        <i className="icofont-italic"></i>
+                                        <p>Quản lý sản phẩm</p>
+                                        <span className="caret"></span>
+                                    </a>
+                                    <div className={`collapse ${activeGroup === "manageProducts" ? "show" : ""}`}
+                                         id="manageProducts">
+                                        <ul className="nav nav-collapse">
+                                            {hasPermission("/category/create") && (
+                                                <li className={`${activeItem === "categories" ? "active" : ""}`}>
+                                                    <Link to="/admin/categories">
+                                                        <span className="sub-item">Danh mục</span>
+                                                    </Link>
+                                                </li>
+                                            )}
+                                            {hasPermission("/team/create") && (
+                                                <li className={`${activeItem === "teams" ? "active" : ""}`}>
+                                                    <Link to="/admin/teams">
+                                                        <span className="sub-item">Đội bóng</span>
+                                                    </Link>
+                                                </li>
+                                            )}
+                                            {hasPermission("/size/create") && (
+                                                <li className={`${activeItem === "sizes-colors" ? "active" : ""}`}>
+                                                    <Link to="/admin/sizes-colors">
+                                                        <span className="sub-item">Màu sắc - Size</span>
+                                                    </Link>
+                                                </li>
+                                            )}
+                                            {hasPermission("/product/create") && (
+                                                <li className={`${activeItem === "products" ? "active" : ""}`}>
+                                                    <Link to="/admin/products">
+                                                        <span className="sub-item">Sản phẩm</span>
+                                                    </Link>
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                </li>
+                            )}
+                            {hasPermission("/order/read") && (
+                                <li className={`nav-item ${activeItem === "orders" ? "active" : ""}`}>
+                                    <Link to='/admin/orders'>
+                                        <i className="icofont-briefcase-2"></i>
+                                        <p>Quản lý đơn hàng</p>
+                                    </Link>
+                                </li>
+                            )}
+                            {hasPermission("/customer/read") && (
+                                <li className={`nav-item ${activeItem === "manage-customers" ? "active" : ""}`}>
+                                    <Link to='/admin/manage-customers'>
+                                        <i className="icofont-users-social"></i>
+                                        <p>Quản lý khách hàng</p>
+                                    </Link>
+                                </li>
+                            )}
+                            {hasPermission("/chat") && (
+                                <li className={`nav-item ${activeItem === "chats" ? "active" : ""}`}>
+                                    <Link to='/admin/chats'>
+                                        <i className="icofont-chat"></i>
+                                        <p>Chăm sóc khách hàng</p>
+                                    </Link>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>

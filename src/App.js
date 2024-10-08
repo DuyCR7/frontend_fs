@@ -41,8 +41,21 @@ import Voucher from "./pages/customer/voucher/Voucher";
 import AdManageCustomer from "./pages/admin/manage-customer/AdManageCustomer";
 import AdProfile from "./pages/admin/profile/AdProfile";
 import AdUser from "./pages/admin/user/AdUser";
+import {useSelector} from "react-redux";
 
 const App = () => {
+
+    const rolesAndPermissions = useSelector(state => state.user.rolesAndPermissions);
+    const permissions = rolesAndPermissions.flatMap(item => item.permissions);
+
+    const PermissionRoute = ({ element, requiredPermission }) => {
+        if (permissions.includes(requiredPermission)) {
+            return element;
+        } else {
+            return <NotFoundPageAd />;
+        }
+    }
+
     return (
       <>
           <Router>
@@ -54,19 +67,29 @@ const App = () => {
                         <AdApp />
                     </PrivateRoute>
                 }>
+                    {/*Báo cáo thống kê*/}
                     <Route index element={<AdDashboard />}/>
-                    <Route path="users" element={<AdUser />}/>
-                    <Route path="banners" element={<AdBanner />}/>
-                    <Route path="events" element={<AdEvent />} />
-                    <Route path="posts" element={<AdPost />}/>
-                    <Route path="vouchers" element={<AdVoucher />}/>
-                    <Route path="categories" element={<AdCategory />}/>
-                    <Route path="teams" element={<AdTeam />}/>
-                    <Route path="sizes-colors" element={<AdSizeColor />}/>
-                    <Route path="products" element={<AdProduct />}/>
-                    <Route path="orders" element={<AdOrder />}/>
-                    <Route path="manage-customers" element={<AdManageCustomer />}/>
-                    <Route path="chats" element={<AdChat />}/>
+                    {/*Quản lý admin*/}
+                    <Route path="users" element={<PermissionRoute element={<AdUser />} requiredPermission="/user/create" />}/>
+                    {/*Quản lý banner*/}
+                    <Route path="banners" element={<PermissionRoute element={<AdBanner />} requiredPermission="/banner/create" />}/>
+                    {/*Quản lý sự kiện*/}
+                    <Route path="events" element={<PermissionRoute element={<AdEvent />} requiredPermission="/event/create" />} />
+                    {/*Quản lý bài viết*/}
+                    <Route path="posts" element={<PermissionRoute element={<AdPost />} requiredPermission="/post/create" />} />
+                    {/*Quản lý voucher*/}
+                    <Route path="vouchers" element={<PermissionRoute element={<AdVoucher />} requiredPermission="/voucher/create" />} />
+                    {/*Quản lý sản phẩm*/}
+                    <Route path="categories" element={<PermissionRoute element={<AdCategory />} requiredPermission="/category/create" />} />
+                    <Route path="teams" element={<PermissionRoute element={<AdTeam />} requiredPermission="/team/create" />} />
+                    <Route path="sizes-colors" element={<PermissionRoute element={<AdSizeColor />} requiredPermission="/size/create" />} />
+                    <Route path="products" element={<PermissionRoute element={<AdProduct />} requiredPermission="/product/create" />} />
+                    {/*Quản lý đơn hàng*/}
+                    <Route path="orders" element={<PermissionRoute element={<AdOrder />} requiredPermission="/order/read" />} />
+                    {/*Quản lý khách hàng*/}
+                    <Route path="manage-customers" element={<PermissionRoute element={<AdManageCustomer />} requiredPermission="/customer/read" />} />
+                    {/*Chăm sóc khách hàng*/}
+                    <Route path="chats" element={<PermissionRoute element={<AdChat />} requiredPermission="/chat" />} />
                     <Route path="profiles" element={<AdProfile />}/>
 
                     <Route path="*" element={<NotFoundPageAd />}/>
