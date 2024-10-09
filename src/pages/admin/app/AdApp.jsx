@@ -4,23 +4,23 @@ import AdNavbarHeader from "./AdNavbarHeader";
 import {Outlet} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {connectSocket, disconnectSocket, offSocket, onSocket} from "../../../services/socket/socket";
 import {logoutUser} from "../../../services/admin/authService";
 import {resetUser} from "../../../redux/admin/slices/userSlice";
 import {toast} from "react-toastify";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import {useSocket} from "../../../context/SocketContext";
 
 const AdApp = (props) => {
 
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    const { onSocket, offSocket, disconnectSocket } = useSocket();
 
     const [showLockModal, setShowLockModal] = useState(false);
 
     useEffect(() => {
-        connectSocket();
-        
+
         onSocket('lockUser', async (data) => {
             console.log(data);
             if (data.id === user.id) {
@@ -39,7 +39,7 @@ const AdApp = (props) => {
         return () => {
             offSocket('lockUser');
         }
-    }, []);
+    }, [disconnectSocket, dispatch, offSocket, onSocket]);
     
     return (
         <>

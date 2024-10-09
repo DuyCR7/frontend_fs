@@ -9,13 +9,14 @@ import {IoCartOutline, IoCloseOutline, IoHeartOutline, IoSearchOutline} from "re
 import { AiOutlineUser } from "react-icons/ai";
 import useDebounce from "../../../../utils/useDebounce";
 import {getAllForSearch} from "../../../../services/customer/homeService";
-import {disconnectSocket} from "../../../../services/socket/socket";
+import {useSocket} from "../../../../context/SocketContext";
 
 const NavItems = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const customer = useSelector((state) => state.customer);
+    const { disconnectSocket } = useSocket();
 
     const handleLogout = async () => {
         try {

@@ -14,7 +14,7 @@ import {formatCurrency} from "../../../utils/formatCurrency";
 import moment from "moment";
 import 'moment/locale/vi';
 import {debounce} from "lodash";
-import {connectSocket, emitSocket, offSocket, onSocket} from "../../../services/socket/socket";
+import {useSocket} from "../../../context/SocketContext";
 
 const AdChat = () => {
 
@@ -25,6 +25,7 @@ const AdChat = () => {
     const [loading, setLoading] = useState(false);
     const user = useSelector(state => state.user);
     const scroll = useRef();
+    const { emitSocket, offSocket, onSocket } = useSocket();
 
     const [onlineCustomers, setOnlineCustomers] = useState([]);
 
@@ -35,8 +36,6 @@ const AdChat = () => {
     );
 console.log(onlineCustomers);
     useEffect(() => {
-
-        connectSocket();
 
         emitSocket("getOnlineCustomers");
 
@@ -80,7 +79,7 @@ console.log(onlineCustomers);
             offSocket("updateOnlineCustomers");
             offSocket("receiveMessage");
         }
-    }, [selectedChat, debouncedMarkMessagesAsRead]);
+    }, [selectedChat, debouncedMarkMessagesAsRead, emitSocket, onSocket, offSocket]);
 
     const handleGetAdminChats = useCallback(async () => {
         try {

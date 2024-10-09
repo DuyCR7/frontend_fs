@@ -5,8 +5,8 @@ import {Link, useNavigate} from "react-router-dom";
 import { Spin } from 'antd';
 import {resetUser} from "../../../redux/admin/slices/userSlice";
 import {useState} from "react";
-import {disconnectSocket} from "../../../services/socket/socket";
 import {CgLogOut, CgProfile} from "react-icons/cg";
+import {useSocket} from "../../../context/SocketContext";
 
 const AdNavbarHeader = (props) => {
 
@@ -14,6 +14,7 @@ const AdNavbarHeader = (props) => {
     const user = useSelector((state) => state.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { disconnectSocket } = useSocket();
 
     const handleLogout = async () => {
         setLoading(true);

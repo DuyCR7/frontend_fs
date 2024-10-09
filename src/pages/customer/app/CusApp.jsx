@@ -12,12 +12,12 @@ import ChatBox from "../components/chatBox/ChatBox";
 import {useDispatch, useSelector} from "react-redux";
 import {closeChatBox, openChatBox, setUnreadCount} from "../../../redux/customer/slices/chatSlice";
 import {getUnreadMessageCount} from "../../../services/customer/chatService";
-import {connectSocket, disconnectSocket, emitSocket, offSocket, onSocket} from "../../../services/socket/socket";
 import {toast} from "react-toastify";
 import {logoutCustomer} from "../../../services/customer/authService";
 import {resetCustomer, updateCartCount, updateWishListCount} from "../../../redux/customer/slices/customerSlice";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import {useSocket} from "../../../context/SocketContext";
 
 const CusApp = () => {
 
@@ -27,11 +27,11 @@ const CusApp = () => {
     const [showScrollTopButton, setShowScrollTopButton] = useState(false);
     const { isOpenChatBox, unreadCount } = useSelector(state => state.chat);
     const customer = useSelector((state) => state.customer);
+    const { onSocket, emitSocket, offSocket, disconnectSocket } = useSocket();
 
     const [showLockModal, setShowLockModal] = useState(false);
 
     useEffect(() => {
-        connectSocket();
 
         emitSocket("addNewCustomer", customer.id);
 
@@ -66,7 +66,7 @@ const CusApp = () => {
             offSocket("receiveMessage");
             offSocket("lockCustomer");
         };
-    }, [isOpenChatBox, unreadCount, dispatch]);
+    }, [isOpenChatBox, unreadCount, dispatch, emitSocket, onSocket, disconnectSocket, offSocket]);
 
     useEffect(() => {
         const fetchUnreadCount = async () => {

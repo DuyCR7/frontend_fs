@@ -9,7 +9,7 @@ import {createOrGetChat, getMessages, markMessagesAsRead, sendMessage} from "../
 import moment from "moment";
 import 'moment/locale/vi';
 import {Link} from "react-router-dom";
-import {connectSocket, emitSocket, offSocket, onSocket} from "../../../../services/socket/socket";
+import {useSocket} from "../../../../context/SocketContext";
 
 const ChatBox = () => {
 
@@ -18,6 +18,7 @@ const ChatBox = () => {
     const {currentProduct} = useSelector(state => state.chat);
     const customer = useSelector(state => state.customer);
     const [loading, setLoading] = useState(false);
+    const { emitSocket, offSocket, onSocket } = useSocket();
 
     const [chat, setChat] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -25,7 +26,6 @@ const ChatBox = () => {
     const scroll = useRef();
 
     useEffect(() => {
-        connectSocket();
 
         onSocket("receiveMessage", async (message) => {
             if (message.chatId === chat?.id) {
@@ -38,7 +38,7 @@ const ChatBox = () => {
         return () => {
             offSocket("receiveMessage");
         };
-    }, [chat]);
+    }, [chat, offSocket, onSocket]);
 
     const handleOnEnter = async () => {
         if (!textMessage.trim() || !chat) return;

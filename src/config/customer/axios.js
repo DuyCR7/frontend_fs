@@ -5,9 +5,8 @@ import {store} from "../../redux/store";
 
 import nProgress from "nprogress";
 import {resetCustomer, updateCartCount, updateWishListCount} from "../../redux/customer/slices/customerSlice";
-import {setUnreadCount} from "../../redux/customer/slices/chatSlice";
 import {logoutCustomer} from "../../services/customer/authService";
-import {disconnectSocket} from "../../services/socket/socket";
+import {useSocket} from "../../context/SocketContext";
 
 nProgress.configure({
     showSpinner: false,
@@ -119,6 +118,8 @@ instance.interceptors.response.use(function (response) {
 }, async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    const { disconnectSocket } = useSocket();
+
     const status = error && error.response && error.response.status || 500;
     switch (status) {
         // authentication (token related issues)
