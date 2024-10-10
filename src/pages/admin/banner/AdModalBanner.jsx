@@ -80,7 +80,7 @@ const AdModalBanner = (props) => {
         let isValid = true;
 
         if(!bannerData.name.trim()) {
-            newErrors.name = "Vui lòng nhập tên search!";
+            newErrors.name = "Vui lòng nhập tên banner!";
             isValid = false;
         }
 
@@ -169,6 +169,7 @@ const AdModalBanner = (props) => {
                         await props.fetchAllBanner(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }
                 } else if (res && res.EC === 1) {
+                    toast.warn(res.EM);
                     handleBackendValidationErrors(res.DT, res.EM);
                 } else {
                     toast.error(res.EM);
@@ -206,7 +207,7 @@ const AdModalBanner = (props) => {
                             <label>Tên banner (<span style={{color: "red"}}>*</span>):</label>
                             <input
                                 type="text"
-                                placeholder={"Nhập tên search..."}
+                                placeholder={"Nhập tên banner..."}
                                 className={errors.name ? "form-control is-invalid" : "form-control"}
                                 value={bannerData.name || ""}
                                 onChange={(e) => handleOnChangeInput(e.target.value, "name")}

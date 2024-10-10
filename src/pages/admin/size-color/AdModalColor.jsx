@@ -97,6 +97,7 @@ const AdModalColor = (props) => {
                     }
 
                 } else if (res && res.EC === 1) {
+                    toast.warn(res.EM);
                     handleBackendValidationErrors(res.DT, res.EM);
                 } else {
                     toast.error(res.EM);

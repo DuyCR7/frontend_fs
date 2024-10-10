@@ -103,6 +103,7 @@ const SignUp = () => {
                     toast.success(res.EM);
                     // navigate('/sign-in');
                 } else if (res.EC === 1) {
+                    toast.warn(res.EM);
                     handleBackendValidationErrors(res.DT, res.EM);
                 } else {
                     toast.error(res.EM);

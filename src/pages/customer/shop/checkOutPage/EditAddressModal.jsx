@@ -34,6 +34,7 @@ const EditAddressModal = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Họ và tên</Form.Label>
                         <Form.Control
+                            placeholder="Họ và tên..."
                             type="text"
                             name="name"
                             className={errors.name ? "form-control is-invalid" : "form-control"}
@@ -46,6 +47,7 @@ const EditAddressModal = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Địa chỉ</Form.Label>
                         <Form.Control
+                            placeholder="Địa chỉ..."
                             type="text"
                             name="address"
                             className={errors.address ? "form-control is-invalid" : "form-control"}
@@ -58,6 +60,7 @@ const EditAddressModal = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Số điện thoại</Form.Label>
                         <Form.Control
+                            placeholder="Số điện thoại..."
                             type="tel"
                             name="phone"
                             className={errors.phone ? "form-control is-invalid" : "form-control"}
@@ -70,6 +73,7 @@ const EditAddressModal = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
+                            placeholder="Email..."
                             type="email"
                             name="email"
                             className={errors.email ? "form-control is-invalid" : "form-control"}

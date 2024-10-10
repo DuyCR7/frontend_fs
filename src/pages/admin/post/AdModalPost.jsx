@@ -164,6 +164,7 @@ const AdModalPost = (props) => {
                         await props.fetchAllPost(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }
                 } else if (res && res.EC === 1) {
+                    toast.warn(res.EM);
                     handleBackendValidationErrors(res.DT, res.EM);
                 } else {
                     toast.error(res.EM);

@@ -6,7 +6,6 @@ import {store} from "../../redux/store";
 import nProgress from "nprogress";
 import {resetUser} from "../../redux/admin/slices/userSlice";
 import {logoutUser} from "../../services/admin/authService";
-import { useSocket } from "../../context/SocketContext";
 
 nProgress.configure({
     showSpinner: false,
@@ -118,7 +117,6 @@ instance.interceptors.response.use(function (response) {
 }, async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    const { disconnectSocket } = useSocket();
 
     const status = error && error.response && error.response.status || 500;
     switch (status) {
@@ -129,7 +127,6 @@ instance.interceptors.response.use(function (response) {
                 hasAuthError = true;
                 const res = await logoutUser();
                 if (res && res.EC === 0) {
-                    disconnectSocket();
                     localStorage.removeItem("jwt");
                     await store.dispatch(resetUser());
                     hasAuthError = false;
@@ -166,12 +163,14 @@ instance.interceptors.response.use(function (response) {
 
         // bad request
         case 400: {
+            // toast.error(error.response.data.EM);
             nProgress.done();
             return error.response.data;
         }
 
         // not found
         case 404: {
+            // toast.error(error.response.data.EM);
             nProgress.done();
             return error.response.data;
         }

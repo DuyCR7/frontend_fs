@@ -130,6 +130,7 @@ const SignIn = () => {
 
                 }
                 else if (res && res.EC === 1) {
+                    toast.warn(res.EM);
                     handleBackendValidationErrors(res.DT, res.EM);
                 } else if (res && res.EC === 2) {
                     toast.success(res.EM);

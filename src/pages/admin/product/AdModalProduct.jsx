@@ -485,8 +485,6 @@ const AdModalProduct = (props) => {
 
                 } else if (res && res.EC === 1) {
                     toast.warn(res.EM);
-                    handleClickCloseModal();
-                    await props.fetchAllProduct(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                 } else {
                     toast.error(res.EM);
                 }
