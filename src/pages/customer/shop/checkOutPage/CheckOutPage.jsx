@@ -249,6 +249,7 @@ const CheckOutPage = () => {
                 await fetchCustomerAddress();
                 setShowDeleteModal(false);
                 setAddressToDelete(null);
+                setSelectedAddress(null);
             } else if (res && res.EC === 1) {
                 toast.warn(res.EM);
             } else {

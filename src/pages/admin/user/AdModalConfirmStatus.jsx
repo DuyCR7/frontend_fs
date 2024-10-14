@@ -27,9 +27,17 @@ const AdModalConfirmStatus = (props) => {
                     <Button variant="dark" disabled={props.loading} onClick={props.handleCloseModalConfirmStatus}>
                         Đóng
                     </Button>
-                    <Button variant="danger" disabled={props.loading} onClick={props.handleConfirmToggleUserStatus}>
-                        Xác nhận
-                    </Button>
+                    {
+                        props.dataConfirmStatus.isActive ? (
+                            <Button variant="danger" disabled={props.loading} onClick={props.handleConfirmToggleUserStatus}>
+                                Xác nhận
+                            </Button>
+                        ) : (
+                            <Button variant="success" disabled={props.loading} onClick={props.handleConfirmToggleUserStatus}>
+                                Xác nhận
+                            </Button>
+                        )
+                    }
                 </Modal.Footer>
             </Spin>
         </Modal>
