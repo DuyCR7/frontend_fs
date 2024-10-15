@@ -183,7 +183,7 @@ const AdModalProduct = (props) => {
         colorId: 0,
         image: null,
         imageName: '',
-        sizes: [{id: uuidv4(), sizeId: 0, quantity: 1}]
+        sizes: [{id: uuidv4(), sizeId: 0, quantity: 1, quantityToAdd: 0}]
     }];
 
     useEffect(() => {
@@ -219,7 +219,7 @@ const AdModalProduct = (props) => {
                         sizes: []
                     };
                 }
-                acc[curr.colorId].sizes.push({ id: uuidv4(), sizeId: curr.sizeId, quantity: curr.quantity });
+                acc[curr.colorId].sizes.push({ id: uuidv4(), sizeId: curr.sizeId, quantity: curr.quantity, quantityToAdd: "" });
                 return acc;
             }, {}));
             setProductDetails(updateProductDetails);
@@ -333,6 +333,11 @@ const AdModalProduct = (props) => {
                     isValid = false;
                 }
 
+                if (size.quantityToAdd && size.quantityToAdd <= 0) {
+                    sizeError.quantityToAdd = "Vui lòng nhập số lượng nhập thêm hợp lệ!";
+                    isValid = false;
+                }
+
                 if (Object.keys(sizeError).length > 0) {
                     sizeErrors[size.id] = sizeError;
                 }
@@ -403,6 +408,11 @@ const AdModalProduct = (props) => {
                         if (field === 'sizeId') {
                             return { ...size, [field]: parseInt(value, 10) };
                         }
+                        if (field === 'quantity' || field === 'quantityToAdd') {
+                            // return { ...size, [field]: parseInt(value, 10) };
+                            const parsedValue = parseInt(value, 10);
+                            return { ...size, [field]: isNaN(parsedValue) ? '' : Math.max(0, parsedValue) };
+                        }
                         return { ...size, [field]: value };
                     }
                     return size;
@@ -459,18 +469,30 @@ const AdModalProduct = (props) => {
         setProductDetails([...defauftProductDetails]);
         setErrors({});
     }
-
+console.log(productDetails);
     const handleSubmit = async () => {
         let check = validateForm();
         if (check) {
             setLoading(true);
             try {
+                let updatedProductDetails = productDetails;
+                if (props.actionModalProduct === "EDIT") {
+                    updatedProductDetails = productDetails.map(detail => ({
+                        ...detail,
+                        sizes: detail.sizes.map(size => ({
+                            ...size,
+                            quantity: size.quantity + (size.quantityToAdd || 0)
+                        }))
+                    }));
+                }
+                console.log(updatedProductDetails);
+
                 let res = props.actionModalProduct === "CREATE" ?
                     await createProduct(productData.name.trim(), productData.description, productData.price, productData.price_sale,
                     productData.categoryId, productData.teamId, images, productDetails)
                     :
                     await updateProduct(productData.id, productData.name.trim(), productData.description, productData.price, productData.price_sale,
-                        productData.categoryId, productData.teamId, images, productDetails);
+                        productData.categoryId, productData.teamId, images, updatedProductDetails);
                 if (res && res.EC === 0) {
                     toast.success(res.EM);
                     handleClickCloseModal();
@@ -717,9 +739,47 @@ const AdModalProduct = (props) => {
 
                                             <label className="mt-3 mb-2">Kích thước và số lượng (<span
                                                 style={{color: "red"}}>*</span>):</label>
+                                            {/*{detail.sizes.map((size) => (*/}
+                                            {/*    <div key={size.id} className="row mb-2">*/}
+                                            {/*        <div className="col-sm-5">*/}
+                                            {/*            <select*/}
+                                            {/*                value={size.sizeId}*/}
+                                            {/*                onChange={(e) => updateSize(detail.id, size.id, 'sizeId', e.target.value)}*/}
+                                            {/*                className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.sizeId ? "form-group form-select is-invalid" : "form-group form-select"}*/}
+                                            {/*            >*/}
+                                            {/*                <option value={0}>--- Chọn size ---</option>*/}
+                                            {/*                {sizes.map(s => (*/}
+                                            {/*                    <option key={s.id}*/}
+                                            {/*                            value={s.id}>{s.name} ({s.code})</option>*/}
+                                            {/*                ))}*/}
+                                            {/*            </select>*/}
+                                            {/*            {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.sizeId)}*/}
+                                            {/*        </div>*/}
+                                            {/*        <div className="col-sm-5 mt-3 mt-sm-0">*/}
+                                            {/*            <input*/}
+                                            {/*                type="number"*/}
+                                            {/*                value={size.quantity}*/}
+                                            {/*                onChange={(e) => updateSize(detail.id, size.id, 'quantity', e.target.value)}*/}
+                                            {/*                placeholder="Số lượng"*/}
+                                            {/*                className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity ? "form-control is-invalid" : "form-control"}*/}
+                                            {/*                min={1}*/}
+                                            {/*            />*/}
+                                            {/*            {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity)}*/}
+                                            {/*        </div>*/}
+                                            {/*        <div*/}
+                                            {/*            className="d-flex gap-3 justify-content-end justify-content-sm-center align-items-center col-sm-2 mt-3 mt-sm-0 mb-1 mb-sm-0">*/}
+                                            {/*            {detail.sizes.length > 1 && (*/}
+                                            {/*                <FiMinusCircle size={30} style={{color: "red"}}*/}
+                                            {/*                               onClick={() => removeSize(detail.id, size.id)}/>*/}
+                                            {/*            )}*/}
+                                            {/*            <FiPlusCircle size={30} style={{color: "#1178f2"}}*/}
+                                            {/*                          onClick={() => addSize(detail.id)}/>*/}
+                                            {/*        </div>*/}
+                                            {/*    </div>*/}
+                                            {/*))}*/}
                                             {detail.sizes.map((size) => (
                                                 <div key={size.id} className="row mb-2">
-                                                    <div className="col-sm-5">
+                                                    <div className={props.actionModalProduct === "EDIT" && size.quantityToAdd !== undefined  ? 'col-sm-4' : 'col-sm-5'}>
                                                         <select
                                                             value={size.sizeId}
                                                             onChange={(e) => updateSize(detail.id, size.id, 'sizeId', e.target.value)}
@@ -727,25 +787,37 @@ const AdModalProduct = (props) => {
                                                         >
                                                             <option value={0}>--- Chọn size ---</option>
                                                             {sizes.map(s => (
-                                                                <option key={s.id}
-                                                                        value={s.id}>{s.name} ({s.code})</option>
+                                                                <option key={s.id} value={s.id}>{s.name} ({s.code})</option>
                                                             ))}
                                                         </select>
                                                         {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.sizeId)}
                                                     </div>
-                                                    <div className="col-sm-5 mt-3 mt-sm-0">
+                                                    <div className={props.actionModalProduct === "EDIT" && size.quantityToAdd !== undefined ? 'col-sm-3 mt-3 mt-sm-0' : 'col-sm-5 mt-3 mt-sm-0'}>
                                                         <input
                                                             type="number"
-                                                            value={size.quantity}
+                                                            value={size.quantity || ""}
                                                             onChange={(e) => updateSize(detail.id, size.id, 'quantity', e.target.value)}
-                                                            placeholder="Số lượng"
+                                                            placeholder="Số lượng trong kho"
                                                             className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity ? "form-control is-invalid" : "form-control"}
                                                             min={1}
+                                                            disabled={props.actionModalProduct === "EDIT" && size.quantityToAdd !== undefined}
                                                         />
                                                         {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity)}
                                                     </div>
-                                                    <div
-                                                        className="d-flex gap-3 justify-content-end justify-content-sm-center align-items-center col-sm-2 mt-3 mt-sm-0 mb-1 mb-sm-0">
+                                                    {props.actionModalProduct === "EDIT" && size.quantityToAdd !== undefined && (
+                                                        <div className="col-sm-3 mt-3 mt-sm-0">
+                                                            <input
+                                                                type="number"
+                                                                value={size.quantityToAdd || ""}
+                                                                onChange={(e) => updateSize(detail.id, size.id, 'quantityToAdd', e.target.value)}
+                                                                placeholder="Số lượng thêm"
+                                                                className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantityToAdd ? "form-control is-invalid" : "form-control"}
+                                                                min={0}
+                                                            />
+                                                            {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantityToAdd)}
+                                                        </div>
+                                                    )}
+                                                    <div className="d-flex gap-3 justify-content-end justify-content-sm-center align-items-center col-sm-2 mt-3 mt-sm-0 mb-1 mb-sm-0">
                                                         {detail.sizes.length > 1 && (
                                                             <FiMinusCircle size={30} style={{color: "red"}}
                                                                            onClick={() => removeSize(detail.id, size.id)}/>
