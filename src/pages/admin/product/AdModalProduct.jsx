@@ -481,7 +481,8 @@ console.log(productDetails);
                         ...detail,
                         sizes: detail.sizes.map(size => ({
                             ...size,
-                            quantity: size.quantity + (size.quantityToAdd || 0)
+                            quantity: size.quantity,
+                            quantityToAdd: size.quantityToAdd || 0
                         }))
                     }));
                 }
