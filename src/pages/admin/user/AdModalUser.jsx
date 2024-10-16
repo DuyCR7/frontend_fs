@@ -166,7 +166,6 @@ const AdModalUser = (props) => {
                     if(props.actionModalTeam === "CREATE") {
                         props.setCurrentPage(1);
                         props.setSortConfig({ key: 'id', direction: 'DESC' });
-                        await props.fetchAllUsers(1, props.numRows);
                     } else {
                         await props.fetchAllUsers(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }

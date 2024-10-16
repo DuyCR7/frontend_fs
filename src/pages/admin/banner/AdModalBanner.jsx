@@ -164,7 +164,6 @@ const AdModalBanner = (props) => {
                     if(props.actionModalBanner === "CREATE") {
                         props.setCurrentPage(1);
                         props.setSortConfig({key: 'id', direction: 'DESC'});
-                        await props.fetchAllBanner(1, props.numRows);
                     } else {
                         await props.fetchAllBanner(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }

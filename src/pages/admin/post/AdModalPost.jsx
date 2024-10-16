@@ -159,7 +159,6 @@ const AdModalPost = (props) => {
                     if(props.actionModalPost === "CREATE") {
                         props.setCurrentPage(1);
                         props.setSortConfig({ key: 'id', direction: 'DESC' });
-                        await props.fetchAllPost(1, props.numRows);
                     } else {
                         await props.fetchAllPost(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }

@@ -501,7 +501,6 @@ console.log(productDetails);
                     if(props.actionModalProduct === "CREATE") {
                         props.setCurrentPage(1);
                         props.setSortConfig({key: 'id', direction: 'DESC'});
-                        await props.fetchAllProduct(1, props.numRows);
                     } else {
                         await props.fetchAllProduct(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }

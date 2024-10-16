@@ -189,7 +189,6 @@ const AdModalVoucher = (props) => {
                     if(props.actionModalVoucher === "CREATE") {
                         props.setCurrentPage(1);
                         props.setSortConfig({key: 'id', direction: 'DESC'});
-                        await props.fetchAllVouchers(1, props.numRows);
                     } else {
                         await props.fetchAllVouchers(props.currentPage, props.numRows, props.searchKeyword, props.setSortConfig);
                     }

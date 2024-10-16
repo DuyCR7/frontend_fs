@@ -90,7 +90,6 @@ const AdModalSize = (props) => {
                     if(props.actionModalSize === "CREATE") {
                         props.setCurrentPage(1);
                         props.setSortConfig({key: 'id', direction: 'DESC'});
-                        await props.fetchAllSize(1, props.numRows);
                     } else {
                         await props.fetchAllSize(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }

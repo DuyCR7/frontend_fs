@@ -91,7 +91,6 @@ const AdModalColor = (props) => {
                     if (props.actionModalColor === "CREATE") {
                         props.setCurrentPage(1);
                         props.setSortConfig({key: 'id', direction: 'DESC'});
-                        await props.fetchAllColor(1, props.numRows);
                     } else {
                         await props.fetchAllColor(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
                     }
