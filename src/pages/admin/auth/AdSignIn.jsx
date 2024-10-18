@@ -155,10 +155,10 @@ const AdSignIn = () => {
     }
 
     return (
-        <Container fluid className="adpage-sign-in my-5">
-            <Row className="justify-content-center">
-                <Col xs={12} sm={8} md={6} lg={4}>
-                    <Card className="p-4">
+        <Container fluid className="adpage-sign-in vh-100 d-flex align-items-center justify-content-center">
+            <Row className="w-100 h-100">
+                <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                    <Card className="p-4" style={{ maxWidth: '450px', width: '100%' }}>
                         <Card.Body>
                             <h2 className="text-center mb-3">Đăng nhập</h2>
 
@@ -201,6 +201,16 @@ const AdSignIn = () => {
                             </Form>
                         </Card.Body>
                     </Card>
+                </Col>
+                <Col md={6} className="d-none d-md-block p-0">
+                    <div
+                        className="h-100 w-100"
+                        style={{
+                            backgroundImage: 'url("/admin/assets/img/signin.png")',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}
+                    />
                 </Col>
             </Row>
         </Container>

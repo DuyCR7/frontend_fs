@@ -180,10 +180,20 @@ const SignIn = () => {
     }
 
     return (
-        <Container fluid className="page-sign-in my-5">
-            <Row className="justify-content-center">
-                <Col xs={12} sm={8} md={6} lg={4}>
-                    <Card className="p-4">
+        <div className="page-sign-in vh-100 d-flex align-items-center justify-content-center">
+            <Row className="w-100 h-100">
+                <Col md={6} className="d-none d-md-block p-0">
+                    <div
+                        className="h-100 w-100"
+                        style={{
+                            backgroundImage: 'url("/admin/assets/img/signin.png")',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        }}
+                    />
+                </Col>
+                <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                    <Card className="p-4" style={{ maxWidth: '450px', width: '100%' }}>
                         <Card.Body>
                             <Link to="/" className="d-flex align-items-center justify-content-center">
                                 <img src="/admin/assets/img/kaiadmin/cus_logo_dark.png" width={90}/>
@@ -251,7 +261,7 @@ const SignIn = () => {
                     </Card>
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 };
 
