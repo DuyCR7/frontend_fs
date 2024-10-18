@@ -28,13 +28,13 @@ console.log(reviews);
                                             <img src={item.Customer.image.startsWith('https')
                                                 ? item.Customer.image
                                                 : `${process.env.REACT_APP_URL_BACKEND}/${item.Customer.image}`}
-                                                 alt={item.Customer.email} alt=""/>
+                                                 alt={item.Customer.username} alt=""/>
                                         </div>
                                         <div className="post-content">
                                             <div className="entry-meta">
                                                 <div className="posted-on">
                                                     <div className="review-info">
-                                                        <p className="fs-4 fw-bold">{item.Customer.email}</p>
+                                                        <p className="fs-4 fw-bold">{item.Customer.email ? item.Customer.email : item.Customer.username}</p>
                                                         <p>{formatDate(item.updatedAt)}</p>
                                                     </div>
                                                     <div className="review-rating">

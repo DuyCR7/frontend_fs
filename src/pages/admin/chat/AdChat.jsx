@@ -234,7 +234,7 @@ console.log(onlineCustomers);
         if (message.senderType === 'user' && message.senderId === user.id) {
             return 'Bạn';
         } else if (message.senderType === 'customer') {
-            return chat ? chat.Customer.email : 'Khách hàng';
+            return chat ? (chat.Customer.email ? chat.Customer.email : chat.Customer.username) : 'Khách hàng';
         } else {
             if (chat) {
                 const sender = JSON.parse(chat.participants).find(p => p.id === message.senderId);
@@ -267,14 +267,14 @@ console.log(onlineCustomers);
                                 <img src={chat.Customer.image.startsWith('https')
                                     ? chat.Customer.image
                                     : `${process.env.REACT_APP_URL_BACKEND}/${chat.Customer.image}`}
-                                     alt={chat.Customer.email}
+                                     alt={chat.Customer.username}
                                      className="chat-avatar"/>
                                 {onlineCustomers?.some((cus) => cus?.cusId === chat.Customer.id) && (
                                     <span className="online-status"></span>
                                 )}
                             </div>
                             <div className="chat-info">
-                                <h3>{chat.Customer.email}</h3>
+                                <h3>{chat.Customer.email ? chat.Customer.email : chat.Customer.username}</h3>
                                 <p> {
                                     chat.lastMessageSender ? (
                                         <span>{truncateContent(chat.lastMessageSender, 12)}: </span>
@@ -307,9 +307,9 @@ console.log(onlineCustomers);
                             <img src={selectedChat.Customer.image.startsWith('https')
                                 ? selectedChat.Customer.image
                                 : `${process.env.REACT_APP_URL_BACKEND}/${selectedChat.Customer.image}`}
-                                 alt={selectedChat.Customer.email}
+                                 alt={selectedChat.Customer.username}
                                  className="chat-avatar"/>
-                            <h2>{selectedChat.Customer.email}</h2>
+                            <h2>{selectedChat.Customer.email ? selectedChat.Customer.email : selectedChat.Customer.username}</h2>
                             <IoClose className="close-btn" onClick={() => setSelectedChat(null)}/>
                         </div>
                         <div className="chat-messages">
