@@ -267,7 +267,7 @@ const CheckOutPage = () => {
     };
 
     const handleSuccessfulOrder = useCallback((res) => {
-        toast.success(`${res.EM} - Một email xác nhận đã được gửi đến địa chỉ email của bạn.`);
+        toast.success(`${res.EM}`);
         dispatch(clearSelectedItemsForPayment());
         dispatch(updateCartCount(res.DT.remainingCartItems));
         orderPlacedRef.current = true;

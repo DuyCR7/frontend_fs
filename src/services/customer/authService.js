@@ -24,9 +24,16 @@ const testApi = () => {
 }
 
 const signInGoogleSuccess = (id, tokenLoginGoogle) => {
-    return axios.post("/api/v1/sign-in-success", {
+    return axios.post("/api/v1/sign-in-success-google", {
         id: id,
         tokenLoginGoogle: tokenLoginGoogle
+    });
+}
+
+const signInGithubSuccess = (id, tokenLoginGithub) => {
+    return axios.post("/api/v1/sign-in-success-github", {
+        id: id,
+        tokenLoginGithub: tokenLoginGithub
     });
 }
 
@@ -56,6 +63,7 @@ export {
     logoutCustomer,
     testApi,
     signInGoogleSuccess,
+    signInGithubSuccess,
     verifyEmail,
     resetPasswordSendLink,
     resetPasswordVerifyLink,

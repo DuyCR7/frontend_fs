@@ -42,6 +42,7 @@ import AdManageCustomer from "./pages/admin/manage-customer/AdManageCustomer";
 import AdProfile from "./pages/admin/profile/AdProfile";
 import AdUser from "./pages/admin/user/AdUser";
 import {useSelector} from "react-redux";
+import GithubLoginSuccess from "./pages/customer/auth/githubLoginSuccess/GithubLoginSuccess";
 
 const App = () => {
 
@@ -120,7 +121,8 @@ const App = () => {
                 <Route path="/sign-in" element={<SignIn />}/>
                 <Route path="/sign-up" element={<SignUp />}/>
                 <Route path="/cus/:id/verify/:token" element={<EmailVerify />}/>
-                <Route path="/sign-in-success/:userId/:tokenLoginGoogle" element={<GoogleLoginSuccess />}/>
+                <Route path="/sign-in-success-google/:userId/:tokenLoginGoogle" element={<GoogleLoginSuccess />}/>
+                <Route path="/sign-in-success-github/:userId/:tokenLoginGithub" element={<GithubLoginSuccess />}/>
                 <Route path="/forgot-password" element={<ForgotPassword />}/>
                 <Route path="/password-reset/:id/:token" element={<PasswordReset />}/>
                 <Route path="/verify-and-reset/:id/:token" element={<VerifyAndResetPassword />}/>

@@ -163,6 +163,10 @@ const SignIn = () => {
         window.open(`http://localhost:8080/api/v1/auth/google`, '_self');
     }
 
+    const handleSignInGithub = () => {
+        window.open(`http://localhost:8080/api/v1/auth/github`, '_self');
+    }
+
     useEffect(() => {
         if (customer && customer.isAuthenticated && localStorage.getItem('cus_jwt')) {
             navigate('/');
@@ -245,16 +249,17 @@ const SignIn = () => {
                                     Hoặc đăng nhập bằng:
                                 </div>
 
-                                <div className="d-flex justify-content-center mt-3 gap-3 align-items-center">
+                                <div className="d-flex flex-column justify-content-center mt-3 gap-3 align-items-center">
                                     <button className="custom-button" type="button"
                                             onClick={() => handleSignInGoogle()}>
                                         <img src="/admin/assets/img/kaiadmin/icons8-google.svg" className="social-icon"/>
                                         <span style={{color: "#007bff"}}>Đăng nhập với Google</span>
                                     </button>
-                                    {/*<button className="custom-button" type="button">*/}
-                                    {/*    <img src="/assets/img/kaiadmin/icons8-facebook.svg" className="social-icon"/>*/}
-                                    {/*    <span style={{color: "#007bff"}}>Đăng nhập với Facebook</span>*/}
-                                    {/*</button>*/}
+                                    <button className="custom-button" type="button"
+                                            onClick={() => handleSignInGithub()}>
+                                        <img src="/admin/assets/img/kaiadmin/icons8-github.svg" className="social-icon"/>
+                                        <span style={{color: "#007bff"}}>Đăng nhập với Github</span>
+                                    </button>
                                 </div>
                             </Form>
                         </Card.Body>
