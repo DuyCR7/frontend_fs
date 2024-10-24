@@ -23,7 +23,7 @@ const contactList = [{
 }, {
     icon: "web",
     title: "Website",
-    desc: "www.cr7shop.com",
+    desc: "www.sevenshop.com",
 },];
 
 const Contact = () => {

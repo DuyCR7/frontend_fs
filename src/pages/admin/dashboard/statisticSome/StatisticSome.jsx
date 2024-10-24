@@ -52,7 +52,7 @@ const StatisticSome = () => {
         <Spin spinning={loading}>
             <div className="statistic-some d-flex align-items-center justify-content-between pt-2 pb-4">
                 <div>
-                    <h3 className="fw-bold mb-3">CR7 Shop</h3>
+                    <h3 className="fw-bold mb-3">Seven Shop</h3>
                     <h6 className="op-7 mb-2 text-uppercase">Thống kê</h6>
                 </div>
                 <button className="btn btn-outline-success btn-sm" onClick={handleRefresh}>

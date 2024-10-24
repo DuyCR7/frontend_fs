@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import Sponsor from "../../home/sponsor/Sponsor";
 
 const title = "Liên hệ chúng tôi";
-const desc = "CR7 Shop";
+const desc = "Seven Shop";
 const ItemTitle = "Mua sắm với chúng tôi";
 const quickTitle = "Liên kết nhanh";
 const tweetTitle = "Recent Tweets";
