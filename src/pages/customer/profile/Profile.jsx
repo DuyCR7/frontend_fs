@@ -173,7 +173,7 @@ const Profile = () => {
                                                     disabled
                                                 />
                                                 {
-                                                    customer.typeLogin === 'normal' || customer.typeLogin === 'github' && (
+                                                    (customer.typeLogin === 'normal' || customer.typeLogin === 'github') && (
                                                         <Button variant="outline-primary" onClick={handleEditEmail}
                                                                 className="ms-2">
                                                             <FiEdit

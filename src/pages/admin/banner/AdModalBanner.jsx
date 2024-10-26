@@ -196,7 +196,7 @@ const AdModalBanner = (props) => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <span>
-                            {props.actionModalBanner === "CREATE" ? "Thêm search" : "Sửa search"}
+                            {props.actionModalBanner === "CREATE" ? "Thêm banner" : "Sửa banner"}
                         </span>
                     </Modal.Title>
                 </Modal.Header>

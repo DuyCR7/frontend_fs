@@ -140,11 +140,36 @@
   }
 }
 
-@media (max-width: 576px) {
-  .modal-product {
-    .modal-dialog {
+.modal-product {
+  .modal-dialog {
+    @media (max-width: 576px) {
       max-width: calc(100% - 50px);
       margin: 0 auto;
+    }
+  }
+
+  .modal-body {
+    max-height: calc(90vh - 120px); // 90vh trừ đi chiều cao của header và footer
+    overflow-y: auto;
+    padding-right: 1rem; // Thêm padding để tránh content bị che bởi scrollbar
+
+    // Tùy chỉnh thanh cuộn cho đẹp hơn
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+
+      &:hover {
+        background: #555;
+      }
     }
   }
 }

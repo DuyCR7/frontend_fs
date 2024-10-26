@@ -172,12 +172,6 @@ console.log(products);
                                 )}
                             </div>
                         </div>
-
-                        <div className="text-center">
-                            <button onClick={() => navigate('/shops')} className="btn btn-outline-primary">
-                                Mua ngay
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -59,9 +59,17 @@ const AdModalLockCustomer = ({
                     <Button variant="dark" disabled={loading} onClick={handleCloseModalLock}>
                         Đóng
                     </Button>
-                    <Button variant="danger" disabled={loading} onClick={handleSubmit}>
-                        {actionModalLockCustomer === "LOCK" ? "Khóa" : "Mở khóa"}
-                    </Button>
+                    {
+                        customerToLock.isActive ? (
+                            <Button variant="danger" disabled={loading} onClick={handleSubmit}>
+                                Khóa
+                            </Button>
+                        ) : (
+                            <Button variant="success" disabled={loading} onClick={handleSubmit}>
+                                Mở khóa
+                            </Button>
+                        )
+                    }
                 </Modal.Footer>
             </Spin>
         </Modal>

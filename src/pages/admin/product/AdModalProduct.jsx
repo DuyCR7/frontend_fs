@@ -739,44 +739,6 @@ console.log(productDetails);
 
                                             <label className="mt-3 mb-2">Kích thước và số lượng (<span
                                                 style={{color: "red"}}>*</span>):</label>
-                                            {/*{detail.sizes.map((size) => (*/}
-                                            {/*    <div key={size.id} className="row mb-2">*/}
-                                            {/*        <div className="col-sm-5">*/}
-                                            {/*            <select*/}
-                                            {/*                value={size.sizeId}*/}
-                                            {/*                onChange={(e) => updateSize(detail.id, size.id, 'sizeId', e.target.value)}*/}
-                                            {/*                className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.sizeId ? "form-group form-select is-invalid" : "form-group form-select"}*/}
-                                            {/*            >*/}
-                                            {/*                <option value={0}>--- Chọn size ---</option>*/}
-                                            {/*                {sizes.map(s => (*/}
-                                            {/*                    <option key={s.id}*/}
-                                            {/*                            value={s.id}>{s.name} ({s.code})</option>*/}
-                                            {/*                ))}*/}
-                                            {/*            </select>*/}
-                                            {/*            {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.sizeId)}*/}
-                                            {/*        </div>*/}
-                                            {/*        <div className="col-sm-5 mt-3 mt-sm-0">*/}
-                                            {/*            <input*/}
-                                            {/*                type="number"*/}
-                                            {/*                value={size.quantity}*/}
-                                            {/*                onChange={(e) => updateSize(detail.id, size.id, 'quantity', e.target.value)}*/}
-                                            {/*                placeholder="Số lượng"*/}
-                                            {/*                className={errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity ? "form-control is-invalid" : "form-control"}*/}
-                                            {/*                min={1}*/}
-                                            {/*            />*/}
-                                            {/*            {renderError(errors.productDetails?.[detail.id]?.sizes?.[size.id]?.quantity)}*/}
-                                            {/*        </div>*/}
-                                            {/*        <div*/}
-                                            {/*            className="d-flex gap-3 justify-content-end justify-content-sm-center align-items-center col-sm-2 mt-3 mt-sm-0 mb-1 mb-sm-0">*/}
-                                            {/*            {detail.sizes.length > 1 && (*/}
-                                            {/*                <FiMinusCircle size={30} style={{color: "red"}}*/}
-                                            {/*                               onClick={() => removeSize(detail.id, size.id)}/>*/}
-                                            {/*            )}*/}
-                                            {/*            <FiPlusCircle size={30} style={{color: "#1178f2"}}*/}
-                                            {/*                          onClick={() => addSize(detail.id)}/>*/}
-                                            {/*        </div>*/}
-                                            {/*    </div>*/}
-                                            {/*))}*/}
                                             {detail.sizes.map((size) => (
                                                 <div key={size.id} className="row mb-2">
                                                     <div className={props.actionModalProduct === "EDIT" && size.quantityToAdd !== undefined  ? 'col-sm-4' : 'col-sm-5'}>

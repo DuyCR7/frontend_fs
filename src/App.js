@@ -43,6 +43,11 @@ import AdProfile from "./pages/admin/profile/AdProfile";
 import AdUser from "./pages/admin/user/AdUser";
 import {useSelector} from "react-redux";
 import GithubLoginSuccess from "./pages/customer/auth/githubLoginSuccess/GithubLoginSuccess";
+import TermsConditions from "./pages/customer/components/footer/TermsConditions";
+import PrivacyPolicy from "./pages/customer/components/footer/PrivacyPolicy";
+import RefundPolicy from "./pages/customer/components/footer/RefundPolicy";
+import ShippingPolicy from "./pages/customer/components/footer/ShippingPolicy";
+import AboutUs from "./pages/customer/components/footer/AboutUs";
 
 const App = () => {
 
@@ -100,6 +105,11 @@ const App = () => {
                 {/*Customer routes*/}
                 <Route path="/" element={<CusApp />}>
                     <Route index element={<Home />}/>
+                    <Route path="policies/terms-of-service" element={<TermsConditions />}/>
+                    <Route path="policies/privacy-policy" element={<PrivacyPolicy />}/>
+                    <Route path="policies/refund-policy" element={<RefundPolicy />}/>
+                    <Route path="policies/shipping-policy" element={<ShippingPolicy />}/>
+                    <Route path="pages/about-us" element={<AboutUs />}/>
                     <Route path="blogs" element={<Blog />} />
                     <Route path="blogs/:slug" element={<SingleBlog />} />
                     <Route path="shops" element={<Shop />} />

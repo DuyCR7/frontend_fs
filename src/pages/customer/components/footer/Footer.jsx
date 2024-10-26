@@ -6,12 +6,11 @@ const title = "Liên hệ chúng tôi";
 const desc = "Seven Shop";
 const ItemTitle = "Mua sắm với chúng tôi";
 const quickTitle = "Liên kết nhanh";
-const tweetTitle = "Recent Tweets";
 
 const addressList = [
     {
         iconName: 'icofont-google-map',
-        text: 'Ngõ 389 phố Vọng, Hai Bà Trưng',
+        text: 'Ngõ 389 phố Vọng, Hai Bà Trưng, Hà Nội',
     },
     {
         iconName: 'icofont-phone',
@@ -39,49 +38,34 @@ const socialList = [
 const ItemList = [
     {
         text: 'Điều khoản và điều kiện',
-        link: '#',
+        link: 'policies/terms-of-service',
     },
     {
         text: 'Chính sách bảo mật',
-        link: '#',
+        link: 'policies/privacy-policy',
     },
     {
         text: 'Chính sách hoàn tiền',
-        link: '#',
+        link: 'policies/refund-policy',
     },
     {
         text: 'Vận chuyển',
-        link: '#',
+        link: 'policies/shipping-policy',
     }
 ]
 
 const quickList = [
     {
-        text: 'Về',
-        link: '#',
+        text: 'Về chúng tôi',
+        link: 'pages/about-us',
     },
     {
         text: 'Bài viết',
-        link: '#',
+        link: 'blogs',
     },
     {
         text: 'Liên hệ',
-        link: '#',
-    },
-    {
-        text: "FAQ's",
-        link: '#',
-    },
-]
-
-const tweetList = [
-    {
-        iconName: 'icofont-twitter',
-        desc: <p>Aminur islam <a href="#">@ShopCart Greetings!  #HTML_Template</a> Grab your item, 50% Big Sale Offer !!</p>,
-    },
-    {
-        iconName: 'icofont-twitter',
-        desc: <p>Somrat islam <a href="#">@ShopCart Hey! #HTML_Template</a> Grab your item, 50% Big Sale Offer !!</p>,
+        link: 'contacts',
     },
 ]
 
@@ -144,7 +128,7 @@ const Footer = () => {
                                                     ItemList.map((item, index) => {
                                                         return (
                                                             <li key={index}>
-                                                                <a href="#">{item.text}</a>
+                                                                <Link to={item.link}>{item.text}</Link>
                                                             </li>
                                                         )
                                                     })
@@ -168,7 +152,7 @@ const Footer = () => {
                                                     quickList.map((item, index) => {
                                                         return (
                                                             <li key={index}>
-                                                                <a href="#">{item.text}</a>
+                                                                <Link to={item.link}>{item.text}</Link>
                                                             </li>
                                                         )
                                                     })

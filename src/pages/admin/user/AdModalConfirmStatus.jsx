@@ -14,11 +14,11 @@ const AdModalConfirmStatus = (props) => {
                     {
                         props.dataConfirmStatus.isActive ? (
                             <div>
-                                Bạn có chắc muốn cập nhật trạng thái admin: <b>{props.dataConfirmStatus.email}</b> thành <b style={{color: "red"}}> không hoạt động?</b>
+                                Bạn có chắc muốn cập nhật trạng thái nhân viên: <b>{props.dataConfirmStatus.email}</b> thành <b style={{color: "red"}}> không hoạt động?</b>
                             </div>
                         ) : (
                             <div>
-                                Bạn có chắc muốn cập nhật trạng thái admin: <b>{props.dataConfirmStatus.email}</b> thành <b style={{color: "green"}}> hoạt động?</b>
+                                Bạn có chắc muốn cập nhật trạng thái nhân viên: <b>{props.dataConfirmStatus.email}</b> thành <b style={{color: "green"}}> hoạt động?</b>
                             </div>
                         )
                     }

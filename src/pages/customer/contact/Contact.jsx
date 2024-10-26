@@ -23,18 +23,18 @@ const contactList = [{
 }, {
     icon: "web",
     title: "Website",
-    desc: "www.sevenshop.com",
+    desc: "https://www.sevenshop.com",
 },];
 
 const Contact = () => {
     return (
         <div>
             <PageHeader title={"Liên hệ"} curPage={"Liên hệ"}/>
-            <div className="map-address-section padding-tb section-bg">
+            <div className="map-address-section padding-tb section-bg" style={{ background: "#f8f9fa" }}>
                 <div className="container-fluid ps-5 pe-5">
                     <div className="section-header text-center">
-                        <span className="subtitle">{subTitle}</span>
-                        <h2 className="title">{title}</h2>
+                        <span className="subtitle fs-3">{subTitle}</span>
+                        <h3 className="title">{title}</h3>
                     </div>
 
                     <div className="section-wrapper">
@@ -64,40 +64,6 @@ const Contact = () => {
                                 <GoogleMap />
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="contact-section padding-tb">
-                <div className="container ps-5 pe-5">
-                    <div className="section-header text-center">
-                        <span className="subtitle">{conSubTitle}</span>
-                        <h2 className="title">{conTitle}</h2>
-                    </div>
-
-                    <div className="section-wrapper">
-                        <form className="contact-form">
-                            <div className="form-group">
-                                <input type="text" name="name" id="name" placeholder="Họ và tên *"/>
-                            </div>
-                            <div className="form-group">
-                                <input type="email" name="email" id="email" placeholder="Email *"/>
-                            </div>
-                            <div className="form-group">
-                                <input type="text" name="phone" id="phone" placeholder="Điện thoại *"/>
-                            </div>
-                            <div className="form-group">
-                                <input type="email" name="subject" id="subject" placeholder="Chủ đề *"/>
-                            </div>
-                            <div className="form-group w-100">
-                                <textarea name="message" id="message" rows="8" placeholder="Nội dung"></textarea>
-                            </div>
-                            <div className="form-group w-100 text-center">
-                                <button className="lab-btn">
-                                    <span>{btnText}</span>
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

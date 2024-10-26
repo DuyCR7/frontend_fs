@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import PageHeader from "../components/pageHeader/PageHeader.jsx";
-import blogList from "../../../utils/blogdata"
 import {Link} from "react-router-dom";
 import {getAllPost} from "../../../services/customer/postService";
 import {formatDate} from "../../../utils/formatDate";
@@ -40,7 +39,7 @@ const Blog = () => {
     return (
         <div>
             <PageHeader title="Bài viết" curPage="Bài viết" />
-            <div className="blog-section padding-tb section-bg">
+            <div className="blog-section padding-tb section-bg" style={{borderTop: "1px solid rgb(197, 197, 197)", borderBottom: "1px solid rgb(197, 197, 197)"}}>
                 <div className="container-fluid ps-5 pe-5">
                     <div className="section-wrapper">
                         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center g-4">
