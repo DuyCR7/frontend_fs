@@ -64,6 +64,13 @@ const Profile = () => {
     };
 
     const handleSubmit = async () => {
+
+        const phoneRegex = /^0\d{9}$/;
+        if (!phoneRegex.test(profile?.phone)) {
+            toast.warn("Vui lòng nhập số điện thoại hợp lệ!");
+            return;
+        }
+
         setLoading(true);
         try {
             let res = await updateProfile(profile.fullname, profile.username, profile.phone, profile.sex, profile.birthdate, imageChanged ? imageFile : null);
