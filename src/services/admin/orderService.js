@@ -1,6 +1,6 @@
 import axios from "../../config/admin/axios";
 
-const getAllOrders = (page, limit, search = "", sort = {}) => {
+const getAllOrders = (page, limit, search = "", sort = {}, statuses = []) => {
     let query = `/api/v1/admin/order/read?page=${page}&limit=${limit}`;
 
     if (search) {
@@ -10,6 +10,10 @@ const getAllOrders = (page, limit, search = "", sort = {}) => {
     if (sort && sort.key && sort.direction) {
         const sortQuery = JSON.stringify(sort);
         query += `&sort=${encodeURIComponent(sortQuery)}`;
+    }
+
+    if (statuses && statuses.length > 0) {
+        query += `&statuses=${encodeURIComponent(JSON.stringify(statuses))}`;
     }
 
     return axios.get(query);

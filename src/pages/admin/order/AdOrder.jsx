@@ -11,6 +11,14 @@ import {toast} from "react-toastify";
 import "./adOrder.scss";
 import AdModalOrderDetail from "./AdModalOrderDetail";
 
+const ORDER_STATUSES = [
+    { value: 0, label: 'Đã hủy' },
+    { value: 1, label: 'Xác nhận' },
+    { value: 2, label: 'Gửi hàng' },
+    { value: 3, label: 'Đang giao' },
+    { value: 4, label: 'Hoàn thành' }
+];
+
 const AdOrder = () => {
 
     const [listOrders, setListOrders] = useState([]);
@@ -50,10 +58,47 @@ const AdOrder = () => {
         setSortConfig({ key, direction });
     }
 
-    const fetchAllOrders = async (currentPage, numRows, searchKeyword = "", sortConfig = {key: 'id', direction: 'DESC'}) => {
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+
+    const handleStatusFilter = (status) => {
+        setSelectedStatuses(prev => {
+            if (prev.includes(status)) {
+                return prev.filter(s => s !== status);
+            } else {
+                return [...prev, status];
+            }
+        });
+        setCurrentPage(1);
+    };
+
+    const FilterSection = () => (
+        <div className="filter-section">
+            <div className="form-check-container">
+                {ORDER_STATUSES.map(status => (
+                    <div key={status.value} className="form-check">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id={`status-${status.value}`}
+                            checked={selectedStatuses.includes(status.value)}
+                            onChange={() => handleStatusFilter(status.value)}
+                        />
+                        <label className="form-check-label" htmlFor={`status-${status.value}`}>
+                            {status.label}
+                        </label>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
+    const fetchAllOrders = async (currentPage, numRows, searchKeyword = "", sortConfig = {
+        key: 'id',
+        direction: 'DESC'
+    }) => {
         setLoading(true);
         try {
-            let res = await getAllOrders(currentPage, numRows, searchKeyword.trim(), sortConfig);
+            let res = await getAllOrders(currentPage, numRows, searchKeyword.trim(), sortConfig, selectedStatuses);
             if (res && res.EC === 0) {
                 setListOrders(res.DT.orders);
                 setTotalPage(res.DT.totalPages);
@@ -69,12 +114,13 @@ const AdOrder = () => {
         if (debouncedSearchInput === searchKeyword) {
             fetchAllOrders(currentPage, numRows, debouncedSearchInput, sortConfig);
         }
-    }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
+    }, [currentPage, numRows, debouncedSearchInput, sortConfig, selectedStatuses]);
 
     const handleRefresh = () => {
         setCurrentPage(1);
         setSearchKeyword("");
         setSortConfig({ key: 'id', direction: 'DESC' });
+        setSelectedStatuses([]);
     }
 
     const handleStatusChange = async (orderId, newStatus) => {
@@ -164,11 +210,13 @@ const AdOrder = () => {
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Nhập mã đơn hàng..."
+                        placeholder="Nhập mã đơn hàng, số điện thoại..."
                         value={searchKeyword}
                         onChange={(e) => handleSearch(e)}
                     />
                 </div>
+
+                <FilterSection />
 
                 <div className="table-orders table-responsive">
                     <Spin spinning={loading}>

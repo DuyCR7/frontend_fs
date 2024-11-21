@@ -9,6 +9,108 @@
   }
 }
 
+.filter-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  .form-check-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .form-check {
+      min-width: 120px;
+      padding: 0.5rem;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-check-input {
+        margin-right: 0.5rem;
+        cursor: pointer;
+
+        &:checked {
+          background-color: #0d6efd;
+          border-color: #0d6efd;
+
+          & + .form-check-label {
+            color: #0d6efd;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .form-check-label {
+        cursor: pointer;
+        font-size: 0.95rem;
+        color: #495057;
+        transition: color 0.2s ease;
+        user-select: none;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .filter-section {
+    padding: 0.75rem;
+
+    .form-check-container {
+      gap: 0.75rem;
+
+      .form-check {
+        min-width: calc(33.333% - 0.5rem);
+        flex: 0 0 calc(33.333% - 0.5rem);
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .filter-section {
+    padding: 0.5rem;
+
+    .form-check-container {
+      gap: 0.5rem;
+
+      .form-check {
+        min-width: calc(50% - 0.25rem);
+        flex: 0 0 calc(50% - 0.25rem);
+        padding: 0.4rem;
+
+        .form-check-label {
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .filter-section {
+    .form-check-container {
+      .form-check {
+        min-width: 100%;
+        flex: 0 0 100%;
+      }
+    }
+  }
+}
+
 .modal-order-detail {
   .order-card {
     margin-bottom: 2rem;
