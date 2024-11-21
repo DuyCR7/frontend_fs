@@ -83,10 +83,10 @@ const Countdown = () => {
     }, [eventFootball, timeLeft]);
 
     const timerComponents = [
-        { label: 'DAY', value: timeLeft.days },
-        { label: 'HOURS', value: timeLeft.hours },
-        { label: 'MINUTES', value: timeLeft.minutes },
-        { label: 'SECONDS', value: timeLeft.seconds }
+        { label: 'NGÀY', value: timeLeft.days },
+        { label: 'GIỜ', value: timeLeft.hours },
+        { label: 'PHÚT', value: timeLeft.minutes },
+        { label: 'GIÂY', value: timeLeft.seconds }
     ]
 
     return (

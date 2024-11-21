@@ -7,7 +7,7 @@ import {FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa";
 import {GrStatusGood} from "react-icons/gr";
 import {MdDelete, MdEdit, MdOutlineDangerous} from "react-icons/md";
 import ReactPaginate from "react-paginate";
-import {getAllProduct, setActiveField} from "../../../services/admin/productService";
+import {getAllProduct, getAllTeam, setActiveField} from "../../../services/admin/productService";
 import {toast} from "react-toastify";
 import {formatCurrency} from "../../../utils/formatCurrency";
 import AdModalDeleteProduct from "./AdModalDeleteProduct";
@@ -49,10 +49,29 @@ const AdProduct = () => {
         setSortConfig({ key, direction });
     }
 
-    const fetchAllProduct = async (currentPage, numRows, searchKeyword = "", sortConfig = {key: 'id', direction: 'DESC'}) => {
+    const [teamId, setTeamId] = useState("");
+    const [teams, setTeams] = useState([]);
+
+    useEffect(() => {
+        const fetchTeams = async () => {
+            try {
+                const teamsRes = await getAllTeam();
+
+                if (teamsRes && teamsRes.EC === 0) {
+                    setTeams(teamsRes.DT);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchTeams();
+    }, []);
+
+    const fetchAllProduct = async (currentPage, numRows, searchKeyword = "", teamId = "", sortConfig = {key: 'id', direction: 'DESC'}) => {
         setLoading(true);
         try {
-            let res = await getAllProduct(currentPage, numRows, searchKeyword.trim(), sortConfig);
+            let res = await getAllProduct(currentPage, numRows, searchKeyword.trim(), teamId, sortConfig);
             if (res && res.EC === 0) {
                 setListProduct(res.DT.products);
                 setTotalPage(res.DT.totalPages);
@@ -67,13 +86,13 @@ const AdProduct = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchAllProduct(currentPage, numRows, debouncedSearchInput, sortConfig);
+            await fetchAllProduct(currentPage, numRows, debouncedSearchInput, teamId, sortConfig);
         }
 
         if (debouncedSearchInput === searchKeyword) {
             fetchData();
         }
-    }, [currentPage, numRows, debouncedSearchInput, sortConfig]);
+    }, [currentPage, numRows, debouncedSearchInput, teamId, sortConfig]);
 
     const toggleProductStatus = async (id, field) => {
         setLoading(true);
@@ -132,29 +151,48 @@ const AdProduct = () => {
     const handleRefresh = () => {
         setCurrentPage(1);
         setSearchKeyword("");
+        setTeamId("");
         setSortConfig({ key: 'id', direction: 'DESC' });
     }
 console.log(listProduct);
     return (
         <>
             <div className="page-inner">
-                <div className="d-flex align-items-center mb-3">
+                <div className="d-flex align-items-center mb-3 flex-column gap-3 gap-sm-0 flex-sm-row">
                     <button
                         className="d-flex align-items-center justify-content-center gap-1 col-md-2 col-xl-2 col-5 btn btn-outline-success"
                         onClick={handleRefresh}
                         style={{width: "max-content", marginRight: "10px"}}
                     >
                         <IoReload size={22}/>
-                        <span className="d-none d-sm-block">Làm mới</span>
+                        <span>Làm mới</span>
                     </button>
+
+                    <select
+                        className="form-select form-control me-2"
+                        value={teamId}
+                        onChange={(e) => {
+                            setTeamId(e.target.value);
+                            setCurrentPage(1);
+                        }}
+                    >
+                        <option value="">Tất cả đội bóng</option>
+                        {teams.map(team => (
+                            <option key={team.id} value={team.id}>
+                                {team.name}
+                            </option>
+                        ))}
+                    </select>
+
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-control me-2"
                         placeholder="Nhập tên sản phẩm..."
                         value={searchKeyword}
                         onChange={(e) => handleSearch(e)}
                     />
-                    <div className="col-md-5 col-1"></div>
+
+                    {/* Nút thêm sản phẩm */}
                     <button
                         className="d-flex align-items-center justify-content-center gap-1 col-md-3 col-xl-3 col-5 btn btn-outline-primary"
                         onClick={() => {
@@ -164,7 +202,7 @@ console.log(listProduct);
                         style={{width: "max-content"}}
                     >
                         <IoAddCircleOutline size={25}/>
-                        <span className="d-none d-sm-block">Thêm sản phẩm</span>
+                        <span>Thêm sản phẩm</span>
                     </button>
                 </div>
 
@@ -255,28 +293,49 @@ console.log(listProduct);
                                                         </td>
                                                         <td>
                                                             {item.isSale ?
-                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
+                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{
+                                                                    color: "green",
+                                                                    cursor: "pointer"
+                                                                }}
                                                                               onClick={() => toggleProductStatus(item.id, 'isSale')}/>
                                                                 :
-                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
+                                                                <MdOutlineDangerous size={25} title={"Trạng thái"}
+                                                                                    style={{
+                                                                                        color: "red",
+                                                                                        cursor: "pointer"
+                                                                                    }}
                                                                                     onClick={() => toggleProductStatus(item.id, 'isSale')}/>
                                                             }
                                                         </td>
                                                         <td>
                                                             {item.isTrending ?
-                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
+                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{
+                                                                    color: "green",
+                                                                    cursor: "pointer"
+                                                                }}
                                                                               onClick={() => toggleProductStatus(item.id, 'isTrending')}/>
                                                                 :
-                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
+                                                                <MdOutlineDangerous size={25} title={"Trạng thái"}
+                                                                                    style={{
+                                                                                        color: "red",
+                                                                                        cursor: "pointer"
+                                                                                    }}
                                                                                     onClick={() => toggleProductStatus(item.id, 'isTrending')}/>
                                                             }
                                                         </td>
                                                         <td>
                                                             {item.isActive ?
-                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{color: "green", cursor: "pointer"}}
+                                                                <GrStatusGood size={25} title={"Trạng thái"} style={{
+                                                                    color: "green",
+                                                                    cursor: "pointer"
+                                                                }}
                                                                               onClick={() => toggleProductStatus(item.id, 'isActive')}/>
                                                                 :
-                                                                <MdOutlineDangerous size={25} title={"Trạng thái"} style={{color: "red", cursor: "pointer"}}
+                                                                <MdOutlineDangerous size={25} title={"Trạng thái"}
+                                                                                    style={{
+                                                                                        color: "red",
+                                                                                        cursor: "pointer"
+                                                                                    }}
                                                                                     onClick={() => toggleProductStatus(item.id, 'isActive')}/>
                                                             }
                                                         </td>
@@ -300,7 +359,7 @@ console.log(listProduct);
                                     :
                                     <>
                                         <tr>
-                                            <td colSpan={10}>Không tìm thấy dữ liệu</td>
+                                            <td colSpan={12}>Không tìm thấy dữ liệu</td>
                                         </tr>
                                     </>
                             }

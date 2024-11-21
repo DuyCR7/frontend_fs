@@ -75,11 +75,15 @@ const updateProduct = (id, name, description, price, price_sale, categoryId, tea
     return axios.put("/api/v1/admin/product/update", data);
 }
 
-const getAllProduct = (page, limit, search = "", sort = {}) => {
+const getAllProduct = (page, limit, search = "", teamId = "", sort = {}) => {
     let query = `/api/v1/admin/product/read?page=${page}&limit=${limit}`;
 
     if (search) {
         query += `&search=${encodeURIComponent(search)}`;
+    }
+
+    if (teamId) {
+        query += `&teamId=${encodeURIComponent(teamId)}`;
     }
 
     if (sort && sort.key && sort.direction) {
