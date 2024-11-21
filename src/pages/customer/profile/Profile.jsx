@@ -65,10 +65,12 @@ const Profile = () => {
 
     const handleSubmit = async () => {
 
-        const phoneRegex = /^0\d{9}$/;
-        if (!phoneRegex.test(profile?.phone)) {
-            toast.warn("Vui lòng nhập số điện thoại hợp lệ!");
-            return;
+        if (profile.phone) {
+            const phoneRegex = /^0\d{9}$/;
+            if (!phoneRegex.test(profile?.phone)) {
+                toast.warn("Vui lòng nhập số điện thoại hợp lệ!");
+                return;
+            }
         }
 
         setLoading(true);

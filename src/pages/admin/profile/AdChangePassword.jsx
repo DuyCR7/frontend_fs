@@ -75,6 +75,9 @@ const AdChangePassword = ({isShowModalChangePassword, onCloseModalChangePassword
     };
 
     const handleClickCloseModal = () => {
+        setShowNewPassword(false);
+        setShowOldPassword(false);
+        setShowConfirmPassword(false);
         onCloseModalChangePassword();
         setPasswordData(defaultPasswordData);
         setErrors({});

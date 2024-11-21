@@ -105,7 +105,7 @@ const AdProduct = () => {
             const res = await setActiveField(id, field);
             if (res && res.EC === 0) {
                 toast.success(res.EM);
-                await fetchAllProduct(currentPage, numRows, debouncedSearchInput, sortConfig);
+                await fetchAllProduct(currentPage, numRows, debouncedSearchInput, teamId, sortConfig);
             } else {
                 toast.error(res.EM);
             }
@@ -415,6 +415,7 @@ console.log(listProduct);
                 numRows={numRows}
                 currentPage={currentPage}
                 searchKeyword={debouncedSearchInput}
+                teamId={teamId}
                 sortConfig={sortConfig}
                 setSortConfig={setSortConfig}
                 setCurrentPage={setCurrentPage}

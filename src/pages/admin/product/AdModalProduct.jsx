@@ -502,7 +502,7 @@ console.log(productDetails);
                         props.setCurrentPage(1);
                         props.setSortConfig({key: 'id', direction: 'DESC'});
                     } else {
-                        await props.fetchAllProduct(props.currentPage, props.numRows, props.searchKeyword, props.sortConfig);
+                        await props.fetchAllProduct(props.currentPage, props.numRows, props.searchKeyword, props.teamId, props.sortConfig);
                     }
 
                 } else if (res && res.EC === 1) {
