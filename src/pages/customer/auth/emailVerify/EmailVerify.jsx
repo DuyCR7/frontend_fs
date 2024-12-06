@@ -55,7 +55,7 @@ const EmailVerify = (props) => {
                         </div>
                     </div>
                     :
-                    <h1 className="container mt-3 text-center"><NotFoundPageCus /></h1>
+                    <div><NotFoundPageCus /></div>
             }
         </>
     )
