@@ -114,8 +114,8 @@ console.log(filteredTrending);
                                 filteredTrending && filteredTrending.length > 0 &&
                                 filteredTrending.map((item, index) => {
                                     return (
-                                        <div key={`${index}-${item.id}`} className="col-lg-3 col-md-4 col-6">
-                                            <div className="product-item">
+                                        <div key={`${index}-${item.id}`} className="col-lg-3 col-md-4 col-6 p-3">
+                                            <div className="product-item h-100 d-flex flex-column justify-content-center">
                                                 {/*product images*/}
                                                 <div className="product-thumb">
                                                     <Link to={`/products/${item.slug}`}>

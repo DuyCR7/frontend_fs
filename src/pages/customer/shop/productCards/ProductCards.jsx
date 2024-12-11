@@ -35,7 +35,7 @@ const ProductCards = ({GridList, products}) => {
 
                         return (
                             <div key={item.id} className={`product-wrapper ${GridList ? "col-6 col-sm-6 col-md-4 col-lg-3" : "col-12"}`}>
-                                <div className="product-item">
+                                <div className="product-item h-100">
                                     {/*product images*/}
                                     <div className="product-thumb">
                                         <Link to={`/products/${item.slug}`}>
@@ -66,7 +66,7 @@ const ProductCards = ({GridList, products}) => {
                                     </div>
 
                                     {/*product content*/}
-                                    <div className="product-content d-flex flex-column gap-2">
+                                    <div style={{ marginBottom: "-25px" }} className="product-content d-flex flex-column gap-2">
                                     <span style={{fontSize: "18px"}}>
                                         <Link to={`/products/${item.slug}`}>{item.name}</Link>
                                     </span>

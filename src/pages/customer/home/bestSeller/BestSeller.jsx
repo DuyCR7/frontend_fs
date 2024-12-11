@@ -112,7 +112,7 @@ console.log(products);
                                 >
                                     {products.length > 0 && products.map((item, index) => (
                                         <SwiperSlide key={item.id}>
-                                            <div className="product-item">
+                                            <div className="product-item h-100 d-flex flex-column justify-content-center">
                                                 <div className="product-thumb">
                                                     <Link to={`/products/${item.slug}`}>
                                                         <div className="pro-thumb">
